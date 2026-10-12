@@ -1,0 +1,168 @@
+---
+import CyberIcon from './CyberIcon.astro';
+---
+
+<!-- Cyberpunk Image & Map Lightbox Modal -->
+<div 
+  id="cyberLightboxModal" 
+  class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 transition-opacity duration-200"
+  role="dialog"
+  aria-modal="true"
+  aria-label="ขยายภาพพิกัด"
+>
+  <div class="relative max-w-5xl w-full bg-[#0a110d] border border-mint/30 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.9)] flex flex-col max-h-[92vh]">
+    
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between px-5 py-3.5 border-b border-line bg-card/90">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <CyberIcon name="map-pin" class="size-4 text-mint shrink-0" />
+        <span id="lightboxCaption" class="text-sm font-bold text-white font-mono truncate">
+          ภาพจุดสังเกตในเกม RUN TOWN FiveM
+        </span>
+      </div>
+
+      <button 
+        type="button" 
+        id="lightboxCloseBtn" 
+        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-line bg-paper hover:border-rose hover:text-rose text-slate-400 text-xs font-mono transition-colors shrink-0"
+        title="กด ESC เพื่อปิด"
+      >
+        <span>ปิด (ESC)</span>
+        <CyberIcon name="x" class="size-3.5" />
+      </button>
+    </div>
+
+    <!-- Image Display Viewport -->
+    <div class="relative flex-1 min-h-[250px] max-h-[70vh] bg-black/80 flex items-center justify-center p-2 overflow-hidden">
+      <img 
+        id="lightboxImg" 
+        src="" 
+        alt="ภาพจุดสังเกตขยายใหญ่" 
+        class="max-h-[68vh] w-auto max-w-full object-contain rounded-lg border border-line/40 shadow-inner" 
+      />
+    </div>
+
+    <!-- Modal Footer Controls -->
+    <div class="flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-t border-line bg-card/90 text-xs font-mono">
+      <div class="flex items-center gap-2 text-textMuted text-[11px]">
+        <CyberIcon name="compass" class="size-3.5 text-mint" />
+        <span id="lightboxCoords">ตำแหน่งบนแผนที่</span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button 
+          type="button" 
+          id="lightboxCopyGpsBtn" 
+          class="px-3 py-1.5 rounded-lg border border-mint/40 bg-mint/10 text-mint hover:bg-mint/20 text-xs font-bold font-mono transition-colors flex items-center gap-1.5"
+        >
+          <CyberIcon name="copy" class="size-3.5 text-mint" />
+          <span id="lightboxCopyText">คัดลอกชื่อโซน</span>
+        </button>
+
+        <a 
+          id="lightboxLiveMapLink" 
+          href="/map" 
+          class="px-3 py-1.5 rounded-lg border border-line bg-paper text-slate-200 hover:text-mint hover:border-mint/50 text-xs font-semibold font-mono transition-colors flex items-center gap-1.5"
+        >
+          <CyberIcon name="map" class="size-3.5 text-mint" />
+          <span>เปิดบน Live Map</span>
+          <span>➔</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initLightbox() {
+    const modal = document.getElementById('cyberLightboxModal');
+    const img = document.getElementById('lightboxImg') as HTMLImageElement;
+    const caption = document.getElementById('lightboxCaption');
+    const coords = document.getElementById('lightboxCoords');
+    const liveMapLink = document.getElementById('lightboxLiveMapLink') as HTMLAnchorElement;
+    const copyGpsBtn = document.getElementById('lightboxCopyGpsBtn');
+    const copyText = document.getElementById('lightboxCopyText');
+    const closeBtn = document.getElementById('lightboxCloseBtn');
+
+    if (!modal || !img) return;
+
+    let currentCoords = '';
+
+    function openLightbox(src: string, titleText: string, coordsText: string, spotId?: string) {
+      if (!modal || !img) return;
+      img.src = src;
+      img.alt = titleText || 'ภาพขยาย';
+      if (caption) caption.textContent = titleText || 'ภาพพิกัดในเกม';
+      if (coords) coords.textContent = coordsText || 'RUN TOWN GPS';
+      currentCoords = coordsText || '';
+
+      if (liveMapLink) {
+        liveMapLink.href = spotId ? `/map?spot=${encodeURIComponent(spotId)}` : '/map';
+      }
+
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      if (!modal) return;
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+      if (copyText) copyText.textContent = 'คัดลอกชื่อโซน';
+    }
+
+    // Attach to triggers
+    document.querySelectorAll('[data-lightbox-trigger]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const src = el.getAttribute('data-lightbox-src') || '';
+        const title = el.getAttribute('data-lightbox-title') || '';
+        const coordsStr = el.getAttribute('data-lightbox-coords') || '';
+        const spot = el.getAttribute('data-lightbox-spot') || '';
+        if (src) openLightbox(src, title, coordsStr, spot);
+      });
+    });
+
+    // Also attach to all full content images in prose-runtown
+    document.querySelectorAll('.prose-runtown img').forEach((imgEl) => {
+      const img = imgEl as HTMLImageElement;
+      // Skip tiny inline tool icons
+      if (img.classList.contains('w-5') || img.classList.contains('w-4')) return;
+      img.classList.add('cursor-zoom-in', 'transition-transform', 'hover:opacity-95');
+      img.title = 'คลิกเพื่อขยายดูรูปใหญ่';
+      img.addEventListener('click', () => {
+        const src = img.currentSrc || img.src;
+        const alt = img.alt || 'ภาพประกอบคู่มือ';
+        openLightbox(src, alt, 'RUN TOWN FiveM');
+      });
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeLightbox();
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeLightbox();
+      }
+    });
+
+    if (copyGpsBtn) {
+      copyGpsBtn.addEventListener('click', () => {
+        if (!currentCoords) return;
+        navigator.clipboard.writeText(currentCoords).then(() => {
+          if (copyText) copyText.textContent = '✓ คัดลอกชื่อโซนแล้ว!';
+          setTimeout(() => {
+            if (copyText) copyText.textContent = 'คัดลอกชื่อโซน';
+          }, 2000);
+        });
+      });
+    }
+  }
+
+  // Init on load & astro page transitions
+  initLightbox();
+  document.addEventListener('astro:page-load', initLightbox);
+</script>

@@ -1,0 +1,840 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MarqueeTicker from '../components/MarqueeTicker.astro';
+import BrainFatigueMeter from '../components/BrainFatigueMeter.astro';
+import FoodHungerMeter from '../components/FoodHungerMeter.astro';
+import ItemGallery from '../components/ItemGallery.astro';
+import BentoJobsGrid from '../components/BentoJobsGrid.astro';
+import SafeHubs from '../components/SafeHubs.astro';
+import ProfitCalculator from '../components/ProfitCalculator.astro';
+import VehicleShowroom from '../components/VehicleShowroom.astro';
+import CraftingTree from '../components/CraftingTree.astro';
+import CrimeDirectory from '../components/CrimeDirectory.astro';
+import EventRadar from '../components/EventRadar.astro';
+import CyberIcon from '../components/CyberIcon.astro';
+import GuideIcon from '../components/GuideIcon.astro';
+import { getCleanTitle } from '../utils/guideHelpers';
+import { getCollection } from 'astro:content';
+
+const allGuides = await getCollection('guides');
+allGuides.sort((a, b) => a.data.order - b.data.order);
+
+const whiteJobGuides = allGuides.filter(g => g.data.category === 'white_jobs');
+const blackJobGuides = allGuides.filter(g => g.data.category === 'black_jobs');
+const vehicleGuides = allGuides.filter(g => g.data.category === 'vehicles');
+const craftingGuides = allGuides.filter(g => g.data.category === 'crafting');
+const survivalGuides = allGuides.filter(g => g.data.category === 'survival');
+const foodGuides = allGuides.filter(g => g.data.category === 'food');
+---
+
+<BaseLayout title="RUN TOWN ✦ FiveM Wiki Hub" activeCategory="home">
+  
+  <!-- Top Marquee Stat Ticker -->
+  <MarqueeTicker />
+
+  <!-- Hero Section: Welcoming New Player Hub (Cocodly Layout) -->
+  <section class="relative isolate overflow-hidden border-b border-line">
+    <img
+      src="/images/hero-city.png"
+      alt="RUN TOWN FiveM City Skyline"
+      class="absolute inset-0 w-full h-full object-cover opacity-45 -z-20 pointer-events-none"
+      loading="eager"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-[#050b08]/60 via-[#050b08]/80 to-[#050b08] -z-10 pointer-events-none" aria-hidden="true"></div>
+    <div class="absolute inset-0 bg-grid opacity-60 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)] -z-10 pointer-events-none" aria-hidden="true"></div>
+    <div class="absolute -top-40 left-1/2 -z-10 size-[600px] -translate-x-1/2 rounded-full bg-mint/15 blur-[120px] pointer-events-none" aria-hidden="true"></div>
+
+    <div class="mx-auto flex max-w-7xl flex-col items-start px-4 pb-20 pt-16 sm:px-6 md:pb-24 md:pt-20">
+      <p class="inline-flex items-center gap-2 rounded-full border border-mint/30 bg-mint/10 px-3.5 py-1.5 text-xs text-mint backdrop-blur-md sm:text-sm">
+        <CyberIcon name="shield-check" class="size-4 shrink-0 text-mint" />
+        <span>คู่มือเอาชีวิตรอด & เริ่มต้นตั้งตัว</span>
+        <span class="text-mint/50" aria-hidden="true">|</span>
+        <span class="font-mono text-xs tracking-wider">RUN TOWN FIVEM</span>
+      </p>
+
+      <h1 class="mt-6 max-w-4xl text-balance text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight text-white tracking-tight">
+        ยินดีต้อนรับสู่ <span class="text-mint drop-shadow-[0_0_25px_rgba(69,242,180,0.45)]">RUN TOWN</span>
+        <span class="block text-2xl sm:text-3xl md:text-4xl font-normal text-slate-300 mt-2">
+          ศูนย์ข้อมูล & คู่มือสำหรับผู้เล่นใหม่
+        </span>
+      </h1>
+
+      <p class="mt-6 max-w-2xl text-pretty text-base sm:text-lg leading-relaxed text-slate-300 font-normal">
+        ไม่เคยเล่น FiveM หรือเพิ่งเข้าเมืองครั้งแรก? เรียนรู้กฎความปลอดภัย แหล่งทำเงินสร้างตัวที่ไวที่สุด
+        และวิธีเอาชีวิตรอดไม่ให้สลบกลางทาง
+      </p>
+
+      <!-- 3 Primary Newbie Call to Actions -->
+      <div class="mt-10 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap items-stretch sm:items-center">
+        <a
+          href="#survival-rules"
+          class="group inline-flex items-center justify-center gap-2.5 rounded-xl bg-mint px-6 py-3.5 text-sm font-extrabold text-slate-950 transition-all hover:bg-lime hover:shadow-[0_0_32px_-4px_rgba(165,255,95,0.6)]"
+        >
+          <CyberIcon name="shield-check" class="size-4 text-slate-950" />
+          <span>อ่าน 4 กฎเอาชีวิตรอด</span>
+          <span class="group-hover:translate-x-1 transition-transform">➔</span>
+        </a>
+        <a
+          href="/map"
+          class="inline-flex items-center justify-center gap-2.5 rounded-xl border border-mint/50 bg-mint/5 px-6 py-3.5 text-sm font-bold text-mint backdrop-blur-md transition-all hover:bg-mint/15 hover:shadow-[0_0_20px_rgba(69,242,180,0.3)]"
+        >
+          <CyberIcon name="map" class="size-4 text-mint" />
+          <span>เปิดแผนที่พิกัด Live Map</span>
+        </a>
+        <a
+          href="/guides/jobs/white"
+          class="inline-flex items-center justify-center gap-2.5 rounded-xl border border-line bg-card/60 px-6 py-3.5 text-sm font-semibold text-slate-200 transition-colors hover:bg-white/5 hover:text-mint hover:border-mint/40"
+        >
+          <CyberIcon name="briefcase" class="size-4 text-slate-400 group-hover:text-mint" />
+          <span>ดูกระดาน 7 งานขาว</span>
+        </a>
+      </div>
+
+      <!-- Server Live Stats Row (Cocodly Telemetry Architecture) -->
+      <dl class="mt-14 grid w-full max-w-3xl grid-cols-2 sm:grid-cols-4 gap-px overflow-hidden rounded-xl border border-line bg-line shadow-sm">
+        <div class="bg-card/90 px-5 py-4 backdrop-blur-md">
+          <dt class="text-xs text-slate-400 font-mono">ผู้เล่นออนไลน์</dt>
+          <dd class="mt-1 font-mono text-2xl font-bold text-mint">300+</dd>
+        </div>
+        <div class="bg-card/90 px-5 py-4 backdrop-blur-md">
+          <dt class="text-xs text-slate-400 font-mono">งานขาว</dt>
+          <dd class="mt-1 font-mono text-2xl font-bold text-lime">7</dd>
+        </div>
+        <div class="bg-card/90 px-5 py-4 backdrop-blur-md">
+          <dt class="text-xs text-slate-400 font-mono">Safe Zones</dt>
+          <dd class="mt-1 font-mono text-2xl font-bold text-cyan-300">4</dd>
+        </div>
+        <div class="bg-card/90 px-5 py-4 backdrop-blur-md">
+          <dt class="text-xs text-slate-400 font-mono">Uptime</dt>
+          <dd class="mt-1 font-mono text-2xl font-bold text-amber-300">99.9%</dd>
+        </div>
+      </dl>
+
+      <!-- 6 Core Category Shortcuts Row -->
+      <div class="mt-6 flex flex-wrap items-center gap-2 font-mono text-xs max-w-4xl">
+        <a href="/guides/jobs/white" class="cyber-tilt-card px-3.5 py-2 rounded-xl border border-mint/30 bg-card hover:border-mint transition-colors text-left flex items-center gap-2">
+          <CyberIcon name="briefcase" class="size-3.5 text-mint" />
+          <span class="text-slate-300 text-xs font-semibold">งานขาว (7)</span>
+        </a>
+        <a href="/guides/jobs/black" class="cyber-tilt-card px-3.5 py-2 rounded-xl border border-danger/40 bg-card hover:border-danger transition-colors text-left flex items-center gap-2">
+          <CyberIcon name="skull" class="size-3.5 text-danger" />
+          <span class="text-slate-300 text-xs font-semibold">งานดำ (4)</span>
+        </a>
+        <a href="/guides/logistics/vehicles" class="cyber-tilt-card px-3.5 py-2 rounded-xl border border-amber-400/40 bg-card hover:border-amber-400 transition-colors text-left flex items-center gap-2">
+          <CyberIcon name="truck" class="size-3.5 text-amber-400" />
+          <span class="text-slate-300 text-xs font-semibold">ยานพาหนะ</span>
+        </a>
+        <a href="/guides/crafting/weapons" class="cyber-tilt-card px-3.5 py-2 rounded-xl border border-lime/30 bg-card hover:border-lime transition-colors text-left flex items-center gap-2">
+          <CyberIcon name="swords" class="size-3.5 text-lime" />
+          <span class="text-slate-300 text-xs font-semibold">คราฟต์อาวุธ</span>
+        </a>
+        <a href="/guides/survival/vitals" class="cyber-tilt-card px-3.5 py-2 rounded-xl border border-purple-400/30 bg-card hover:border-purple-400 transition-colors text-left flex items-center gap-2">
+          <CyberIcon name="brain" class="size-3.5 text-purple-300" />
+          <span class="text-slate-300 text-xs font-semibold">ค่าสมอง</span>
+        </a>
+        <a href="/guides/food/nutrition" class="cyber-tilt-card px-3.5 py-2 rounded-xl border border-mint/30 bg-card hover:border-mint transition-colors text-left flex items-center gap-2">
+          <CyberIcon name="drumstick" class="size-3.5 text-mint" />
+          <span class="text-slate-300 text-xs font-semibold">อาหาร</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 1: 4 Golden Survival Rules for Newbies -->
+  <section id="survival-rules" class="max-w-[1280px] mx-auto px-4 sm:px-6 py-12 space-y-8 scroll-mt-20">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-3 pb-4 border-b border-line">
+      <div>
+        <span class="text-xs font-mono font-bold text-mint uppercase tracking-wider">// NEW PLAYER SURVIVAL GUIDE</span>
+        <h2 class="text-2xl sm:text-3xl font-display font-extrabold text-white mt-1 flex items-center gap-2">
+          <CyberIcon name="shield-check" class="size-7 text-mint" />
+          <span>4 สิ่งที่ต้องเข้าใจทันทีเมื่อก้าวเข้าเมือง RUN TOWN</span>
+        </h2>
+      </div>
+      <p class="text-xs sm:text-sm font-mono text-slate-300 max-w-md">
+        เข้าใจระบบพื้นฐาน 4 ข้อนี้ จะช่วยให้คุณไม่สลบเป็นลมกลางทาง และสร้างตัวได้เร็วขึ้น 10 เท่า
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <!-- Rule 1: Hunger & Thirst -->
+      <div class="cyber-tilt-card p-6 rounded-2xl border border-rose-500/40 bg-card hover:border-rose-400 transition-all shadow-neon-card space-y-4 flex flex-col justify-between">
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <CyberIcon name="drumstick" box={true} tone="rose" class="size-6" />
+            <span class="text-[11px] font-mono px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40 font-bold">
+              อันตรายถึงชีวิต (ห้าม 0%)
+            </span>
+          </div>
+          <h3 class="text-lg font-display font-extrabold text-white">
+            1. หลอดอาหาร & น้ำ (อย่าปล่อยให้หมดเด็ดขาด!)
+          </h3>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            ตัวละครของคุณจะเผาผลาญอาหารและน้ำตลอดเวลา หากหลอดใดหลอดหนึ่งลดลงจนเหลือ <strong class="text-rose-400">0%</strong> เลือดจะลดลงอย่างรวดเร็วจนสลบหมดสติทันที
+          </p>
+
+          <!-- Telemetry Meter -->
+          <div class="space-y-1.5 p-3 rounded-xl bg-slate-950/70 border border-line">
+            <div class="flex items-baseline justify-between text-xs font-mono">
+              <span class="text-slate-400">อัตราการลดลง:</span>
+              <span class="text-rose-400 font-bold text-base">-0.72% <span class="text-xs text-slate-400 font-normal">/ นาที</span></span>
+            </div>
+            <div class="h-2 rounded-full bg-slate-900 border border-line overflow-hidden">
+              <div class="h-full w-[20%] rounded-full bg-gradient-to-r from-rose-500 to-amber-400"></div>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-slate-950/80 border border-line text-xs space-y-1.5 text-slate-200">
+            <p class="font-bold text-rose-300 flex items-center gap-1.5">
+              <CyberIcon name="lightbulb" class="size-4 text-amber-300" />
+              <span>คำแนะนำสำหรับมือใหม่:</span>
+            </p>
+            <ul class="list-disc list-inside space-y-1 text-textMuted">
+              <li>แวะร้านสะดวกซื้อ (24/7) ซื้อเบอร์เกอร์และน้ำดื่มพกติดกระเป๋า 3–5 ชิ้นเสมอ</li>
+              <li>อย่ารอให้หลอดแดง ให้กดกินทันทีเมื่อหลอดเริ่มลดต่ำกว่า 50%</li>
+            </ul>
+          </div>
+        </div>
+        <div class="pt-3 border-t border-lineSubtle">
+          <a href="/guides/food/nutrition" class="text-xs font-mono font-bold text-rose-300 hover:text-rose-200 flex items-center justify-between">
+            <span>ดูตารางอาหาร & เวลาเผาผลาญ</span>
+            <span>➔</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Rule 2: Brain Fatigue -->
+      <div class="cyber-tilt-card p-6 rounded-2xl border border-purple-500/40 bg-card hover:border-purple-400 transition-all shadow-neon-card space-y-4 flex flex-col justify-between">
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <CyberIcon name="brain" box={true} tone="amber" class="size-6" />
+            <span class="text-[11px] font-mono px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40 font-bold">
+              ความเหนื่อยล้า (ห้ามแตะ 100%)
+            </span>
+          </div>
+          <h3 class="text-lg font-display font-extrabold text-white">
+            2. หลอดสมอง & อาการล้า (หัวร้อน-หัวตึง โดนสตั๊น)
+          </h3>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            ทุกครั้งที่ยืนฟาร์ม ตัดไม้ ขุดแร่ หรือยืนแปรรูปของ หลอดสมองจะสะสมความล้าเรื่อยๆ หากพุ่งแตะ <strong class="text-purple-300">100%</strong> ตัวละครจะหน้ามืดและติดสตั๊น ขยับไม่ได้
+          </p>
+
+          <!-- Telemetry Meter -->
+          <div class="space-y-1.5 p-3 rounded-xl bg-slate-950/70 border border-line">
+            <div class="flex items-baseline justify-between text-xs font-mono">
+              <span class="text-slate-400">สถานะสมองสะสม:</span>
+              <span class="text-amber-300 font-bold text-base">100% <span class="text-xs text-rose-400 font-normal">= สตั๊น 2 นาที</span></span>
+            </div>
+            <div class="h-2 rounded-full bg-slate-900 border border-line overflow-hidden">
+              <div class="h-full w-[90%] rounded-full bg-gradient-to-r from-mint via-amber-400 to-rose-500"></div>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-slate-950/80 border border-line text-xs space-y-1.5 text-slate-200">
+            <p class="font-bold text-purple-300 flex items-center gap-1.5">
+              <CyberIcon name="lightbulb" class="size-4 text-amber-300" />
+              <span>วิธีแก้ปัญหาง่ายๆ:</span>
+            </p>
+            <ul class="list-disc list-inside space-y-1 text-textMuted">
+              <li>ขับรถไปนั่งพักผ่อนที่ <strong class="text-white">บาร์เขียว (Del Perro)</strong> หรือ <strong class="text-white">อู่ช่าง (Chumash)</strong></li>
+              <li>นั่งฟังเพลงหรือเต้นชิลล์ๆ หลอดสมองจะลดลงฮวบฮาบกลับมาเป็น 0% ทันที</li>
+            </ul>
+          </div>
+        </div>
+        <div class="pt-3 border-t border-lineSubtle">
+          <a href="/guides/survival/vitals" class="text-xs font-mono font-bold text-purple-300 hover:text-purple-200 flex items-center justify-between">
+            <span>ดูกลไกหลอดสมอง & จุดพักผ่อน</span>
+            <span>➔</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Rule 3: Vehicle Payload -->
+      <div class="cyber-tilt-card p-6 rounded-2xl border border-amber-400/40 bg-card hover:border-amber-300 transition-all shadow-neon-card space-y-4 flex flex-col justify-between">
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <CyberIcon name="truck" box={true} tone="mint" class="size-6" />
+            <span class="text-[11px] font-mono px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40 font-bold">
+              หัวใจหลักการทำเงิน
+            </span>
+          </div>
+          <h3 class="text-lg font-display font-extrabold text-white">
+            3. ยานพาหนะ & ท้ายรถ (กุญแจสำคัญ ไม่ต้องเดินแบก)
+          </h3>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            กระเป๋าตัวละครแบกของได้จำกัด หากเดินเก็บของดิบแล้ววิ่งไปขาย จะเสียเวลามาก <strong class="text-amber-300">การมีรถขนของคือจุดเปลี่ยนของชีวิตในเมือง!</strong>
+          </p>
+
+          <!-- Telemetry Meter -->
+          <div class="space-y-2 p-3 rounded-xl bg-slate-950/70 border border-line text-xs font-mono">
+            <div>
+              <div class="flex items-baseline justify-between text-[11px]">
+                <span class="text-slate-400">กระเป๋าตัวละคร (เดินเท้า)</span>
+                <span class="text-mint font-bold">45.0 กก.</span>
+              </div>
+              <div class="h-1.5 rounded-full bg-slate-900 border border-line overflow-hidden mt-1">
+                <div class="h-full w-[35%] rounded-full bg-mint"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-baseline justify-between text-[11px]">
+                <span class="text-slate-400">รถกระบะขนของ (Logistics)</span>
+                <span class="text-lime font-bold">120 - 150 กก.</span>
+              </div>
+              <div class="h-1.5 rounded-full bg-slate-900 border border-line overflow-hidden mt-1">
+                <div class="h-full w-[100%] rounded-full bg-gradient-to-r from-mint to-lime"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-slate-950/80 border border-line text-xs space-y-1.5 text-slate-200">
+            <p class="font-bold text-amber-300 flex items-center gap-1.5">
+              <CyberIcon name="lightbulb" class="size-4 text-amber-300" />
+              <span>คำแนะนำสำหรับมือใหม่:</span>
+            </p>
+            <ul class="list-disc list-inside space-y-1 text-textMuted">
+              <li>เริ่มต้นด้วยรถท้าย 60 กก. หรือ 120 กก. ขับไปจอดเทียบจุดฟาร์ม</li>
+              <li>ขนวัตถุดิบใส่ท้ายรถให้เต็มความจุก่อน แล้วค่อยขับไปแปรรูปและส่งขายทีเดียว</li>
+            </ul>
+          </div>
+        </div>
+        <div class="pt-3 border-t border-lineSubtle">
+          <a href="/guides/logistics/vehicles" class="text-xs font-mono font-bold text-amber-300 hover:text-amber-200 flex items-center justify-between">
+            <span>ดูคู่มือเปรียบเทียบขนาดรถ 60/120/150 โล</span>
+            <span>➔</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Rule 4: 4-Step Farming Loop -->
+      <div class="cyber-tilt-card p-6 rounded-2xl border border-mint/40 bg-card hover:border-mint transition-all shadow-neon-card space-y-4 flex flex-col justify-between">
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <CyberIcon name="refresh" box={true} tone="lime" class="size-6" />
+            <span class="text-[11px] font-mono px-3 py-1 rounded-full bg-mint/20 text-mint border border-mint/40 font-bold">
+              ลูปเศรษฐกิจเมือง
+            </span>
+          </div>
+          <h3 class="text-lg font-display font-extrabold text-white">
+            4. ลูปการทำงาน 4 สเต็ป (ฟาร์ม ➔ แปรรูป ➔ แพ็ก ➔ ขาย)
+          </h3>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            เมืองนี้ไม่ใช่แค่เก็บของแล้วขายดิบ! งานขาวเกือบทุกงานจะสร้างรายได้สูงสุดเมื่อทำครบ 4 สเต็ป: 
+            <strong class="text-mint">เก็บของดิบ ➔ แปรรูป ➔ แพ็กกล่อง ➔ ส่งออกขาย</strong>
+          </p>
+
+          <!-- Telemetry Step Pipeline -->
+          <div class="p-3 rounded-xl bg-slate-950/70 border border-line">
+            <div class="flex flex-wrap items-center justify-between gap-1 text-center font-mono text-[11px]">
+              <span class="px-2 py-1 rounded-md border border-mint/40 bg-mint/10 text-mint font-bold flex-1">1. ฟาร์มดิบ</span>
+              <span class="text-slate-500">➔</span>
+              <span class="px-2 py-1 rounded-md border border-cyan-400/40 bg-cyan-400/10 text-cyan-300 font-bold flex-1">2. แปรรูป</span>
+              <span class="text-slate-500">➔</span>
+              <span class="px-2 py-1 rounded-md border border-amber-400/40 bg-amber-400/10 text-amber-300 font-bold flex-1">3. แพ็กกล่อง</span>
+              <span class="text-slate-500">➔</span>
+              <span class="px-2 py-1 rounded-md border border-lime/40 bg-lime/10 text-lime font-bold flex-1">4. ส่งขาย 47k+ RD</span>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-slate-950/80 border border-line text-xs space-y-1.5 text-slate-200">
+            <p class="font-bold text-mint flex items-center gap-1.5">
+              <CyberIcon name="lightbulb" class="size-4 text-amber-300" />
+              <span>คำแนะนำสำหรับมือใหม่:</span>
+            </p>
+            <ul class="list-disc list-inside space-y-1 text-textMuted">
+              <li>การแพ็กกล่องลังสินค้าจะได้ราคาสูงกว่าขายของดิบหลายเท่าตัว</li>
+              <li>ทำครบ 1 ลูปเต็มจะได้เงินก้อนโต 40,000 - 50,000+ RD ต่อเที่ยวรถ!</li>
+            </ul>
+          </div>
+        </div>
+        <div class="pt-3 border-t border-lineSubtle">
+          <a href="/guides/jobs/white" class="text-xs font-mono font-bold text-mint hover:text-mint/80 flex items-center justify-between">
+            <span>ดูคู่มือสรุปงานขาว 7 อาชีพ</span>
+            <span>➔</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 2: Top 4 Recommended Starter Jobs -->
+  <section id="starter-jobs" class="max-w-[1280px] mx-auto px-4 sm:px-6 py-12 space-y-8 scroll-mt-20">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-3 pb-4 border-b border-line">
+      <div>
+        <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider">// RECOMMENDED CAREERS FOR ROOKIES</span>
+        <h2 class="text-2xl sm:text-3xl font-display font-extrabold text-white mt-1 flex items-center gap-2">
+          <CyberIcon name="star" class="size-7 text-amber-400" />
+          <span>4 งานแรกแนะนำสำหรับมือใหม่ (เริ่มทำอะไรดี?)</span>
+        </h2>
+      </div>
+      <p class="text-xs sm:text-sm font-mono text-slate-300 max-w-md">
+        คัดสรรเฉพาะงานที่เล่นง่าย ลูปไม่ซับซ้อน และทำเงินก้อนแรกได้ไวที่สุด
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      <!-- Job 1: เลี้ยงหมู -->
+      <div class="cyber-tilt-card p-6 rounded-2xl border border-line bg-card/90 hover:border-mint/50 transition-all duration-300 shadow-neon-card flex flex-col justify-between group">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <CyberIcon name="package" box={true} tone="mint" class="size-6" />
+            <span class="font-mono text-xs tracking-widest text-slate-400">JOB_01</span>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-display font-extrabold text-white group-hover:text-mint transition-colors">
+              งานหมู <span class="font-mono text-xs font-normal tracking-widest text-slate-400 uppercase">PORK</span>
+            </h3>
+            <p class="mt-2 text-xs leading-relaxed text-slate-300">
+              ลูปสั้น 7 กม. เก็บไว แปรรูปง่าย เหมาะสุดสำหรับวันแรกในเมือง
+            </p>
+          </div>
+
+          <div class="border-t border-lineSubtle pt-4 space-y-3">
+            <p class="font-mono text-3xl font-bold text-lime">
+              422 RD <span class="text-xs font-normal text-slate-400">/ กล่อง</span>
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">ลูป 7 กม.</span>
+              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">มือใหม่</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-lineSubtle mt-4">
+          <a href="/guides/jobs/pig" class="w-full block text-center py-2.5 rounded-xl font-mono text-xs font-bold text-slate-950 bg-mint hover:bg-mint/90 transition-colors shadow">
+            อ่านคู่มือเลี้ยงหมู ➔
+          </a>
+        </div>
+      </div>
+
+      <!-- Job 2: ตัดไม้ -->
+      <div class="cyber-tilt-card p-6 rounded-2xl border border-line bg-card/90 hover:border-mint/50 transition-all duration-300 shadow-neon-card flex flex-col justify-between group">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <CyberIcon name="tree" box={true} tone="mint" class="size-6" />
+            <span class="font-mono text-xs tracking-widest text-slate-400">JOB_02</span>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-display font-extrabold text-white group-hover:text-amber-300 transition-colors">
+              งานไม้ <span class="font-mono text-xs font-normal tracking-widest text-slate-400 uppercase">WOOD</span>
+            </h3>
+            <p class="mt-2 text-xs leading-relaxed text-slate-300">
+              รายได้ก้อนโต ขนเต็มรถกระบะ 120 กก. ฟันกำไรรอบเดียวคุ้ม
+            </p>
+          </div>
+
+          <div class="border-t border-lineSubtle pt-4 space-y-3">
+            <p class="font-mono text-3xl font-bold text-lime">
+              47,000+ RD <span class="text-xs font-normal text-slate-400">/ เต็มกระบะ</span>
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">120 กก.</span>
+              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">ผู้เล่น 500-600 RD</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-lineSubtle mt-4">
+          <a href="/guides/jobs/woodcutting" class="w-full block text-center py-2.5 rounded-xl font-mono text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 transition-colors shadow">
+            อ่านคู่มือตัดไม้ ➔
+          </a>
+        </div>
+      </div>
+
+      <!-- Job 3: เก็บดอกไม้ -->
+      <div class="cyber-tilt-card p-6 rounded-2xl border border-line bg-card/90 hover:border-mint/50 transition-all duration-300 shadow-neon-card flex flex-col justify-between group">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <CyberIcon name="flower" box={true} tone="mint" class="size-6" />
+            <span class="font-mono text-xs tracking-widest text-slate-400">JOB_03</span>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-display font-extrabold text-white group-hover:text-pink-300 transition-colors">
+              งานดอกไม้ <span class="font-mono text-xs font-normal tracking-widest text-slate-400 uppercase">FLOWERS</span>
+            </h3>
+            <p class="mt-2 text-xs leading-relaxed text-slate-300">
+              สปีดเก็บไวที่สุดในเกม 8 วินาที/ชิ้น มีทางลัดส่งหมอที่ รพ. Pillbox
+            </p>
+          </div>
+
+          <div class="border-t border-lineSubtle pt-4 space-y-3">
+            <p class="font-mono text-3xl font-bold text-lime">
+              100 RD <span class="text-xs font-normal text-slate-400">/ ดอก</span>
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">8 วิ/ชิ้น</span>
+              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">ไวสุด</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-lineSubtle mt-4">
+          <a href="/guides/jobs/flowers" class="w-full block text-center py-2.5 rounded-xl font-mono text-xs font-bold text-slate-950 bg-pink-400 hover:bg-pink-300 transition-colors shadow">
+            อ่านคู่มือเก็บดอกไม้ ➔
+          </a>
+        </div>
+      </div>
+
+      <!-- Job 4: จี่เหล็ก -->
+      <div class="cyber-tilt-card p-6 rounded-2xl border border-line bg-card/90 hover:border-mint/50 transition-all duration-300 shadow-neon-card flex flex-col justify-between group">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <CyberIcon name="wrench" box={true} tone="mint" class="size-6" />
+            <span class="font-mono text-xs tracking-widest text-slate-400">JOB_04</span>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-display font-extrabold text-white group-hover:text-lime transition-colors">
+              จี่เหล็ก <span class="font-mono text-xs font-normal tracking-widest text-slate-400 uppercase">SMELTING</span>
+            </h3>
+            <p class="mt-2 text-xs leading-relaxed text-slate-300">
+              ลูปสั้น 1.2 กม. วิ่งไม่ถึง 1 นาที ขายอู่ช่างทำกล่องซ่อมได้ตลอดเวลา
+            </p>
+          </div>
+
+          <div class="border-t border-lineSubtle pt-4 space-y-3">
+            <p class="font-mono text-3xl font-bold text-lime">
+              195 RD <span class="text-xs font-normal text-slate-400">/ แท่ง</span>
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">1.2 กม.</span>
+              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">ส่งอู่ช่าง</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-lineSubtle mt-4">
+          <a href="/guides/jobs/smelting" class="w-full block text-center py-2.5 rounded-xl font-mono text-xs font-bold text-slate-950 bg-lime hover:bg-lime/90 transition-colors shadow">
+            อ่านคู่มือจี่เหล็ก ➔
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Profit & ROI Calculator -->
+  <ProfitCalculator />
+
+  <!-- Vehicle Showroom & Cargo Comparison Drawer -->
+  <VehicleShowroom />
+
+  <!-- Crafting Tree & Weapon Blueprints -->
+  <CraftingTree />
+
+  <!-- Underworld Crime Directory -->
+  <CrimeDirectory />
+
+  <!-- Realtime Event Radar & Restarts -->
+  <EventRadar />
+
+  <!-- Section 3: City Safe Hubs & Amenities -->
+  <SafeHubs />
+
+  <!-- Bento Jobs & Vehicles Grid (Fumadocs Architecture) -->
+  <section class="max-w-[1280px] mx-auto px-4 sm:px-6 py-10">
+    <BentoJobsGrid />
+  </section>
+
+  <!-- 6 Master Category Cards -->
+  <section class="max-w-[1280px] mx-auto px-4 sm:px-6 py-10 space-y-8">
+    
+    <div class="flex items-center justify-between pb-3 border-b border-line">
+      <div>
+        <span class="text-xs font-mono font-bold text-mint uppercase tracking-wider">// KNOWLEDGE BASE</span>
+        <h2 class="text-xl sm:text-2xl font-display font-extrabold text-white">คลังข้อมูลความรู้หลัก (6 หมวดหมู่)</h2>
+      </div>
+      <a href="/guides" class="text-xs font-mono text-mint hover:underline font-bold">
+        ดูสารบัญทั้งหมด ➔
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- Card 1: งานขาว (White Jobs) -->
+      <div class="category-stagger-card cyber-tilt-card p-6 rounded-2xl border border-mint/40 bg-card hover:border-mint transition-all shadow-neon-card space-y-4 group flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <CyberIcon name="briefcase" box={true} tone="mint" class="size-6" />
+            <span class="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-mint/20 text-mint border border-mint/40 font-bold">
+              7 อาชีพสุจริต
+            </span>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-display font-extrabold text-white group-hover:text-mint transition-colors">
+              งานขาว (White Jobs)
+            </h3>
+            <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+              ตัดไม้, ขุดแร่, ฟาร์มข้าว, จี่เหล็ก, เลี้ยงหมู, เก็บดอกไม้, และร่อนคริสตัล พร้อมสถิติน้ำหนักและเวลา
+            </p>
+          </div>
+
+          <ul class="space-y-1.5 pt-2 border-t border-lineSubtle text-xs font-mono">
+            {whiteJobGuides.map((g) => (
+              <li>
+                <a href={`/guides/${g.slug}`} class="text-slate-200 hover:text-mint flex items-start justify-between gap-2 py-1 transition-colors group/item">
+                  <span class="flex items-center gap-2 min-w-0">
+                    <GuideIcon icon={g.data.icon} iconImage={g.data.iconImage || g.data.image} class="text-sm shrink-0" imgClass="w-4 h-4 object-contain shrink-0" />
+                    <span class="break-words whitespace-normal leading-snug">{getCleanTitle(g.data.title)}</span>
+                  </span>
+                  <span class="text-textMuted group-hover/item:text-mint shrink-0 mt-0.5 transition-colors">➔</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="pt-3 border-t border-lineSubtle">
+          <a href="/guides/jobs/white" class="w-full block text-center py-2.5 rounded-xl font-mono text-xs font-bold text-black bg-mint hover:bg-mint/90 transition-colors shadow-md">
+            ดูคู่มืองานขาว ➔
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 2: งานดำ (Black Jobs) -->
+      <div class="category-stagger-card cyber-tilt-card p-6 rounded-2xl border border-danger/40 bg-card hover:border-danger transition-all shadow-neon-card space-y-4 group flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <CyberIcon name="skull" box={true} tone="rose" class="size-6" />
+            <span class="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-danger/20 text-danger border border-danger/40 font-bold">
+              4 กิจกรรมใต้ดิน
+            </span>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-display font-extrabold text-white group-hover:text-danger transition-colors">
+              งานดำ (Black Jobs)
+            </h3>
+            <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+              เก็บกัญชา, ปลูกกัญชา, ขายยา, และจกปูน พร้อมระบบแจ้งเตือนตำรวจและการฟอกเงิน
+            </p>
+          </div>
+
+          <ul class="space-y-1.5 pt-2 border-t border-lineSubtle text-xs font-mono">
+            {blackJobGuides.map((g) => (
+              <li>
+                <a href={`/guides/${g.slug}`} class="text-slate-200 hover:text-danger flex items-start justify-between gap-2 py-1 transition-colors group/item">
+                  <span class="flex items-center gap-2 min-w-0">
+                    <GuideIcon icon={g.data.icon} iconImage={g.data.iconImage || g.data.image} class="text-sm shrink-0" imgClass="w-4 h-4 object-contain shrink-0" />
+                    <span class="break-words whitespace-normal leading-snug">{getCleanTitle(g.data.title)}</span>
+                  </span>
+                  <span class="text-textMuted group-hover/item:text-danger shrink-0 mt-0.5 transition-colors">➔</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="pt-3 border-t border-lineSubtle">
+          <a href="/guides/jobs/black" class="w-full block text-center py-2.5 rounded-xl font-mono text-xs font-bold text-white bg-danger hover:bg-danger/90 transition-colors shadow-md">
+            ดูคู่มืองานดำ ➔
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 3: ยานพาหนะ (Vehicles) -->
+      <div class="category-stagger-card cyber-tilt-card p-6 rounded-2xl border border-amber-400/40 bg-card hover:border-amber-400 transition-all shadow-neon-card space-y-4 group flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <CyberIcon name="truck" box={true} tone="amber" class="size-6" />
+            <span class="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-amber-400/20 text-[#facc15] border border-amber-400/40 font-bold">
+              3 ขนาดยอดนิยม
+            </span>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-display font-extrabold text-white group-hover:text-[#facc15] transition-colors">
+              ยานพาหนะ & ขนส่ง
+            </h3>
+            <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+              เจาะลึกรถ 60 / 120 / 150 โล, กฎ Trading Buffer 10 กก., และการคำนวณรอบบรรทุกสูงสุด
+            </p>
+          </div>
+
+          <ul class="space-y-1.5 pt-2 border-t border-lineSubtle text-xs font-mono">
+            {vehicleGuides.map((g) => (
+              <li>
+                <a href={`/guides/${g.slug}`} class="text-slate-200 hover:text-[#facc15] flex items-start justify-between gap-2 py-1 transition-colors group/item">
+                  <span class="flex items-center gap-2 min-w-0">
+                    <GuideIcon icon={g.data.icon} iconImage={g.data.iconImage || g.data.image} class="text-sm shrink-0" imgClass="w-4 h-4 object-contain shrink-0" />
+                    <span class="break-words whitespace-normal leading-snug">{getCleanTitle(g.data.title)}</span>
+                  </span>
+                  <span class="text-textMuted group-hover/item:text-[#facc15] shrink-0 mt-0.5 transition-colors">➔</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="pt-3 border-t border-lineSubtle">
+          <a href="/guides/logistics/vehicles" class="w-full block text-center py-2.5 rounded-xl font-mono text-xs font-extrabold text-slate-950 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-300 hover:from-yellow-300 hover:to-amber-200 transition-all shadow-md">
+            ดูตารางยานพาหนะ ➔
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 4: โต๊ะคราฟต์ & อาวุธ (Crafting) -->
+      <div class="category-stagger-card cyber-tilt-card p-6 rounded-2xl border border-lime/40 bg-card hover:border-lime transition-all shadow-neon-card space-y-4 group flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <CyberIcon name="swords" box={true} tone="lime" class="size-6" />
+            <span class="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-lime/20 text-lime border border-lime/40 font-bold">
+              PATCH 1.3.0
+            </span>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-display font-extrabold text-white group-hover:text-lime transition-colors">
+              คราฟต์อาวุธ
+            </h3>
+            <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+              ดาเมจอาวุธ Lv.1 ทั้ง 5 ชนิด, อาวุธเบส 5%, แกนคอร์ Impact & Edge Core, และพิมพ์เขียว Tier 2
+            </p>
+          </div>
+
+          <ul class="space-y-1.5 pt-2 border-t border-lineSubtle text-xs font-mono">
+            {craftingGuides.map((g) => (
+              <li>
+                <a href={`/guides/${g.slug}`} class="text-slate-200 hover:text-lime flex items-start justify-between gap-2 py-1 transition-colors group/item">
+                  <span class="flex items-center gap-2 min-w-0">
+                    <GuideIcon icon={g.data.icon} iconImage={g.data.iconImage || g.data.image} class="text-sm shrink-0" imgClass="w-4 h-4 object-contain shrink-0" />
+                    <span class="break-words whitespace-normal leading-snug">{getCleanTitle(g.data.title)}</span>
+                  </span>
+                  <span class="text-textMuted group-hover/item:text-lime shrink-0 mt-0.5 transition-colors">➔</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="pt-3 border-t border-lineSubtle">
+          <a href="/guides/crafting/weapons" class="w-full block text-center py-2.5 rounded-xl font-mono text-xs font-bold text-black bg-lime hover:bg-lime/90 transition-colors shadow-md">
+            ดูตารางคราฟต์อาวุธ ➔
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 5: ระบบค่าสมอง (Mental Fatigue) -->
+      <div class="category-stagger-card cyber-tilt-card p-6 rounded-2xl border border-purple-500/40 bg-card hover:border-purple-400 transition-all shadow-neon-card space-y-4 group flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <CyberIcon name="brain" box={true} tone="purple" class="size-6" />
+            <span class="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40 font-bold">
+              SURVIVAL
+            </span>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-display font-extrabold text-white group-hover:text-purple-300 transition-colors">
+              ค่าสมอง
+            </h3>
+            <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+              อัตราสะสมความล้า (+0.42%/น. vs +3.42%/น.), เพดาน Anti-AFK 4 ชม., และการรีหัวที่บาร์เขียว/อู่ช่าง
+            </p>
+          </div>
+
+          <ul class="space-y-1.5 pt-2 border-t border-lineSubtle text-xs font-mono">
+            {survivalGuides.map((g) => (
+              <li>
+                <a href={`/guides/${g.slug}`} class="text-slate-200 hover:text-purple-300 flex items-start justify-between gap-2 py-1 transition-colors group/item">
+                  <span class="flex items-center gap-2 min-w-0">
+                    <GuideIcon icon={g.data.icon} iconImage={g.data.iconImage || g.data.image} class="text-sm shrink-0" imgClass="w-4 h-4 object-contain shrink-0" />
+                    <span class="break-words whitespace-normal leading-snug">{getCleanTitle(g.data.title)}</span>
+                  </span>
+                  <span class="text-textMuted group-hover/item:text-purple-300 shrink-0 mt-0.5 transition-colors">➔</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="pt-3 border-t border-lineSubtle">
+          <a href="/guides/survival/vitals" class="w-full block text-center py-2.5 rounded-xl font-mono text-xs font-bold text-white bg-purple-600 hover:bg-purple-500 transition-colors shadow-md">
+            ดูกลไกค่าสมอง ➔
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 6: อาหาร (Food) -->
+      <div class="category-stagger-card cyber-tilt-card p-6 rounded-2xl border border-mint/40 bg-card hover:border-mint transition-all shadow-neon-card space-y-4 group flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <CyberIcon name="drumstick" box={true} tone="cyan" class="size-6" />
+            <span class="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-mint/20 text-mint border border-mint/40 font-bold">
+              FOOD & THIRST
+            </span>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-display font-extrabold text-white group-hover:text-mint transition-colors">
+              อาหาร
+            </h3>
+            <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+              อัตราเผาผลาญคงที่ -0.72%/นาที, โซนเตือนภัยสีแดง (≤ 20%), และเวลานับถอยหลัง 27 นาทีสู่ความตาย
+            </p>
+          </div>
+
+          <ul class="space-y-1.5 pt-2 border-t border-lineSubtle text-xs font-mono">
+            {foodGuides.map((g) => (
+              <li>
+                <a href={`/guides/${g.slug}`} class="text-slate-200 hover:text-mint flex items-start justify-between gap-2 py-1 transition-colors group/item">
+                  <span class="flex items-center gap-2 min-w-0">
+                    <GuideIcon icon={g.data.icon} iconImage={g.data.iconImage || g.data.image} class="text-sm shrink-0" imgClass="w-4 h-4 object-contain shrink-0" />
+                    <span class="break-words whitespace-normal leading-snug">{getCleanTitle(g.data.title)}</span>
+                  </span>
+                  <span class="text-textMuted group-hover/item:text-mint shrink-0 mt-0.5 transition-colors">➔</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="pt-3 border-t border-lineSubtle">
+          <a href="/guides/food/nutrition" class="w-full block text-center py-2.5 rounded-xl font-mono text-xs font-bold text-black bg-mint hover:bg-mint/90 transition-colors shadow-md">
+            ดูตารางอาหาร ➔
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Section 5: Real Item Screenshots Crafting Gallery -->
+  <section class="max-w-[1280px] mx-auto px-4 sm:px-6 py-12 border-t border-line">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-6">
+      <div>
+        <span class="text-xs font-mono font-bold text-lime uppercase tracking-wider">// CRAFTING DATABASE</span>
+        <h2 class="text-xl sm:text-2xl font-display font-extrabold text-white">คลังไอเทม & ตารางคราฟต์อาวุธ Patch 1.3.0</h2>
+      </div>
+      <span class="text-xs font-mono text-textMuted">ภาพถ่ายไอเทมจริงจากระบบเกม RUN TOWN FiveM</span>
+    </div>
+    <ItemGallery />
+  </section>
+
+  <!-- Section 6: Advanced Farming Simulation & Estimator HUDs (For Veterans) -->
+  <section class="max-w-[1280px] mx-auto px-4 sm:px-6 py-12 border-t border-line space-y-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-line">
+      <div>
+        <span class="text-xs font-mono font-bold text-mint uppercase tracking-wider">// ADVANCED SIMULATION TOOLS</span>
+        <h2 class="text-xl sm:text-2xl font-display font-extrabold text-white">เครื่องมือคำนวณขั้นสูงสำหรับสายฟาร์ม (อาหาร & ค่าสมอง)</h2>
+      </div>
+      <span class="text-xs font-mono text-textMuted">สำหรับผู้เล่นที่ต้องการวางแผนรอบฟาร์มและคำนวณเวลาระดับโปร</span>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+      <!-- Left: Dedicated Food & Hunger HUD -->
+      <FoodHungerMeter />
+
+      <!-- Right: Dedicated Brain Fatigue HUD -->
+      <BrainFatigueMeter />
+    </div>
+  </section>
+
+</BaseLayout>

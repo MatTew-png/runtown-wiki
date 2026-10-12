@@ -1,0 +1,174 @@
+---
+// Job Payload & Logistics Estimator Component
+import CyberIcon from './CyberIcon.astro';
+
+interface Props {
+  defaultItemWeight?: number;
+  itemName?: string;
+  defaultPrice?: number;
+}
+
+const { defaultItemWeight = 0.5, itemName = 'ไอเทมทั่วไป', defaultPrice = 100 } = Astro.props;
+---
+
+<div class="job-estimator-card p-5 rounded-2xl border border-dashed border-mint/40 bg-[#0a110d] space-y-4 my-8 shadow-neon-card">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-lineSubtle">
+    <div class="flex items-center gap-2">
+      <CyberIcon name="zap" size={20} class="text-mint shrink-0" />
+      <h3 class="text-sm font-display font-extrabold text-white">
+        เครื่องคำนวณความจุท้ายรถ & รายได้ (Live Logistics Estimator)
+      </h3>
+    </div>
+    <span class="text-[11px] font-mono px-2 py-0.5 rounded-full bg-mint/10 text-mint border border-mint/30 font-bold">
+      SAFETY BUFFER: 10 KG
+    </span>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+    <!-- Vehicle Selector -->
+    <div class="space-y-1.5">
+      <label class="text-[11px] font-mono text-slate-300 font-bold flex items-center gap-1.5">
+        <CyberIcon name="truck" size={14} class="text-mint shrink-0" />
+        <span>เลือกรถที่ใช้:</span>
+      </label>
+      <select id="estimatorTrunkSelect" class="w-full bg-[#101914] border border-line text-white rounded-xl px-3 py-2 text-xs font-mono focus:border-mint focus:outline-none">
+        <option value="60">รถ 60 กก. (จุสุทธิ 50 กก.)</option>
+        <option value="120" selected>รถ 120 กก. (จุสุทธิ 110 กก.)</option>
+        <option value="150">รถ 150 กก. (จุสุทธิ 140 กก.)</option>
+      </select>
+    </div>
+
+    <!-- Item Weight Input -->
+    <div class="space-y-1.5">
+      <label class="text-[11px] font-mono text-slate-300 font-bold flex items-center gap-1.5">
+        <CyberIcon name="scale" size={14} class="text-mint shrink-0" />
+        <span>น้ำหนัก/ชิ้น (กก.):</span>
+      </label>
+      <input 
+        type="number" 
+        id="estimatorWeightInput" 
+        value={defaultItemWeight} 
+        step="0.05" 
+        min="0.01" 
+        class="w-full bg-[#101914] border border-line text-mint font-bold rounded-xl px-3 py-2 text-xs font-mono focus:border-mint focus:outline-none"
+      />
+    </div>
+
+    <!-- Time per Item Input -->
+    <div class="space-y-1.5">
+      <label class="text-[11px] font-mono text-slate-300 font-bold flex items-center gap-1.5">
+        <CyberIcon name="clock" size={14} class="text-mint shrink-0" />
+        <span>เวลาโพรเซส/ชิ้น (วิ):</span>
+      </label>
+      <input 
+        type="number" 
+        id="estimatorTimeInput" 
+        value="5" 
+        step="1" 
+        min="1" 
+        class="w-full bg-[#101914] border border-line text-white rounded-xl px-3 py-2 text-xs font-mono focus:border-mint focus:outline-none"
+      />
+    </div>
+
+    <!-- Unit Price Input -->
+    <div class="space-y-1.5">
+      <label class="text-[11px] font-mono text-slate-300 font-bold flex items-center gap-1.5">
+        <CyberIcon name="dollar" size={14} class="text-amber-400 shrink-0" />
+        <span>ราคาขาย/ชิ้น (RD):</span>
+      </label>
+      <input 
+        type="number" 
+        id="estimatorPriceInput" 
+        value={defaultPrice} 
+        step="1" 
+        min="0" 
+        class="w-full bg-[#101914] border border-line text-amber-300 font-bold rounded-xl px-3 py-2 text-xs font-mono focus:border-mint focus:outline-none"
+      />
+    </div>
+  </div>
+
+  <!-- Live Output Matrix -->
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
+    <div class="p-3 rounded-xl bg-card border border-line text-center">
+      <span class="block text-[10px] font-mono text-slate-400 font-semibold uppercase">บรรจุได้สูงสุด</span>
+      <strong id="estimatorMaxItems" class="text-lg font-mono font-extrabold text-mint">220</strong>
+      <span class="block text-[10px] font-mono text-textMuted">ชิ้น / คัน</span>
+    </div>
+
+    <div class="p-3 rounded-xl bg-card border border-line text-center">
+      <span class="block text-[10px] font-mono text-slate-400 font-semibold uppercase">น้ำหนักของที่จุ</span>
+      <strong id="estimatorTotalWeight" class="text-lg font-mono font-extrabold text-white">110.0</strong>
+      <span class="block text-[10px] font-mono text-textMuted">กก. (เหลือ 10 กก.)</span>
+    </div>
+
+    <div class="p-3 rounded-xl bg-card border border-line text-center">
+      <span class="block text-[10px] font-mono text-slate-400 font-semibold uppercase">เวลาโพรเซสเต็มคัน</span>
+      <strong id="estimatorTotalTime" class="text-lg font-mono font-extrabold text-amber-300">18.3</strong>
+      <span class="block text-[10px] font-mono text-textMuted">นาที</span>
+    </div>
+
+    <div class="p-3 rounded-xl bg-card border border-line text-center">
+      <span class="block text-[10px] font-mono text-slate-400 font-semibold uppercase">มูลค่าเต็มคันรถ</span>
+      <strong id="estimatorTotalRevenue" class="text-lg font-mono font-extrabold text-emerald-400">22,000 RD</strong>
+      <span class="block text-[10px] font-mono text-textMuted">รายได้ต่อรอบ</span>
+    </div>
+  </div>
+
+  <!-- Status & Guidelines Footer -->
+  <div class="pt-2 border-t border-lineSubtle flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-slate-400 gap-2">
+    <div class="flex items-center gap-1.5">
+      <span class="inline-block w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+      <span>ค่าสมอง (Mental Fatigue): <span class="text-amber-300 font-bold">[ รออัปเดตสถิติจากการทดสอบจริง ]</span></span>
+    </div>
+    <div class="text-slate-400 flex items-center gap-1.5">
+      <CyberIcon name="package" size={13} class="text-mint shrink-0" />
+      <span>ถ่ายโอนในตัว: <span class="text-white font-bold">25 กก.</span> (กระเป๋า 30 กก. - ของจำเป็น 5 กก.)</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setupJobEstimator() {
+    const trunkSelect = document.getElementById('estimatorTrunkSelect') as HTMLSelectElement | null;
+    const weightInput = document.getElementById('estimatorWeightInput') as HTMLInputElement | null;
+    const timeInput = document.getElementById('estimatorTimeInput') as HTMLInputElement | null;
+    const priceInput = document.getElementById('estimatorPriceInput') as HTMLInputElement | null;
+
+    const outMax = document.getElementById('estimatorMaxItems');
+    const outWeight = document.getElementById('estimatorTotalWeight');
+    const outTime = document.getElementById('estimatorTotalTime');
+    const outRevenue = document.getElementById('estimatorTotalRevenue');
+
+    if (!trunkSelect || !weightInput || !timeInput || !outMax || !outWeight || !outTime) return;
+
+    function recalculate() {
+      const grossTrunk = parseFloat(trunkSelect!.value) || 120;
+      const netTrunk = Math.max(10, grossTrunk - 10); // 10 kg safety buffer
+      const unitWeight = Math.max(0.01, parseFloat(weightInput!.value) || 0.5);
+      const timePerItem = Math.max(1, parseFloat(timeInput!.value) || 5);
+      const unitPrice = Math.max(0, parseFloat(priceInput?.value || '0'));
+
+      const maxItems = Math.floor(netTrunk / unitWeight);
+      const totalWeight = (maxItems * unitWeight).toFixed(1);
+      const totalSeconds = maxItems * timePerItem;
+      const totalMinutes = (totalSeconds / 60).toFixed(1);
+      const totalRevenue = maxItems * unitPrice;
+
+      outMax!.textContent = maxItems.toLocaleString();
+      outWeight!.textContent = totalWeight;
+      outTime!.textContent = totalMinutes;
+      if (outRevenue) {
+        outRevenue.textContent = `${totalRevenue.toLocaleString()} RD`;
+      }
+    }
+
+    trunkSelect.addEventListener('change', recalculate);
+    weightInput.addEventListener('input', recalculate);
+    timeInput.addEventListener('input', recalculate);
+    if (priceInput) priceInput.addEventListener('input', recalculate);
+    recalculate();
+  }
+
+  setupJobEstimator();
+  document.addEventListener('astro:page-load', setupJobEstimator);
+</script>

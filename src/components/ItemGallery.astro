@@ -1,0 +1,753 @@
+---
+import CyberIcon from './CyberIcon.astro';
+interface ItemCard {
+  id: string;
+  name: string;
+  category: 'weapons' | 'base' | 'blueprints' | 'materials';
+  type: string;
+  badge: string;
+  badgeColor: string;
+  image: string;
+  icon: string;
+  stats: string;
+  recipe: string[];
+  cost: string;
+}
+
+const items: ItemCard[] = [
+  // Weapons Lv.1
+  {
+    id: 'machete',
+    name: 'Machete Lv.1 (มีดพร้า)',
+    category: 'weapons',
+    type: 'อาวุธประชิด (Melee Weapon)',
+    badge: 'DMG 18 (แรงสุด)',
+    badgeColor: 'bg-danger/20 text-danger border-danger/40',
+    image: '/items/19.png',
+    icon: '/items/icons/transparent/machete_lv1.png',
+    stats: 'Damage: 18 | อัตราติด 100% | สายเฉือนเลือดออก',
+    recipe: ['Blueprint: Machete LV1 x1', 'Bottle x1', 'Edge Core x100', 'Crystal Ingot x100'],
+    cost: '250,000 RD'
+  },
+  {
+    id: 'knife',
+    name: 'Knife Lv.1 (มีดพก)',
+    category: 'weapons',
+    type: 'อาวุธประชิด (Melee Weapon)',
+    badge: 'DMG 16',
+    badgeColor: 'bg-mint/20 text-mint border-mint/40',
+    image: '/items/15.png',
+    icon: '/items/icons/transparent/knife_lv1.png',
+    stats: 'Damage: 16 | อัตราติด 100% | ความเร็วการโจมตีสูง',
+    recipe: ['Blueprint: Knife LV1 x1', 'ขวด (Bottle) x1', 'Edge Core x100', 'Crystal Ingot x100'],
+    cost: '350,000 RD'
+  },
+  {
+    id: 'dagger',
+    name: 'Dagger Lv.1 (แดกเกอร์)',
+    category: 'weapons',
+    type: 'อาวุธประชิด (Melee Weapon)',
+    badge: 'DMG 16',
+    badgeColor: 'bg-mint/20 text-mint border-mint/40',
+    image: '/items/16.png',
+    icon: '/items/icons/transparent/dagger_lv1.png',
+    stats: 'Damage: 16 | อัตราติด 100% | ใช้ Impact Core',
+    recipe: ['Blueprint: Knife LV1 x1', 'ขวด (Bottle) x1', 'Impact Core x100', 'Crystal Ingot x100'],
+    cost: '350,000 RD'
+  },
+  {
+    id: 'knuckle',
+    name: 'Knuckle Lv.1 (สนับมือ)',
+    category: 'weapons',
+    type: 'อาวุธประชิด (Melee Weapon)',
+    badge: 'DMG 14',
+    badgeColor: 'bg-lime/20 text-lime border-lime/40',
+    image: '/items/20.png',
+    icon: '/items/icons/transparent/knuckle_lv1.png',
+    stats: 'Damage: 14 | อัตราติด 100% | ไม่ต้องมีเบสอาวุธ',
+    recipe: ['Blueprint: Knuckle LV1 x1', 'Impact Core x75', 'Crystal Ingot x100'],
+    cost: '250,000 RD'
+  },
+  {
+    id: 'poolcue',
+    name: 'Poolcue Lv.1 (ไม้พูล)',
+    category: 'weapons',
+    type: 'อาวุธประชิด (Melee Weapon)',
+    badge: 'DMG 12',
+    badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+    image: '/items/17.png',
+    icon: '/items/icons/transparent/poolcue_lv1.png',
+    stats: 'Damage: 12 | อัตราติด 100% | ระยะโจมตีกว้าง',
+    recipe: ['Blueprint: Pool Cue LV1 x1', 'Bat หรือ Golfclub x1', 'Impact Core x150', 'Crystal Ingot x150'],
+    cost: '350,000 RD'
+  },
+
+  // Base Weapons
+  {
+    id: 'bat',
+    name: 'Bat (ไม้เบสบอล)',
+    category: 'base',
+    type: 'อาวุธเบส (Base Melee)',
+    badge: 'สำเร็จ 5% (คืน Impact Core x1)',
+    badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+    image: '/items/12.png',
+    icon: '/items/icons/transparent/bat.png',
+    stats: 'สำเร็จ 5% | แตกแล้วได้ Impact Core คืน',
+    recipe: ['Blueprint: Bat x1', 'Weapon Box Set x1'],
+    cost: 'ใช้กล่องตี'
+  },
+  {
+    id: 'golfclub',
+    name: 'Golfclub (ไม้กอล์ฟ)',
+    category: 'base',
+    type: 'อาวุธเบส (Base Melee)',
+    badge: 'สำเร็จ 5% (คืน Impact Core x1)',
+    badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+    image: '/items/13.png',
+    icon: '/items/icons/transparent/golfclub.png',
+    stats: 'สำเร็จ 5% | แตกแล้วได้ Impact Core คืน',
+    recipe: ['Blueprint: Bat x1', 'Weapon Box Set x1'],
+    cost: 'ใช้กล่องตี'
+  },
+  {
+    id: 'bottle',
+    name: 'Bottle (ขวดแก้ว)',
+    category: 'base',
+    type: 'อาวุธเบส (Base Melee)',
+    badge: 'สำเร็จ 5% (คืน Edge Core x1)',
+    badgeColor: 'bg-danger/20 text-danger border-danger/40',
+    image: '/items/14.png',
+    icon: '/items/icons/transparent/bottle.png',
+    stats: 'สำเร็จ 5% | แตกแล้วได้ Edge Core คืน',
+    recipe: ['Blueprint: Bottle x1', 'Weapon Box Set x1'],
+    cost: 'ใช้กล่องตี'
+  },
+
+  // Blueprints
+  {
+    id: 'bp-machete',
+    name: 'Blueprint: Machete LV1',
+    category: 'blueprints',
+    type: 'พิมพ์เขียวขั้นสูง (Tier 2 BP)',
+    badge: 'สำเร็จ 50%',
+    badgeColor: 'bg-info/20 text-info border-info/40',
+    image: '/items/10.png',
+    icon: '/items/icons/transparent/blueprint_machete_lv1.png',
+    stats: 'สำเร็จ 50% | ต้องใช้ BP Bottle ฐาน',
+    recipe: ['Blueprint: Bottle x1', 'Kryptonite x5', 'Cut Diamond x10', 'Gold x10', 'Steel x20', 'Crystal x25', 'เงินดำ 20,000 RD'],
+    cost: 'เงินดำ 20,000 RD'
+  },
+  {
+    id: 'bp-knife',
+    name: 'Blueprint: Knife LV1',
+    category: 'blueprints',
+    type: 'พิมพ์เขียวขั้นสูง (Tier 2 BP)',
+    badge: 'สำเร็จ 50%',
+    badgeColor: 'bg-info/20 text-info border-info/40',
+    image: '/items/9.png',
+    icon: '/items/icons/transparent/blueprint_knife_lv1.png',
+    stats: 'สำเร็จ 50% | ต้องใช้ BP Bottle ฐาน',
+    recipe: ['Blueprint: Bottle x1', 'Kryptonite x5', 'Cut Diamond x10', 'Gold x10', 'Steel x20', 'Crystal x25', 'เงินดำ 20,000 RD'],
+    cost: 'เงินดำ 20,000 RD'
+  },
+  {
+    id: 'bp-knuckle',
+    name: 'Blueprint: Knuckle LV1',
+    category: 'blueprints',
+    type: 'พิมพ์เขียวขั้นสูง (Tier 2 BP)',
+    badge: 'สำเร็จ 50%',
+    badgeColor: 'bg-info/20 text-info border-info/40',
+    image: '/items/8.png',
+    icon: '/items/icons/transparent/blueprint_knuckle_lv1.png',
+    stats: 'สำเร็จ 50% | ต้องใช้ BP Bat ฐาน',
+    recipe: ['Blueprint: Bat x1', 'Kryptonite x5', 'Cut Diamond x10', 'Gold x10', 'Steel x20', 'Crystal x25', 'เงินดำ 20,000 RD'],
+    cost: 'เงินดำ 20,000 RD'
+  },
+  {
+    id: 'bp-poolcue',
+    name: 'Blueprint: Pool Cue LV1',
+    category: 'blueprints',
+    type: 'พิมพ์เขียวขั้นสูง (Tier 2 BP)',
+    badge: 'สำเร็จ 50%',
+    badgeColor: 'bg-info/20 text-info border-info/40',
+    image: '/items/7.png',
+    icon: '/items/icons/transparent/blueprint_poolcue_lv1.png',
+    stats: 'สำเร็จ 50% | ต้องใช้ BP Bat ฐาน',
+    recipe: ['Blueprint: Bat x1', 'Kryptonite x5', 'Cut Diamond x10', 'Gold x10', 'Steel x20', 'Crystal x25', 'เงินดำ 20,000 RD'],
+    cost: 'เงินดำ 20,000 RD'
+  },
+  {
+    id: 'bp-bat',
+    name: 'Blueprint: Bat',
+    category: 'blueprints',
+    type: 'พิมพ์เขียวพื้นฐาน (Tier 1 BP)',
+    badge: 'สำเร็จ 70%',
+    badgeColor: 'bg-lime/20 text-lime border-lime/40',
+    image: '/items/5.png',
+    icon: '/items/icons/transparent/blueprint_bat.png',
+    stats: 'สำเร็จ 70% | พื้นฐานสำหรับ Bat & Golfclub',
+    recipe: ['Kryptonite x2', 'Cut Diamond x5', 'Gold x10', 'Wood Crate x10', 'Steel x20', 'เงินเขียว 20,000 RD'],
+    cost: '20,000 RD'
+  },
+  {
+    id: 'bp-bottle',
+    name: 'Blueprint: Bottle',
+    category: 'blueprints',
+    type: 'พิมพ์เขียวพื้นฐาน (Tier 1 BP)',
+    badge: 'สำเร็จ 70%',
+    badgeColor: 'bg-lime/20 text-lime border-lime/40',
+    image: '/items/6.png',
+    icon: '/items/icons/transparent/blueprint_bottle.png',
+    stats: 'สำเร็จ 70% | พื้นฐานสำหรับขวดแก้วและมีด',
+    recipe: ['Kryptonite x2', 'Cut Diamond x5', 'Gold x10', 'Wood Crate x10', 'Steel x20', 'เงินเขียว 20,000 RD'],
+    cost: '20,000 RD'
+  },
+
+  // Materials & Cores
+  {
+    id: 'edge-core',
+    name: 'Edge Core (แกนคมมีด)',
+    category: 'materials',
+    type: 'วัตถุดิบขึ้นรูป (Core Material)',
+    badge: '100% + โบนัส 3%',
+    badgeColor: 'bg-danger/20 text-danger border-danger/40',
+    image: '/items/4.png',
+    icon: '/items/icons/transparent/edge_core.png',
+    stats: 'สำเร็จ 100% | โอกาส 3% ได้รับเบิ้ล 2 ชิ้น',
+    recipe: ['Weapon Box Set x1'],
+    cost: 'แลก 1:1 จากกล่องตี'
+  },
+  {
+    id: 'impact-core',
+    name: 'Impact Core (แกนกระแทก)',
+    category: 'materials',
+    type: 'วัตถุดิบขึ้นรูป (Core Material)',
+    badge: '100% + โบนัส 3%',
+    badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+    image: '/items/3.png',
+    icon: '/items/icons/transparent/impact_core.png',
+    stats: 'สำเร็จ 100% | โอกาส 3% ได้รับเบิ้ล 2 ชิ้น',
+    recipe: ['Weapon Box Set x1'],
+    cost: 'แลก 1:1 จากกล่องตี'
+  },
+  {
+    id: 'weapon-box',
+    name: 'Weapon Box Set (กล่องตีอาวุธ)',
+    category: 'materials',
+    type: 'วัตถุดิบแกนหลัก (Base Core)',
+    badge: 'สำเร็จ 100%',
+    badgeColor: 'bg-mint/20 text-mint border-mint/40',
+    image: '/items/4.png',
+    icon: '/items/icons/transparent/weapon_box_set.png',
+    stats: 'ใช้แปลงเป็น Impact Core หรือ Edge Core',
+    recipe: ['ปูน (Cement) x2', 'ไม้แพ็ค (Wood Crate) x10', 'ทอง (Gold) x5', 'เหล็ก (Steel) x20', 'เงินเขียว 10,000 RD'],
+    cost: 'เงินเขียว 10,000 RD'
+  },
+  {
+    id: 'kryptonite',
+    name: 'Kryptonite (แร่คริปโตไนท์)',
+    category: 'materials',
+    type: 'แร่สังเคราะห์หายาก (Rare)',
+    badge: 'สำเร็จ 70%',
+    badgeColor: 'bg-info/20 text-info border-info/40',
+    image: '/items/2.png',
+    icon: '/items/icons/transparent/kryptonite.png',
+    stats: 'สารเร่งสำคัญสำหรับผลิตพิมพ์เขียวทุกประเภท',
+    recipe: ['ปูน x10', 'ทองแดง x15', 'เหล็ก x20', 'เพชรเจีย x1', 'เงินเขียว 5,000 RD'],
+    cost: 'เงินเขียว 5,000 RD'
+  },
+  {
+    id: 'vault-key',
+    name: 'Vault Key (กุญแจเซฟ)',
+    category: 'materials',
+    type: 'อุปกรณ์รักษาความปลอดภัย (General)',
+    badge: 'สำเร็จ 100%',
+    badgeColor: 'bg-lime/20 text-lime border-lime/40',
+    image: '/items/11.png',
+    icon: '/items/icons/transparent/vault_key.png',
+    stats: 'กุญแจสำหรับเปิดตู้เซฟเก็บอาวุธและทรัพย์สิน',
+    recipe: ['เงินเขียว 20,000 RD', 'ทองแดงแท่ง x10', 'ทองคำแท่ง x4'],
+    cost: 'เงินเขียว 20,000 RD'
+  },
+  {
+    id: 'gold-ingot',
+    name: 'Gold Ingot (ทองคำแท่ง)',
+    category: 'materials',
+    type: 'แร่หลอมบริสุทธิ์ (Mineral)',
+    badge: 'วัตถุดิบหลัก',
+    badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+    image: '/items/cards/gold_ingot.png',
+    icon: '/items/icons/transparent/gold_ingot.png',
+    stats: 'หลอมจากทองดิบ ใช้อัปเกรดและตีกล่องอาวุธ',
+    recipe: ['Gold Ore x10 (โรงหลอมแร่)'],
+    cost: 'เตาหลอม'
+  },
+  {
+    id: 'scrap-metal',
+    name: 'Scrap Metal (เศษเหล็ก)',
+    category: 'materials',
+    type: 'เศษโลหะรีไซเคิล (Recycled Metal)',
+    badge: '0.25 กก. | เก็บได้รอบละ 2 ชิ้น',
+    badgeColor: 'bg-amber-900/20 text-amber-200 border-amber-900/40',
+    image: '/items/cards/scrap_metal.png',
+    icon: '/items/icons/transparent/scrap_metal.png',
+    stats: 'น้ำหนัก: 0.25 กก. | เก็บ 10 วิ ได้ 2 ชิ้น (0.5 kg) | หลอมเป็นแท่งเหล็ก',
+    recipe: ['จุดเก็บเศษเหล็ก', 'เก็บรอบละ 10 วินาที (ได้ 2 ชิ้น)'],
+    cost: '76 RD'
+  },
+  {
+    id: 'steel-ingot',
+    name: 'Steel Ingot (เหล็กกล้าแท่ง)',
+    category: 'materials',
+    type: 'แร่หลอมบริสุทธิ์ (Mineral)',
+    badge: '0.50 กก. | 194 - 195 RD',
+    badgeColor: 'bg-slate-400/20 text-slate-300 border-slate-400/40',
+    image: '/items/cards/steel_ingot.png',
+    icon: '/items/icons/transparent/steel_ingot.png',
+    stats: 'น้ำหนัก: 0.50 กก. | หลอม 5 วิ (2:1) จากเศษเหล็ก | ขายช่าง 195 RD',
+    recipe: ['เศษเหล็ก (Scrap Metal) x2', 'จุดโพลเหล็กเตาหลอม (5 วินาที)'],
+    cost: '194 - 195 RD'
+  },
+  {
+    id: 'copper-ingot',
+    name: 'Copper Ingot (ทองแดงแท่ง)',
+    category: 'materials',
+    type: 'แร่หลอมบริสุทธิ์ (Mineral)',
+    badge: 'วัตถุดิบหลัก',
+    badgeColor: 'bg-orange-500/20 text-orange-300 border-orange-500/40',
+    image: '/items/cards/copper_ingot.png',
+    icon: '/items/icons/transparent/copper_ingot.png',
+    stats: 'ใช้ผลิตกุญแจเซฟและหลอมสังเคราะห์ Kryptonite',
+    recipe: ['Copper Ore x10 (โรงหลอมแร่)'],
+    cost: 'เตาหลอม'
+  },
+  {
+    id: 'crystal-ingot',
+    name: 'Crystal Ingot (คริสตัลแท่ง)',
+    category: 'materials',
+    type: 'แร่หายาก (Rare Mineral)',
+    badge: 'ขุดลึกใต้พิภพ',
+    badgeColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
+    image: '/items/cards/crystal_ingot.png',
+    icon: '/items/icons/transparent/crystal_ingot.png',
+    stats: 'วัตถุดิบตีอาวุธ Lv.1 ทุกชิ้น และพิมพ์เขียว Tier 2',
+    recipe: ['ขุดเหมืองลึก + ล้างแร่พิเศษ'],
+    cost: 'ขุดเหมือง'
+  },
+  {
+    id: 'raw-crystal',
+    name: 'Raw Crystal (แร่คริสตัลดิบ)',
+    category: 'materials',
+    type: 'แร่ดิบใต้พิภพ (Raw Ore)',
+    badge: 'แร่ตั้งต้น',
+    badgeColor: 'bg-teal-500/20 text-teal-300 border-teal-500/40',
+    image: '/items/cards/raw_crystal.png',
+    icon: '/items/icons/transparent/raw_crystal.png',
+    stats: 'แร่คริสตัลดิบที่ขุดได้จากเหมืองลึก นำไปล้าง/หลอมเป็นแท่ง',
+    recipe: ['ขุดเหมืองลึก (Mining)'],
+    cost: 'งานขุดแร่'
+  },
+  {
+    id: 'cut-diamond',
+    name: 'Cut Diamond (เพชรเจียระไน)',
+    category: 'materials',
+    type: 'อัญมณีล้ำค่า (Gemstone)',
+    badge: 'หายากพิเศษ',
+    badgeColor: 'bg-blue-400/20 text-blue-300 border-blue-400/40',
+    image: '/items/cards/cut_diamond.png',
+    icon: '/items/icons/transparent/cut_diamond.png',
+    stats: 'เพชรเจียสำหรับสร้างสารสังเคราะห์ Kryptonite และ Blueprint',
+    recipe: ['Diamond Ore x1 + ร้านเจียระไนอัญมณี'],
+    cost: 'ขุดเหมือง'
+  },
+  {
+    id: 'cement',
+    name: 'Cement (ถุงปูนซีเมนต์)',
+    category: 'materials',
+    type: 'วัสดุก่อสร้าง (Construction)',
+    badge: 'ผสมงานช่าง',
+    badgeColor: 'bg-stone-500/20 text-stone-300 border-stone-500/40',
+    image: '/items/cards/cement.png',
+    icon: '/items/icons/transparent/cement.png',
+    stats: 'ปูนผสมงานช่างสำหรับ Weapon Box Set และ Kryptonite',
+    recipe: ['หินปูน + น้ำโรงงานปูน'],
+    cost: 'โรงงานปูน'
+  },
+  {
+    id: 'wood-crate',
+    name: 'Wood Crate (ลังไม้แพ็ค)',
+    category: 'materials',
+    type: 'วัสดุแปรรูป (Crafting Material)',
+    badge: 'โรงเลื่อยไม้',
+    badgeColor: 'bg-amber-700/20 text-amber-300 border-amber-700/40',
+    image: '/items/cards/wood_crate.png',
+    icon: '/items/icons/transparent/wood_crate.png',
+    stats: 'ไม้แพ็คลังสำหรับกล่องตีอาวุธและพิมพ์เขียว',
+    recipe: ['ท่อนไม้ x5 (โรงเลื่อย)'],
+    cost: 'โรงเลื่อย'
+  },
+  {
+    id: 'money',
+    name: 'Money (เงินเขียว)',
+    category: 'materials',
+    type: 'สกุลเงินหมุนเวียน (Cash)',
+    badge: 'เงินถูกกฎหมาย',
+    badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+    image: '/items/icons/transparent/money.png',
+    icon: '/items/icons/transparent/money.png',
+    stats: 'ค่าธรรมเนียมช่างตีกล่อง เตาหลอม และทำกุญแจ',
+    recipe: ['ทำงานสุจริต / ขายผลผลิต'],
+    cost: 'ในเมือง'
+  },
+  {
+    id: 'black-money',
+    name: 'Black Money (เงินดำ)',
+    category: 'materials',
+    type: 'เงินผิดกฎหมาย (Dirty Money)',
+    badge: 'เงินนอกระบบ',
+    badgeColor: 'bg-red-500/20 text-red-300 border-red-500/40',
+    image: '/items/icons/transparent/black_money.png',
+    icon: '/items/icons/transparent/black_money.png',
+    stats: 'ค่าธรรมเนียมลับสำหรับวิจัยพิมพ์เขียว Tier 2 ขั้นสูง',
+    recipe: ['จุดฟาร์มผิดกฎหมาย / ปล้นตู้เซฟ'],
+    cost: 'ตลาดมืด'
+  },
+  {
+    id: 'raw-pork',
+    name: 'Raw Pork (หมูดิบ)',
+    category: 'materials',
+    type: 'วัตถุดิบปศุสัตว์ (Livestock Meat)',
+    badge: '0.50 กก. | 120 RD',
+    badgeColor: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
+    image: '/items/cards/raw_pork.png',
+    icon: '/items/icons/transparent/raw_pork.png',
+    stats: 'น้ำหนัก: 0.50 กก. | รอบโต 15 นาที | ขายคน 130 - 150 RD',
+    recipe: ['ให้อาหารหมูในคอก', 'รอเวลาเติบโต 15 นาที'],
+    cost: '120 - 150 RD'
+  },
+  {
+    id: 'processed-pork',
+    name: 'Processed Pork (หมูแปร / หมูโพล)',
+    category: 'materials',
+    type: 'เนื้อแปรรูป (Processed Meat)',
+    badge: '0.50 กก. | 198 RD',
+    badgeColor: 'bg-orange-500/20 text-orange-300 border-orange-500/40',
+    image: '/items/cards/processed_pork.png',
+    icon: '/items/icons/transparent/processed_pork.png',
+    stats: 'น้ำหนัก: 0.50 กก. | โพล 5 วิ/ชิ้น (1:1) ที่โรงชำแหละ',
+    recipe: ['หมูดิบ x1', 'ยืนโพลที่โรงชำแหละ (5 วินาที)'],
+    cost: '198 RD'
+  },
+  {
+    id: 'packed-pork',
+    name: 'Packed Pork (หมูแพ็คกล่อง)',
+    category: 'materials',
+    type: 'สินค้าแพ็คส่งออก (Packed Crate)',
+    badge: '1.00 กก. | 422 RD',
+    badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+    image: '/items/cards/packed_pork.png',
+    icon: '/items/icons/transparent/packed_pork.png',
+    stats: 'น้ำหนัก: 1.00 กก. | แพ็ค 5 วิ/2 ชิ้น (2:1) ที่โกดังท่าเรือ',
+    recipe: ['หมูแปร x2', 'จุดแพ็คสินค้าท่าเรือ (5 วินาที)'],
+    cost: '422 RD'
+  },
+  {
+    id: 'raw-flower',
+    name: 'Raw Flower (ดอกไม้ดิบ)',
+    category: 'materials',
+    type: 'สมุนไพรธรรมชาติ (Wild Flower)',
+    badge: '0.50 กก. | 78 RD (หมอ 100 RD)',
+    badgeColor: 'bg-pink-500/20 text-pink-300 border-pink-500/40',
+    image: '/items/cards/raw_flower.png',
+    icon: '/items/icons/transparent/raw_flower.png',
+    stats: 'น้ำหนัก: 0.50 กก. | สปีดเก็บไว 8 วิ/ชิ้น | ขายหมอ 100 RD',
+    recipe: ['เก็บเกี่ยวตามทุ่งดอกไม้ป่า (8 วินาที)'],
+    cost: '78 - 100 RD'
+  },
+  {
+    id: 'processed-flower',
+    name: 'Processed Flower (ดอกไม้แปร / ดอกไม้โพล)',
+    category: 'materials',
+    type: 'ช่อดอกไม้สกัด (Processed Bouquet)',
+    badge: '0.50 กก. | 141 RD',
+    badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+    image: '/items/cards/processed_flower.png',
+    icon: '/items/icons/transparent/processed_flower.png',
+    stats: 'น้ำหนัก: 0.50 กก. | โพล 5 วิ/ชิ้น (1:1) ที่โรงสกัด',
+    recipe: ['ดอกไม้ดิบ x1', 'ยืนโพลที่โรงสกัด (5 วินาที)'],
+    cost: '141 RD'
+  },
+  {
+    id: 'packed-flower',
+    name: 'Packed Flower (ดอกไม้แพ็คกล่อง)',
+    category: 'materials',
+    type: 'สินค้าแพ็คส่งออก (Gift Box)',
+    badge: '1.00 กก. | 408 RD',
+    badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+    image: '/items/cards/packed_flower.png',
+    icon: '/items/icons/transparent/packed_flower.png',
+    stats: 'น้ำหนัก: 1.00 กก. | แพ็ค 5 วิ/2 ชิ้น (2:1) ที่โกดังท่าเรือ',
+    recipe: ['ดอกไม้แปร x2', 'จุดแพ็คสินค้าท่าเรือ (5 วินาที)'],
+    cost: '408 RD'
+  },
+  {
+    id: 'raw-rice',
+    name: 'Raw Rice (ข้าวดิบ / รวงข้าว)',
+    category: 'materials',
+    type: 'ผลผลิตเกษตรกรรม (Raw Grain)',
+    badge: '0.50 กก. | 76 RD (คน 100 RD)',
+    badgeColor: 'bg-amber-600/20 text-amber-300 border-amber-600/40',
+    image: '/items/cards/raw_rice.png',
+    icon: '/items/icons/transparent/raw_rice.png',
+    stats: 'น้ำหนัก: 0.50 กก. | เกี่ยว 10 วิ/ชิ้น | ขายคนทำอาหาร 100 RD',
+    recipe: ['ทุ่งนา Grapeseed', 'ใช้เคียวเกี่ยวข้าว (10 วินาที)'],
+    cost: '76 - 100 RD'
+  },
+  {
+    id: 'processed-rice',
+    name: 'Processed Rice (ข้าวแปร / ข้าวโพล)',
+    category: 'materials',
+    type: 'เมล็ดข้าวสาร (Milled Rice)',
+    badge: '0.50 กก. | 136 RD',
+    badgeColor: 'bg-slate-300/20 text-white border-slate-300/40',
+    image: '/items/cards/processed_rice.png',
+    icon: '/items/icons/transparent/processed_rice.png',
+    stats: 'น้ำหนัก: 0.50 กก. | โพล 5 วิ/ชิ้น (1:1) ที่โรงสีข้าว',
+    recipe: ['ข้าวดิบ x1', 'ยืนโพลที่โรงสีข้าว (5 วินาที)'],
+    cost: '136 RD'
+  },
+  {
+    id: 'packed-rice',
+    name: 'Packed Rice (ข้าวแพ็คถุง)',
+    category: 'materials',
+    type: 'สินค้าแพ็คส่งออก (Rice Pack)',
+    badge: '1.00 กก. | 396 RD',
+    badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+    image: '/items/cards/packed_rice.png',
+    icon: '/items/icons/transparent/packed_rice.png',
+    stats: 'น้ำหนัก: 1.00 กก. | แพ็ค 5 วิ/2 ชิ้น (2:1) ที่โกดังท่าเรือ',
+    recipe: ['ข้าวแปร x2', 'จุดแพ็คสินค้าท่าเรือ (5 วินาที)'],
+    cost: '396 RD'
+  },
+  {
+    id: 'raw-wood',
+    name: 'Raw Wood (ไม้ดิบ / ท่อนซุง)',
+    category: 'materials',
+    type: 'วัตถุดิบป่าไม้ (Raw Timber)',
+    badge: '0.50 กก. | 90 RD',
+    badgeColor: 'bg-amber-800/20 text-amber-300 border-amber-800/40',
+    image: '/items/cards/raw_wood.png',
+    icon: '/items/icons/transparent/raw_wood.png',
+    stats: 'น้ำหนัก: 0.50 กก. | ตัด 10 วิ/ชิ้น | ขาย Eco 90 RD',
+    recipe: ['ป่าสน Paleto Forest', 'ใช้ขวานตัดไม้ (10 วินาที)'],
+    cost: '90 RD'
+  },
+  {
+    id: 'processed-wood',
+    name: 'Processed Wood (ไม้แปร / ไม้แผ่น)',
+    category: 'materials',
+    type: 'ไม้แปรรูป (Processed Planks)',
+    badge: '0.50 กก. | 171 RD',
+    badgeColor: 'bg-orange-700/20 text-orange-300 border-orange-700/40',
+    image: '/items/cards/processed_wood.png',
+    icon: '/items/icons/transparent/processed_wood.png',
+    stats: 'น้ำหนัก: 0.50 กก. | โพล 5 วิ/ชิ้น (1:1) ที่โรงเลื่อย',
+    recipe: ['ไม้ดิบ x1', 'ยืนโพลที่โรงเลื่อย Paleto Bay (5 วินาที)'],
+    cost: '171 RD'
+  },
+  {
+    id: 'packed-wood',
+    name: 'Packed Wood (ไม้แพ็คพาเลท)',
+    category: 'materials',
+    type: 'สินค้าแพ็คส่งออก (Wood Pallet Pack)',
+    badge: '1.00 กก. | 479 RD (ผู้เล่น 500-600 RD)',
+    badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+    image: '/items/cards/packed_wood.png',
+    icon: '/items/icons/transparent/packed_wood.png',
+    stats: 'น้ำหนัก: 1.00 กก. | แพ็ค 5 วิ/2 ชิ้น (2:1) | ขายระบบ 479 RD / ขายผู้เล่น 500 - 600 RD',
+    recipe: ['ไม้แปร x2', 'จุดแพ็คสินค้าท่าเรือ (5 วินาที)'],
+    cost: '479 RD (ขายผู้เล่น 500 - 600 RD)'
+  }
+];
+---
+
+<div class="space-y-6">
+  <!-- Header & Filters -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-line">
+    <div>
+      <span class="text-xs font-mono font-bold text-mint uppercase tracking-wider">// REAL IN-GAME CRAFTING SCREENSHOTS</span>
+      <h3 class="text-xl sm:text-2xl font-display font-extrabold text-white flex items-center gap-2">
+        <CyberIcon name="wrench" class="size-6 text-mint inline-block" /> คลังรูปภาพสูตรคราฟต์จริง (Patch 1.3.0 Item Gallery)
+      </h3>
+    </div>
+    
+    <!-- Filter Buttons -->
+    <div class="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-paper border border-line" id="galleryFilterNav">
+      <button type="button" data-filter="all" class="gallery-tab active px-3 py-1.5 text-xs font-mono font-bold rounded-lg transition-colors bg-mint text-dark">
+        ทั้งหมด ({items.length})
+      </button>
+      <button type="button" data-filter="weapons" class="gallery-tab px-3 py-1.5 text-xs font-mono font-medium rounded-lg transition-colors text-textSoft hover:text-white hover:bg-card">
+        <CyberIcon name="swords" class="size-3.5 inline mr-1" /> อาวุธ Lv.1
+      </button>
+      <button type="button" data-filter="base" class="gallery-tab px-3 py-1.5 text-xs font-mono font-medium rounded-lg transition-colors text-textSoft hover:text-white hover:bg-card">
+        <CyberIcon name="shield-check" class="size-3.5 inline mr-1" /> อาวุธเบส (5%)
+      </button>
+      <button type="button" data-filter="blueprints" class="gallery-tab px-3 py-1.5 text-xs font-mono font-medium rounded-lg transition-colors text-textSoft hover:text-white hover:bg-card">
+        <CyberIcon name="file-text" class="size-3.5 inline mr-1" /> พิมพ์เขียว
+      </button>
+      <button type="button" data-filter="materials" class="gallery-tab px-3 py-1.5 text-xs font-mono font-medium rounded-lg transition-colors text-textSoft hover:text-white hover:bg-card">
+        <CyberIcon name="gem" class="size-3.5 inline mr-1" /> แกนคอร์ & แร่
+      </button>
+    </div>
+  </div>
+
+  <!-- Cards Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="galleryGrid">
+    {items.map((item) => (
+      <div 
+        data-category={item.category}
+        class="gallery-card p-4 rounded-2xl border border-line bg-card hover:border-mint transition-all shadow-neon-card space-y-3 group flex flex-col justify-between"
+      >
+        <div class="space-y-3">
+          <!-- Card Header with Transparent Icon Preview -->
+          <div class="flex items-center gap-3 pb-2 border-b border-lineSubtle">
+            <div class="relative w-12 h-12 rounded-xl bg-gradient-to-br from-white/5 to-white/10 border border-white/15 p-1.5 flex items-center justify-center shrink-0 shadow-inner group-hover:border-mint/50 transition-colors">
+              <img src={item.icon} alt={item.name} class="w-full h-full object-contain drop-shadow-md group-hover:scale-110 transition-transform" style="image-rendering: -webkit-optimize-contrast;" />
+              <span class="absolute -bottom-1 -right-1 px-1 text-[8px] font-mono font-bold bg-dark text-mint border border-mint/40 rounded">PNG</span>
+            </div>
+            <div class="min-w-0 flex-1">
+              <h4 class="text-sm font-bold text-white break-words leading-tight group-hover:text-mint transition-colors">{item.name}</h4>
+              <div class="flex items-center gap-2 mt-0.5">
+                <span class="text-[11px] font-mono text-textMuted">{item.type}</span>
+                <span class={`text-[9px] font-mono px-1.5 py-0.5 rounded-full border font-bold shrink-0 ${item.badgeColor}`}>
+                  {item.badge}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Thumbnail with Zoom overlay -->
+          <div 
+            class="relative w-full aspect-[16/10] bg-black/60 rounded-xl overflow-hidden border border-white/10 group-hover:border-mint/50 transition-colors cursor-pointer" 
+            onclick={`openImgModal('${item.image}', '${item.name}')`}
+          >
+            <img 
+              src={item.image} 
+              alt={item.name} 
+              class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+              style="image-rendering: -webkit-optimize-contrast;"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
+            <div class="absolute bottom-2 left-2 right-2 flex items-center justify-between text-[11px] font-mono gap-1">
+              <span class="text-white font-bold drop-shadow text-[11px] break-words">{item.name}</span>
+              <span class="px-2 py-0.5 rounded bg-black/90 text-mint border border-mint/40 text-[10px] font-bold shrink-0">
+                {item.category === 'materials' ? 'การ์ดไอเทม HD' : 'จอเกมจริง'}
+              </span>
+            </div>
+          </div>
+
+          <!-- Stats & Recipe -->
+          <div class="p-3 rounded-xl border border-lineSubtle bg-paper/90 space-y-2 text-xs font-mono">
+            <div class="text-white font-bold text-[11px] flex items-center gap-1.5">
+              <CyberIcon name="bar-chart-2" class="size-3.5 text-mint" />
+              <span>{item.stats}</span>
+            </div>
+            <div class="text-[11px] text-textSoft space-y-0.5 border-t border-white/10 pt-2">
+              <span class="text-textMuted block text-[10px] uppercase font-bold tracking-wider">// วัตถุดิบที่ใช้:</span>
+              {item.recipe.map((r) => (
+                <div class="text-slate-200 flex items-start gap-1">
+                  <span class="text-mint font-bold shrink-0">•</span>
+                  <span class="break-words">{r}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2.5 flex items-center justify-between text-xs font-mono border-t border-lineSubtle">
+          <div>
+            <span class="text-textMuted text-[10px] block">ค่าธรรมเนียม:</span>
+            <strong class="text-lime font-bold">{item.cost}</strong>
+          </div>
+          <a 
+            href={item.icon} 
+            download={`${item.id}_512.png`}
+            class="px-2.5 py-1 rounded-lg bg-card hover:bg-mint hover:text-dark text-mint border border-mint/30 hover:border-mint transition-colors text-[10px] font-bold flex items-center gap-1 shadow-sm"
+            title="ดาวน์โหลดภาพโปร่งใส 512x512"
+          >
+            <CyberIcon name="package" class="size-3 inline mr-1" /> โหลด PNG
+          </a>
+        </div>
+
+      </div>
+    ))}
+  </div>
+
+  <!-- Image Modal Dialog -->
+  <div id="itemImgModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="relative max-w-4xl w-full bg-card border border-mint/50 rounded-2xl p-4 shadow-neon-card space-y-3">
+      <div class="flex items-center justify-between pb-2 border-b border-line">
+        <h4 id="modalImgTitle" class="text-base font-display font-bold text-white">รูปภาพสูตรคราฟต์</h4>
+        <button type="button" onclick="closeImgModal()" class="w-8 h-8 rounded-lg bg-paper border border-line text-white hover:text-danger font-bold text-sm">✕</button>
+      </div>
+      <div class="w-full max-h-[75vh] overflow-auto rounded-xl border border-white/10 bg-black flex items-center justify-center">
+        <img id="modalImgTag" src="" alt="Craft Screenshot" class="max-w-full max-h-[72vh] object-contain mx-auto" />
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script is:inline>
+  function openImgModal(src, title) {
+    const modal = document.getElementById('itemImgModal');
+    const img = document.getElementById('modalImgTag');
+    const titleEl = document.getElementById('modalImgTitle');
+    if (modal && img && titleEl) {
+      img.src = src;
+      titleEl.textContent = title;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+  }
+
+  function closeImgModal() {
+    const modal = document.getElementById('itemImgModal');
+    if (modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  }
+
+  // Filter tabs handling
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('#galleryFilterNav button');
+    const cards = document.querySelectorAll('.gallery-card');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-filter');
+        
+        // Update active button state
+        filterButtons.forEach(b => {
+          b.classList.remove('active', 'bg-mint', 'text-dark');
+          b.classList.add('text-textSoft');
+        });
+        btn.classList.add('active', 'bg-mint', 'text-dark');
+        btn.classList.remove('text-textSoft');
+
+        // Filter cards
+        cards.forEach(card => {
+          const category = card.getAttribute('data-category');
+          if (target === 'all' || category === target) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+  });
+</script>
+

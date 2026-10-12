@@ -1,0 +1,122 @@
+---
+import CyberIcon from './CyberIcon.astro';
+
+interface Props {
+  activeCategory?: string;
+}
+
+const { activeCategory = '' } = Astro.props;
+---
+
+<header class="sticky top-0 z-40 w-full backdrop-blur-xl bg-base/85 border-b border-line shadow-lg">
+  <div class="max-w-[1520px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+    
+    <!-- Brand / Logo -->
+    <a href="/" class="flex items-center gap-3 group">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-mint via-emerald-500 to-lime flex items-center justify-center font-black text-black text-lg shadow-[0_0_15px_rgba(69,242,180,0.4)] group-hover:scale-105 transition-transform">
+        R
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-display font-extrabold text-white text-base tracking-wider group-hover:text-mint transition-colors">
+            RUN TOWN
+          </span>
+          <span class="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-mint/15 text-mint border border-mint/30 uppercase tracking-widest">
+            WIKI HUB
+          </span>
+        </div>
+        <span class="text-[10px] text-textMuted tracking-wider font-mono block -mt-0.5">
+          FIVEM MASTER GUIDE PORTAL
+        </span>
+      </div>
+    </a>
+
+    <!-- Navigation Links -->
+    <nav class="hidden lg:flex items-center gap-1 font-mono text-xs">
+      <a 
+        href="/" 
+        class={`px-2.5 py-1.5 rounded-lg transition-all inline-flex items-center gap-1.5 ${activeCategory === 'home' ? 'text-mint font-bold bg-mint/10 border border-mint/30' : 'text-textSoft hover:text-white hover:bg-white/5'}`}
+      >
+        <CyberIcon name="home" class="size-3.5" /> หน้าหลัก
+      </a>
+      <a 
+        href="/guides/jobs/white" 
+        class={`px-2.5 py-1.5 rounded-lg transition-all inline-flex items-center gap-1.5 ${activeCategory === 'white_jobs' ? 'text-mint font-bold bg-mint/10 border border-mint/30' : 'text-textSoft hover:text-white hover:bg-white/5'}`}
+      >
+        <CyberIcon name="briefcase" class="size-3.5" /> งานขาว
+      </a>
+      <a 
+        href="/guides/jobs/black" 
+        class={`px-2.5 py-1.5 rounded-lg transition-all inline-flex items-center gap-1.5 ${activeCategory === 'black_jobs' ? 'text-mint font-bold bg-mint/10 border border-mint/30' : 'text-textSoft hover:text-white hover:bg-white/5'}`}
+      >
+        <CyberIcon name="skull" class="size-3.5" /> งานดำ
+      </a>
+      <a 
+        href="/guides/logistics/vehicles" 
+        class={`px-2.5 py-1.5 rounded-lg transition-all inline-flex items-center gap-1.5 ${activeCategory === 'vehicles' ? 'text-mint font-bold bg-mint/10 border border-mint/30' : 'text-textSoft hover:text-white hover:bg-white/5'}`}
+      >
+        <CyberIcon name="truck" class="size-3.5" /> ยานพาหนะ
+      </a>
+      <a 
+        href="/guides/crafting/weapons" 
+        class={`px-2.5 py-1.5 rounded-lg transition-all inline-flex items-center gap-1.5 ${activeCategory === 'crafting' ? 'text-mint font-bold bg-mint/10 border border-mint/30' : 'text-textSoft hover:text-white hover:bg-white/5'}`}
+      >
+        <CyberIcon name="swords" class="size-3.5" /> คราฟต์
+      </a>
+      <a 
+        href="/guides/survival/vitals" 
+        class={`px-2.5 py-1.5 rounded-lg transition-all inline-flex items-center gap-1.5 ${activeCategory === 'survival' ? 'text-mint font-bold bg-mint/10 border border-mint/30' : 'text-textSoft hover:text-white hover:bg-white/5'}`}
+      >
+        <CyberIcon name="brain" class="size-3.5" /> ค่าสมอง
+      </a>
+      <a 
+        href="/guides/food/nutrition" 
+        class={`px-2.5 py-1.5 rounded-lg transition-all inline-flex items-center gap-1.5 ${activeCategory === 'food' ? 'text-mint font-bold bg-mint/10 border border-mint/30' : 'text-textSoft hover:text-white hover:bg-white/5'}`}
+      >
+        <CyberIcon name="drumstick" class="size-3.5" /> อาหาร
+      </a>
+      <a 
+        href="/guides" 
+        class={`px-2.5 py-1.5 rounded-lg transition-all inline-flex items-center gap-1.5 ${activeCategory === 'all' ? 'text-mint font-bold bg-mint/10 border border-mint/30' : 'text-textSoft hover:text-white hover:bg-white/5'}`}
+      >
+        <CyberIcon name="book-open" class="size-3.5" /> ทั้งหมด
+      </a>
+    </nav>
+
+    <!-- Right Controls -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Fumadocs-style Command Palette Trigger -->
+      <button 
+        type="button" 
+        class="open-command-palette-btn hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl border border-line bg-paper/80 hover:border-mint text-textMuted hover:text-white transition-all font-mono text-xs cursor-pointer shadow-sm group"
+        title="ค้นหาคู่มือ (Ctrl+K หรือ ⌘K)"
+      >
+        <CyberIcon name="search" class="size-3.5 text-mint group-hover:scale-110 transition-transform" />
+        <span>ค้นหา...</span>
+        <span class="flex items-center gap-0.5 text-[10px] bg-card px-1.5 py-0.5 rounded border border-lineSubtle text-textSoft">
+          <kbd class="font-sans">Ctrl</kbd>
+          <span>K</span>
+        </span>
+      </button>
+
+      <a 
+        href="https://discord.gg/runtown" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#5865F2]/40 bg-[#5865F2]/10 hover:bg-[#5865F2]/20 text-[#7983f5] font-mono text-xs transition-colors"
+      >
+        <CyberIcon name="message-square" class="size-3.5" />
+        <span>DISCORD</span>
+      </a>
+
+      <a 
+        href="/map" 
+        class="px-3.5 py-1.5 rounded-xl font-mono text-xs font-bold text-black bg-gradient-to-r from-mint to-lime hover:scale-102 transition-transform shadow-[0_0_12px_rgba(69,242,180,0.35)] flex items-center gap-1.5"
+      >
+        <CyberIcon name="map" class="size-3.5" />
+        <span>LIVE MAP</span>
+      </a>
+    </div>
+
+  </div>
+</header>

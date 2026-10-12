@@ -1,0 +1,87 @@
+---
+import Navbar from '../components/Navbar.astro';
+import CommandPalette from '../components/CommandPalette.astro';
+import GenerativeShapesBackground from '../components/GenerativeShapesBackground.astro';
+import { ViewTransitions } from 'astro:transitions';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  activeCategory?: string;
+}
+
+const { 
+  title = 'RUN TOWN FiveM Thailand | Master Guide Portal', 
+  description = 'ศูนย์รวมคู่มือระบบเมือง FiveM RUN TOWN - ข้อมูลฟาร์ม, คราฟต์อาวุธ, เรดาร์แผนที่, ระบบคูลดาวน์ และเศรษฐกิจ',
+  activeCategory = ''
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="th" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Cyberpunk Favicon Suite -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#050b08" />
+
+    <!-- Google Fonts: Prompt (Unified Master Font) & JetBrains Mono (Pure Digits) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+    <!-- Native SPA Page Transitions -->
+    <ViewTransitions />
+  </head>
+  <body class="flex flex-col min-h-screen text-textMain selection:bg-mint selection:text-black relative">
+    
+    <!-- Generative Geometric Background Engine (Book of Shapes) -->
+    <GenerativeShapesBackground />
+
+    <!-- Top Navigation -->
+
+    <!-- Top Navigation -->
+    <Navbar activeCategory={activeCategory} />
+
+    <!-- Main View Slot -->
+    <main class="flex-1 w-full">
+      <slot />
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="mt-auto border-t border-line bg-paper py-8 px-4 sm:px-6">
+      <div class="max-w-[1520px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-textMuted font-mono">
+        <div class="flex items-center gap-3">
+          <span class="font-display font-bold text-white">RUN TOWN FIVEM THAILAND</span>
+          <span>·</span>
+          <span>EVERY STORY STARTS WITH A RUN</span>
+        </div>
+        <div class="flex items-center gap-5">
+          <a href="https://runtown.in.th/" target="_blank" rel="noopener noreferrer" class="hover:text-mint transition-colors">เว็บหลักเมือง</a>
+          <a href="https://run-town-rules.vercel.app/" target="_blank" rel="noopener noreferrer" class="hover:text-mint transition-colors">กฎเมืองฉบับเต็ม</a>
+          <a href="/map" class="hover:text-mint transition-colors">เรดาร์แผนที่</a>
+          <a href="https://discord.gg/runtown" target="_blank" rel="noopener noreferrer" class="hover:text-mint transition-colors">DISCORD</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Global Interactive Command Palette (Ctrl+K) -->
+    <CommandPalette />
+
+    <!-- GSAP Cyber Motion Animation Engine -->
+    <script>
+      import { initCyberAnimations } from '../scripts/cyberMotion';
+      initCyberAnimations();
+      document.addEventListener('astro:page-load', () => {
+        initCyberAnimations();
+      });
+    </script>
+  </body>
+</html>

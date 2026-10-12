@@ -1,0 +1,154 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GuideIcon from '../../components/GuideIcon.astro';
+import CyberIcon from '../../components/CyberIcon.astro';
+import { getCleanTitle } from '../../utils/guideHelpers';
+import { getCollection } from 'astro:content';
+
+const allGuides = await getCollection('guides');
+allGuides.sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title="สารบัญคู่มือทั้งหมด | RUN TOWN Wiki" activeCategory="all">
+  <div class="max-w-[1280px] mx-auto px-4 sm:px-6 py-10 space-y-8">
+    
+    <!-- Header -->
+    <div class="space-y-2 pb-6 border-b border-line">
+      <div class="flex items-center gap-2 font-mono text-xs text-mint">
+        <a href="/" class="hover:underline">HOME</a>
+        <span>/</span>
+        <span>ALL GUIDES</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-display font-extrabold text-white flex items-center gap-3">
+        <CyberIcon name="book" size={32} class="text-mint shrink-0" />
+        <span>คลังคู่มือระบบเมืองทั้งหมด ({allGuides.length} บทความ)</span>
+      </h1>
+      <p class="text-sm text-textSoft">
+        เลือกอ่านคู่มือหรือพิมพ์ค้นหาหัวข้อที่คุณต้องการได้ทันที
+      </p>
+    </div>
+
+    <!-- Filter Buttons & Search -->
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex flex-wrap items-center gap-2 font-mono text-xs w-full sm:w-auto">
+        <button type="button" class="category-filter-btn px-3 py-1.5 rounded-lg border border-mint bg-mint/15 text-mint font-bold active inline-flex items-center gap-1.5" data-filter="all">
+          ทั้งหมด ({allGuides.length})
+        </button>
+        <button type="button" class="category-filter-btn px-3 py-1.5 rounded-lg border border-line bg-card text-textSoft hover:text-white inline-flex items-center gap-1.5" data-filter="white_jobs">
+          <CyberIcon name="briefcase" size={13} /> งานขาว
+        </button>
+        <button type="button" class="category-filter-btn px-3 py-1.5 rounded-lg border border-line bg-card text-textSoft hover:text-white inline-flex items-center gap-1.5" data-filter="black_jobs">
+          <CyberIcon name="skull" size={13} /> งานดำ
+        </button>
+        <button type="button" class="category-filter-btn px-3 py-1.5 rounded-lg border border-line bg-card text-textSoft hover:text-white inline-flex items-center gap-1.5" data-filter="vehicles">
+          <CyberIcon name="truck" size={13} /> ยานพาหนะ
+        </button>
+        <button type="button" class="category-filter-btn px-3 py-1.5 rounded-lg border border-line bg-card text-textSoft hover:text-white inline-flex items-center gap-1.5" data-filter="crafting">
+          <CyberIcon name="swords" size={13} /> คราฟต์อาวุธ
+        </button>
+        <button type="button" class="category-filter-btn px-3 py-1.5 rounded-lg border border-line bg-card text-textSoft hover:text-white inline-flex items-center gap-1.5" data-filter="survival">
+          <CyberIcon name="brain" size={13} /> ค่าสมอง
+        </button>
+        <button type="button" class="category-filter-btn px-3 py-1.5 rounded-lg border border-line bg-card text-textSoft hover:text-white inline-flex items-center gap-1.5" data-filter="food">
+          <CyberIcon name="drumstick" size={13} /> อาหาร
+        </button>
+      </div>
+
+      <div class="w-full sm:w-72">
+        <input 
+          type="text" 
+          id="catalogSearch" 
+          placeholder="ค้นหาชื่อคู่มือ..." 
+          class="w-full px-3.5 py-2 rounded-xl text-xs bg-paper border border-line text-white placeholder-textMuted focus:outline-none focus:border-mint transition-colors font-mono"
+        />
+      </div>
+    </div>
+
+    <!-- Guides Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="guidesGrid">
+      {allGuides.map((guide) => (
+        <a 
+          href={`/guides/${guide.slug}`} 
+          class="guide-card p-5 rounded-2xl border border-line bg-card hover:border-mint transition-all shadow-neon-card flex flex-col justify-between group"
+          data-category={guide.data.category}
+        >
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <GuideIcon icon={guide.data.icon} iconImage={guide.data.iconImage || guide.data.image} class="text-2xl inline-block" imgClass="w-7 h-7 object-contain inline-block shrink-0" />
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-mint/10 text-mint border border-mint/20 font-bold uppercase">
+                {guide.data.categoryName}
+              </span>
+            </div>
+
+            <div>
+              <h3 class="text-base font-display font-bold text-white group-hover:text-mint transition-colors">
+                {getCleanTitle(guide.data.title)}
+              </h3>
+              <p class="text-xs text-textSoft mt-1.5 line-clamp-2 leading-relaxed">
+                {guide.data.description}
+              </p>
+            </div>
+          </div>
+
+          <div class="pt-4 mt-4 border-t border-lineSubtle flex items-center justify-between font-mono text-[11px] text-textMuted">
+            {guide.data.cooldown ? (
+              <span class="text-amber-400 font-bold inline-flex items-center gap-1">
+                <CyberIcon name="clock" size={12} /> CD {guide.data.cooldown} น.
+              </span>
+            ) : (
+              <span>คู่มือแนะนำ</span>
+            )}
+            <span class="text-mint font-bold group-hover:translate-x-1 transition-transform">
+              อ่านต่อ ➔
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+
+  </div>
+</BaseLayout>
+
+<script>
+  const filterBtns = document.querySelectorAll('.category-filter-btn');
+  const cards = document.querySelectorAll('.guide-card');
+  const searchInput = document.getElementById('catalogSearch') as HTMLInputElement;
+
+  let currentCategory = 'all';
+  let searchQuery = '';
+
+  function applyFilters() {
+    cards.forEach((card) => {
+      const el = card as HTMLElement;
+      const cat = el.getAttribute('data-category');
+      const text = el.textContent?.toLowerCase() || '';
+
+      const matchCat = currentCategory === 'all' || cat === currentCategory;
+      const matchSearch = searchQuery === '' || text.includes(searchQuery);
+
+      if (matchCat && matchSearch) {
+        el.style.display = 'flex';
+      } else {
+        el.style.display = 'none';
+      }
+    });
+  }
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach((b) => {
+        b.className = 'category-filter-btn px-3 py-1.5 rounded-lg border border-line bg-card text-textSoft hover:text-white';
+      });
+      btn.className = 'category-filter-btn px-3 py-1.5 rounded-lg border border-mint bg-mint/15 text-mint font-bold active';
+      currentCategory = btn.getAttribute('data-filter') || 'all';
+      applyFilters();
+    });
+  });
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
+      applyFilters();
+    });
+  }
+</script>

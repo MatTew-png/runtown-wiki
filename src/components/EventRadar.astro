@@ -1,0 +1,178 @@
+---
+import CyberIcon from './CyberIcon.astro';
+
+const events = [
+  {
+    id: 'airdrop',
+    name: 'กล่องแอร์ดรอปเสรี',
+    en: 'AIR DROP FREE-FOR-ALL',
+    scheduleLabel: 'ทุก 4 ชม. · 14:00 · 18:00 · 22:00 · 02:00',
+    hours: [2, 14, 18, 22],
+    durationMin: 15,
+    zones: [
+      { name: 'Sandy Shores Airfield', coords: 'X: 1747, Y: 3273' },
+      { name: 'Humane Labs', coords: 'X: 3619, Y: 2742' },
+    ],
+    note: 'Free Fire Zone · พื้นที่เสรีห้ามแจ้งความ',
+    badge: 'FREE FIRE',
+    tone: 'rose',
+    icon: 'package',
+  },
+  {
+    id: 'auction',
+    name: 'ตลาดประมูลรถนำเข้า',
+    en: 'IMPORT CAR AUCTION',
+    scheduleLabel: 'ทุกวันเสาร์ · 20:00 (เวลาไทย)',
+    hours: [20],
+    weekday: 6,
+    durationMin: 60,
+    zones: [{ name: 'Legion Square', coords: 'X: 195, Y: -934' }],
+    note: 'นำเงินสดมาเอง · ห้ามพกพาอาวุธในงาน',
+    badge: 'AUCTION',
+    tone: 'mint',
+    icon: 'gavel',
+  },
+  {
+    id: 'restart',
+    name: 'รีสตาร์ตเซิร์ฟเวอร์ประจำวัน',
+    en: 'SERVER DAILY RESTART',
+    scheduleLabel: 'ทุก 6 ชม. · 00:00 · 06:00 · 12:00 · 18:00',
+    hours: [0, 6, 12, 18],
+    durationMin: 5,
+    zones: [{ name: 'All San Andreas', coords: 'ALL ZONES' }],
+    note: 'กรุณาเก็บรถเข้าตู้เซฟก่อนเวลา 10 นาที',
+    badge: 'REBOOT',
+    tone: 'amber',
+    icon: 'refresh',
+  },
+];
+---
+
+<section id="events" class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24 border-t border-line">
+  <div class="space-y-3">
+    <p class="font-mono text-xs font-semibold tracking-[0.2em] text-cyan-300 uppercase">// EVENT RADAR & COUNTDOWN</p>
+    <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
+      ตารางกิจกรรมประจำวัน & ตัวนับเวลากล่องดรอป
+    </h2>
+    <p class="text-sm text-textSoft max-w-2xl leading-relaxed">
+      เช็คเวลากล่องแอร์ดรอปเสรี ตลาดประมูลรถ และรอบรีสตาร์ตเซิร์ฟเวอร์แบบ Realtime ตามเวลาประเทศไทย
+    </p>
+  </div>
+
+  <div class="mt-10 grid gap-6 lg:grid-cols-3">
+    {events.map((e) => (
+      <div class="event-card rounded-2xl border border-line bg-card/70 p-6 backdrop-blur-md shadow-neon-card space-y-5 flex flex-col justify-between" data-event-id={e.id}>
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class={`font-mono text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
+              e.tone === 'rose' ? 'border-rose/40 bg-rose/10 text-rose' :
+              e.tone === 'amber' ? 'border-amber-400/40 bg-amber-400/10 text-amber-300' :
+              'border-mint/40 bg-mint/10 text-mint'
+            }`}>
+              {e.badge}
+            </span>
+            <span class="event-status-pill text-[10px] font-mono font-bold text-mint flex items-center gap-1.5">
+              <span class="size-1.5 rounded-full bg-mint animate-pulse"></span>
+              <span class="event-status-text">SCHEDULED</span>
+            </span>
+          </div>
+
+          <div class="flex items-center gap-3 pt-1">
+            <span class="grid size-11 place-items-center rounded-xl bg-paper border border-line text-mint">
+              <CyberIcon name={e.icon} class="size-5" />
+            </span>
+            <div>
+              <h3 class="text-lg font-display font-bold text-white">{e.name}</h3>
+              <span class="font-mono text-xs text-textMuted">{e.en}</span>
+            </div>
+          </div>
+
+          <!-- Countdown Box -->
+          <div class="p-3.5 rounded-xl bg-slate-950/80 border border-lineSubtle space-y-1 text-center font-mono">
+            <span class="text-[10px] text-textMuted uppercase tracking-wider block">รอบถัดไปนับถอยหลัง</span>
+            <strong class="event-countdown font-mono text-2xl sm:text-3xl font-extrabold text-white tracking-widest block">
+              --:--:--
+            </strong>
+            <span class="text-[11px] text-textMuted block">{e.scheduleLabel}</span>
+          </div>
+
+          <div class="space-y-2 text-xs font-mono pt-1">
+            <div class="flex items-start justify-between gap-2">
+              <span class="text-textMuted">พิกัดจุดจัด:</span>
+              <span class="text-slate-200 text-right">{e.zones.map(z => z.name).join(' / ')}</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-card border border-lineSubtle text-[11px] text-amber-300 flex items-start gap-1.5">
+              <CyberIcon name="lightbulb" class="size-3.5 text-amber-300 shrink-0 mt-0.5" />
+              <span>{e.note}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-lineSubtle flex items-center justify-between font-mono text-xs">
+          <a href="/map" class="text-mint hover:underline font-bold inline-flex items-center gap-1">
+            <CyberIcon name="map" class="size-3.5" />
+            <span>ดูพิกัดบนแผนที่</span>
+          </a>
+          <span class="text-textMuted text-[10px]">เวลาไทย (UTC+7)</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  const eventsConfig = [
+    { id: 'airdrop', hours: [2, 14, 18, 22], durationMin: 15 },
+    { id: 'auction', hours: [20], weekday: 6, durationMin: 60 },
+    { id: 'restart', hours: [0, 6, 12, 18], durationMin: 5 },
+  ];
+
+  const BKK_OFFSET = 7 * 3600 * 1000;
+
+  function updateCountdowns() {
+    const now = Date.now();
+    const bkkNow = new Date(now + BKK_OFFSET);
+
+    eventsConfig.forEach(cfg => {
+      const card = document.querySelector(`[data-event-id="${cfg.id}"]`);
+      if (!card) return;
+
+      const cdEl = card.querySelector('.event-countdown');
+      const statusText = card.querySelector('.event-status-text');
+
+      const starts: number[] = [];
+      for (let d = -1; d <= 7; d++) {
+        const dObj = new Date(Date.UTC(bkkNow.getUTCFullYear(), bkkNow.getUTCMonth(), bkkNow.getUTCDate() + d));
+        if (cfg.weekday !== undefined && dObj.getUTCDay() !== cfg.weekday) continue;
+        for (const h of cfg.hours) {
+          starts.push(dObj.getTime() + h * 3600 * 1000 - BKK_OFFSET);
+        }
+      }
+      starts.sort((a, b) => a - b);
+
+      const nextStart = starts.find(s => s > now) || now;
+      const lastStart = [...starts].reverse().find(s => s <= now);
+      const isLive = lastStart !== undefined && (now - lastStart) < (cfg.durationMin * 60 * 1000);
+
+      if (isLive) {
+        const leftSec = Math.max(0, Math.floor(((lastStart + cfg.durationMin * 60 * 1000) - now) / 1000));
+        const m = Math.floor(leftSec / 60);
+        const s = leftSec % 60;
+        if (cdEl) cdEl.textContent = `LIVE (${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')})`;
+        if (cdEl) cdEl.className = 'event-countdown font-mono text-2xl sm:text-3xl font-extrabold text-rose animate-pulse tracking-widest block';
+        if (statusText) statusText.textContent = 'LIVE NOW';
+      } else {
+        const diffSec = Math.max(0, Math.floor((nextStart - now) / 1000));
+        const h = Math.floor(diffSec / 3600);
+        const m = Math.floor((diffSec % 3600) / 60);
+        const s = diffSec % 60;
+        if (cdEl) cdEl.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        if (cdEl) cdEl.className = 'event-countdown font-mono text-2xl sm:text-3xl font-extrabold text-white tracking-widest block';
+        if (statusText) statusText.textContent = diffSec < 1800 ? 'STARTING SOON' : 'SCHEDULED';
+      }
+    });
+  }
+
+  setInterval(updateCountdowns, 1000);
+  updateCountdowns();
+</script>

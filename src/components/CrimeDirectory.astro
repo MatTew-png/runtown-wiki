@@ -1,0 +1,152 @@
+---
+import CyberIcon from './CyberIcon.astro';
+
+const crimes = [
+  {
+    id: 'store',
+    name: 'ปล้นร้านสะดวกซื้อ',
+    en: '24/7 STORE ROBBERY',
+    police: 2,
+    reward: '8,000 - 15,000 RD',
+    risk: 'MEDIUM',
+    riskColor: 'text-amber-400 bg-amber-400/10 border-amber-400/30',
+    penalty: 'จำคุก 15 นาที + ปรับ 3,000 RD',
+    equipment: ['อาวุธปืนพก หรือมีด', 'หน้ากากปิดหน้า', 'รถหลบหนีจอดติดเครื่อง'],
+    routes: ['ทางด่วน Del Perro Fwy มุ่งหน้าฝั่งตะวันตก', 'ซอยหลัง Strawberry Ave ตัดเข้าอุโมงค์'],
+    cooldown: 'ร้านเดิมปล้นซ้ำได้ทุก 30 นาที · เว้น 15 นาทีระหว่างการปล้น',
+    icon: 'store',
+  },
+  {
+    id: 'weed',
+    name: 'ปลูก & เก็บกัญชา',
+    en: 'WEED CULTIVATION',
+    police: 0,
+    reward: '120 - 180 RD / ชิ้น',
+    risk: 'LOW-MED',
+    riskColor: 'text-mint bg-mint/10 border-mint/30',
+    penalty: 'ริบของกลางทั้งหมดหากโดนตรวจค้น',
+    equipment: ['เมล็ดพันธุ์กัญชา', 'ปุ๋ยเร่งโต', 'รถกระบะบรรทุกท้าย'],
+    routes: ['สันเขา Mount Chiliad ทางเปลี่ยว', 'ทุ่งหญ้าทะเลทราย Grand Senora'],
+    cooldown: 'วงรอบการโต 20 นาที · ห้ามปลูกในระยะ 200 เมตรจาก Safe Zone',
+    icon: 'package',
+  },
+  {
+    id: 'drug_run',
+    name: 'ส่งยาข้ามโซน',
+    en: 'CROSS-ZONE DRUG RUN',
+    police: 3,
+    reward: '25,000 - 40,000 RD',
+    risk: 'HIGH',
+    riskColor: 'text-rose bg-rose/10 border-rose/40',
+    penalty: 'จำคุก 25 นาที + ยึดยานพาหนะเข้าคลังหลวง',
+    equipment: ['มอเตอร์ไซค์วิบากความเร็วสูง', 'วิทยุสื่อสารเข้ารหัส', 'กระเป๋าเก็บกลิ่น'],
+    routes: ['เส้นเลียบชายหาด Chumash เลี่ยงด่านตรวจ', 'ท่อระบายน้ำคอนกรีต Los Santos River'],
+    cooldown: 'เว้นรอบ 45 นาที/คน · ตำรวจในเมืองต้องออนไลน์อย่างน้อย 3 นาย',
+    icon: 'siren',
+  },
+  {
+    id: 'cement',
+    name: 'จกปูนไซต์ก่อสร้าง',
+    en: 'CEMENT HEIST',
+    police: 1,
+    reward: '4,500 - 6,000 RD / ถุง',
+    risk: 'LOW',
+    riskColor: 'text-cyan-300 bg-cyan-400/10 border-cyan-400/30',
+    penalty: 'ปรับ 1,500 RD ต่อถุง',
+    equipment: ['ถุงกระสอบหนา', 'พลั่วตัก', 'รถกระบะ 120 กก.'],
+    routes: ['ไซต์งานก่อสร้าง Pillbox Hill ตัดเข้าทางด่วนใต้ดิน'],
+    cooldown: 'รีเซ็ตจุดตักทุก 20 นาที',
+    icon: 'wrench',
+  },
+];
+---
+
+<section id="crimes" class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24 border-t border-line">
+  <div class="space-y-3">
+    <p class="font-mono text-xs font-semibold tracking-[0.2em] text-rose uppercase">// UNDERWORLD DIRECTORY</p>
+    <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
+      สารบัญงานดำ & ระดับความเสี่ยงตำรวจ
+    </h2>
+    <p class="text-sm text-textSoft max-w-2xl leading-relaxed">
+      ประเมินความคุ้มค่าก่อนลงมือ: ตรวจสอบจำนวนตำรวจขั้นต่ำที่ต้องออนไลน์ โทษจำคุก อุปกรณ์ที่ต้องมี และเส้นทางหลบหนี
+    </p>
+  </div>
+
+  <div class="mt-10 grid gap-5 md:grid-cols-2">
+    {crimes.map((c) => (
+      <div class="rounded-2xl border border-line bg-card/70 p-6 backdrop-blur-md shadow-neon-card space-y-4 hover:border-rose/40 transition-all flex flex-col justify-between">
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class={`font-mono text-[10px] font-bold px-2.5 py-1 rounded-full border ${c.riskColor}`}>
+              RISK: {c.risk}
+            </span>
+            <span class="text-xs font-mono text-textMuted flex items-center gap-1.5">
+              <CyberIcon name="siren" class="size-3.5 text-rose" />
+              <span>ตำรวจต้องออนไลน์: <strong class="text-white">{c.police} นาย</strong></span>
+            </span>
+          </div>
+
+          <div class="flex items-center gap-3 pt-1">
+            <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-paper border border-line text-rose">
+              <CyberIcon name={c.icon} class="size-5" />
+            </span>
+            <div>
+              <h3 class="text-lg font-display font-bold text-white">{c.name}</h3>
+              <span class="font-mono text-xs text-textMuted">{c.en}</span>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-paper/80 border border-lineSubtle flex items-center justify-between font-mono text-xs">
+            <span class="text-textMuted">ผลตอบแทนเฉลี่ย:</span>
+            <strong class="text-mint font-bold text-sm">{c.reward}</strong>
+          </div>
+
+          <dl class="space-y-2 text-xs font-mono border-t border-lineSubtle pt-3">
+            <div>
+              <dt class="text-rose-400 font-semibold mb-0.5 flex items-center gap-1.5">
+                <CyberIcon name="alert-triangle" class="size-3.5 text-rose-400 shrink-0" />
+                <span>โทษหากถูกจับ:</span>
+              </dt>
+              <dd class="text-textSoft text-[11px]">{c.penalty}</dd>
+            </div>
+
+            <div>
+              <dt class="text-slate-300 font-semibold mb-0.5 flex items-center gap-1.5">
+                <CyberIcon name="package" class="size-3.5 text-slate-400 shrink-0" />
+                <span>อุปกรณ์ที่จำเป็น:</span>
+              </dt>
+              <dd class="text-textMuted text-[11px] list-disc list-inside">
+                {c.equipment.join(' · ')}
+              </dd>
+            </div>
+
+            <div>
+              <dt class="text-slate-300 font-semibold mb-0.5 flex items-center gap-1.5">
+                <CyberIcon name="map" class="size-3.5 text-slate-400 shrink-0" />
+                <span>เส้นทางหลบหนีแนะนำ:</span>
+              </dt>
+              <dd class="text-textMuted text-[11px]">
+                {c.routes.join(' · ')}
+              </dd>
+            </div>
+
+            <div class="pt-1">
+              <dt class="text-textMuted text-[10px] flex items-center gap-1">
+                <CyberIcon name="clock" class="size-3 text-slate-400 shrink-0" />
+                <span>กฎคูลดาวน์:</span>
+              </dt>
+              <dd class="text-amber-300/90 text-[10px]">{c.cooldown}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="pt-4 border-t border-lineSubtle">
+          <a href="/guides/jobs/black" class="text-xs font-mono font-bold text-rose hover:text-rose-300 flex items-center justify-between">
+            <span>อ่านคู่มือเจาะลึกงานดำ</span>
+            <span>➔</span>
+          </a>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

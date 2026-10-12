@@ -1,0 +1,146 @@
+---
+import CyberIcon from './CyberIcon.astro';
+import GuideIcon from './GuideIcon.astro';
+import { getCleanTitle } from '../utils/guideHelpers';
+
+interface Props {
+  title: string;
+  category: string;
+  categoryName: string;
+  icon?: string;
+  iconImage?: string;
+  image?: string;
+  tool?: string;
+  risk?: string;
+  vehicleTier?: string;
+  itemWeight?: string;
+  cooldown?: number;
+}
+
+const {
+  title,
+  category,
+  categoryName,
+  icon = 'file-text',
+  iconImage,
+  image,
+  tool = 'มือเปล่า',
+  risk = 'สุจริต 100%',
+  vehicleTier = '120 กก.',
+  itemWeight = '0.5 kg',
+  cooldown,
+} = Astro.props;
+
+const cleanTitle = getCleanTitle(title);
+---
+
+<!-- Sticky Telemetry HUD Bar (Focus Mode Top Strip) -->
+<aside 
+  id="guideStickyHud" 
+  class="sticky top-16 z-30 -mx-4 sm:-mx-6 px-4 sm:px-6 py-2.5 bg-[#050b08]/95 backdrop-blur-md border-b border-line shadow-sm transition-all duration-300"
+  aria-label="สรุปสถิติด่วน"
+>
+  <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+    
+    <!-- Left: Identity & Category -->
+    <div class="flex items-center gap-2.5 min-w-0">
+      <GuideIcon icon={icon} iconImage={iconImage || image} class="text-lg inline-block shrink-0" imgClass="w-5 h-5 object-contain shrink-0" />
+      <div class="min-w-0">
+        <div class="flex items-center gap-2">
+          <span class="text-[10px] font-mono px-2 py-0.2 rounded bg-mint/15 text-mint border border-mint/30 font-bold uppercase shrink-0">
+            {categoryName}
+          </span>
+          <h2 class="text-xs sm:text-sm font-bold text-white truncate max-w-[200px] sm:max-w-xs font-display">
+            {cleanTitle}
+          </h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- Middle: Quick Telemetry Pills (Hidden on very small screens, visible on sm+) -->
+    <div class="hidden md:flex items-center gap-4 text-xs font-mono">
+      <div class="flex items-center gap-1.5 text-textMuted">
+        <CyberIcon name="truck" class="size-3.5 text-lime shrink-0" />
+        <span>ท้ายรถ: <strong class="text-lime">{vehicleTier}</strong></span>
+      </div>
+
+      <span class="text-lineSubtle">|</span>
+
+      <div class="flex items-center gap-1.5 text-textMuted">
+        <CyberIcon name="wrench" class="size-3.5 text-mint shrink-0" />
+        <span>อุปกรณ์: <strong class="text-white">{tool}</strong></span>
+      </div>
+
+      <span class="text-lineSubtle">|</span>
+
+      <div class="flex items-center gap-1.5 text-textMuted">
+        <CyberIcon name="alert-triangle" class={`size-3.5 shrink-0 ${risk.includes('ผิด') || risk.includes('เสี่ยง') ? 'text-rose' : 'text-mint'}`} />
+        <span>ความเสี่ยง: <strong class={risk.includes('ผิด') || risk.includes('เสี่ยง') ? 'text-rose' : 'text-mint'}>{risk}</strong></span>
+      </div>
+    </div>
+
+    <!-- Right: Quick Action Controls -->
+    <div class="flex items-center gap-2 font-mono text-xs">
+      <button 
+        type="button" 
+        id="hudQuickCalcBtn"
+        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-mint/40 bg-mint/10 text-mint hover:bg-mint/20 transition-colors font-bold text-[11px]"
+        title="เลื่อนไปที่เครื่องคำนวณกำไร"
+      >
+        <CyberIcon name="zap" class="size-3.5 text-mint" />
+        <span>คำนวณกำไร</span>
+      </button>
+
+      <a 
+        href="/map" 
+        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-line bg-paper text-slate-300 hover:text-white hover:border-mint transition-colors text-[11px]"
+        title="เปิดแผนที่ใหญ่"
+      >
+        <CyberIcon name="map" class="size-3.5 text-slate-400" />
+        <span class="hidden sm:inline">Live Map</span>
+      </a>
+
+      <button 
+        type="button" 
+        id="hudCopyLinkBtn"
+        class="inline-flex items-center gap-1 px-2 py-1 rounded-lg border border-line bg-card hover:border-mint text-slate-400 hover:text-white transition-colors text-[11px]"
+        title="คัดลอกลิงก์หน้านี้"
+      >
+        <CyberIcon name="copy" class="size-3 text-slate-400" />
+        <span id="hudCopyFeedback" class="hidden sm:inline">แชร์</span>
+      </button>
+    </div>
+
+  </div>
+</aside>
+
+<script>
+  function initHud() {
+    const calcBtn = document.getElementById('hudQuickCalcBtn');
+    const copyBtn = document.getElementById('hudCopyLinkBtn');
+    const feedback = document.getElementById('hudCopyFeedback');
+
+    if (calcBtn) {
+      calcBtn.addEventListener('click', () => {
+        const estimator = document.querySelector('.job-estimator-card') || document.getElementById('calculator');
+        if (estimator) {
+          estimator.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    }
+
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+          if (feedback) feedback.textContent = '✓ แชร์แล้ว';
+          setTimeout(() => {
+            if (feedback) feedback.textContent = 'แชร์';
+          }, 2000);
+        });
+      });
+    }
+  }
+
+  initHud();
+  document.addEventListener('astro:page-load', initHud);
+</script>

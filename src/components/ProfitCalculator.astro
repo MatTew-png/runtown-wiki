@@ -1,0 +1,388 @@
+---
+import CyberIcon from './CyberIcon.astro';
+
+const jobs = [
+  {
+    id: 'pork',
+    name: 'งานหมู',
+    en: 'PORK',
+    icon: 'package',
+    spec: 'ลูป 7.69 กม. · ดิบ 130-150 RD · กล่อง 422 RD · ฟาร์ม 15 นาที',
+    unitLabel: 'กล่อง',
+    unitKg: 3,
+    unitPrice: 422,
+    minsPerRun: 23,
+    brainPerRun: 8,
+  },
+  {
+    id: 'wood',
+    name: 'งานไม้',
+    en: 'WOOD',
+    icon: 'tree',
+    spec: 'ลูป 14.0 กม. · กล่อง 479 RD · ขายผู้เล่น 500-600 RD',
+    unitLabel: 'กล่อง',
+    unitKg: 1.1,
+    unitPrice: 479,
+    minsPerRun: 35,
+    brainPerRun: 12,
+  },
+  {
+    id: 'flowers',
+    name: 'งานดอกไม้',
+    en: 'FLOWERS',
+    icon: 'flower',
+    spec: '8 วิ/ดอก · ขาย รพ. 100 RD/ดอก · กล่อง 408 RD',
+    unitLabel: 'ดอก',
+    unitKg: 0.5,
+    unitPrice: 100,
+    minsPerRun: 14,
+    brainPerRun: 10,
+  },
+  {
+    id: 'smelting',
+    name: 'งานจี่เหล็ก',
+    en: 'SMELTING',
+    icon: 'wrench',
+    spec: 'ลูป 1.2 กม. · แท่ง 195 RD · ขายอู่ช่าง',
+    unitLabel: 'แท่ง',
+    unitKg: 2,
+    unitPrice: 195,
+    minsPerRun: 12,
+    brainPerRun: 6,
+  },
+];
+
+const capacities = [
+  { kg: 45, label: 'เดินเท้า (45 kg)' },
+  { kg: 60, label: 'รถเก๋ง (60 kg)' },
+  { kg: 120, label: 'กระบะ (120 kg)' },
+  { kg: 150, label: 'รถตู้/เฮฟวี่ (150 kg)' },
+];
+---
+
+<section id="calculator" class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24 border-t border-line">
+  <div class="space-y-3">
+    <p class="font-mono text-xs font-semibold tracking-[0.2em] text-mint uppercase">// FARMING ROI CALCULATOR</p>
+    <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
+      คำนวณกำไรต่อรอบก่อนออกวิ่งงาน
+    </h2>
+    <p class="text-sm text-textSoft max-w-2xl leading-relaxed">
+      เลือกงาน ความจุท้ายรถ และจำนวนรอบ ระบบจะคำนวณรายได้ ค่าน้ำมัน และเวลาให้ทันที
+    </p>
+  </div>
+
+  <div class="mt-10 grid gap-6 lg:grid-cols-5 items-start">
+    <!-- Controls (3 cols) -->
+    <div class="flex flex-col gap-6 rounded-2xl border border-line bg-card/80 p-6 backdrop-blur-md lg:col-span-3 shadow-neon-card">
+      
+      <!-- 01: Job Selection -->
+      <div>
+        <span class="font-mono text-xs font-semibold tracking-[0.2em] text-textMuted uppercase block mb-3">
+          01 · เลือกงาน
+        </span>
+        <div class="grid gap-3 sm:grid-cols-2" id="calcJobList">
+          {jobs.map((j, i) => (
+            <button
+              type="button"
+              class={`calc-job-btn flex items-start gap-3 rounded-xl border p-4 text-left transition-all ${
+                i === 0
+                  ? 'border-mint bg-mint/10 shadow-[0_0_24px_-8px_rgba(69,242,180,0.5)] active'
+                  : 'border-line bg-paper/60 hover:border-mint/40 text-textSoft'
+              }`}
+              data-job-id={j.id}
+            >
+              <span class="calc-job-icon grid size-10 shrink-0 place-items-center rounded-lg border border-mint/30 bg-mint/10 text-mint">
+                <CyberIcon name={j.icon} class="size-5" />
+              </span>
+              <span class="flex flex-col">
+                <span class="font-semibold text-white">
+                  {j.name}{' '}
+                  <span class="font-mono text-[10px] tracking-widest text-textMuted">{j.en}</span>
+                </span>
+                <span class="mt-1 text-xs leading-relaxed text-textSoft">{j.spec}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- 02: Trunk Capacity -->
+      <div>
+        <span class="font-mono text-xs font-semibold tracking-[0.2em] text-textMuted uppercase block mb-3">
+          02 · ความจุท้ายรถ
+        </span>
+        <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {capacities.map((c) => (
+            <button
+              type="button"
+              class={`calc-cap-btn rounded-xl border px-3 py-3 text-center transition-all ${
+                c.kg === 120
+                  ? 'border-mint bg-mint/10 text-mint font-bold active shadow-[0_0_15px_rgba(69,242,180,0.2)]'
+                  : 'border-line bg-paper/60 text-textSoft hover:border-mint/40 hover:text-white font-medium'
+              }`}
+              data-capacity={c.kg}
+            >
+              <span class="block font-mono text-base font-bold text-white">{c.kg} kg</span>
+              <span class="mt-0.5 block text-[11px] text-textMuted">{c.label.split(' ')[0]}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- 03: Runs count -->
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <span class="font-mono text-xs font-semibold tracking-[0.2em] text-textMuted uppercase">
+            03 · จำนวนรอบที่ต้องการวิ่ง
+          </span>
+          <span class="font-mono text-xs text-mint font-bold"><span id="calcRunsDisplay">3</span> รอบ</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <button
+            type="button"
+            id="calcRunsMinus"
+            class="grid size-10 shrink-0 place-items-center rounded-xl border border-line bg-paper text-white hover:border-mint transition-colors"
+          >
+            -
+          </button>
+          <input
+            type="range"
+            id="calcRunsSlider"
+            min="1"
+            max="10"
+            value="3"
+            class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-mint"
+          />
+          <button
+            type="button"
+            id="calcRunsPlus"
+            class="grid size-10 shrink-0 place-items-center rounded-xl border border-line bg-paper text-white hover:border-mint transition-colors"
+          >
+            +
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Live Output Summary (2 cols) -->
+    <div class="flex flex-col rounded-2xl border border-line bg-paper/90 p-6 backdrop-blur-md lg:col-span-2 shadow-neon-card relative overflow-hidden">
+      <div class="flex items-center justify-between pb-4 border-b border-lineSubtle">
+        <span class="font-mono text-xs font-bold text-mint tracking-wider flex items-center gap-1.5">
+          <CyberIcon name="trending-up" class="size-4" />
+          ESTIMATED EARNINGS
+        </span>
+        <button
+          type="button"
+          id="calcCopyBtn"
+          class="inline-flex items-center gap-1.5 text-xs font-mono text-textMuted hover:text-mint transition-colors"
+        >
+          <CyberIcon name="copy" class="size-3.5" />
+          <span id="calcCopyText">คัดลอกสรุป</span>
+        </button>
+      </div>
+
+      <div class="py-5 space-y-4">
+        <div>
+          <span class="text-xs font-mono text-textMuted block">กำไรสุทธิโดยประมาณ</span>
+          <strong id="calcNetProfit" class="font-mono text-4xl sm:text-5xl font-extrabold text-mint drop-shadow-[0_0_15px_rgba(69,242,180,0.35)] block mt-1">
+            54,606 RD
+          </strong>
+        </div>
+
+        <dl class="space-y-2.5 pt-2 border-t border-lineSubtle font-mono text-xs">
+          <div class="flex justify-between">
+            <dt class="text-textMuted">รายได้รวม (Gross):</dt>
+            <dd id="calcGross" class="text-white font-bold">57,480 RD</dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-textMuted">ค่าน้ำมัน & สเบียง (~5%):</dt>
+            <dd id="calcCost" class="text-rose-400">-2,874 RD</dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-textMuted">ของที่จุได้ต่อรอบ:</dt>
+            <dd id="calcUnits" class="text-slate-200">40 กล่อง</dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-textMuted">เวลาโดยประมาณ:</dt>
+            <dd id="calcDuration" class="text-amber-300 font-bold">1 ชม. 9 นาที</dd>
+          </div>
+        </dl>
+
+        <!-- Brain meter alert -->
+        <div id="calcBrainBox" class="p-3.5 rounded-xl border border-line bg-card/60 space-y-2 text-xs">
+          <div class="flex items-center justify-between font-mono">
+            <span class="flex items-center gap-1.5 text-textSoft">
+              <CyberIcon name="brain" class="size-3.5 text-purple-300" />
+              <span>ความล้าสมอง:</span>
+            </span>
+            <span id="calcBrainVal" class="font-bold text-mint">24%</span>
+          </div>
+          <div class="w-full h-1.5 rounded-full bg-slate-900 overflow-hidden">
+            <div id="calcBrainBar" class="h-full bg-mint rounded-full transition-all duration-300" style="width: 24%"></div>
+          </div>
+          <p id="calcBrainTip" class="text-[11px] text-textMuted leading-relaxed">
+            ระดับสมองปลอดภัย แนะนำจอดพักดื่มน้ำทุก 3 รอบ
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-auto pt-4 border-t border-lineSubtle text-center">
+        <a href="/guides/jobs/white" class="inline-flex items-center gap-1.5 text-xs font-mono text-mint hover:underline font-bold">
+          <span>เจาะลึก 7 อาชีพงานขาว</span>
+          <span>➔</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const jobsData = {
+    pork: { name: 'งานหมู', en: 'PORK', unitLabel: 'กล่อง', unitKg: 3, unitPrice: 422, minsPerRun: 23, brainPerRun: 8 },
+    wood: { name: 'งานไม้', en: 'WOOD', unitLabel: 'กล่อง', unitKg: 1.1, unitPrice: 479, minsPerRun: 35, brainPerRun: 12 },
+    flowers: { name: 'งานดอกไม้', en: 'FLOWERS', unitLabel: 'ดอก', unitKg: 0.5, unitPrice: 100, minsPerRun: 14, brainPerRun: 10 },
+    smelting: { name: 'งานจี่เหล็ก', en: 'SMELTING', unitLabel: 'แท่ง', unitKg: 2, unitPrice: 195, minsPerRun: 12, brainPerRun: 6 },
+  };
+
+  let curJobId = 'pork';
+  let curCap = 120;
+  let curRuns = 3;
+
+  const jobBtns = document.querySelectorAll('.calc-job-btn');
+  const capBtns = document.querySelectorAll('.calc-cap-btn');
+  const runsSlider = document.getElementById('calcRunsSlider') as HTMLInputElement | null;
+  const runsDisplay = document.getElementById('calcRunsDisplay');
+  const runsMinus = document.getElementById('calcRunsMinus');
+  const runsPlus = document.getElementById('calcRunsPlus');
+
+  const outNet = document.getElementById('calcNetProfit');
+  const outGross = document.getElementById('calcGross');
+  const outCost = document.getElementById('calcCost');
+  const outUnits = document.getElementById('calcUnits');
+  const outDuration = document.getElementById('calcDuration');
+  const outBrainVal = document.getElementById('calcBrainVal');
+  const outBrainBar = document.getElementById('calcBrainBar');
+  const outBrainTip = document.getElementById('calcBrainTip');
+  const copyBtn = document.getElementById('calcCopyBtn');
+  const copyText = document.getElementById('calcCopyText');
+
+  function calculate() {
+    const job = (jobsData as any)[curJobId] || jobsData.pork;
+    const unitsPerRun = Math.floor(curCap / job.unitKg);
+    const gross = unitsPerRun * job.unitPrice * curRuns;
+    const cost = gross * 0.05;
+    const net = gross - cost;
+    const totalMinutes = job.minsPerRun * curRuns;
+    const brain = job.brainPerRun * curRuns;
+
+    if (outNet) outNet.textContent = `${Math.round(net).toLocaleString('en-US')} RD`;
+    if (outGross) outGross.textContent = `${Math.round(gross).toLocaleString('en-US')} RD`;
+    if (outCost) outCost.textContent = `-${Math.round(cost).toLocaleString('en-US')} RD`;
+    if (outUnits) outUnits.textContent = `${unitsPerRun} ${job.unitLabel} / รอบ`;
+
+    const h = Math.floor(totalMinutes / 60);
+    const m = totalMinutes % 60;
+    if (outDuration) outDuration.textContent = h > 0 ? `${h} ชม. ${m} นาที` : `${m} นาที`;
+
+    if (outBrainVal) outBrainVal.textContent = `${brain}%`;
+    if (outBrainBar) {
+      outBrainBar.style.width = `${Math.min(100, brain)}%`;
+      if (brain >= 60) {
+        outBrainBar.className = 'h-full bg-rose-500 rounded-full transition-all duration-300 shadow-[0_0_10px_#ff4d6d]';
+        if (outBrainTip) outBrainTip.textContent = 'ระวัง: ค่าสมองสูงเกิน 60% ควรแวะบาร์เขียวหรือรีหัวก่อนทำงานต่อ';
+      } else if (brain >= 40) {
+        outBrainBar.className = 'h-full bg-amber-400 rounded-full transition-all duration-300';
+        if (outBrainTip) outBrainTip.textContent = 'สมองเริ่มล้าปานกลาง ควรดื่มกาแฟหรือชูกำลังระหว่างทาง';
+      } else {
+        outBrainBar.className = 'h-full bg-mint rounded-full transition-all duration-300';
+        if (outBrainTip) outBrainTip.textContent = 'ระดับสมองปลอดภัย แนะนำจอดพักดื่มน้ำทุก 3 รอบ';
+      }
+    }
+  }
+
+  jobBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      jobBtns.forEach(b => {
+        b.classList.remove('border-mint', 'bg-mint/10', 'shadow-[0_0_24px_-8px_rgba(69,242,180,0.5)]', 'active');
+        b.classList.add('border-line', 'bg-paper/60', 'text-textSoft');
+      });
+      btn.classList.remove('border-line', 'bg-paper/60', 'text-textSoft');
+      btn.classList.add('border-mint', 'bg-mint/10', 'shadow-[0_0_24px_-8px_rgba(69,242,180,0.5)]', 'active');
+      curJobId = btn.getAttribute('data-job-id') || 'pork';
+      calculate();
+    });
+  });
+
+  capBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      capBtns.forEach(b => {
+        b.classList.remove('border-mint', 'bg-mint/10', 'text-mint', 'font-bold', 'shadow-[0_0_15px_rgba(69,242,180,0.2)]', 'active');
+        b.classList.add('border-line', 'bg-paper/60', 'text-textSoft', 'font-medium');
+      });
+      btn.classList.remove('border-line', 'bg-paper/60', 'text-textSoft', 'font-medium');
+      btn.classList.add('border-mint', 'bg-mint/10', 'text-mint', 'font-bold', 'shadow-[0_0_15px_rgba(69,242,180,0.2)]', 'active');
+      curCap = parseInt(btn.getAttribute('data-capacity') || '120', 10);
+      calculate();
+    });
+  });
+
+  if (runsSlider) {
+    runsSlider.addEventListener('input', () => {
+      curRuns = parseInt(runsSlider.value, 10);
+      if (runsDisplay) runsDisplay.textContent = String(curRuns);
+      calculate();
+    });
+  }
+
+  if (runsMinus) {
+    runsMinus.addEventListener('click', () => {
+      if (curRuns > 1) {
+        curRuns--;
+        if (runsSlider) runsSlider.value = String(curRuns);
+        if (runsDisplay) runsDisplay.textContent = String(curRuns);
+        calculate();
+      }
+    });
+  }
+
+  if (runsPlus) {
+    runsPlus.addEventListener('click', () => {
+      if (curRuns < 10) {
+        curRuns++;
+        if (runsSlider) runsSlider.value = String(curRuns);
+        if (runsDisplay) runsDisplay.textContent = String(curRuns);
+        calculate();
+      }
+    });
+  }
+
+  if (copyBtn) {
+    copyBtn.addEventListener('click', async () => {
+      const job = (jobsData as any)[curJobId] || jobsData.pork;
+      const unitsPerRun = Math.floor(curCap / job.unitKg);
+      const gross = unitsPerRun * job.unitPrice * curRuns;
+      const cost = gross * 0.05;
+      const net = gross - cost;
+
+      const summary = [
+        'RUN TOWN · สรุปการคำนวณกำไร',
+        `งาน: ${job.name} (${job.en})`,
+        `ความจุ: ${curCap} กก. · ${unitsPerRun} ${job.unitLabel}/รอบ · ${curRuns} รอบ`,
+        `รายได้รวม: ${Math.round(gross).toLocaleString('en-US')} RD`,
+        `ค่าน้ำมัน/ซ่อม (~5%): ${Math.round(cost).toLocaleString('en-US')} RD`,
+        `กำไรสุทธิ: ${Math.round(net).toLocaleString('en-US')} RD`,
+      ].join('\\n');
+
+      try {
+        await navigator.clipboard.writeText(summary);
+        if (copyText) copyText.textContent = 'คัดลอกสำเร็จ!';
+        setTimeout(() => {
+          if (copyText) copyText.textContent = 'คัดลอกสรุป';
+        }, 2000);
+      } catch (e) {}
+    });
+  }
+
+  calculate();
+</script>

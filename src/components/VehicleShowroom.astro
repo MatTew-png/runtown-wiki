@@ -1,0 +1,295 @@
+---
+import CyberIcon from './CyberIcon.astro';
+
+const vehicles = [
+  { id: 'bati', name: 'Pegassi Bati 801', category: 40, capacity: 40, speed: 215, fuel: 'B', price: 15000, priceType: 'buy', badge: 'FASTEST SPEED', jobs: ['ดอกไม้', 'จี่เหล็ก'] },
+  { id: 'sanchez', name: 'Maibatsu Sanchez', category: 40, capacity: 40, speed: 160, fuel: 'A', price: 350, priceType: 'rent', badge: 'OFF-ROAD SCOUT', jobs: ['ดอกไม้'] },
+  { id: 'sultan', name: 'Karin Sultan', category: 60, capacity: 60, speed: 192, fuel: 'B', price: 35000, priceType: 'buy', badge: 'BEST ALL-ROUNDER', jobs: ['จี่เหล็ก', 'หมู'] },
+  { id: 'tailgater', name: 'Obey Tailgater', category: 60, capacity: 60, speed: 180, fuel: 'A', price: 28000, priceType: 'buy', badge: 'FUEL SAVER', jobs: ['จี่เหล็ก'] },
+  { id: 'rebel', name: 'Karin Rebel', category: 120, capacity: 120, speed: 155, fuel: 'B', price: 22000, priceType: 'buy', badge: 'PORK & WOOD PICK', jobs: ['หมู', 'ไม้'] },
+  { id: 'sadler', name: 'Vapid Sadler', category: 120, capacity: 120, speed: 150, fuel: 'C', price: 26000, priceType: 'buy', badge: 'HEAVY DUTY', jobs: ['ไม้', 'หมู'] },
+  { id: 'rumpo', name: 'Bravado Rumpo', category: 150, capacity: 150, speed: 140, fuel: 'C', price: 30000, priceType: 'buy', badge: 'MAX CARGO', jobs: ['ไม้', 'หมู', 'ดอกไม้'] },
+  { id: 'speedo', name: 'Vapid Speedo', category: 150, capacity: 150, speed: 135, fuel: 'B', price: 900, priceType: 'rent', badge: 'RENTAL VALUE', jobs: ['ไม้', 'หมู'] },
+];
+
+const tabs = [
+  { value: 0, label: 'ทั้งหมด (All)' },
+  { value: 40, label: 'มอเตอร์ไซค์ (40 kg)' },
+  { value: 60, label: 'รถเก๋ง/สปอร์ต (60 kg)' },
+  { value: 120, label: 'กระบะบรรทุก (120 kg)' },
+  { value: 150, label: 'รถตู้/เฮฟวี่ (150 kg)' },
+];
+
+const fuelColor: Record<string, string> = {
+  A: 'text-mint',
+  B: 'text-[#facc15]',
+  C: 'text-rose',
+};
+---
+
+<section id="vehicles" class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24 border-t border-line">
+  <div class="space-y-3">
+    <p class="font-mono text-xs font-semibold tracking-[0.2em] text-amber-400 uppercase">// VEHICLE LOGISTICS</p>
+    <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
+      โชว์รูมรถขนของ & ตารางเปรียบเทียบ
+    </h2>
+    <p class="text-sm text-textSoft max-w-2xl leading-relaxed">
+      เลือกรถให้ตรงกับงาน ดูความจุท้ายรถ ความเร็ว อัตราสิ้นเปลือง และเลือก 2 คันเพื่อเทียบแบบเคียงข้าง
+    </p>
+  </div>
+
+  <!-- Filter Tabs -->
+  <div class="mt-8 flex gap-2 overflow-x-auto pb-2" id="vehTabs">
+    {tabs.map((t, idx) => (
+      <button
+        type="button"
+        class={`veh-tab-btn shrink-0 rounded-full border px-4 py-2 text-xs font-mono transition-colors ${
+          idx === 0
+            ? 'border-mint bg-mint text-slate-950 font-bold active'
+            : 'border-line bg-card text-textSoft hover:border-mint/40 hover:text-white'
+        }`}
+        data-filter={t.value}
+      >
+        {t.label}
+      </button>
+    ))}
+  </div>
+
+  <!-- Vehicles Grid -->
+  <div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-4" id="vehGrid">
+    {vehicles.map((v) => (
+      <div
+        class="veh-card group flex flex-col justify-between rounded-2xl border border-line bg-card/80 p-5 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-mint/60 hover:shadow-[0_0_30px_-10px_rgba(69,242,180,0.4)] shadow-sm"
+        data-id={v.id}
+        data-cat={v.category}
+      >
+        <div>
+          <div class="flex items-center justify-between">
+            <span class="rounded border border-amber-400/40 bg-amber-400/10 px-2 py-0.5 font-mono text-[10px] font-bold tracking-wider text-amber-300">
+              {v.badge}
+            </span>
+            <span class="text-xs font-mono text-textMuted">{v.category} KG</span>
+          </div>
+
+          <h3 class="mt-3 text-lg font-display font-bold text-white group-hover:text-mint transition-colors">
+            {v.name}
+          </h3>
+
+          <div class="mt-4 space-y-1.5">
+            <div class="flex items-center justify-between font-mono text-xs text-textSoft">
+              <span class="flex items-center gap-1.5 text-textMuted">
+                <CyberIcon name="package" class="size-3.5 text-mint" />
+                <span>TRUNK</span>
+              </span>
+              <span class="text-white font-bold">{v.capacity} / 150 kg</span>
+            </div>
+            <div class="h-1.5 overflow-hidden rounded-full bg-slate-900 border border-lineSubtle">
+              <div
+                class="h-full rounded-full bg-gradient-to-r from-mint/60 to-mint"
+                style={`width: ${(v.capacity / 150) * 100}%`}
+              ></div>
+            </div>
+          </div>
+
+          <dl class="mt-4 grid grid-cols-3 gap-2 border-t border-lineSubtle pt-3 text-center font-mono">
+            <div>
+              <dt class="text-[10px] text-textMuted">ความเร็ว</dt>
+              <dd class="mt-0.5 text-xs font-bold text-white">{v.speed} km/h</dd>
+            </div>
+            <div>
+              <dt class="text-[10px] text-textMuted">น้ำมัน</dt>
+              <dd class={`mt-0.5 text-xs font-bold ${fuelColor[v.fuel]}`}>เกรด {v.fuel}</dd>
+            </div>
+            <div>
+              <dt class="text-[10px] text-textMuted">{v.priceType === 'buy' ? 'ราคาซื้อ' : 'ค่าเช่า'}</dt>
+              <dd class="mt-0.5 text-xs font-bold text-amber-300">
+                {v.priceType === 'buy' ? `${v.price.toLocaleString()} RD` : `${v.price} RD/วัน`}
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        <button
+          type="button"
+          class="veh-compare-btn mt-5 inline-flex items-center justify-center gap-1.5 rounded-xl border border-line bg-paper/60 px-4 py-2 text-xs font-mono font-semibold text-white transition-all hover:border-mint hover:text-mint"
+          data-id={v.id}
+        >
+          <CyberIcon name="plus" class="size-3.5" />
+          <span>เพิ่มเพื่อเปรียบเทียบ</span>
+        </button>
+      </div>
+    ))}
+  </div>
+
+  <!-- Bottom Compare Floating Drawer -->
+  <div
+    id="vehCompareDrawer"
+    class="hidden fixed inset-x-0 bottom-0 z-50 border-t border-mint/40 bg-slate-950/95 backdrop-blur-xl transition-all duration-300 shadow-[0_-10px_30px_rgba(0,0,0,0.8)]"
+  >
+    <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6">
+      <div class="flex items-center justify-between pb-2 border-b border-lineSubtle">
+        <p class="flex items-center gap-2 font-mono text-xs tracking-widest text-mint font-bold">
+          <CyberIcon name="git-compare" class="size-4" />
+          <span>COMPARE VEHICLES (<span id="vehCompareCount">0</span>/2)</span>
+        </p>
+        <button
+          type="button"
+          id="vehClearCompare"
+          class="inline-flex items-center gap-1 text-xs font-mono text-textMuted hover:text-rose transition-colors"
+        >
+          <CyberIcon name="x" class="size-3.5" />
+          <span>ล้างทั้งหมด</span>
+        </button>
+      </div>
+
+      <div id="vehCompareContent" class="pt-3">
+        <p class="text-xs text-textMuted font-mono py-2 text-center">
+          เลือก 2 คันเพื่อดูตารางเปรียบเทียบสเปกเคียงข้างกัน
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const vehiclesData: Record<string, any> = {
+    bati: { id: 'bati', name: 'Pegassi Bati 801', capacity: 40, speed: 215, fuel: 'B', price: '15,000 RD', jobs: ['ดอกไม้', 'จี่เหล็ก'] },
+    sanchez: { id: 'sanchez', name: 'Maibatsu Sanchez', capacity: 40, speed: 160, fuel: 'A', price: '350 RD/วัน', jobs: ['ดอกไม้'] },
+    sultan: { id: 'sultan', name: 'Karin Sultan', capacity: 60, speed: 192, fuel: 'B', price: '35,000 RD', jobs: ['จี่เหล็ก', 'หมู'] },
+    tailgater: { id: 'tailgater', name: 'Obey Tailgater', capacity: 60, speed: 180, fuel: 'A', price: '28,000 RD', jobs: ['จี่เหล็ก'] },
+    rebel: { id: 'rebel', name: 'Karin Rebel', capacity: 120, speed: 155, fuel: 'B', price: '22,000 RD', jobs: ['หมู', 'ไม้'] },
+    sadler: { id: 'sadler', name: 'Vapid Sadler', capacity: 120, speed: 150, fuel: 'C', price: '26,000 RD', jobs: ['ไม้', 'หมู'] },
+    rumpo: { id: 'rumpo', name: 'Bravado Rumpo', capacity: 150, speed: 140, fuel: 'C', price: '30,000 RD', jobs: ['ไม้', 'หมู', 'ดอกไม้'] },
+    speedo: { id: 'speedo', name: 'Vapid Speedo', capacity: 150, speed: 135, fuel: 'B', price: '900 RD/วัน', jobs: ['ไม้', 'หมู'] },
+  };
+
+  let selectedVehs: string[] = [];
+
+  // Tab Filtering
+  const tabBtns = document.querySelectorAll('.veh-tab-btn');
+  const cards = document.querySelectorAll('.veh-card');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => {
+        b.classList.remove('border-mint', 'bg-mint', 'text-slate-950', 'font-bold', 'active');
+        b.classList.add('border-line', 'bg-card', 'text-textSoft');
+      });
+      btn.classList.remove('border-line', 'bg-card', 'text-textSoft');
+      btn.classList.add('border-mint', 'bg-mint', 'text-slate-950', 'font-bold', 'active');
+
+      const cat = parseInt(btn.getAttribute('data-filter') || '0', 10);
+      cards.forEach(card => {
+        const cCat = parseInt(card.getAttribute('data-cat') || '0', 10);
+        if (cat === 0 || cCat === cat) {
+          (card as HTMLElement).style.display = 'flex';
+        } else {
+          (card as HTMLElement).style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Compare Logic
+  const compareBtns = document.querySelectorAll('.veh-compare-btn');
+  const drawer = document.getElementById('vehCompareDrawer');
+  const compareCount = document.getElementById('vehCompareCount');
+  const compareContent = document.getElementById('vehCompareContent');
+  const clearBtn = document.getElementById('vehClearCompare');
+
+  function updateCompareUI() {
+    if (compareCount) compareCount.textContent = String(selectedVehs.length);
+
+    compareBtns.forEach(btn => {
+      const id = btn.getAttribute('data-id') || '';
+      const isSel = selectedVehs.includes(id);
+      if (isSel) {
+        btn.className = 'veh-compare-btn mt-5 inline-flex items-center justify-center gap-1.5 rounded-xl border border-amber-400 bg-amber-400 text-slate-950 px-4 py-2 text-xs font-mono font-bold transition-all';
+        btn.innerHTML = '<span>✓ เลือกแล้ว</span>';
+      } else {
+        btn.className = 'veh-compare-btn mt-5 inline-flex items-center justify-center gap-1.5 rounded-xl border border-line bg-paper/60 px-4 py-2 text-xs font-mono font-semibold text-white transition-all hover:border-mint hover:text-mint';
+        btn.innerHTML = '<span>+ เพิ่มเพื่อเปรียบเทียบ</span>';
+      }
+    });
+
+    if (selectedVehs.length === 0) {
+      if (drawer) drawer.classList.add('hidden');
+    } else {
+      if (drawer) drawer.classList.remove('hidden');
+      if (selectedVehs.length === 1) {
+        const v = vehiclesData[selectedVehs[0]];
+        if (compareContent) {
+          compareContent.innerHTML = `<p class="text-xs text-textSoft font-mono py-2">เลือกแล้ว <strong class="text-white">${v?.name || ''}</strong> · โปรดเลือกอีก 1 คันเพื่อเปรียบเทียบสเปกคู่</p>`;
+        }
+      } else if (selectedVehs.length === 2) {
+        const a = vehiclesData[selectedVehs[0]];
+        const b = vehiclesData[selectedVehs[1]];
+        if (a && b && compareContent) {
+          compareContent.innerHTML = `
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs font-mono">
+                <thead>
+                  <tr class="text-left text-textMuted border-b border-lineSubtle">
+                    <th class="py-1.5">คุณสมบัติ</th>
+                    <th class="py-1.5 text-white font-bold">${a.name}</th>
+                    <th class="py-1.5 text-white font-bold">${b.name}</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-lineSubtle">
+                  <tr>
+                    <td class="py-1.5 text-textMuted">ความจุท้ายรถ</td>
+                    <td class="py-1.5 ${a.capacity >= b.capacity ? 'text-mint font-bold' : 'text-slate-300'}">${a.capacity} kg</td>
+                    <td class="py-1.5 ${b.capacity >= a.capacity ? 'text-mint font-bold' : 'text-slate-300'}">${b.capacity} kg</td>
+                  </tr>
+                  <tr>
+                    <td class="py-1.5 text-textMuted">ความเร็วสูงสุด</td>
+                    <td class="py-1.5 ${a.speed >= b.speed ? 'text-mint font-bold' : 'text-slate-300'}">${a.speed} km/h</td>
+                    <td class="py-1.5 ${b.speed >= a.speed ? 'text-mint font-bold' : 'text-slate-300'}">${b.speed} km/h</td>
+                  </tr>
+                  <tr>
+                    <td class="py-1.5 text-textMuted">เกรดน้ำมัน</td>
+                    <td class="py-1.5 text-slate-300">เกรด ${a.fuel}</td>
+                    <td class="py-1.5 text-slate-300">เกรด ${b.fuel}</td>
+                  </tr>
+                  <tr>
+                    <td class="py-1.5 text-textMuted">ราคา</td>
+                    <td class="py-1.5 text-amber-300 font-bold">${a.price}</td>
+                    <td class="py-1.5 text-amber-300 font-bold">${b.price}</td>
+                  </tr>
+                  <tr>
+                    <td class="py-1.5 text-textMuted">งานที่แนะนำ</td>
+                    <td class="py-1.5 text-slate-300">${a.jobs.join(', ')}</td>
+                    <td class="py-1.5 text-slate-300">${b.jobs.join(', ')}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `;
+        }
+      }
+    }
+  }
+
+  compareBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-id') || '';
+      if (selectedVehs.includes(id)) {
+        selectedVehs = selectedVehs.filter(x => x !== id);
+      } else {
+        if (selectedVehs.length >= 2) {
+          selectedVehs = [selectedVehs[1], id];
+        } else {
+          selectedVehs.push(id);
+        }
+      }
+      updateCompareUI();
+    });
+  });
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      selectedVehs = [];
+      updateCompareUI();
+    });
+  }
+</script>

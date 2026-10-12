@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="neonR" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#45f2b4"/>
+      <stop offset="55%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#a3e635"/>
+    </linearGradient>
+    <linearGradient id="glowBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#45f2b4" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#10b981" stop-opacity="0.2"/>
+    </linearGradient>
+    <filter id="cyberGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="2.5" flood-color="#45f2b4" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Dark Cyber Hex/Squircle Base -->
+  <rect width="64" height="64" rx="16" fill="#050b08"/>
+  <rect x="1" y="1" width="62" height="62" rx="15" stroke="url(#glowBorder)" stroke-width="2"/>
+
+  <!-- High-Tech Accent Micro-Corner Lines -->
+  <path d="M7 17V11C7 8.79086 8.79086 7 11 7H17" stroke="#45f2b4" stroke-width="2" stroke-linecap="round"/>
+  <path d="M47 57H53C55.2091 57 57 55.2091 57 53V47" stroke="#45f2b4" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Geometric Runner R Logo Mark -->
+  <g filter="url(#cyberGlow)">
+    <path 
+      d="M19 15H34.5C41.4 15 46 19 46 25.2C46 30 42.6 33.5 37.2 34.5L46.8 49H38.5L30.2 36H26.5V49H19V15ZM26.5 21.5V30H34C37.5 30 39.5 28.3 39.5 25.7C39.5 23.2 37.5 21.5 34 21.5H26.5Z" 
+      fill="url(#neonR)"
+    />
+  </g>
+</svg>

@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Production build output & cache
+dist/
+.astro/
+
+# Scratch & temporary reverse engineering scripts
+scratch/
+*.sqlite
+*.log
+cloudflared.exe
+
+# Temporary inspection/scraper artifacts
+analyze.js
+deep_inspect.js
+inspect_*.js
+analysis_summary.json
+runtown_raw.html
+run_town_rules_raw.html
+runtown_style.css
+rules_chunk*.css
+showcase.html
+surge_site.html
+server.js
+index.html
+archive/
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

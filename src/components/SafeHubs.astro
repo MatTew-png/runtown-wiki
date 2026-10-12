@@ -1,0 +1,111 @@
+---
+import CyberIcon from './CyberIcon.astro';
+
+interface SafeHub {
+  name: string;
+  desc: string;
+  coord: string;
+  mapUrl: string;
+  iconName: string;
+  tone: 'rose' | 'mint' | 'lime' | 'cyan';
+  services: string[];
+}
+
+const hubs: SafeHub[] = [
+  {
+    iconName: 'hospital',
+    tone: 'rose',
+    name: 'โรงพยาบาล Pillbox Hill',
+    desc: 'รักษาชีวิต ฉุกเฉิน & จุดขายดอกไม้สดส่งตรงคุณหมอ',
+    coord: 'X: 298.5, Y: -584.2',
+    mapUrl: '/map?spot=pillbox',
+    services: ['ฟื้นคืนชีพ', 'Safe Zone 100%', 'ส่งดอกไม้'],
+  },
+  {
+    iconName: 'martini',
+    tone: 'mint',
+    name: 'บาร์เขียว Del Perro',
+    desc: 'พื้นที่พักผ่อนริมหาด รีเซ็ตหลอดสมองเป็น 0% ฟรีทันที',
+    coord: 'X: -1393.2, Y: -606.8',
+    mapUrl: '/map?spot=bar_green',
+    services: ['รีเซ็ตสมอง 0%', 'Safe Zone 100%', 'ร้านอาหาร'],
+  },
+  {
+    iconName: 'wrench',
+    tone: 'lime',
+    name: 'อู่ช่าง Chumash / ในเมือง',
+    desc: 'จุดรับซื้อแท่งเหล็กหลอม & ซ่อมแซมสภาพยานพาหนะ',
+    coord: 'X: -339.1, Y: -136.4',
+    mapUrl: '/map?spot=garage_reset',
+    services: ['ขายแท่งเหล็ก', 'ซ่อมรถยนต์', 'Safe Zone 100%'],
+  },
+  {
+    iconName: 'vault',
+    tone: 'cyan',
+    name: 'ตู้เซฟเรเบล (Safe Stash Hubs)',
+    desc: 'จุดฝากของคลังส่วนตัว ถ่ายเทน้ำหนักตัวและท้ายรถฉุกเฉิน',
+    coord: 'จุดกระจายทั่วเมือง',
+    mapUrl: '/map',
+    services: ['คลังเก็บของ', 'ถ่ายเทน้ำหนัก', 'จุดพักของ'],
+  },
+];
+---
+
+<section id="safe-hubs" class="max-w-[1280px] mx-auto px-4 sm:px-6 py-12 space-y-8 scroll-mt-20">
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-line">
+    <div>
+      <span class="text-xs font-mono font-bold text-mint uppercase tracking-wider">// CITY SAFE HUBS & AMENITIES</span>
+      <h2 class="text-2xl sm:text-3xl font-display font-extrabold text-white mt-1 flex items-center gap-2">
+        <CyberIcon name="shield-check" class="size-7 text-lime" />
+        <span>4 จุดปลอดภัย & สิ่งอำนวยความสะดวกในเมือง</span>
+      </h2>
+    </div>
+    <p class="text-xs sm:text-sm font-mono text-slate-300 max-w-md">
+      ปักหมุดไว้ในใจ — เขต Safe Zone 100% ห้ามก่อเหตุความรุนแรง ช่วยฟื้นตัว ล้างสมอง และพักรถ
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {hubs.map((hub) => (
+      <div class="cyber-tilt-card group flex flex-col sm:flex-row gap-5 p-6 rounded-2xl border border-line bg-card/85 backdrop-blur-md hover:border-mint/50 transition-all duration-300 shadow-sm hover:shadow-[0_0_25px_rgba(69,242,180,0.12)]">
+        <div class="shrink-0">
+          <CyberIcon name={hub.iconName} box={true} tone={hub.tone} class="size-6" />
+        </div>
+
+        <div class="min-w-0 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <h3 class="text-lg font-display font-extrabold text-white group-hover:text-mint transition-colors">
+                {hub.name}
+              </h3>
+              <span class="inline-flex items-center gap-1.5 rounded-full border border-lime/30 bg-lime/10 px-2.5 py-0.5 font-mono text-[10px] font-bold tracking-wider text-lime">
+                <span class="size-1.5 rounded-full bg-lime animate-pulse"></span>
+                SAFE 100%
+              </span>
+            </div>
+            <p class="mt-1 text-sm text-slate-300 leading-relaxed">
+              {hub.desc}
+            </p>
+          </div>
+
+          <div class="pt-2 border-t border-lineSubtle flex flex-wrap items-center justify-between gap-2">
+            <div class="flex flex-wrap gap-1.5">
+              {hub.services.map((service) => (
+                <span class="rounded-md border border-line bg-void px-2 py-0.5 font-mono text-[11px] text-slate-300">
+                  {service}
+                </span>
+              ))}
+            </div>
+            <a
+              href={hub.mapUrl}
+              class="inline-flex items-center gap-1 font-mono text-xs font-bold text-mint hover:text-lime transition-colors"
+            >
+              <CyberIcon name="map-pin" class="size-3.5 text-mint" />
+              <span>{hub.coord}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

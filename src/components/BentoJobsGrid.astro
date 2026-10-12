@@ -1,0 +1,368 @@
+---
+// Fumadocs-Inspired Futuristic Bento Grid for Jobs & Vehicles
+import CyberIcon from './CyberIcon.astro';
+---
+
+<div class="space-y-6">
+
+  <!-- Bento Section Header & Filter Tabs -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-line">
+    <div>
+      <span class="text-xs font-mono font-bold text-mint uppercase tracking-wider">// BENTO MATRIX ARCHITECTURE</span>
+      <h2 class="text-xl sm:text-2xl font-display font-extrabold text-white flex items-center gap-2">
+        <CyberIcon name="zap" class="size-5 text-mint" /> แผนผังระบบงาน & ยานพาหนะ (Interactive Bento Grid)
+      </h2>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="flex items-center gap-1.5 p-1 rounded-xl bg-paper border border-line font-mono text-xs overflow-x-auto">
+      <button type="button" class="bento-filter-tab px-3 py-1.5 rounded-lg bg-mint/15 text-mint border border-mint/40 font-bold active transition-all" data-bento-filter="all">
+        ทั้งหมด
+      </button>
+      <button type="button" class="bento-filter-tab px-3 py-1.5 rounded-lg text-textSoft hover:text-white hover:bg-card transition-all inline-flex items-center gap-1.5" data-bento-filter="white">
+        <CyberIcon name="briefcase" class="size-3.5" /> งานขาว (7)
+      </button>
+      <button type="button" class="bento-filter-tab px-3 py-1.5 rounded-lg text-textSoft hover:text-white hover:bg-card transition-all inline-flex items-center gap-1.5" data-bento-filter="black">
+        <CyberIcon name="skull" class="size-3.5" /> งานดำ (4)
+      </button>
+      <button type="button" class="bento-filter-tab px-3 py-1.5 rounded-lg text-textSoft hover:text-white hover:bg-card transition-all inline-flex items-center gap-1.5" data-bento-filter="vehicle">
+        <CyberIcon name="truck" class="size-3.5" /> รถ (3)
+      </button>
+    </div>
+  </div>
+
+  <!-- Bento Grid Container -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="bentoContainer">
+
+    <!-- 1. เลี้ยงหมู (Featured Large Bento Card) -->
+    <a 
+      href="/guides/jobs/pig" 
+      class="bento-card group relative p-5 rounded-2xl border border-dashed border-mint/30 bg-[#0c1410] hover:border-mint hover:bg-[#111e17] transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-neon-card"
+      data-type="white"
+    >
+      <div class="absolute -top-12 -right-12 w-28 h-28 bg-mint/10 rounded-full blur-2xl group-hover:bg-mint/20 transition-all pointer-events-none"></div>
+      
+      <div class="space-y-3 relative z-10">
+        <div class="flex items-center justify-between">
+          <img src="/icons/tool_knife_2_1000.png" alt="มีดชำแหละหมู" class="w-10 h-10 object-contain group-hover:scale-110 transition-transform drop-shadow" />
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-mint/15 text-mint border border-mint/30 font-bold">
+            ข้อมูลจริง 100%
+          </span>
+        </div>
+        <div>
+          <h3 class="text-base font-display font-extrabold text-white group-hover:text-mint transition-colors">
+            เลี้ยงหมู & แปรรูป (Pig Farming)
+          </h3>
+          <p class="text-xs text-textSoft mt-1 leading-relaxed">
+            1 คอกมี 6 ตัว (60 ชิ้นดิบ / 0.50 กก.). เก็บหมูสมองขึ้นแค่ +2.0% ยืนโพร 5 วิ/ชิ้น กินสมอง +0.25%/ชิ้น
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-lineSubtle flex items-center justify-between text-[11px] font-mono text-textMuted mt-4">
+        <span class="flex items-center gap-1.5"><CyberIcon name="clock" class="size-3.5 text-textMuted" /> โต 15 นาที</span>
+        <span class="text-mint font-bold group-hover:translate-x-1 transition-transform">ดูรายละเอียด ➔</span>
+      </div>
+    </a>
+
+    <!-- 2. จี่เหล็ก (Smelting) -->
+    <a 
+      href="/guides/jobs/smelting" 
+      class="bento-card group relative p-5 rounded-2xl border border-dashed border-lime/30 bg-[#0c1410] hover:border-lime hover:bg-[#111e17] transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-neon-card"
+      data-type="white"
+    >
+      <div class="space-y-3 relative z-10">
+        <div class="flex items-center justify-between">
+          <CyberIcon name="factory" box={true} tone="lime" class="size-6" />
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-lime/15 text-lime border border-lime/30 font-bold">
+            แกนคราฟต์อาวุธ
+          </span>
+        </div>
+        <div>
+          <h3 class="text-base font-display font-extrabold text-white group-hover:text-lime transition-colors">
+            จี่เหล็ก (Iron Smelting)
+          </h3>
+          <p class="text-xs text-textSoft mt-1 leading-relaxed">
+            หลอมแร่ดิบเข้าเตาความร้อนเพื่อผลิต Steel Ingot ป้อนเข้าสู่โต๊ะคราฟต์อาวุธ Tier 1 & 2
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-lineSubtle flex items-center justify-between text-[11px] font-mono text-textMuted mt-4">
+        <span class="flex items-center gap-1.5"><CyberIcon name="flame" class="size-3.5 text-lime" /> เตาหลอมกลาง</span>
+        <span class="text-lime font-bold group-hover:translate-x-1 transition-transform">ดูสูตร ➔</span>
+      </div>
+    </a>
+
+    <!-- 3. รถ 150 โล (Vehicle Heavy) -->
+    <a 
+      href="/guides/logistics/vehicle-150kg" 
+      class="bento-card group relative p-5 rounded-2xl border border-dashed border-danger/30 bg-[#140c0f] hover:border-danger hover:bg-[#1e1115] transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-neon-card"
+      data-type="vehicle"
+    >
+      <div class="space-y-3 relative z-10">
+        <div class="flex items-center justify-between">
+          <CyberIcon name="truck" box={true} tone="rose" class="size-6" />
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-danger/15 text-danger border border-danger/30 font-bold">
+            จุสูงสุด 340 ชิ้น
+          </span>
+        </div>
+        <div>
+          <h3 class="text-base font-display font-extrabold text-white group-hover:text-danger transition-colors">
+            รถ 150 กิโล (Heavy Hauler)
+          </h3>
+          <p class="text-xs text-textSoft mt-1 leading-relaxed">
+            บรรทุกรวม 170 กก. ยืนโพร 28.3 นาที สมองสะสมแตะ +96.9% โดนโซนแดงทันที ต้องรีหัวที่บาร์เขียว/อู่ช่าง
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-lineSubtle flex items-center justify-between text-[11px] font-mono text-textMuted mt-4">
+        <span class="flex items-center gap-1.5"><CyberIcon name="alert-triangle" class="size-3.5 text-danger" /> กินสมอง 85-97%</span>
+        <span class="text-danger font-bold group-hover:translate-x-1 transition-transform">ตารางคำนวณ ➔</span>
+      </div>
+    </a>
+
+    <!-- 4. ตัดไม้ (Woodcutting) -->
+    <a 
+      href="/guides/jobs/woodcutting" 
+      class="bento-card group relative p-5 rounded-2xl border border-dashed border-amber-400/30 bg-[#12140c] hover:border-amber-400 hover:bg-[#1a1e11] transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-neon-card"
+      data-type="white"
+    >
+      <div class="space-y-3 relative z-10">
+        <div class="flex items-center justify-between">
+          <img src="/icons/tool_axe_2_1000.png" alt="ขวานตัดไม้" class="w-10 h-10 object-contain group-hover:scale-110 transition-transform drop-shadow" />
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-400/15 text-[#facc15] border border-amber-400/30 font-bold">
+            ครบ 4 จุด (479 RD/ลัง)
+          </span>
+        </div>
+        <div>
+          <h3 class="text-base font-display font-extrabold text-white group-hover:text-[#facc15] transition-colors">
+            ตัดไม้ (Woodcutting)
+          </h3>
+          <p class="text-xs text-textSoft mt-1 leading-relaxed">
+            ป่า Paleto ➔ โรงเลื่อย ➔ แพ็คท่าเรือ ➔ จุดรับซื้อ (90 / 171 / 479 RD หรือขายผู้เล่น 500 - 600 RD)
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-lineSubtle flex items-center justify-between text-[11px] font-mono text-textMuted mt-4">
+        <span class="flex items-center gap-1.5"><CyberIcon name="tree" class="size-3.5 text-amber-400" /> โซนป่าไม้</span>
+        <span class="text-[#facc15] font-bold group-hover:translate-x-1 transition-transform">รายละเอียด ➔</span>
+      </div>
+    </a>
+
+    <!-- 5. ร่อนคริสตัล (Crystal Panning) -->
+    <a 
+      href="/guides/jobs/crystal" 
+      class="bento-card group relative p-5 rounded-2xl border border-dashed border-cyan-400/30 bg-[#0c1314] hover:border-cyan-400 hover:bg-[#111c1e] transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-neon-card"
+      data-type="white"
+    >
+      <div class="space-y-3 relative z-10">
+        <div class="flex items-center justify-between">
+          <CyberIcon name="gem" box={true} tone="cyan" class="size-6" />
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-400/15 text-cyan-300 border border-cyan-400/30 font-bold">
+            แร่ Tier สูง
+          </span>
+        </div>
+        <div>
+          <h3 class="text-base font-display font-extrabold text-white group-hover:text-cyan-300 transition-colors">
+            ร่อนคริสตัล (Crystal Panning)
+          </h3>
+          <p class="text-xs text-textSoft mt-1 leading-relaxed">
+            ร่อนสายน้ำหาผลึก Raw Crystal นำไปเจียระไนเป็น Cut Diamond & Kryptonite คราฟต์มีดพร้า Machete Lv.1
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-lineSubtle flex items-center justify-between text-[11px] font-mono text-textMuted mt-4">
+        <span class="flex items-center gap-1.5"><CyberIcon name="droplet" class="size-3.5 text-cyan-300" /> ลำธาร & แม่น้ำ</span>
+        <span class="text-cyan-300 font-bold group-hover:translate-x-1 transition-transform">รายละเอียด ➔</span>
+      </div>
+    </a>
+
+    <!-- 6. ขายยา (Street Dealing - งานดำ) -->
+    <a 
+      href="/guides/jobs/drug-dealing" 
+      class="bento-card group relative p-5 rounded-2xl border border-dashed border-danger/30 bg-[#140c0f] hover:border-danger hover:bg-[#1e1115] transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-neon-card"
+      data-type="black"
+    >
+      <div class="space-y-3 relative z-10">
+        <div class="flex items-center justify-between">
+          <CyberIcon name="pill" box={true} tone="rose" class="size-6" />
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-danger/15 text-danger border border-danger/30 font-bold">
+            เสี่ยงสูงมาก
+          </span>
+        </div>
+        <div>
+          <h3 class="text-base font-display font-extrabold text-white group-hover:text-danger transition-colors">
+            ขายยา & กระจายของ (Drug Dealing)
+          </h3>
+          <p class="text-xs text-textSoft mt-1 leading-relaxed">
+            ดีลยาแพ็คกับ NPC ตามซอยเปลี่ยว เสี่ยงโดน NPC โทรแจ้งตำรวจ หรือโดนแก๊งอริเข้าชิงของ
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-lineSubtle flex items-center justify-between text-[11px] font-mono text-textMuted mt-4">
+        <span class="flex items-center gap-1.5"><CyberIcon name="alert-triangle" class="size-3.5 text-danger" /> ติดดาว & เงินดำ</span>
+        <span class="text-danger font-bold group-hover:translate-x-1 transition-transform">รายละเอียด ➔</span>
+      </div>
+    </a>
+
+    <!-- 7. รถ 60 & 120 โล (Vehicle Duo) -->
+    <a 
+      href="/guides/logistics/vehicles" 
+      class="bento-card group relative p-5 rounded-2xl border border-dashed border-amber-400/40 bg-[#12140c] hover:border-amber-300 hover:bg-[#1a1e11] transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-neon-card"
+      data-type="vehicle"
+    >
+      <div class="space-y-3 relative z-10">
+        <div class="flex items-center justify-between">
+          <CyberIcon name="car" box={true} tone="amber" class="size-6" />
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-400/15 text-[#facc15] border border-amber-400/40 font-bold">
+            รถ 60 & 120 โล
+          </span>
+        </div>
+        <div>
+          <h3 class="text-base font-display font-extrabold text-white group-hover:text-[#facc15] transition-colors">
+            รถขนาดเล็ก & กลาง (60 / 120 กก.)
+          </h3>
+          <p class="text-xs text-textSoft mt-1 leading-relaxed">
+            รถ 60 กก. วิ่งได้ 2 เที่ยวติด (สมอง +45.6%) ส่วนรถ 120 กก. วิ่งได้ 1 เที่ยวเต็ม (สมอง +79.8%)
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-lineSubtle flex items-center justify-between text-[11px] font-mono text-textMuted mt-4">
+        <span class="flex items-center gap-1.5"><CyberIcon name="scale" class="size-3.5 text-amber-400" /> กฎเว้น 10 กก. ในตัว</span>
+        <span class="text-[#facc15] font-bold group-hover:translate-x-1 transition-transform">ตารางเปรียบเทียบ ➔</span>
+      </div>
+    </a>
+
+    <!-- 8. จกปูน (Cement Heist - งานดำ) -->
+    <a 
+      href="/guides/jobs/cement" 
+      class="bento-card group relative p-5 rounded-2xl border border-dashed border-danger/30 bg-[#140c0f] hover:border-danger hover:bg-[#1e1115] transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-neon-card"
+      data-type="black"
+    >
+      <div class="space-y-3 relative z-10">
+        <div class="flex items-center justify-between">
+          <CyberIcon name="building" box={true} tone="rose" class="size-6" />
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-danger/15 text-danger border border-danger/30 font-bold">
+            ของหนัก (เตือนภัย)
+          </span>
+        </div>
+        <div>
+          <h3 class="text-base font-display font-extrabold text-white group-hover:text-danger transition-colors">
+            จกปูน (Cement Heist)
+          </h3>
+          <p class="text-xs text-textSoft mt-1 leading-relaxed">
+            ลักลอบขนถุงปูนจากเขตก่อสร้าง มีสัญญาณกันขโมยและตำรวจตอบสนองทันที น้ำหนักเยอะต้องใช้รถใหญ่
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-lineSubtle flex items-center justify-between text-[11px] font-mono text-textMuted mt-4">
+        <span class="flex items-center gap-1.5"><CyberIcon name="alert-triangle" class="size-3.5 text-danger" /> สัญญาณเตือนภัย</span>
+        <span class="text-danger font-bold group-hover:translate-x-1 transition-transform">รายละเอียด ➔</span>
+      </div>
+    </a>
+
+    <!-- 9. ขุดแร่ & ฟาร์มข้าว & ดอกไม้ & กัญชา (More Jobs Hub) -->
+    <a 
+      href="/guides" 
+      class="bento-card group relative p-5 rounded-2xl border border-dashed border-mint/30 bg-[#0c1410] hover:border-mint hover:bg-[#111e17] transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-neon-card"
+      data-type="white"
+    >
+      <div class="space-y-3 relative z-10">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center -space-x-2">
+            <img src="/icons/tool_pickaxe_2_1000.png" alt="อีเตอร์ขุดหิน" class="w-8 h-8 object-contain drop-shadow" />
+            <img src="/icons/tool_sickle_2_1000.png" alt="เคียวเกี่ยวข้าว" class="w-8 h-8 object-contain drop-shadow" />
+            <img src="/icons/tool_scissors_2_1000.png" alt="กรรไกรเก็บดอกไม้" class="w-8 h-8 object-contain drop-shadow" />
+          </div>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-mint/15 text-mint border border-mint/30 font-bold">
+            ดูทั้งหมด
+          </span>
+        </div>
+        <div>
+          <h3 class="text-base font-display font-extrabold text-white group-hover:text-mint transition-colors">
+            ขุดแร่, ฟาร์มข้าว, เก็บดอกไม้, กัญชา
+          </h3>
+          <p class="text-xs text-textSoft mt-1 leading-relaxed">
+            ดูรายการอาชีพทั้งหมดในระบบเมือง RUN TOWN พร้อมตารางสถิติและเครื่องคำนวณความล้า
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-lineSubtle flex items-center justify-between text-[11px] font-mono text-textMuted mt-4">
+        <span class="flex items-center gap-1.5"><CyberIcon name="book-open" class="size-3.5 text-mint" /> สารบัญเต็ม</span>
+        <span class="text-mint font-bold group-hover:translate-x-1 transition-transform">เปิดคลังคู่มือ ➔</span>
+      </div>
+    </a>
+
+  </div>
+
+</div>
+
+<script>
+  import { gsap } from 'gsap';
+
+  function setupBentoFilter() {
+    const tabs = document.querySelectorAll('.bento-filter-tab');
+    const cards = document.querySelectorAll<HTMLElement>('.bento-card');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((t) => {
+          t.classList.remove('bg-mint/15', 'text-mint', 'border-mint/40', 'font-bold');
+          t.classList.add('text-textSoft');
+        });
+        tab.classList.remove('text-textSoft');
+        tab.classList.add('bg-mint/15', 'text-mint', 'border-mint/40', 'font-bold');
+
+        const filter = tab.getAttribute('data-bento-filter');
+        
+        const toHide: HTMLElement[] = [];
+        const toShow: HTMLElement[] = [];
+
+        cards.forEach((card) => {
+          const type = card.getAttribute('data-type');
+          if (filter === 'all' || type === filter) {
+            toShow.push(card);
+          } else {
+            toHide.push(card);
+          }
+        });
+
+        // GSAP Stagger Morph Animation
+        gsap.to(toHide, {
+          opacity: 0,
+          scale: 0.92,
+          y: -10,
+          duration: 0.18,
+          ease: 'power2.in',
+          onComplete: () => {
+            toHide.forEach((c) => (c.style.display = 'none'));
+            toShow.forEach((c) => (c.style.display = 'flex'));
+            gsap.fromTo(
+              toShow,
+              { opacity: 0, scale: 0.94, y: 15 },
+              {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                duration: 0.35,
+                stagger: 0.04,
+                ease: 'back.out(1.2)',
+              }
+            );
+          },
+        });
+      });
+    });
+  }
+
+  setupBentoFilter();
+  document.addEventListener('astro:page-load', setupBentoFilter);
+</script>

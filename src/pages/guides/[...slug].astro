@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import GuideLayout from '../../layouts/GuideLayout.astro';
+
+export async function getStaticPaths() {
+  const guides = await getCollection('guides');
+  return guides.map((guide) => ({
+    params: { slug: guide.slug },
+    props: { guide },
+  }));
+}
+
+const { guide } = Astro.props;
+const { Content, headings } = await guide.render();
+---
+
+<GuideLayout 
+  title={guide.data.title}
+  description={guide.data.description}
+  category={guide.data.category}
+  categoryName={guide.data.categoryName}
+  icon={guide.data.icon}
+  iconImage={guide.data.iconImage}
+  image={guide.data.image}
+  badge={guide.data.badge}
+  cooldown={guide.data.cooldown}
+  slug={guide.slug}
+  headings={headings}
+  updatedAt={guide.data.updatedAt}
+  status={guide.data.status}
+  tool={guide.data.tool}
+  risk={guide.data.risk}
+  vehicleTier={guide.data.vehicleTier}
+  itemWeight={guide.data.itemWeight}
+>
+  <Content />
+</GuideLayout>

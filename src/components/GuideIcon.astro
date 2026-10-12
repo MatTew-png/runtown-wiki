@@ -1,0 +1,62 @@
+---
+import CyberIcon from './CyberIcon.astro';
+
+interface Props {
+  icon?: string;
+  iconImage?: string;
+  image?: string;
+  alt?: string;
+  class?: string;
+  imgClass?: string;
+}
+
+const {
+  icon = 'file-text',
+  iconImage,
+  image,
+  alt = '',
+  class: className = 'text-xl inline-block',
+  imgClass = 'w-6 h-6 object-contain inline-block shrink-0 rounded',
+} = Astro.props;
+
+const resolvedImage = iconImage || image;
+
+// Map legacy emojis to sleek Lucide CyberIcon names
+const emojiMap: Record<string, string> = {
+  '⚙️': 'wrench',
+  '🗡️': 'swords',
+  '🍗': 'drumstick',
+  '🏴‍☠️': 'skull',
+  '🧱': 'building',
+  '💎': 'gem',
+  '💊': 'pill',
+  '🌸': 'flower',
+  '⛏️': 'wrench',
+  '🐷': 'package',
+  '🏭': 'factory',
+  '🌱': 'tree',
+  '🌿': 'tree',
+  '🌾': 'wheat',
+  '💼': 'briefcase',
+  '🪓': 'tree',
+  '🚗': 'car',
+  '🛻': 'truck',
+  '🛵': 'truck',
+  '🚚': 'truck',
+  '🧠': 'brain',
+  '📄': 'file-text',
+};
+
+const cyberIconName = emojiMap[icon] || (icon.length <= 2 ? 'package' : icon);
+---
+
+{resolvedImage ? (
+  <img 
+    src={resolvedImage} 
+    alt={alt} 
+    class={imgClass} 
+    loading="lazy" 
+  />
+) : (
+  <CyberIcon name={cyberIconName} class="size-4 text-mint shrink-0 inline-block" />
+)}

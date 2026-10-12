@@ -1,0 +1,280 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Sidebar from '../components/Sidebar.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import BrainFatigueMeter from '../components/BrainFatigueMeter.astro';
+import FoodHungerMeter from '../components/FoodHungerMeter.astro';
+import JobEstimator from '../components/JobEstimator.astro';
+import GuideStickyHUD from '../components/GuideStickyHUD.astro';
+import InteractiveJobStepper from '../components/InteractiveJobStepper.astro';
+import ImageLightboxModal from '../components/ImageLightboxModal.astro';
+import GuideIcon from '../components/GuideIcon.astro';
+import CyberIcon from '../components/CyberIcon.astro';
+import { getCleanTitle } from '../utils/guideHelpers';
+
+interface Props {
+  title: string;
+  description: string;
+  category: string;
+  categoryName: string;
+  icon?: string;
+  iconImage?: string;
+  image?: string;
+  badge?: string;
+  cooldown?: number;
+  slug: string;
+  headings: { depth: number; slug: string; text: string }[];
+  updatedAt?: string;
+  status?: 'ready' | 'draft' | 'collecting';
+  tool?: string;
+  risk?: string;
+  vehicleTier?: string;
+  itemWeight?: string;
+}
+
+const {
+  title,
+  description,
+  category,
+  categoryName,
+  icon = 'file-text',
+  iconImage,
+  image,
+  badge,
+  cooldown,
+  slug,
+  headings = [],
+  updatedAt = 'OCTOBER 2026',
+  status = 'ready',
+  tool,
+  risk,
+  vehicleTier,
+  itemWeight,
+} = Astro.props;
+
+const whiteJobMap: Record<string, string> = {
+  'jobs/white': 'wood',
+  'jobs/woodcutting': 'wood',
+  'jobs/wood': 'wood',
+  'jobs/mining': 'mining',
+  'jobs/wheat': 'wheat',
+  'jobs/smelting': 'smelting',
+  'jobs/pig': 'pig',
+  'jobs/flowers': 'flowers',
+};
+const targetWhiteJob = whiteJobMap[slug];
+---
+
+<BaseLayout title={`${getCleanTitle(title)} | RUN TOWN Wiki`} description={description} activeCategory={category}>
+  <div class="max-w-[1600px] mx-auto px-4 sm:px-6 flex flex-col lg:flex-row gap-6 lg:gap-8">
+    
+    <!-- Left Category Sidebar -->
+    <Sidebar currentSlug={slug} />
+
+    <!-- Right Focus Canvas (2-Column Focus Mode) -->
+    <article class="flex-1 py-4 max-w-5xl xl:max-w-6xl min-w-0 space-y-6">
+      
+      <!-- Sticky Telemetry HUD Strip (Top Pinned Bar) -->
+      <GuideStickyHUD
+        title={title}
+        category={category}
+        categoryName={categoryName}
+        icon={icon}
+        iconImage={iconImage}
+        image={image}
+        tool={tool}
+        risk={risk}
+        vehicleTier={vehicleTier}
+        itemWeight={itemWeight}
+        cooldown={cooldown}
+      />
+      
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-xs font-mono text-textMuted mb-4">
+        <a href="/" class="hover:text-mint transition-colors">HOME</a>
+        <span>/</span>
+        <a href={`/guides#${category}`} class="hover:text-mint transition-colors uppercase">{categoryName}</a>
+        <span>/</span>
+        <span class="text-mint font-semibold break-words">{getCleanTitle(title)}</span>
+      </nav>
+
+      <!-- Guide Header Card -->
+      <header class="p-6 rounded-2xl border border-line bg-card space-y-3 mb-8 shadow-neon-card relative overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-mint/5 blur-3xl pointer-events-none"></div>
+
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <GuideIcon icon={icon} iconImage={iconImage || image} class="text-2xl inline-block" imgClass="w-7 h-7 object-contain inline-block shrink-0" />
+            <span class="text-xs font-mono font-bold text-mint uppercase tracking-wider">
+              {categoryName}
+            </span>
+          </div>
+
+          <div class="flex items-center gap-2 font-mono text-xs">
+            {badge && (
+              <span class="px-2.5 py-0.5 rounded-full bg-mint/15 text-mint border border-mint/30 font-bold">
+                {badge}
+              </span>
+            )}
+            {cooldown && (
+              <span class="px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 font-bold flex items-center gap-1.5">
+                <CyberIcon name="clock" size={12} class="text-amber-400 shrink-0" />
+                <span>คูลดาวน์ {cooldown} นาที</span>
+              </span>
+            )}
+            <span class="text-textMuted text-[10px]">
+              อัปเดต: {updatedAt}
+            </span>
+          </div>
+        </div>
+
+        <h1 class="text-2xl sm:text-3xl font-display font-extrabold text-white tracking-tight">
+          {getCleanTitle(title)}
+        </h1>
+
+        <p class="text-sm text-textSoft leading-relaxed">
+          {description}
+        </p>
+
+        <!-- Quick Action Bar -->
+        <div class="pt-2 flex items-center gap-3 border-t border-lineSubtle text-xs font-mono">
+          <button 
+            type="button" 
+            id="shareGuideBtn"
+            class="px-3 py-1.5 rounded-lg border border-line bg-paper hover:border-mint text-textSoft hover:text-white transition-colors flex items-center gap-1.5"
+          >
+            <CyberIcon name="file-text" class="size-3.5 text-mint" />
+            <span>คัดลอกลิงก์คู่มือ</span>
+          </button>
+
+          {category === 'farming' && (
+            <a 
+              href="/map"
+              class="px-3 py-1.5 rounded-lg border border-mint/40 bg-mint/10 text-mint hover:bg-mint/20 transition-colors flex items-center gap-1.5"
+            >
+              <CyberIcon name="map" class="size-3.5 text-mint" />
+              <span>ดูพิกัดบนเรดาร์ GTA V</span>
+            </a>
+          )}
+        </div>
+
+        <!-- 4-Box Technical Blueprint Specs Matrix -->
+        {(tool || risk || vehicleTier || itemWeight) && (
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-3 border-t border-lineSubtle font-mono text-xs">
+            <div class="p-2.5 rounded-xl bg-paper/80 border border-line">
+              <span class="text-textMuted text-[10px] flex items-center gap-1 font-semibold">
+                <CyberIcon name="wrench" class="size-3 text-mint" /> อุปกรณ์ที่ใช้
+              </span>
+              <strong class="text-white text-xs">{tool || 'มือเปล่า'}</strong>
+            </div>
+            <div class="p-2.5 rounded-xl bg-paper/80 border border-line">
+              <span class="text-textMuted text-[10px] flex items-center gap-1 font-semibold">
+                <CyberIcon name="alert-triangle" class="size-3 text-danger" /> ระดับความเสี่ยง
+              </span>
+              <strong class={`text-xs ${risk?.includes('ผิด') || risk?.includes('เสี่ยง') || risk?.includes('แดง') ? 'text-danger' : 'text-mint'}`}>
+                {risk || 'สุจริต 100%'}
+              </strong>
+            </div>
+            <div class="p-2.5 rounded-xl bg-paper/80 border border-line">
+              <span class="text-textMuted text-[10px] flex items-center gap-1 font-semibold">
+                <CyberIcon name="scale" class="size-3 text-amber-400" /> น้ำหนักต่อชิ้น
+              </span>
+              <strong class="text-white text-xs">{itemWeight || '-'}</strong>
+            </div>
+            <div class="p-2.5 rounded-xl bg-paper/80 border border-line">
+              <span class="text-textMuted text-[10px] flex items-center gap-1 font-semibold">
+                <CyberIcon name="truck" class="size-3 text-lime" /> ท้ายรถแนะนำ
+              </span>
+              <strong class="text-amber-300 text-xs">{vehicleTier || '120 กก.'}</strong>
+            </div>
+          </div>
+        )}
+
+        <!-- Template Status Banner if collecting -->
+        {status === 'collecting' && (
+          <div class="p-3 rounded-xl border border-dashed border-amber-400/40 bg-amber-500/10 text-amber-300 font-mono text-xs flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <CyberIcon name="file-text" class="size-3.5 text-amber-400 shrink-0" />
+              <span><strong>STANDARD TEMPLATE:</strong> โครงสร้างหัวข้อมาตรฐาน (พร้อมรวบรวมข้อมูลตัวเลขจริง)</span>
+            </div>
+            <span class="text-[9px] uppercase px-2 py-0.5 rounded bg-amber-400/20 text-amber-200 border border-amber-400/30 font-bold">
+              READY FOR DATA
+            </span>
+          </div>
+        )}
+      </header>
+
+      <!-- Quick Inline TOC Section Jumper -->
+      {headings && headings.filter(h => h.depth === 2).length > 0 && (
+        <nav class="p-3.5 rounded-xl border border-line bg-card/60 backdrop-blur-md font-mono text-xs space-y-2">
+          <div class="flex items-center justify-between text-textMuted text-[11px]">
+            <span class="text-mint font-bold flex items-center gap-1.5 uppercase tracking-wider">
+              <CyberIcon name="file-text" class="size-3.5 text-mint" />
+              <span>สารบัญด่วนในหน้านี้ (Quick Jump):</span>
+            </span>
+            <span>{headings.filter(h => h.depth === 2).length} หัวข้อ</span>
+          </div>
+          <div class="flex flex-wrap gap-2 pt-1">
+            {headings.filter(h => h.depth === 2).map((h) => (
+              <a 
+                href={`#${h.slug}`} 
+                class="px-2.5 py-1 rounded-lg border border-lineSubtle bg-paper text-slate-300 hover:text-mint hover:border-mint/50 transition-colors text-[11px] flex items-center gap-1"
+              >
+                <span>{h.text}</span>
+                <span class="text-textMuted text-[9px]">➔</span>
+              </a>
+            ))}
+          </div>
+        </nav>
+      )}
+
+      <!-- Dedicated Interactive HUD Widget by Category -->
+      {category === 'survival' && (
+        <div class="mb-8">
+          <BrainFatigueMeter />
+        </div>
+      )}
+
+      {category === 'food' && (
+        <div class="mb-8">
+          <FoodHungerMeter />
+        </div>
+      )}
+
+      {targetWhiteJob && (
+        <InteractiveJobStepper 
+          initialJob={targetWhiteJob} 
+          showJobSelector={slug === 'jobs/white'} 
+        />
+      )}
+
+      {(category === 'white_jobs' || category === 'black_jobs') && (
+        <JobEstimator 
+          defaultItemWeight={parseFloat(itemWeight || '0.5') || 0.5} 
+          itemName={title} 
+        />
+      )}
+
+      <!-- Markdown Content Slot -->
+      <div class="prose-runtown">
+        <slot />
+      </div>
+
+    </article>
+
+  </div>
+
+  <!-- Fullscreen Image & Map Lightbox Modal -->
+  <ImageLightboxModal />
+</BaseLayout>
+
+<script>
+  const shareBtn = document.getElementById('shareGuideBtn');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('คัดลอกลิงก์คู่มือเรียบร้อย!');
+      });
+    });
+  }
+</script>

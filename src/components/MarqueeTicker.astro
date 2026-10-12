@@ -1,0 +1,213 @@
+---
+// Live City Intelligence & Telemetry Feed
+// Job market prices, survival vitals warnings, logistics tips & city hubs
+import CyberIcon from './CyberIcon.astro';
+
+interface TickerItem {
+  icon: string;
+  category: string;
+  categoryColor: string;
+  title: string;
+  value: string;
+  valueColor: string;
+  hint: string;
+}
+
+const tickers: TickerItem[] = [
+  // 1. หมูแพ็ค
+  {
+    icon: 'package',
+    category: 'ตลาดงานขาว',
+    categoryColor: 'text-mint bg-mint/10 border-mint/30',
+    title: 'หมูแพ็คส่งออก',
+    value: '422 RD / กล่อง',
+    valueColor: 'text-mint',
+    hint: 'ลูปสั้น 7 กม. แนะนำมือใหม่',
+  },
+  // 2. ไม้แปรรูป
+  {
+    icon: 'tree',
+    category: 'ตลาดงานขาว',
+    categoryColor: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+    title: 'ไม้แปรรูปแพ็ค',
+    value: '479 RD / กล่อง',
+    valueColor: 'text-emerald-400',
+    hint: 'ขายคนได้ 500 - 600 RD (ระบบ 479 RD)',
+  },
+  // 3. ดอกไม้สด
+  {
+    icon: 'flower',
+    category: 'ตลาดงานขาว',
+    categoryColor: 'text-pink-400 bg-pink-500/10 border-pink-500/30',
+    title: 'ดอกไม้สดส่งหมอ',
+    value: '100 RD / ดอก',
+    valueColor: 'text-pink-400',
+    hint: 'ขายตรง รพ. Pillbox เบาสบาย',
+  },
+  // 4. แท่งเหล็ก
+  {
+    icon: 'wrench',
+    category: 'ตลาดงานขาว',
+    categoryColor: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
+    title: 'แท่งเหล็กหลอม',
+    value: '195 RD / แท่ง',
+    valueColor: 'text-cyan-400',
+    hint: 'ขายอู่ช่าง ลูปในเมือง 1.2 กม.',
+  },
+  // 5. ข้าวสาลี
+  {
+    icon: 'wheat',
+    category: 'ตลาดงานขาว',
+    categoryColor: 'text-amber-300 bg-amber-500/10 border-amber-500/30',
+    title: 'ข้าวสารแปรรูป',
+    value: '396 RD / กล่อง',
+    valueColor: 'text-amber-300',
+    hint: 'เก็บง่าย ชิลล์ ฟาร์มเพลิน ขายคน 100 RD',
+  },
+  // 6. คริสตัล
+  {
+    icon: 'gem',
+    category: 'สินค้าพรีเมียม',
+    categoryColor: 'text-purple-400 bg-purple-500/10 border-purple-500/30',
+    title: 'คริสตัลเจียระไน',
+    value: '550 RD / เม็ด',
+    valueColor: 'text-purple-400',
+    hint: 'ผลผลิตแรร์ กำไรสูงสุด',
+  },
+  // 7. หลอดสมอง
+  {
+    icon: 'brain',
+    category: 'กฎชีวิต',
+    categoryColor: 'text-danger bg-danger/10 border-danger/30',
+    title: 'หลอดสมองแตะ 100%',
+    value: 'เตือนสตั๊นล้มพับ!',
+    valueColor: 'text-danger',
+    hint: 'รีเซ็ต 0% ที่บาร์เขียว Del Perro',
+  },
+  // 8. หลอดอาหาร/น้ำ
+  {
+    icon: 'drumstick',
+    category: 'กฎชีวิต',
+    categoryColor: 'text-amber-400 bg-amber-400/10 border-amber-400/30',
+    title: 'อัตราลดอาหาร & น้ำ',
+    value: '-0.72% / นาที',
+    valueColor: 'text-amber-300',
+    hint: 'พกเบอร์เกอร์และน้ำดื่ม 3-5 ชิ้น',
+  },
+  // 9. น้ำหนักตัวละคร
+  {
+    icon: 'briefcase',
+    category: 'กระเป๋าตัว',
+    categoryColor: 'text-blue-400 bg-blue-500/10 border-blue-500/30',
+    title: 'น้ำหนักตัวละคร',
+    value: 'จำกัด 45.0 กก.',
+    valueColor: 'text-blue-400',
+    hint: 'เกินน้ำหนักจะวิ่งไม่ได้',
+  },
+  // 10. ความจุกระบะ
+  {
+    icon: 'truck',
+    category: 'การขนส่ง',
+    categoryColor: 'text-lime bg-lime/10 border-lime/30',
+    title: 'ความจุท้ายกระบะ',
+    value: '120 กก. (Max)',
+    valueColor: 'text-lime',
+    hint: 'เผื่อ 10 กก. สำหรับซื้อเสบียง',
+  },
+  // 11. จุดปลอดภัย
+  {
+    icon: 'shield-check',
+    category: 'เซฟโซน',
+    categoryColor: 'text-emerald-300 bg-emerald-500/10 border-emerald-500/30',
+    title: 'พื้นที่ปลอดภัย',
+    value: 'ห้ามชิงทรัพย์เด็ดขาด',
+    valueColor: 'text-emerald-300',
+    hint: 'รพ. · บาร์เขียว · อู่ช่าง · ตู้เรเบล',
+  },
+  // 12. แผนที่เมือง
+  {
+    icon: 'map',
+    category: 'แผนที่เมือง',
+    categoryColor: 'text-mint bg-mint/10 border-mint/30',
+    title: 'พิกัดงาน & จุดแปรรูป',
+    value: 'คลิกดู [LIVE MAP]',
+    valueColor: 'text-mint',
+    hint: 'ตำแหน่ง GPS ละเอียดทุกจุด',
+  },
+  // 13. น้ำมันรถ
+  {
+    icon: 'flame',
+    category: 'ทริคมือใหม่',
+    categoryColor: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30',
+    title: 'น้ำมันรถยนต์',
+    value: 'หมั่นเติมปั๊มน้ำมัน',
+    valueColor: 'text-yellow-400',
+    hint: 'ป้องกันรถดับกลางทางขณะขนของ',
+  },
+];
+---
+
+<div class="w-full bg-[#060c08]/95 border-y border-line/30 overflow-hidden py-2 select-none relative shadow-sm backdrop-blur-md flex items-center">
+  <!-- Soft edge gradient masks -->
+  <div class="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#060c08] via-[#060c08]/80 to-transparent z-10 pointer-events-none"></div>
+  <div class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#060c08] via-[#060c08]/80 to-transparent z-10 pointer-events-none"></div>
+
+  <div class="marquee-track flex items-center whitespace-nowrap">
+    <!-- Sequence 1 -->
+    <div class="flex items-center gap-3 shrink-0 pr-3">
+      {tickers.map((t) => (
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#0e1712]/90 border border-white/10 hover:border-mint/40 hover:bg-[#121f18] transition-colors shadow-sm">
+          <CyberIcon name={t.icon} class="size-4 shrink-0 text-mint" />
+          <span class={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded border leading-none ${t.categoryColor}`}>
+            {t.category}
+          </span>
+          <span class="text-white text-xs font-semibold">{t.title}:</span>
+          <strong class={`text-xs font-mono font-extrabold ${t.valueColor}`}>{t.value}</strong>
+          <span class="text-[11px] text-slate-300 bg-white/5 px-2 py-0.5 rounded border border-white/5 font-sans">
+            {t.hint}
+          </span>
+        </div>
+      ))}
+    </div>
+
+    <!-- Sequence 2 (Exact Duplicate for 100% seamless infinite scroll) -->
+    <div class="flex items-center gap-3 shrink-0 pr-3" aria-hidden="true">
+      {tickers.map((t) => (
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#0e1712]/90 border border-white/10 hover:border-mint/40 hover:bg-[#121f18] transition-colors shadow-sm">
+          <CyberIcon name={t.icon} class="size-4 shrink-0 text-mint" />
+          <span class={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded border leading-none ${t.categoryColor}`}>
+            {t.category}
+          </span>
+          <span class="text-white text-xs font-semibold">{t.title}:</span>
+          <strong class={`text-xs font-mono font-extrabold ${t.valueColor}`}>{t.value}</strong>
+          <span class="text-[11px] text-slate-300 bg-white/5 px-2 py-0.5 rounded border border-white/5 font-sans">
+            {t.hint}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes marquee {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 240s linear infinite !important;
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  .marquee-track:hover {
+    animation-play-state: running;
+  }
+</style>

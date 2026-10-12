@@ -1,0 +1,273 @@
+---
+// Dedicated Food & Hunger Estimator HUD Component
+import CyberIcon from './CyberIcon.astro';
+---
+
+<div class="rounded-2xl border border-line bg-card p-6 shadow-neon-card space-y-5 relative overflow-hidden flex flex-col justify-between">
+  <div class="absolute -top-16 -right-16 w-40 h-40 rounded-full bg-mint/5 blur-3xl pointer-events-none"></div>
+
+  <!-- Header -->
+  <div class="space-y-2 pb-3 border-b border-lineSubtle">
+    <div class="flex items-start justify-between gap-3">
+      <div>
+        <div class="flex items-center gap-2 font-mono text-xs text-mint">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-mint animate-pulse"></span>
+          <span>CALCULATOR // HUNGER & THIRST</span>
+        </div>
+        <h3 class="text-xl font-display font-extrabold text-white mt-0.5 flex items-center gap-2">
+          <CyberIcon name="drumstick" class="size-5 text-mint" /> อาหาร (คำนวณเวลา & เผื่อเสบียง)
+        </h3>
+      </div>
+      <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-mint/10 text-mint border border-mint/30 font-bold shrink-0">
+        ลดคงที่ตามเวลา
+      </span>
+    </div>
+
+    <!-- Brief Formula Banner -->
+    <div class="p-2 rounded-xl bg-paper border border-line flex items-center justify-between text-[11px] font-mono text-textMuted">
+      <span class="flex items-center gap-1.5"><CyberIcon name="lightbulb" class="size-3.5 text-mint" /> อัตราลด <strong>-0.72%/นาที</strong> (1 ชม. หาย <strong>-43.5%</strong>)</span>
+      <span class="text-danger font-bold">ยิ่งเหลือน้อย ยิ่งอันตราย</span>
+    </div>
+  </div>
+
+  <!-- Main Circular Meter & Estimator Breakdown -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+    
+    <!-- Left: Clean Minimal SVG Circular Gauge (Original FiveM HUD Style) -->
+    <div class="flex flex-col items-center justify-center p-3 relative">
+      <div class="relative w-48 h-48 sm:w-52 sm:h-52 flex items-center justify-center rounded-full bg-[#080d0a] p-2 border border-lineSubtle shadow-[inset_0_0_20px_rgba(0,0,0,0.8),_0_0_20px_rgba(69,242,180,0.15)]">
+
+        <svg class="w-44 h-44 sm:w-48 sm:h-48 transform -rotate-90 relative z-10" viewBox="0 0 180 180">
+          <defs>
+            <!-- High Intensity Neon Filter -->
+            <filter id="foodNeonGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          <!-- Background Inset Track -->
+          <circle
+            cx="90"
+            cy="90"
+            r="72"
+            stroke="#101914"
+            stroke-width="11"
+            fill="transparent"
+          />
+
+          <!-- Active Glowing Progress Arc -->
+          <circle
+            id="foodGaugeArc"
+            cx="90"
+            cy="90"
+            r="72"
+            stroke="#45f2b4"
+            stroke-width="11"
+            stroke-linecap="round"
+            fill="transparent"
+            stroke-dasharray="452.39"
+            stroke-dashoffset="0"
+            filter="url(#foodNeonGlow)"
+            class="transition-all duration-300"
+          />
+        </svg>
+
+        <!-- Center Dial Stats: ONLY NUMBER & % (Clean, Bold & Spacious) -->
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none z-20">
+          <div class="flex items-baseline justify-center font-mono select-none">
+            <span class="text-3xl sm:text-4xl font-mono font-black text-white tracking-tight drop-shadow-[0_0_12px_rgba(69,242,180,0.6)]" id="foodPctNum">100.0</span>
+            <span class="text-sm font-mono font-bold text-mint ml-1 drop-shadow-[0_0_6px_rgba(69,242,180,0.5)]">%</span>
+          </div>
+          <!-- Legacy hook for backwards-compatibility -->
+          <span id="foodPctText" class="sr-only">100.0%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Practical Food & Supply Estimation Summary Card -->
+    <div class="p-3.5 rounded-xl border border-line bg-paper space-y-2 text-xs font-mono">
+      <div class="text-[11px] font-bold text-mint flex items-center justify-between pb-1.5 border-b border-lineSubtle">
+        <span class="flex items-center gap-1.5"><CyberIcon name="bar-chart-2" class="size-3.5 text-mint" /> สรุปการเผื่อเสบียงฟาร์ม</span>
+        <span class="text-textMuted">คำนวณอัตโนมัติ</span>
+      </div>
+
+      <div class="space-y-1.5 text-slate-300 text-[11px]">
+        <div class="flex justify-between">
+          <span class="text-textMuted">ระยะเวลาออกฟาร์ม:</span>
+          <span id="foodTimeSummary" class="text-white font-bold">0 นาที</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-textMuted">ปริมาณอาหารที่ลดลง:</span>
+          <span id="foodDropSummary" class="text-amber-400 font-bold">-0.0%</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-textMuted">อาหารที่จะเหลือกลับมา:</span>
+          <span id="foodRemainingSummary" class="text-mint font-bold">100.0%</span>
+        </div>
+        <div class="flex justify-between border-t border-lineSubtle pt-1.5">
+          <span class="text-textMuted">เวลาที่ทนได้ก่อนหมดเกลี้ยง:</span>
+          <span id="foodCountdownSummary" class="text-white font-bold">~138 นาที</span>
+        </div>
+      </div>
+
+      <!-- Advice Box: How much food/water to prepare for farming -->
+      <div class="p-2.5 rounded-lg bg-card border border-line text-[11px] text-slate-300 space-y-1" id="foodAdviceBox">
+        <span class="text-textMuted flex items-center gap-1 text-[10px] font-bold uppercase"><CyberIcon name="lightbulb" class="size-3 text-mint" /> แนะนำการเผื่อเสบียงเพื่อไปฟาร์ม:</span>
+        <span id="foodAdviceText" class="text-mint font-semibold block leading-relaxed">
+          กินให้อิ่ม 100% ก่อนออกสตาร์ท ไม่จำเป็นต้องพกเสบียงเพิ่ม
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Time Slider & Presets -->
+  <div class="space-y-3 pt-2 border-t border-lineSubtle">
+    <div class="flex items-center justify-between text-xs font-mono">
+      <span class="text-textSoft">ปรับระยะเวลาทำงาน/ขับรถ:</span>
+      <span id="foodTimeDisplay" class="text-mint font-bold">0 นาที</span>
+    </div>
+
+    <input 
+      type="range" 
+      id="foodSlider" 
+      min="0" 
+      max="138" 
+      value="0" 
+      class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-mint"
+    />
+
+    <!-- Quick Time & Trip Buttons -->
+    <div class="grid grid-cols-5 gap-1 text-[11px] font-mono">
+      <button type="button" class="food-preset-btn py-1.5 px-1 rounded-lg bg-paper border border-line hover:border-mint text-mint text-center transition-colors font-bold" data-time="0">
+        รีเซ็ต (0)
+      </button>
+      <button type="button" class="food-preset-btn py-1.5 px-1 rounded-lg bg-paper border border-line hover:border-mint text-slate-200 text-center transition-colors" data-time="30">
+        30 นาที
+      </button>
+      <button type="button" class="food-preset-btn py-1.5 px-1 rounded-lg bg-paper border border-line hover:border-amber-400 text-slate-200 text-center transition-colors" data-time="60">
+        1 ชม.
+      </button>
+      <button type="button" class="food-preset-btn py-1.5 px-1 rounded-lg bg-paper border border-line hover:border-amber-400 text-slate-200 text-center transition-colors" data-time="90">
+        1.5 ชม.
+      </button>
+      <button type="button" class="food-preset-btn py-1.5 px-1 rounded-lg bg-paper border border-danger/40 hover:border-danger text-danger text-center transition-colors font-bold" data-time="120">
+        2 ชม.
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const foodCircumference = 452.39; // 2 * PI * 72
+  let remainingFoodPct = 100;
+
+  const foodArcEl = document.getElementById('foodGaugeArc');
+  const foodPctNumEl = document.getElementById('foodPctNum');
+  const foodPctTextEl = document.getElementById('foodPctText');
+  const foodSliderEl = document.getElementById('foodSlider') as HTMLInputElement;
+  const foodTimeDispEl = document.getElementById('foodTimeDisplay');
+  const foodPresetBtns = document.querySelectorAll('.food-preset-btn');
+
+  // Summary elements
+  const foodTimeSummaryEl = document.getElementById('foodTimeSummary');
+  const foodDropSummaryEl = document.getElementById('foodDropSummary');
+  const foodRemainingSummaryEl = document.getElementById('foodRemainingSummary');
+  const foodCountdownSummaryEl = document.getElementById('foodCountdownSummary');
+  const foodAdviceTextEl = document.getElementById('foodAdviceText');
+
+  function renderFoodHUD(min: number) {
+    const clamped = Math.max(0, Math.min(100, remainingFoodPct));
+    const offset = foodCircumference - (clamped / 100) * foodCircumference;
+    const drop = min * 0.7246;
+
+    if (foodArcEl) {
+      foodArcEl.style.strokeDashoffset = offset.toString();
+      if (clamped <= 20) {
+        foodArcEl.style.stroke = '#ff4d6d';
+      } else if (clamped <= 50) {
+        foodArcEl.style.stroke = '#fbbf24';
+      } else {
+        foodArcEl.style.stroke = '#45f2b4';
+      }
+    }
+
+    // Number and % ONLY (Spacious and responsive)
+    if (foodPctNumEl) foodPctNumEl.textContent = clamped.toFixed(1);
+    if (foodPctTextEl) foodPctTextEl.textContent = `${clamped.toFixed(1)}%`;
+
+    // Calculation summary
+    const remainingMinutes = (clamped / 0.7246).toFixed(0);
+    if (foodTimeSummaryEl) foodTimeSummaryEl.textContent = `${min} นาที`;
+    if (foodDropSummaryEl) foodDropSummaryEl.textContent = `-${drop.toFixed(1)}%`;
+
+    if (foodRemainingSummaryEl) {
+      foodRemainingSummaryEl.textContent = `${clamped.toFixed(1)}%`;
+      if (clamped <= 20) foodRemainingSummaryEl.className = 'text-danger font-bold';
+      else if (clamped <= 50) foodRemainingSummaryEl.className = 'text-amber-300 font-bold';
+      else foodRemainingSummaryEl.className = 'text-mint font-bold';
+    }
+
+    if (foodCountdownSummaryEl) {
+      if (clamped <= 0) {
+        foodCountdownSummaryEl.textContent = '0 นาที (เลือดลด -1 HP/วิ!)';
+        foodCountdownSummaryEl.className = 'text-danger font-bold animate-pulse';
+      } else {
+        foodCountdownSummaryEl.textContent = `~${remainingMinutes} นาที`;
+        foodCountdownSummaryEl.className = 'text-white font-bold';
+      }
+    }
+
+    // Practical advice on how much supplies to prepare for farming
+    if (foodAdviceTextEl) {
+      if (clamped <= 0) {
+        foodAdviceTextEl.textContent = '[วิกฤต] อาหารหมดเกลี้ยง! กำลังเสียเลือดตาย ต้องกินข้าวด่วนที่สุด';
+        foodAdviceTextEl.className = 'text-danger font-bold block leading-relaxed';
+      } else if (clamped <= 20) {
+        foodAdviceTextEl.textContent = '[โซนอันตราย] อาหารเหลือไม่ถึง 20% ต้องมีเสบียงติดตัวอย่างน้อย 2-3 ชุด';
+        foodAdviceTextEl.className = 'text-danger font-bold block leading-relaxed';
+      } else if (min >= 90) {
+        foodAdviceTextEl.textContent = 'รอบยาว (รถ 150 โล) แนะนำพกอาหารกล่อง/น้ำ 2 ชุด เพื่อกดกินระหว่างรอ';
+        foodAdviceTextEl.className = 'text-amber-300 font-semibold block leading-relaxed';
+      } else if (min >= 45) {
+        foodAdviceTextEl.textContent = 'กินให้อิ่มก่อนออก และพกอาหารกล่องสำรอง 1 ชุด เผื่อติดขัดกลางทาง';
+        foodAdviceTextEl.className = 'text-slate-200 font-semibold block leading-relaxed';
+      } else {
+        foodAdviceTextEl.textContent = 'กินให้อิ่ม 100% ก่อนออกสตาร์ท ไม่จำเป็นต้องพกเสบียงเพิ่ม';
+        foodAdviceTextEl.className = 'text-mint font-semibold block leading-relaxed';
+      }
+    }
+  }
+
+  function setTimeElapsed(min: number) {
+    const drop = min * 0.7246;
+    remainingFoodPct = Math.max(0, 100 - drop);
+    if (foodTimeDispEl) {
+      foodTimeDispEl.textContent = `${min} นาที`;
+    }
+    renderFoodHUD(min);
+  }
+
+  if (foodSliderEl) {
+    foodSliderEl.addEventListener('input', (e) => {
+      const m = parseInt((e.target as HTMLInputElement).value, 10);
+      setTimeElapsed(m);
+    });
+  }
+
+  foodPresetBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const m = parseInt(btn.getAttribute('data-time') || '0', 10);
+      if (foodSliderEl) foodSliderEl.value = m.toString();
+      setTimeElapsed(m);
+    });
+  });
+
+  // Initial render: Starts at 0 minutes
+  setTimeElapsed(0);
+</script>

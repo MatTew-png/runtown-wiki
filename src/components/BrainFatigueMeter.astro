@@ -1,0 +1,269 @@
+---
+// Dedicated Brain Fatigue Estimator HUD Component
+import CyberIcon from './CyberIcon.astro';
+---
+
+<div class="rounded-2xl border border-line bg-card p-6 shadow-neon-card space-y-5 relative overflow-hidden flex flex-col justify-between">
+  <div class="absolute -top-16 -left-16 w-40 h-40 rounded-full bg-amber-400/5 blur-3xl pointer-events-none"></div>
+
+  <!-- Header -->
+  <div class="space-y-2 pb-3 border-b border-lineSubtle">
+    <div class="flex items-start justify-between gap-3">
+      <div>
+        <div class="flex items-center gap-2 font-mono text-xs text-amber-300">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+          <span>CALCULATOR // MENTAL FATIGUE</span>
+        </div>
+        <h3 class="text-xl font-display font-extrabold text-white mt-0.5 flex items-center gap-2">
+          <CyberIcon name="brain" class="size-5 text-purple-400" /> ค่าสมอง (คำนวณโพร & เผื่อฟาร์ม)
+        </h3>
+      </div>
+      <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-400/10 text-amber-300 border border-amber-400/30 font-bold shrink-0">
+        โพร 5 วิ/ชิ้น
+      </span>
+    </div>
+
+    <!-- Brief Formula Banner -->
+    <div class="p-2 rounded-xl bg-paper border border-line flex items-center justify-between text-[11px] font-mono text-textMuted">
+      <span class="flex items-center gap-1.5"><CyberIcon name="lightbulb" class="size-3.5 text-amber-300" /> กดโพร <strong>+0.25%/ชิ้น</strong> + เวลายืน <strong>+0.42%/นาที</strong></span>
+      <span class="text-amber-300 font-bold">ยิ่งสะสมเยอะ ยิ่งอันตราย</span>
+    </div>
+  </div>
+
+  <!-- Main Circular Meter & Estimator Breakdown -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+    
+    <!-- Left: Clean Minimal SVG Circular Gauge (Original FiveM HUD Style) -->
+    <div class="flex flex-col items-center justify-center p-3 relative">
+      <div class="relative w-48 h-48 sm:w-52 sm:h-52 flex items-center justify-center rounded-full bg-[#0a0a06] p-2 border border-lineSubtle shadow-[inset_0_0_20px_rgba(0,0,0,0.8),_0_0_20px_rgba(251,191,36,0.15)]">
+
+        <svg class="w-44 h-44 sm:w-48 sm:h-48 transform -rotate-90 relative z-10" viewBox="0 0 180 180">
+          <defs>
+            <!-- High Intensity Neon Filter -->
+            <filter id="brainNeonGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          <!-- Background Inset Track -->
+          <circle
+            cx="90"
+            cy="90"
+            r="72"
+            stroke="#19170e"
+            stroke-width="11"
+            fill="transparent"
+          />
+
+          <!-- Active Glowing Fatigue Progress Arc -->
+          <circle
+            id="brainGaugeArc"
+            cx="90"
+            cy="90"
+            r="72"
+            stroke="#45f2b4"
+            stroke-width="11"
+            stroke-linecap="round"
+            fill="transparent"
+            stroke-dasharray="452.39"
+            stroke-dashoffset="452.39"
+            filter="url(#brainNeonGlow)"
+            class="transition-all duration-300"
+          />
+        </svg>
+
+        <!-- Center Dial Stats: ONLY NUMBER & % (Clean, Bold & Spacious) -->
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none z-20">
+          <div class="flex items-baseline justify-center font-mono select-none">
+            <span class="text-3xl sm:text-4xl font-mono font-black text-white tracking-tight drop-shadow-[0_0_12px_rgba(251,191,36,0.5)]" id="brainPctNum">0.0</span>
+            <span class="text-sm font-mono font-bold text-amber-300 ml-1 drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]">%</span>
+          </div>
+          <!-- Legacy hook for backwards-compatibility -->
+          <span id="brainPctText" class="sr-only">0.0%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Practical Farm Estimation Summary Card -->
+    <div class="p-3.5 rounded-xl border border-line bg-paper space-y-2 text-xs font-mono">
+      <div class="text-[11px] font-bold text-mint flex items-center justify-between pb-1.5 border-b border-lineSubtle">
+        <span class="flex items-center gap-1.5"><CyberIcon name="bar-chart-2" class="size-3.5 text-mint" /> สรุปค่าประมาณการฟาร์ม</span>
+        <span class="text-textMuted">คำนวณอัตโนมัติ</span>
+      </div>
+
+      <div class="space-y-1.5 text-slate-300 text-[11px]">
+        <div class="flex justify-between">
+          <span class="text-textMuted">จำนวนที่ยืนโพร:</span>
+          <span id="brainPiecesSummary" class="text-white font-bold">0 ชิ้น</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-textMuted">เวลายืนกดจริง:</span>
+          <span id="brainTimeSummary" class="text-white font-bold">0 นาที</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-textMuted">ค่าสมองสะสม:</span>
+          <span id="brainTotalPctSummary" class="text-mint font-bold">+0.0%</span>
+        </div>
+        <div class="flex justify-between border-t border-lineSubtle pt-1.5">
+          <span class="text-textMuted">สมองที่เหลือให้ฟาร์มต่อ:</span>
+          <span id="brainRemainingSummary" class="text-mint font-bold">100.0%</span>
+        </div>
+      </div>
+
+      <!-- Advice Box: How much buffer to prepare for farming -->
+      <div class="p-2.5 rounded-lg bg-card border border-line text-[11px] text-slate-300 space-y-1" id="brainAdviceBox">
+        <span class="text-textMuted flex items-center gap-1 text-[10px] font-bold uppercase"><CyberIcon name="lightbulb" class="size-3 text-mint" /> แนะนำการเผื่อเพื่อไปฟาร์ม:</span>
+        <span id="brainAdviceText" class="text-mint font-semibold block leading-relaxed">
+          หลอดว่าง 100% พร้อมลุยฟาร์มได้เต็มที่
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Vehicle Presets & Slider Controls -->
+  <div class="space-y-3 pt-2 border-t border-lineSubtle">
+    <div class="flex items-center justify-between text-xs font-mono">
+      <span class="text-textSoft">ปรับจำนวนชิ้นที่โพร:</span>
+      <span id="brainPiecesDisplay" class="text-mint font-bold">0 ชิ้น</span>
+    </div>
+
+    <input 
+      type="range" 
+      id="brainSlider" 
+      min="0" 
+      max="340" 
+      value="0" 
+      class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-mint"
+    />
+
+    <!-- Quick Vehicle Buttons -->
+    <div class="grid grid-cols-4 gap-1.5 text-xs font-mono">
+      <button type="button" class="brain-car-btn py-1.5 px-1.5 rounded-lg bg-paper border border-line hover:border-mint text-mint text-center transition-colors font-bold" data-pieces="0" data-label="0 ชิ้น">
+        รีเซ็ต (0)
+      </button>
+      <button type="button" class="brain-car-btn py-1.5 px-1.5 rounded-lg bg-paper border border-line hover:border-amber-400 text-slate-200 text-center transition-colors inline-flex items-center justify-center gap-1" data-pieces="120" data-label="120 ชิ้น (รถ 60 โล)">
+        <CyberIcon name="car" class="size-3 text-amber-400" /> รถ 60
+      </button>
+      <button type="button" class="brain-car-btn py-1.5 px-1.5 rounded-lg bg-paper border border-line hover:border-amber-400 text-slate-200 text-center transition-colors inline-flex items-center justify-center gap-1" data-pieces="240" data-label="240 ชิ้น (รถ 120 โล)">
+        <CyberIcon name="car" class="size-3 text-amber-400" /> รถ 120
+      </button>
+      <button type="button" class="brain-car-btn py-1.5 px-1.5 rounded-lg bg-paper border border-danger/40 hover:border-danger text-danger text-center transition-colors font-bold inline-flex items-center justify-center gap-1" data-pieces="300" data-label="300 ชิ้น (รถ 150 โล)">
+        <CyberIcon name="truck" class="size-3 text-danger" /> รถ 150
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const circumference = 452.39; // 2 * PI * 72
+  let currentBrainPct = 0;
+
+  const arcEl = document.getElementById('brainGaugeArc');
+  const brainPctNumEl = document.getElementById('brainPctNum');
+  const pctTextEl = document.getElementById('brainPctText');
+  const sliderEl = document.getElementById('brainSlider') as HTMLInputElement;
+  const piecesDispEl = document.getElementById('brainPiecesDisplay');
+  const carBtns = document.querySelectorAll('.brain-car-btn');
+
+  // Summary elements
+  const piecesSummaryEl = document.getElementById('brainPiecesSummary');
+  const timeSummaryEl = document.getElementById('brainTimeSummary');
+  const totalPctSummaryEl = document.getElementById('brainTotalPctSummary');
+  const remainingSummaryEl = document.getElementById('brainRemainingSummary');
+  const adviceTextEl = document.getElementById('brainAdviceText');
+  const adviceBoxEl = document.getElementById('brainAdviceBox');
+
+  function renderBrainHUD(pieces: number) {
+    const clamped = Math.max(0, Math.min(100, currentBrainPct));
+    const offset = circumference - (clamped / 100) * circumference;
+    const remainingBuffer = Math.max(0, 100 - clamped);
+
+    if (arcEl) {
+      arcEl.style.strokeDashoffset = offset.toString();
+      if (clamped >= 80) {
+        arcEl.style.stroke = '#ff4d6d';
+      } else if (clamped >= 50) {
+        arcEl.style.stroke = '#fbbf24';
+      } else {
+        arcEl.style.stroke = '#45f2b4';
+      }
+    }
+
+    // Number and % ONLY (Spacious and responsive)
+    if (brainPctNumEl) brainPctNumEl.textContent = clamped.toFixed(1);
+    if (pctTextEl) pctTextEl.textContent = `${clamped.toFixed(1)}%`;
+
+    // Update calculation summary
+    const procMin = (pieces * 5) / 60;
+    if (piecesSummaryEl) piecesSummaryEl.textContent = `${pieces} ชิ้น`;
+    if (timeSummaryEl) timeSummaryEl.textContent = `${procMin.toFixed(1)} นาที`;
+    if (totalPctSummaryEl) {
+      totalPctSummaryEl.textContent = `+${clamped.toFixed(1)}%`;
+      if (clamped >= 80) totalPctSummaryEl.className = 'text-danger font-bold';
+      else if (clamped >= 50) totalPctSummaryEl.className = 'text-amber-300 font-bold';
+      else totalPctSummaryEl.className = 'text-mint font-bold';
+    }
+
+    if (remainingSummaryEl) {
+      remainingSummaryEl.textContent = `${remainingBuffer.toFixed(1)}%`;
+      if (remainingBuffer <= 20) remainingSummaryEl.className = 'text-danger font-bold';
+      else if (remainingBuffer <= 50) remainingSummaryEl.className = 'text-amber-300 font-bold';
+      else remainingSummaryEl.className = 'text-mint font-bold';
+    }
+
+    // Practical advice on how much to prepare for farming
+    if (adviceTextEl && adviceBoxEl) {
+      if (clamped >= 100) {
+        adviceTextEl.textContent = 'สมองเต็ม 100%! ตัวละครจะสลบทันที ต้องไปรีหัวที่บาร์เขียวหรืออู่ช่างก่อนเริ่มเด็ดขาด';
+        adviceTextEl.className = 'text-danger font-bold block leading-relaxed';
+      } else if (clamped >= 80) {
+        adviceTextEl.textContent = 'กินสมองหนักเกือบเต็มหลอด! ทำได้รอบเดียวจบ แล้วต้องไปรีหัวที่บาร์เขียวหรืออู่ช่างทันที';
+        adviceTextEl.className = 'text-danger font-bold block leading-relaxed';
+      } else if (clamped >= 50) {
+        adviceTextEl.textContent = 'ทำได้ 1 เที่ยวเต็ม เหลือสมองสำรองไม่พอต่อเที่ยว 2 ควรแวะรีหัวที่บาร์เขียวหรืออู่ช่าง';
+        adviceTextEl.className = 'text-amber-300 font-semibold block leading-relaxed';
+      } else if (pieces > 0) {
+        adviceTextEl.textContent = 'สมองขึ้นน้อย ปลอดภัย สามารถทำติดต่อกันได้ 2 เที่ยวสบายๆ';
+        adviceTextEl.className = 'text-mint font-semibold block leading-relaxed';
+      } else {
+        adviceTextEl.textContent = 'หลอดว่าง 100% พร้อมลุยฟาร์มได้เต็มที่';
+        adviceTextEl.className = 'text-mint font-semibold block leading-relaxed';
+      }
+    }
+  }
+
+  function setPieces(pieces: number, labelText?: string) {
+    if (piecesDispEl) {
+      piecesDispEl.textContent = labelText || `${pieces} ชิ้น`;
+    }
+    // Action 0.25%/piece + Passive time 0.42%/min (5s per piece)
+    const procMin = (pieces * 5) / 60;
+    currentBrainPct = (pieces * 0.25) + (procMin * 0.42);
+    renderBrainHUD(pieces);
+  }
+
+  if (sliderEl) {
+    sliderEl.addEventListener('input', (e) => {
+      const p = parseInt((e.target as HTMLInputElement).value, 10);
+      setPieces(p);
+    });
+  }
+
+  carBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const p = parseInt(btn.getAttribute('data-pieces') || '0', 10);
+      const lbl = btn.getAttribute('data-label') || `${p} ชิ้น`;
+      if (sliderEl) sliderEl.value = p.toString();
+      setPieces(p, lbl);
+    });
+  });
+
+  // Initial render: 0 pieces
+  setPieces(0, '0 ชิ้น');
+</script>

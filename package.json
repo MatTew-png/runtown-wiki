@@ -1,0 +1,32 @@
+{
+  "name": "runthukverb-wiki",
+  "version": "1.0.0",
+  "description": "RUN TOWN FiveM Master Wiki & Live Map Guide",
+  "main": "server.js",
+  "scripts": {
+    "dev": "astro dev --port 4321",
+    "build": "astro build",
+    "preview": "astro preview",
+    "start": "astro dev --port 4321"
+  },
+  "keywords": [
+    "runtown",
+    "fivem",
+    "guide",
+    "tailwind",
+    "design-system",
+    "calculator"
+  ],
+  "author": "RUN TOWN Community",
+  "license": "MIT",
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.14",
+    "@astrojs/tailwind": "^6.0.2",
+    "@types/leaflet": "^1.9.22",
+    "astro": "^5.18.2",
+    "gsap": "^3.15.0",
+    "leaflet": "^1.9.4",
+    "preline": "^4.2.0",
+    "tailwindcss": "^3.4.19"
+  }
+}

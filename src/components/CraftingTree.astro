@@ -1,0 +1,194 @@
+---
+import CyberIcon from './CyberIcon.astro';
+
+const tier1 = [
+  { id: 'scrap', name: 'เศษเหล็ก', en: 'Scrap Metal', icon: 'wrench' },
+  { id: 'log', name: 'ท่อนไม้', en: 'Wood Log', icon: 'tree' },
+  { id: 'copper', name: 'แร่ทองแดง', en: 'Copper Ore', icon: 'gem' },
+  { id: 'gold', name: 'แร่ทองคำ', en: 'Gold Ore', icon: 'gem' },
+];
+
+const tier2 = [
+  { id: 'ingot', name: 'แท่งเหล็กกล้า', en: 'Steel Ingot', recipe: '3 เศษเหล็ก', ingredients: ['scrap'], icon: 'wrench' },
+  { id: 'plank', name: 'ไม้แปรรูป', en: 'Plank', recipe: '2 ท่อนไม้', ingredients: ['log'], icon: 'tree' },
+  { id: 'spring', name: 'สปริงเหล็ก', en: 'Spring', recipe: '1 เศษเหล็ก + 1 ทองแดง', ingredients: ['scrap', 'copper'], icon: 'wrench' },
+  { id: 'barrel', name: 'ลำกล้องกลึง', en: 'Gun Barrel', recipe: '2 เศษเหล็ก + 2 ทองแดง', ingredients: ['scrap', 'copper'], icon: 'wrench' },
+  { id: 'grip', name: 'ด้ามจับไม้', en: 'Grip', recipe: '1 ท่อนไม้', ingredients: ['log'], icon: 'tree' },
+  { id: 'toolkit', name: 'กล่องเครื่องมือ', en: 'Toolkit', recipe: '1 ทองแดง + 1 ทองคำ', ingredients: ['copper', 'gold'], icon: 'wrench' },
+];
+
+const tier3 = [
+  { id: 'knuckles', name: 'สนับมือเหล็ก', en: 'Brass Knuckles', station: 'โรงกลึงลับ Cypress Flats', value: '1,200 RD', mins: '2 นาที', ingredients: ['ingot', 'scrap'], icon: 'swords' },
+  { id: 'switchblade', name: 'มีดพับพกพา', en: 'Switchblade', station: 'ใต้สะพาน La Mesa', value: '1,800 RD', mins: '3 นาที', ingredients: ['ingot', 'grip', 'scrap', 'log'], icon: 'swords' },
+  { id: 'crowbar', name: 'ชะแลงงัดของ', en: 'Crowbar', station: 'โรงกลึงลับ Cypress Flats', value: '950 RD', mins: '2 นาที', ingredients: ['ingot', 'scrap'], icon: 'swords' },
+  { id: 'pistol', name: 'ปืนพก Vintage', en: 'Vintage Pistol', station: 'ใต้สะพาน La Mesa', value: '12,500 RD', mins: '8 นาที', ingredients: ['ingot', 'spring', 'barrel', 'toolkit', 'scrap', 'copper', 'gold'], icon: 'swords' },
+];
+---
+
+<section id="crafting" class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24 border-t border-line">
+  <div class="space-y-3">
+    <p class="font-mono text-xs font-semibold tracking-[0.2em] text-lime uppercase">// WEAPON CRAFTING MATRIX</p>
+    <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
+      ผังสายการผลิตวัตถุดิบ & อาวุธ
+    </h2>
+    <p class="text-sm text-textSoft max-w-2xl leading-relaxed">
+      แตะที่อาวุธ TIER 3 ด้านขวาสุดเพื่อดูสูตรส่วนผสม วัตถุดิบต้นน้ำที่ต้องเตรียม และจุดโต๊ะคราฟต์ลับ
+    </p>
+  </div>
+
+  <div class="mt-10 grid gap-6 lg:grid-cols-3">
+    
+    <!-- Tier 1 Column -->
+    <div class="rounded-2xl border border-line bg-card/60 p-5 backdrop-blur-md space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-lineSubtle">
+        <span class="font-mono text-xs font-bold text-slate-300">TIER 1 · วัตถุดิบดิบ</span>
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-paper border border-line text-textMuted">ฟาร์มธรรมชาติ</span>
+      </div>
+      <div class="space-y-2.5">
+        {tier1.map(item => (
+          <div class="craft-node p-3.5 rounded-xl border border-line bg-paper/80 flex items-center justify-between transition-all" data-item-id={item.id}>
+            <div class="flex items-center gap-3">
+              <span class="grid size-8 place-items-center rounded-lg bg-card border border-line text-mint">
+                <CyberIcon name={item.icon} class="size-4" />
+              </span>
+              <div>
+                <strong class="text-xs font-bold text-white block">{item.name}</strong>
+                <span class="font-mono text-[10px] text-textMuted">{item.en}</span>
+              </div>
+            </div>
+            <span class="text-[10px] font-mono text-mint">วัตถุดิบต้นน้ำ</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Tier 2 Column -->
+    <div class="rounded-2xl border border-line bg-card/60 p-5 backdrop-blur-md space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-lineSubtle">
+        <span class="font-mono text-xs font-bold text-amber-300">TIER 2 · ชิ้นส่วนแปรรูป</span>
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300">โพลแปรรูป</span>
+      </div>
+      <div class="space-y-2.5">
+        {tier2.map(item => (
+          <div class="craft-node p-3.5 rounded-xl border border-line bg-paper/80 flex items-center justify-between transition-all" data-item-id={item.id}>
+            <div class="flex items-center gap-3">
+              <span class="grid size-8 place-items-center rounded-lg bg-card border border-line text-amber-400">
+                <CyberIcon name={item.icon} class="size-4" />
+              </span>
+              <div>
+                <strong class="text-xs font-bold text-white block">{item.name}</strong>
+                <span class="font-mono text-[10px] text-textMuted">{item.recipe}</span>
+              </div>
+            </div>
+            <span class="text-[10px] font-mono text-amber-300">แปรรูป 1:1</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Tier 3 Column -->
+    <div class="rounded-2xl border border-line bg-card/60 p-5 backdrop-blur-md space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-lineSubtle">
+        <span class="font-mono text-xs font-bold text-lime">TIER 3 · อาวุธสำเร็จรูป</span>
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-lime/10 border border-lime/30 text-lime">โต๊ะคราฟต์ลับ</span>
+      </div>
+      <div class="space-y-2.5">
+        {tier3.map((item, i) => (
+          <button
+            type="button"
+            class={`craft-target-btn w-full p-3.5 rounded-xl border text-left transition-all ${
+              i === 0 ? 'border-lime bg-lime/10 shadow-[0_0_20px_-5px_rgba(165,255,95,0.4)] active' : 'border-line bg-paper/80 hover:border-lime/40'
+            }`}
+            data-target-id={item.id}
+            data-ingredients={item.ingredients.join(',')}
+            data-station={item.station}
+            data-value={item.value}
+            data-mins={item.mins}
+            data-title={item.name}
+          >
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="grid size-8 place-items-center rounded-lg bg-card border border-line text-lime">
+                  <CyberIcon name={item.icon} class="size-4" />
+                </span>
+                <div>
+                  <strong class="text-xs font-bold text-white block">{item.name}</strong>
+                  <span class="font-mono text-[10px] text-textMuted">{item.en}</span>
+                </div>
+              </div>
+              <span class="text-xs font-mono font-bold text-lime">{item.value}</span>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Active Recipe Info Banner -->
+  <div class="mt-6 p-4 rounded-2xl border border-lime/30 bg-card/90 backdrop-blur-md flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-xs shadow-neon-card">
+    <div class="space-y-1">
+      <div class="flex items-center gap-2">
+        <span class="size-2 rounded-full bg-lime animate-pulse"></span>
+        <strong id="craftActiveTitle" class="text-white text-sm">สนับมือเหล็ก (Brass Knuckles)</strong>
+      </div>
+      <p class="text-textSoft text-[11px]">
+        จุดคราฟต์: <span id="craftActiveStation" class="text-lime font-bold">โรงกลึงลับ Cypress Flats</span> · เวลาคราฟต์: <span id="craftActiveMins" class="text-amber-300">2 นาที</span>
+      </p>
+    </div>
+    <div class="flex items-center gap-2">
+      <a href="/guides/crafting/weapons" class="px-4 py-2 rounded-xl bg-lime text-slate-950 font-bold text-xs hover:bg-lime/90 transition-colors">
+        ดูตารางดาเมจ & คู่มือคราฟต์ ➔
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  const targetBtns = document.querySelectorAll('.craft-target-btn');
+  const nodes = document.querySelectorAll('.craft-node');
+  const titleEl = document.getElementById('craftActiveTitle');
+  const stationEl = document.getElementById('craftActiveStation');
+  const minsEl = document.getElementById('craftActiveMins');
+
+  function highlightRecipe(ingredientsStr: string) {
+    const list = ingredientsStr.split(',');
+    nodes.forEach(node => {
+      const id = node.getAttribute('data-item-id') || '';
+      if (list.includes(id)) {
+        node.classList.remove('border-line', 'bg-paper/80');
+        node.classList.add('border-lime/60', 'bg-lime/10', 'shadow-[0_0_15px_-4px_rgba(165,255,95,0.4)]');
+      } else {
+        node.classList.remove('border-lime/60', 'bg-lime/10', 'shadow-[0_0_15px_-4px_rgba(165,255,95,0.4)]');
+        node.classList.add('border-line', 'bg-paper/80');
+      }
+    });
+  }
+
+  targetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      targetBtns.forEach(b => {
+        b.classList.remove('border-lime', 'bg-lime/10', 'shadow-[0_0_20px_-5px_rgba(165,255,95,0.4)]', 'active');
+        b.classList.add('border-line', 'bg-paper/80');
+      });
+      btn.classList.remove('border-line', 'bg-paper/80');
+      btn.classList.add('border-lime', 'bg-lime/10', 'shadow-[0_0_20px_-5px_rgba(165,255,95,0.4)]', 'active');
+
+      const ing = btn.getAttribute('data-ingredients') || '';
+      const station = btn.getAttribute('data-station') || '';
+      const mins = btn.getAttribute('data-mins') || '';
+      const title = btn.getAttribute('data-title') || '';
+
+      if (titleEl) titleEl.textContent = title;
+      if (stationEl) stationEl.textContent = station;
+      if (minsEl) minsEl.textContent = mins;
+
+      highlightRecipe(ing);
+    });
+  });
+
+  // Init first highlight
+  if (targetBtns.length > 0) {
+    highlightRecipe(targetBtns[0].getAttribute('data-ingredients') || '');
+  }
+</script>

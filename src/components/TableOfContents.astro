@@ -1,0 +1,34 @@
+---
+interface Props {
+  headings: { depth: number; slug: string; text: string }[];
+}
+import CyberIcon from './CyberIcon.astro';
+
+const { headings = [] } = Astro.props;
+const filteredHeadings = headings.filter(h => h.depth >= 2 && h.depth <= 3);
+---
+
+{filteredHeadings.length > 0 && (
+  <nav class="hidden xl:block w-72 shrink-0 py-6 pl-4 sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto pr-2">
+    <div class="space-y-3 font-mono text-xs">
+      <div class="flex items-center gap-2 pb-2 border-b border-line text-mint font-bold uppercase tracking-wider text-[11px]">
+        <CyberIcon name="file-text" size={14} class="text-mint shrink-0" />
+        <span>สารบัญในหน้านี้ (TOC)</span>
+      </div>
+
+      <ul class="space-y-2 text-[11px]">
+        {filteredHeadings.map((h) => (
+          <li class={h.depth === 3 ? 'ml-3 border-l border-line pl-2' : ''}>
+            <a
+              href={`#${h.slug}`}
+              class="block text-textMuted hover:text-mint transition-colors py-0.5 leading-snug break-words whitespace-normal"
+              title={h.text}
+            >
+              {h.depth === 3 ? '↳ ' : '• '}{h.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </nav>
+)}

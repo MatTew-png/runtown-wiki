@@ -1,0 +1,1777 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CyberIcon from '../components/CyberIcon.astro';
+---
+
+<BaseLayout title="Live Map เรดาร์สด | RUN TOWN Wiki" activeCategory="map">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style is:global>
+    .leaflet-container {
+      width: 100%;
+      height: 100%;
+      background-color: #1a242d;
+      outline: none;
+      font-family: inherit;
+    }
+    /* Authentic Rockstar Map Tiles - Natural dark radar, NO white bleaching! */
+    .game-radar-tiles img.leaflet-tile {
+      filter: contrast(106%) brightness(98%);
+    }
+    .satellite-tiles img.leaflet-tile {
+      filter: brightness(98%) contrast(105%);
+    }
+    .print-tiles img.leaflet-tile {
+      filter: contrast(110%);
+    }
+
+    /* Custom Leaflet Marker Styling */
+    .gta-marker-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .gta-marker-container:hover {
+      transform: scale(1.25) translateY(-4px);
+      z-index: 9999 !important;
+    }
+    .gta-marker-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+    }
+    .gta-marker-icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 14px rgba(0,0,0,0.8);
+      margin-top: 2px;
+      position: relative;
+    }
+    .pulse-ring {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      animation: gta-pulse 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+      opacity: 0.75;
+      pointer-events: none;
+    }
+    @keyframes gta-pulse {
+      0% { transform: scale(0.9); opacity: 0.9; }
+      70% { transform: scale(2.2); opacity: 0; }
+      100% { transform: scale(2.4); opacity: 0; }
+    }
+  </style>
+
+  <div class="max-w-[1580px] mx-auto px-4 sm:px-6 py-8 space-y-6">
+    
+    <!-- Top Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-line">
+      <div>
+        <div class="flex items-center gap-2 font-mono text-xs text-mint">
+          <a href="/" class="hover:underline">HOME</a>
+          <span>/</span>
+          <span>GTA V REAL MAP RADAR</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-display font-extrabold text-white mt-1 flex items-center gap-2.5">
+          <CyberIcon name="map" size={26} class="text-mint shrink-0" />
+          <span>แผนที่ดาวเทียม GTA V สด & ตัวนับเวลาคูลดาวน์ 10 นาที</span>
+        </h1>
+        <p class="text-xs text-textSoft mt-1">
+          แผนที่ San Andreas ของจริง (ระบุตำแหน่งจุดทำงานและโซนสังเกตชัดเจน พร้อมระบบสลับดาวเทียม / เรดาร์เกม)
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2 font-mono text-xs">
+        <a href="/guides/jobs/woodcutting" class="px-3 py-1.5 rounded-lg border border-line bg-card hover:border-amber-400 text-textSoft hover:text-white transition-colors flex items-center gap-1.5">
+          <CyberIcon name="tree" size={13} class="text-amber-400 shrink-0" />
+          <span>คู่มือตัดไม้</span>
+        </a>
+        <a href="/guides/jobs/pig" class="px-3 py-1.5 rounded-lg border border-line bg-card hover:border-mint text-textSoft hover:text-white transition-colors flex items-center gap-1.5">
+          <CyberIcon name="package" size={13} class="text-mint shrink-0" />
+          <span>คู่มือฟาร์มหมู</span>
+        </a>
+        <a href="/guides/survival/vitals" class="px-3 py-1.5 rounded-lg border border-line bg-card hover:border-emerald-400 text-textSoft hover:text-white transition-colors flex items-center gap-1.5">
+          <CyberIcon name="martini" size={13} class="text-emerald-400 shrink-0" />
+          <span>รีหัว (บาร์เขียว/อู่ช่าง)</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Map & Inspector Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      
+      <!-- Left: Real GTA V Leaflet Map -->
+      <div class="lg:col-span-8 rounded-2xl border border-line bg-card p-4 shadow-neon-card relative overflow-hidden flex flex-col gap-3">
+        
+        <!-- Controls Bar: Layer Switcher & Quick Filters -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-lineSubtle">
+          
+          <!-- Category Filters -->
+          <div class="flex flex-wrap items-center gap-1.5 font-mono text-[11px]">
+            <button type="button" class="map-filter-btn px-2.5 py-1 rounded-lg border border-mint bg-mint/20 text-mint font-bold active cursor-pointer inline-flex items-center gap-1" data-filter="all">ทั้งหมด</button>
+            <button type="button" class="map-filter-btn px-2.5 py-1 rounded-lg border border-line bg-paper text-textSoft hover:text-white cursor-pointer inline-flex items-center gap-1" data-filter="wood"><CyberIcon name="tree" size={12} class="text-amber-400" /> ไม้</button>
+            <button type="button" class="map-filter-btn px-2.5 py-1 rounded-lg border border-line bg-paper text-textSoft hover:text-white cursor-pointer inline-flex items-center gap-1" data-filter="pork"><CyberIcon name="package" size={12} class="text-mint" /> หมู</button>
+            <button type="button" class="map-filter-btn px-2.5 py-1 rounded-lg border border-line bg-paper text-textSoft hover:text-white cursor-pointer inline-flex items-center gap-1" data-filter="wheat"><CyberIcon name="wheat" size={12} class="text-amber-300" /> ข้าว</button>
+            <button type="button" class="map-filter-btn px-2.5 py-1 rounded-lg border border-line bg-paper text-textSoft hover:text-white cursor-pointer inline-flex items-center gap-1" data-filter="flower"><CyberIcon name="flower" size={12} class="text-rose-400" /> ดอกไม้</button>
+            <button type="button" class="map-filter-btn px-2.5 py-1 rounded-lg border border-line bg-paper text-textSoft hover:text-white cursor-pointer inline-flex items-center gap-1" data-filter="mine"><CyberIcon name="gem" size={12} class="text-cyan-300" /> เหมืองแร่</button>
+            <button type="button" class="map-filter-btn px-2.5 py-1 rounded-lg border border-line bg-paper text-textSoft hover:text-white cursor-pointer inline-flex items-center gap-1" data-filter="crystal"><CyberIcon name="gem" size={12} class="text-purple-300" /> คริสตัล</button>
+            <button type="button" class="map-filter-btn px-2.5 py-1 rounded-lg border border-line bg-paper text-textSoft hover:text-white cursor-pointer inline-flex items-center gap-1" data-filter="steel"><CyberIcon name="wrench" size={12} class="text-slate-300" /> เหล็ก</button>
+            <button type="button" class="map-filter-btn px-2.5 py-1 rounded-lg border border-line bg-paper text-textSoft hover:text-white cursor-pointer inline-flex items-center gap-1" data-filter="head_reset"><CyberIcon name="martini" size={12} class="text-emerald-400" /> รีหัว (0%)</button>
+            <button type="button" class="map-filter-btn px-2.5 py-1 rounded-lg border border-line bg-paper text-textSoft hover:text-white cursor-pointer inline-flex items-center gap-1" data-filter="safe"><CyberIcon name="shield-check" size={12} class="text-mint" /> เซฟโซน</button>
+          </div>
+
+          <!-- Layer Mode Switcher (Default: Game Radar) -->
+          <div class="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-line text-[11px] font-mono">
+            <button type="button" class="layer-switch-btn px-2 py-0.5 rounded-lg text-mint font-bold bg-mint/15 active cursor-pointer" data-layer="game">เรดาร์เกม</button>
+            <button type="button" class="layer-switch-btn px-2 py-0.5 rounded-lg text-textSoft hover:text-white cursor-pointer" data-layer="satellite">ดาวเทียม</button>
+            <button type="button" class="layer-switch-btn px-2 py-0.5 rounded-lg text-textSoft hover:text-white cursor-pointer" data-layer="print">แบบพิมพ์</button>
+          </div>
+
+        </div>
+
+        <!-- Real Leaflet Map Container -->
+        <div class="relative w-full h-[620px] sm:h-[720px] rounded-xl overflow-hidden border border-line/60 bg-[#0b131e]">
+          <div id="leafletMap" class="w-full h-full"></div>
+
+          <!-- Bottom Floating Map Hint -->
+          <div class="absolute bottom-3 left-3 z-[1000] pointer-events-none bg-slate-950/85 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-700/80 text-[11px] font-mono text-slate-300 flex items-center gap-2 shadow-lg">
+            <span class="inline-block w-2 h-2 rounded-full bg-mint animate-pulse"></span>
+            <span>หมุนลูกกลิ้งเมาส์เพื่อซูมเข้า/ออก · ลากเมาส์เพื่อเลื่อนแผนที่</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right: Location Inspector & Cooldown Controller Card -->
+      <div class="lg:col-span-4 rounded-2xl border border-line bg-card p-5 space-y-4 shadow-neon-card">
+        
+        <div class="flex items-center justify-between pb-3 border-b border-line">
+          <span class="text-xs font-mono font-bold uppercase text-mint">// LOCATION INSPECTOR</span>
+          <span id="mapStatusBadge" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">
+            WOOD FARM 🟢
+          </span>
+        </div>
+
+        <div class="space-y-1">
+          <h3 id="mapPoiTitle" class="text-lg font-display font-bold text-white">🪓 ฟามไม้ (Paleto Forest)</h3>
+          <p id="mapPoiDesc" class="text-xs text-textSoft leading-relaxed">
+            จุดตัดไม้ดิบ (Raw Wood 0.5 kg) ป่าสนเขา Paleto Forest ทางเหนือ ตัด 10 วิ/ชิ้น (ขวานราคา 200 RD / โอกาสพัง 2% ต่อชิ้น)
+          </p>
+        </div>
+
+        <!-- Coordinates Box -->
+        <div class="p-3.5 rounded-xl border border-line bg-paper space-y-1 font-mono text-xs">
+          <span class="text-[10px] text-textMuted uppercase block">FIVEM GTA V COORDINATES [Vector3]:</span>
+          <strong id="mapPoiCoords" class="text-mint text-sm tracking-wider block">
+            X: 94.1, Y: 6938.8, Z: 30.0
+          </strong>
+          <span id="mapPoiZone" class="text-[10px] text-textMuted">PALETO FOREST · COOLDOWN: 10 MIN · สุจริต 100%</span>
+        </div>
+
+        <!-- Cooldown Box -->
+        <div class="p-3.5 rounded-xl border border-amber-500/30 bg-amber-500/5 space-y-2.5 font-mono">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+              <span id="cooldownPulseDot" class="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
+              COOLDOWN (10 MIN)
+            </span>
+            <span id="spotCooldownRemaining" class="text-sm font-bold text-white tracking-widest">10:00</span>
+          </div>
+
+          <div class="w-full h-2 rounded-full bg-slate-900 border border-slate-700/50 overflow-hidden">
+            <div id="spotCooldownProgress" class="h-full bg-gradient-to-r from-amber-400 to-mint transition-all duration-300" style="width: 100%"></div>
+          </div>
+
+          <div class="flex items-center justify-between text-[11px] text-textSoft font-sans">
+            <span id="spotCooldownStatus">สถานะ: พร้อมกดฟาร์ม</span>
+            <span id="spotCooldownPercent" class="font-mono text-xs text-mint font-bold">READY</span>
+          </div>
+
+          <div class="flex items-center gap-2 pt-1 font-sans">
+            <button type="button" id="startCooldownBtn" class="flex-1 py-2 px-3 rounded-lg font-mono text-xs font-bold text-black bg-gradient-to-r from-amber-400 to-amber-300 hover:scale-101 transition-transform shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
+              <CyberIcon name="clock" size={13} class="text-black shrink-0" />
+              <span id="startCooldownBtnText">เริ่มคูลดาวน์ (10:00)</span>
+            </button>
+            <button type="button" id="resetCooldownBtn" class="py-2 px-3 rounded-lg font-mono text-xs font-semibold text-textSoft bg-paper border border-line hover:text-white transition-colors cursor-pointer">
+              ↺ รีเซ็ต
+            </button>
+          </div>
+        </div>
+
+        <!-- Active Cooldowns Tray -->
+        <div class="p-3 rounded-xl border border-line bg-paper space-y-2">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-mono text-[10px] text-textMuted uppercase tracking-wider flex items-center gap-1">
+              <CyberIcon name="clock" size={11} class="text-amber-400 shrink-0" />
+              <span>คูลดาวน์ที่ทำงานอยู่ (<span id="activeCdCount" class="text-mint font-bold">0</span>)</span>
+            </span>
+            <button type="button" id="toggleSoundBtn" class="text-[10px] font-mono text-mint hover:underline cursor-pointer">
+              เสียงเตือน (เปิด)
+            </button>
+          </div>
+          <div id="activeCdList" class="space-y-1.5 max-h-32 overflow-y-auto pr-1 text-xs">
+            <div class="text-[11px] text-textMuted italic py-1 text-center">ไม่มีจุดที่ติดคูลดาวน์</div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="space-y-2 pt-1">
+          <button type="button" id="copyGpsBtn" class="w-full py-2.5 px-4 rounded-xl font-mono text-xs font-bold text-black bg-gradient-to-r from-mint to-lime hover:scale-102 transition-transform shadow-neon-mint cursor-pointer flex items-center justify-center gap-1.5">
+            <CyberIcon name="copy" size={13} class="text-black shrink-0" />
+            <span>คัดลอกพิกัด GPS</span>
+          </button>
+          <a 
+            href="https://runthukverb-cooldown.surge.sh" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="w-full py-2.5 px-4 rounded-xl font-mono text-xs font-bold text-center text-textSoft bg-paper border border-line hover:border-mint hover:text-white transition-all flex items-center justify-center gap-2"
+          >
+            <CyberIcon name="map" size={14} class="text-mint shrink-0" />
+            <span>เปิดแผนที่ดาวเทียม Surge เต็มจอ ↗</span>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</BaseLayout>
+
+<script>
+  import L from 'leaflet';
+  import jobGpsRoadRoutes from '../data/jobGpsRoadRoutes.json';
+
+  // GTA V Map Constants (Matching GTALens standard)
+  const GTA5_MAP_SIZE = { width: 16384, height: 24576 };
+  const GTA5_BOUNDS = { minX: -4140, maxX: 4860, minY: -5100, maxY: 8400 };
+  const MAP_BOUNDS = L.latLngBounds([-192, 0], [0, 128]);
+  const MAP_MAX_BOUNDS = L.latLngBounds([-210, -15], [15, 145]);
+
+  function gameCoordsToLatLng(gameX: number, gameY: number): L.LatLng {
+    const px = ((gameX - GTA5_BOUNDS.minX) / (GTA5_BOUNDS.maxX - GTA5_BOUNDS.minX)) * GTA5_MAP_SIZE.width;
+    const py = ((GTA5_BOUNDS.maxY - gameY) / (GTA5_BOUNDS.maxY - GTA5_BOUNDS.minY)) * GTA5_MAP_SIZE.height;
+    return L.latLng(-py / 128, px / 128);
+  }
+
+  // Layer Configs
+  const TILE_LAYERS = {
+    game: {
+      url: 'https://s.rsg.sc/sc/images/games/GTAV/map/game/{z}/{x}/{y}.jpg',
+      bgColor: '#151e25',
+      className: 'game-radar-tiles'
+    },
+    satellite: {
+      url: 'https://s.rsg.sc/sc/images/games/GTAV/map/render/{z}/{x}/{y}.jpg',
+      bgColor: '#0d2b4f',
+      className: 'satellite-tiles'
+    },
+    print: {
+      url: 'https://s.rsg.sc/sc/images/games/GTAV/map/print/{z}/{x}/{y}.jpg',
+      bgColor: '#4eb1d0',
+      className: 'print-tiles'
+    }
+  };
+
+  // Spot Database (Clean: Zero cement spots by default!)
+  const spotsData: Record<string, any> = {
+    // === 🪓 งานไม้ (Woodcutting) ===
+    'wood-farm': {
+      id: 'wood-farm',
+      surgeId: 'spot-1791595290477',
+      title: '🪓 ฟามไม้ (Paleto Forest)',
+      desc: 'จุดตัดไม้ดิบ (Raw Wood 0.5 kg) ป่าสนเขา Paleto Forest ทางเหนือ ตัด 10 วิ/ชิ้น (ขวานราคา 200 RD / โอกาสพัง 2% ต่อชิ้น)',
+      coords: 'X: 94.1, Y: 6938.8, Z: 30.0',
+      zone: 'PALETO FOREST · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 94.1, y: 6938.8,
+      status: 'WOOD FARM 🟢',
+      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+      group: 'wood',
+      color: '#f59e0b',
+      icon: '🪓',
+      label: 'ฟามไม้',
+      cdMinutes: 10
+    },
+    'spot-1791595290477': {
+      id: 'wood-farm',
+      surgeId: 'spot-1791595290477',
+      title: '🪓 ฟามไม้ (Paleto Forest)',
+      desc: 'จุดตัดไม้ดิบ (Raw Wood 0.5 kg) ป่าสนเขา Paleto Forest ทางเหนือ ตัด 10 วิ/ชิ้น (ขวานราคา 200 RD / โอกาสพัง 2% ต่อชิ้น)',
+      coords: 'X: 94.1, Y: 6938.8, Z: 30.0',
+      zone: 'PALETO FOREST · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 94.1, y: 6938.8,
+      status: 'WOOD FARM 🟢',
+      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+      group: 'wood',
+      color: '#f59e0b',
+      icon: '🪓',
+      label: 'ฟามไม้',
+      cdMinutes: 10
+    },
+    'wood-pro': {
+      id: 'wood-pro',
+      surgeId: 'spot-1791601120287',
+      title: '🪵 โพลไม้ (Paleto Sawmill)',
+      desc: 'โรงเลื่อยแปรรูปไม้ริมทางรถไฟ Paleto Bay แปรรูปไม้ดิบเป็นไม้แปร 5 วิ/ชิ้น (อัตรา 1:1)',
+      coords: 'X: -559.6, Y: 5321.3, Z: 30.0',
+      zone: 'PALETO BAY / SAWMILL · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: -559.6, y: 5321.3,
+      status: 'PROCESSING 🟢',
+      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+      group: 'wood',
+      color: '#f59e0b',
+      icon: '🪵',
+      label: 'โพลไม้',
+      cdMinutes: 10
+    },
+    'spot-1791601120287': {
+      id: 'wood-pro',
+      surgeId: 'spot-1791601120287',
+      title: '🪵 โพลไม้ (Paleto Sawmill)',
+      desc: 'โรงเลื่อยแปรรูปไม้ริมทางรถไฟ Paleto Bay แปรรูปไม้ดิบเป็นไม้แปร 5 วิ/ชิ้น (อัตรา 1:1)',
+      coords: 'X: -559.6, Y: 5321.3, Z: 30.0',
+      zone: 'PALETO BAY / SAWMILL · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: -559.6, y: 5321.3,
+      status: 'PROCESSING 🟢',
+      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+      group: 'wood',
+      color: '#f59e0b',
+      icon: '🪵',
+      label: 'โพลไม้',
+      cdMinutes: 10
+    },
+    'wood-pack': {
+      id: 'wood-pack',
+      surgeId: 'spot-1789097494502',
+      title: '📦 แพ็คไม้ (Industrial Docks)',
+      desc: 'โกดังรวมสินค้าท่าเรือใต้ แพ็คไม้แปร 2 ชิ้น เป็นกล่องไม้ 1 ลัง (น้ำหนัก 1.0 kg) 5 วิ/ลัง',
+      coords: 'X: -567.8, Y: -2156.2, Z: 30.0',
+      zone: 'PORT OF LS · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: -567.8, y: -2156.2,
+      status: 'PACKING 🟢',
+      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+      group: 'wood',
+      color: '#f59e0b',
+      icon: '📦',
+      label: 'แพ็คไม้',
+      cdMinutes: 10
+    },
+    'spot-1789097494502': {
+      id: 'wood-pack',
+      surgeId: 'spot-1789097494502',
+      title: '📦 แพ็คไม้ (Industrial Docks)',
+      desc: 'โกดังรวมสินค้าท่าเรือใต้ แพ็คไม้แปร 2 ชิ้น เป็นกล่องไม้ 1 ลัง (น้ำหนัก 1.0 kg) 5 วิ/ลัง',
+      coords: 'X: -567.8, Y: -2156.2, Z: 30.0',
+      zone: 'PORT OF LS · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: -567.8, y: -2156.2,
+      status: 'PACKING 🟢',
+      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+      group: 'wood',
+      color: '#f59e0b',
+      icon: '📦',
+      label: 'แพ็คไม้',
+      cdMinutes: 10
+    },
+    'wood-sell': {
+      id: 'wood-sell',
+      surgeId: 'spot-1789097335503',
+      title: '💵 ขายไม้ (El Burro / Murrieta)',
+      desc: 'จุดรับซื้อไม้กล่องพรีเมียม 479 RD/ลัง หรือส่งขายให้ผู้เล่นคนอื่นได้ 500 - 600 RD (ใช้คราฟต์ไม้เบสบอล Bat)',
+      coords: 'X: 1202.7, Y: -1271.3, Z: 30.0',
+      zone: 'EL BURRO HEIGHTS · EXPORT POINT · รับซื้อ 479 RD (ผู้เล่น 500-600 RD)',
+      x: 1202.7, y: -1271.3,
+      status: 'EXPORT POINT 🟢',
+      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+      group: 'wood',
+      color: '#f59e0b',
+      icon: '💵',
+      label: 'ขายไม้ (479 RD)',
+      cdMinutes: 0
+    },
+    'spot-1789097335503': {
+      id: 'wood-sell',
+      surgeId: 'spot-1789097335503',
+      title: '💵 ขายไม้ (El Burro / Murrieta)',
+      desc: 'จุดรับซื้อไม้กล่องพรีเมียม 479 RD/ลัง หรือส่งขายให้ผู้เล่นคนอื่นได้ 500 - 600 RD (ใช้คราฟต์ไม้เบสบอล Bat)',
+      coords: 'X: 1202.7, Y: -1271.3, Z: 30.0',
+      zone: 'EL BURRO HEIGHTS · EXPORT POINT · รับซื้อ 479 RD (ผู้เล่น 500-600 RD)',
+      x: 1202.7, y: -1271.3,
+      status: 'EXPORT POINT 🟢',
+      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+      group: 'wood',
+      color: '#f59e0b',
+      icon: '💵',
+      label: 'ขายไม้ (479 RD)',
+      cdMinutes: 0
+    },
+
+    // === 🍸 จุดรีหัว (บาร์เขียว & อู่ช่าง เท่านั้น!) ===
+    'bar-green': {
+      id: 'bar-green',
+      surgeId: 'spot-1791604241115',
+      title: '🍸 บาร์รีหัว (Del Perro)',
+      desc: 'จุดฟื้นฟูและรีเซ็ตค่าความเหนื่อยล้าของสมอง (Mental Fatigue) กลับสู่ 0% ตามกฎหมายเมือง RUN TOWN (บาร์ทั่วไปรีไม่ได้)',
+      coords: 'X: -1824.1, Y: -1211.9, Z: 30.0',
+      zone: 'DEL PERRO / WEST LS · รีหัว 0% · กฎหมาย RUN TOWN',
+      x: -1824.1,
+      y: -1211.9,
+      status: 'HEAD RESET 🍸',
+      statusClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+      group: 'head_reset',
+      color: '#22c55e',
+      icon: '🍸',
+      label: 'บาร์รีหัว (0%)',
+      cdMinutes: 10
+    },
+    'spot-1791604241115': {
+      id: 'bar-green',
+      surgeId: 'spot-1791604241115',
+      title: '🍸 บาร์รีหัว (Del Perro)',
+      desc: 'จุดฟื้นฟูและรีเซ็ตค่าความเหนื่อยล้าของสมอง (Mental Fatigue) กลับสู่ 0% ตามกฎหมายเมือง RUN TOWN (บาร์ทั่วไปรีไม่ได้)',
+      coords: 'X: -1824.1, Y: -1211.9, Z: 30.0',
+      zone: 'DEL PERRO / WEST LS · รีหัว 0% · กฎหมาย RUN TOWN',
+      x: -1824.1,
+      y: -1211.9,
+      status: 'HEAD RESET 🍸',
+      statusClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+      group: 'head_reset',
+      color: '#22c55e',
+      icon: '🍸',
+      label: 'บาร์รีหัว (0%)',
+      cdMinutes: 10
+    },
+    'garage-reset': {
+      id: 'garage-reset',
+      surgeId: 'spot-1788676937650',
+      title: '🔧 อู่ (Chumash / Pacific Blvd)',
+      desc: 'จุดพักผ่อนและอู่ซ่อมรถ ช่างบริการสามารถรีเซ็ตค่าสมองกลับสู่ 0% ได้อย่างปลอดภัยตลอด 24 ชม.',
+      coords: 'X: -3065.5, Y: 419.5, Z: 30.0',
+      zone: 'CHUMASH / PACIFIC BLVD · อู่ช่าง · รีหัว 0%',
+      x: -3065.5,
+      y: 419.5,
+      status: 'HEAD RESET 🔧',
+      statusClass: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
+      group: 'head_reset',
+      color: '#ef4444',
+      icon: '🔧',
+      label: 'อู่ (รีหัว 0%)',
+      cdMinutes: 10
+    },
+    'spot-1788676937650': {
+      id: 'garage-reset',
+      surgeId: 'spot-1788676937650',
+      title: '🔧 อู่ (Chumash / Pacific Blvd)',
+      desc: 'จุดพักผ่อนและอู่ซ่อมรถ ช่างบริการสามารถรีเซ็ตค่าสมองกลับสู่ 0% ได้อย่างปลอดภัยตลอด 24 ชม.',
+      coords: 'X: -3065.5, Y: 419.5, Z: 30.0',
+      zone: 'CHUMASH / PACIFIC BLVD · อู่ช่าง · รีหัว 0%',
+      x: -3065.5,
+      y: 419.5,
+      status: 'HEAD RESET 🔧',
+      statusClass: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
+      group: 'head_reset',
+      color: '#ef4444',
+      icon: '🔧',
+      label: 'อู่ (รีหัว 0%)',
+      cdMinutes: 10
+    },
+
+    // === 🐷 ฟาร์มหมู (Pork Farming) ===
+    'pork-farm': {
+      id: 'pork-farm',
+      title: '🐷 ฟามหมู (Grapeseed / Alamo Sea)',
+      desc: 'จุดเริ่มต้นวงจรการผลิตฟาร์มหมู มีคอกหมูและจุดให้อาหารข้าว ตั้งอยู่ทางตอนเหนือของ Alamo Sea',
+      coords: 'X: 1454.2, Y: 1067.7, Z: 30.0',
+      zone: 'GRAPESEED / ALAMO SEA · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 1454.2, y: 1067.7,
+      status: 'PORK FARM 🟢',
+      statusClass: 'bg-pink-500/15 text-pink-300 border-pink-500/30',
+      group: 'pork',
+      color: '#ec4899',
+      icon: '🐷',
+      label: 'ฟามหมู',
+      cdMinutes: 10
+    },
+    'pork-pro': {
+      id: 'pork-pro',
+      title: '🥩 โพลหมู (South Los Santos)',
+      desc: 'โรงงานแปรรูปหมูดิบให้กลายเป็นหมูโพร อัตราส่วน 1:1 ค่าสมองเพิ่มขึ้นช้าๆ',
+      coords: 'X: 956.8, Y: -2127.2, Z: 30.0',
+      zone: 'SOUTH LOS SANTOS · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 956.8, y: -2127.2,
+      status: 'PROCESSING 🟢',
+      statusClass: 'bg-pink-500/15 text-pink-300 border-pink-500/30',
+      group: 'pork',
+      color: '#ec4899',
+      icon: '🥩',
+      label: 'โพลหมู',
+      cdMinutes: 10
+    },
+    'pork-pack': {
+      id: 'pork-pack',
+      title: '📦 แพ็คหมู (Port of LS)',
+      desc: 'จุดบรรจุหมูโพรเป็นหมูแพ็คเกจพรีเมียม 2:1 เพื่อเตรียมโหลดขึ้นรถส่งออก',
+      coords: 'X: -609.0, Y: -2159.5, Z: 30.0',
+      zone: 'PORT OF LS · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: -609.0, y: -2159.5,
+      status: 'PACKING 🟢',
+      statusClass: 'bg-pink-500/15 text-pink-300 border-pink-500/30',
+      group: 'pork',
+      color: '#ec4899',
+      icon: '📦',
+      label: 'แพ็คหมู',
+      cdMinutes: 10
+    },
+    'pork-sell': {
+      id: 'pork-sell',
+      surgeId: 'spot-1789097291487',
+      title: '💵 ขายหมู (Strawberry / Little Seoul)',
+      desc: 'จุดรับซื้อเนื้อหมูแพ็ค 422 RD ต่อกล่อง หรือส่งขายตรงให้ผู้เล่นร้านอาหาร (130 - 150 RD)',
+      coords: 'X: -638.1, Y: -1213.0, Z: 30.0',
+      zone: 'STRAWBERRY / LITTLE SEOUL · รับซื้อ 422 RD · สุจริต 100%',
+      x: -638.1,
+      y: -1213.0,
+      status: 'EXPORT POINT 🟢',
+      statusClass: 'bg-pink-500/15 text-pink-300 border-pink-500/30',
+      group: 'pork',
+      color: '#ec4899',
+      icon: '💵',
+      label: 'ขายหมู (422 RD)',
+      cdMinutes: 10
+    },
+    'spot-1789097291487': {
+      id: 'pork-sell',
+      surgeId: 'spot-1789097291487',
+      title: '💵 ขายหมู (Strawberry / Little Seoul)',
+      desc: 'จุดรับซื้อเนื้อหมูแพ็ค 422 RD ต่อกล่อง หรือส่งขายตรงให้ผู้เล่นร้านอาหาร (130 - 150 RD)',
+      coords: 'X: -638.1, Y: -1213.0, Z: 30.0',
+      zone: 'STRAWBERRY / LITTLE SEOUL · รับซื้อ 422 RD · สุจริต 100%',
+      x: -638.1,
+      y: -1213.0,
+      status: 'EXPORT POINT 🟢',
+      statusClass: 'bg-pink-500/15 text-pink-300 border-pink-500/30',
+      group: 'pork',
+      color: '#ec4899',
+      icon: '💵',
+      label: 'ขายหมู (422 RD)',
+      cdMinutes: 10
+    },
+    'vespucci': {
+      id: 'pork-sell',
+      surgeId: 'spot-1789097291487',
+      title: '💵 ขายหมู (Strawberry / Little Seoul)',
+      desc: 'จุดรับซื้อเนื้อหมูแพ็ค 422 RD ต่อกล่อง หรือส่งขายตรงให้ผู้เล่นร้านอาหาร (130 - 150 RD)',
+      coords: 'X: -638.1, Y: -1213.0, Z: 30.0',
+      zone: 'STRAWBERRY / LITTLE SEOUL · รับซื้อ 422 RD · สุจริต 100%',
+      x: -638.1,
+      y: -1213.0,
+      status: 'EXPORT POINT 🟢',
+      statusClass: 'bg-pink-500/15 text-pink-300 border-pink-500/30',
+      group: 'pork',
+      color: '#ec4899',
+      icon: '💵',
+      label: 'ขายหมู (422 RD)',
+      cdMinutes: 10
+    },
+
+    // === 🛡️ เซฟโซน & คลัง REBEL ===
+    'hospital': {
+      id: 'hospital',
+      surgeId: 'spot-1789096362145',
+      title: '🏥 โรงพยาบาล Pillbox Hill',
+      desc: 'ศูนย์การแพทย์ใจกลางเมือง Los Santos เขตปลอดภัยสูงสุด (Safe Zone 100%) และจุดรับซื้อดอกไม้ดิบของหมอเพื่อปรุงยา (100 RD/ต้น)',
+      coords: 'X: -780.1, Y: 287.1, Z: 30.0',
+      zone: 'PILLBOX HILL · SAFE ZONE · จุดขายดอกไม้ดิบให้หมอ (100 RD)',
+      x: -780.1, y: 287.1,
+      status: 'SAFE ZONE 🟢',
+      statusClass: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
+      group: 'safe',
+      color: '#10b981',
+      icon: '🏥',
+      label: 'รพ. เซฟโซน (ขายหมอ 100 RD)',
+      cdMinutes: 0
+    },
+    'spot-1789096362145': {
+      id: 'hospital',
+      surgeId: 'spot-1789096362145',
+      title: '🏥 โรงพยาบาล Pillbox Hill',
+      desc: 'ศูนย์การแพทย์ใจกลางเมือง Los Santos เขตปลอดภัยสูงสุด (Safe Zone 100%) และจุดรับซื้อดอกไม้ดิบของหมอเพื่อปรุงยา (100 RD/ต้น)',
+      coords: 'X: -780.1, Y: 287.1, Z: 30.0',
+      zone: 'PILLBOX HILL · SAFE ZONE · จุดขายดอกไม้ดิบให้หมอ (100 RD)',
+      x: -780.1, y: 287.1,
+      status: 'SAFE ZONE 🟢',
+      statusClass: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
+      group: 'safe',
+      color: '#10b981',
+      icon: '🏥',
+      label: 'รพ. เซฟโซน (ขายหมอ 100 RD)',
+      cdMinutes: 0
+    },
+    'police': {
+      id: 'police',
+      title: '👮 สถานีตำรวจ Mission Row (LSPD)',
+      desc: 'กองบัญชาการตำรวจนครบาล LSPD เขตความปลอดภัยระดับสูง',
+      coords: 'X: 417.1, Y: -982.3, Z: 30.0',
+      x: 417.1, y: -982.3,
+      status: 'SAFE ZONE 🟢',
+      statusClass: 'bg-blue-500/15 text-blue-400 border-blue-500/30',
+      group: 'safe',
+      color: '#3b82f6',
+      icon: '👮',
+      label: 'ตำรวจ',
+      cdMinutes: 0
+    },
+    'rebel-south': {
+      id: 'rebel-south',
+      surgeId: 'spot-1791478456825',
+      title: '🗄️ ตู้เรเบลล่าง (Elysian Island)',
+      desc: 'ตู้คลาวด์เซฟเรเบลท่าเรือใต้ จุดสต็อกสินค้าและถ่ายเทน้ำหนักก่อนหรือหลังโพล/แพ็ค',
+      coords: 'X: 1168.6, Y: -3175.2, Z: 30.0',
+      zone: 'ELYSIAN ISLAND / SOUTH PORT · คลัง CLOUD STASH',
+      x: 1168.6, y: -3175.2,
+      status: 'CLOUD STASH 🗄️',
+      statusClass: 'bg-red-500/20 text-red-300 border-red-500/40',
+      group: 'safe',
+      color: '#ef4444',
+      icon: '🗄️',
+      label: 'เรเบลล่าง',
+      cdMinutes: 10
+    },
+    'spot-1791478456825': {
+      id: 'rebel-south',
+      surgeId: 'spot-1791478456825',
+      title: '🗄️ ตู้เรเบลล่าง (Elysian Island)',
+      desc: 'ตู้คลาวด์เซฟเรเบลท่าเรือใต้ จุดสต็อกสินค้าและถ่ายเทน้ำหนักก่อนหรือหลังโพล/แพ็ค',
+      coords: 'X: 1168.6, Y: -3175.2, Z: 30.0',
+      zone: 'ELYSIAN ISLAND / SOUTH PORT · คลัง CLOUD STASH',
+      x: 1168.6, y: -3175.2,
+      status: 'CLOUD STASH 🗄️',
+      statusClass: 'bg-red-500/20 text-red-300 border-red-500/40',
+      group: 'safe',
+      color: '#ef4444',
+      icon: '🗄️',
+      label: 'เรเบลล่าง',
+      cdMinutes: 10
+    },
+    'rebel-desert': {
+      id: 'rebel-desert',
+      surgeId: 'spot-1791478402050',
+      title: '🗄️ ตู้เรเบลทะเลทราย (Grand Senora)',
+      desc: 'ตู้คลาวด์เซฟเรเบลทะเลทราย จุดสต็อกข้าวดิบสำหรับนำไปเลี้ยงหมู หรือพักวัตถุดิบโซนเหนือ',
+      coords: 'X: 1137.8, Y: 3054.1, Z: 30.0',
+      zone: 'GRAND SENORA DESERT · คลัง CLOUD STASH',
+      x: 1137.8, y: 3054.1,
+      status: 'CLOUD STASH 🗄️',
+      statusClass: 'bg-red-500/20 text-red-300 border-red-500/40',
+      group: 'safe',
+      color: '#ef4444',
+      icon: '🗄️',
+      label: 'เรเบลทะเลทราย',
+      cdMinutes: 10
+    },
+    'spot-1791478402050': {
+      id: 'rebel-desert',
+      surgeId: 'spot-1791478402050',
+      title: '🗄️ ตู้เรเบลทะเลทราย (Grand Senora)',
+      desc: 'ตู้คลาวด์เซฟเรเบลทะเลทราย จุดสต็อกข้าวดิบสำหรับนำไปเลี้ยงหมู หรือพักวัตถุดิบโซนเหนือ',
+      coords: 'X: 1137.8, Y: 3054.1, Z: 30.0',
+      zone: 'GRAND SENORA DESERT · คลัง CLOUD STASH',
+      x: 1137.8, y: 3054.1,
+      status: 'CLOUD STASH 🗄️',
+      statusClass: 'bg-red-500/20 text-red-300 border-red-500/40',
+      group: 'safe',
+      color: '#ef4444',
+      icon: '🗄️',
+      label: 'เรเบลทะเลทราย',
+      cdMinutes: 10
+    },
+
+    // === 🌾 เกษตร: ฟาร์มข้าว (Wheat Farming) ===
+    'wheat-farm': {
+      id: 'wheat-farm',
+      surgeId: 'spot-1791601204634',
+      title: '🌾 ฟามข้าว (Grapeseed)',
+      desc: 'ทุ่งข้าวสาลี Grapeseed เกี่ยวรวงข้าวดิบ (Raw Rice 0.5 kg) นำไปแปรรูปเป็นข้าวแปร หรือส่งคลังเรเบลเลี้ยงหมู',
+      coords: 'X: 2855.0, Y: 4609.2, Z: 30.0',
+      zone: 'GRAPESEED · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 2855.0, y: 4609.2,
+      status: 'WHEAT FARM 🟢',
+      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
+      group: 'wheat',
+      color: '#eab308',
+      icon: '🌾',
+      label: 'ฟามข้าว',
+      cdMinutes: 10
+    },
+    'spot-1791601204634': {
+      id: 'wheat-farm',
+      surgeId: 'spot-1791601204634',
+      title: '🌾 ฟามข้าว (Grapeseed)',
+      desc: 'ทุ่งข้าวสาลี Grapeseed เกี่ยวรวงข้าวดิบ (Raw Rice 0.5 kg) นำไปแปรรูปเป็นข้าวแปร หรือส่งคลังเรเบลเลี้ยงหมู',
+      coords: 'X: 2855.0, Y: 4609.2, Z: 30.0',
+      zone: 'GRAPESEED · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 2855.0, y: 4609.2,
+      status: 'WHEAT FARM 🟢',
+      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
+      group: 'wheat',
+      color: '#eab308',
+      icon: '🌾',
+      label: 'ฟามข้าว',
+      cdMinutes: 10
+    },
+    'wheat-pro': {
+      id: 'wheat-pro',
+      surgeId: 'spot-1791601186905',
+      title: '🏭 โพลข้าว (Grapeseed Mill)',
+      desc: 'โรงสียุ้งฉางข้าว Grapeseed แปรรูปข้าวดิบเป็นข้าวแปร (5 วิ/ชิ้น อัตรา 1:1)',
+      coords: 'X: 1932.9, Y: 4633.7, Z: 30.0',
+      zone: 'GRAPESEED MILL · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 1932.9, y: 4633.7,
+      status: 'PROCESSING 🟢',
+      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
+      group: 'wheat',
+      color: '#eab308',
+      icon: '🌾',
+      label: 'โพลข้าว',
+      cdMinutes: 10
+    },
+    'spot-1791601186905': {
+      id: 'wheat-pro',
+      surgeId: 'spot-1791601186905',
+      title: '🏭 โพลข้าว (Grapeseed Mill)',
+      desc: 'โรงสียุ้งฉางข้าว Grapeseed แปรรูปข้าวดิบเป็นข้าวแปร (5 วิ/ชิ้น อัตรา 1:1)',
+      coords: 'X: 1932.9, Y: 4633.7, Z: 30.0',
+      zone: 'GRAPESEED MILL · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 1932.9, y: 4633.7,
+      status: 'PROCESSING 🟢',
+      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
+      group: 'wheat',
+      color: '#eab308',
+      icon: '🌾',
+      label: 'โพลข้าว',
+      cdMinutes: 10
+    },
+    'wheat-pack': {
+      id: 'wheat-pack',
+      surgeId: 'spot-1789097486335',
+      title: '📦 แพ็คข้าว (Industrial Docks)',
+      desc: 'โกดังรวมสินค้าท่าเรือใต้ แพ็คข้าวแปร 2 ชิ้น เป็นข้าวแพ็ค 1 กล่อง (น้ำหนัก 1.0 kg) 5 วิ/ลัง',
+      coords: 'X: -591.4, Y: -2130.9, Z: 30.0',
+      zone: 'PORT OF LS · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: -591.4, y: -2130.9,
+      status: 'PACKING 🟢',
+      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
+      group: 'wheat',
+      color: '#f59e0b',
+      icon: '📦',
+      label: 'แพ็คข้าว',
+      cdMinutes: 10
+    },
+    'spot-1789097486335': {
+      id: 'wheat-pack',
+      surgeId: 'spot-1789097486335',
+      title: '📦 แพ็คข้าว (Industrial Docks)',
+      desc: 'โกดังรวมสินค้าท่าเรือใต้ แพ็คข้าวแปร 2 ชิ้น เป็นข้าวแพ็ค 1 กล่อง (น้ำหนัก 1.0 kg) 5 วิ/ลัง',
+      coords: 'X: -591.4, Y: -2130.9, Z: 30.0',
+      zone: 'PORT OF LS · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: -591.4, y: -2130.9,
+      status: 'PACKING 🟢',
+      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
+      group: 'wheat',
+      color: '#f59e0b',
+      icon: '📦',
+      label: 'แพ็คข้าว',
+      cdMinutes: 10
+    },
+    'wheat-sell': {
+      id: 'wheat-sell',
+      surgeId: 'spot-1789096762757',
+      title: '💵 ขายข้าว (Morningwood)',
+      desc: 'จุดรับซื้อข้าวกล่อง 396 RD ต่อกล่อง โซน Morningwood ถนน Boulevard ฝั่งตะวันตก',
+      coords: 'X: -1448.0, Y: -363.5, Z: 30.0',
+      zone: 'MORNINGWOOD / WEST LS · รับซื้อ 396 RD · สุจริต 100%',
+      x: -1448.0, y: -363.5,
+      status: 'EXPORT POINT 🟢',
+      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
+      group: 'wheat',
+      color: '#eab308',
+      icon: '💵',
+      label: 'ขายข้าว (396 RD)',
+      cdMinutes: 10
+    },
+    'spot-1789096762757': {
+      id: 'wheat-sell',
+      surgeId: 'spot-1789096762757',
+      title: '💵 ขายข้าว (Morningwood)',
+      desc: 'จุดรับซื้อข้าวกล่อง 396 RD ต่อกล่อง โซน Morningwood ถนน Boulevard ฝั่งตะวันตก',
+      coords: 'X: -1448.0, Y: -363.5, Z: 30.0',
+      zone: 'MORNINGWOOD / WEST LS · รับซื้อ 396 RD · สุจริต 100%',
+      x: -1448.0, y: -363.5,
+      status: 'EXPORT POINT 🟢',
+      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
+      group: 'wheat',
+      color: '#eab308',
+      icon: '💵',
+      label: 'ขายข้าว (396 RD)',
+      cdMinutes: 10
+    },
+    // === 🌸 เกษตร: เก็บดอกไม้ (Flower Gathering) ===
+    'flower-farm': {
+      id: 'flower-farm',
+      surgeId: 'spot-1791764193302',
+      title: '🌸 ฟามดอกไม้ (Mount Gordo / Grapeseed)',
+      desc: 'ทุ่งดอกไม้สดแถบภูเขา Mount Gordo เก็บดอกไม้สด 8 วิ/ชิ้น (Raw Flower 0.5 kg) สปีดไวที่สุดในงานขาว',
+      coords: 'X: 2519.9, Y: 4350.4, Z: 30.0',
+      zone: 'MOUNT GORDO / GRAPESEED · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 2519.9, y: 4350.4,
+      status: 'FLOWER FARM 🟢',
+      statusClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+      group: 'flower',
+      color: '#f43f5e',
+      icon: '🌸',
+      label: 'ฟามดอกไม้',
+      cdMinutes: 10
+    },
+    'spot-1791764193302': {
+      id: 'flower-farm',
+      surgeId: 'spot-1791764193302',
+      title: '🌸 ฟามดอกไม้ (Mount Gordo / Grapeseed)',
+      desc: 'ทุ่งดอกไม้สดแถบภูเขา Mount Gordo เก็บดอกไม้สด 8 วิ/ชิ้น (Raw Flower 0.5 kg) สปีดไวที่สุดในงานขาว',
+      coords: 'X: 2519.9, Y: 4350.4, Z: 30.0',
+      zone: 'MOUNT GORDO / GRAPESEED · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 2519.9, y: 4350.4,
+      status: 'FLOWER FARM 🟢',
+      statusClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+      group: 'flower',
+      color: '#f43f5e',
+      icon: '🌸',
+      label: 'ฟามดอกไม้',
+      cdMinutes: 10
+    },
+    'spot-1791478323809': {
+      id: 'flower-farm',
+      surgeId: 'spot-1791764193302',
+      title: '🌸 ฟามดอกไม้ (Mount Gordo / Grapeseed)',
+      desc: 'ทุ่งดอกไม้สดแถบภูเขา Mount Gordo เก็บดอกไม้สด 8 วิ/ชิ้น (Raw Flower 0.5 kg) สปีดไวที่สุดในงานขาว',
+      coords: 'X: 2519.9, Y: 4350.4, Z: 30.0',
+      zone: 'MOUNT GORDO / GRAPESEED · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 2519.9, y: 4350.4,
+      status: 'FLOWER FARM 🟢',
+      statusClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+      group: 'flower',
+      color: '#f43f5e',
+      icon: '🌸',
+      label: 'ฟามดอกไม้',
+      cdMinutes: 10
+    },
+    'flower-pro': {
+      id: 'flower-pro',
+      surgeId: 'spot-1791478349008',
+      title: '🧪 โพลดอกไม้ (Grand Senora)',
+      desc: 'โรงสกัดพฤกษศาสตร์และน้ำมันหอมระเหย แปรรูปดอกไม้ดิบเป็นดอกไม้แปร (5 วิ/ชิ้น อัตรา 1:1)',
+      coords: 'X: 837.9, Y: 2157.6, Z: 30.0',
+      zone: 'GRAND SENORA DESERT · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 837.9, y: 2157.6,
+      status: 'PROCESSING 🟢',
+      statusClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+      group: 'flower',
+      color: '#f43f5e',
+      icon: '🧪',
+      label: 'โพลดอกไม้',
+      cdMinutes: 10
+    },
+    'spot-1791478349008': {
+      id: 'flower-pro',
+      surgeId: 'spot-1791478349008',
+      title: '🧪 โพลดอกไม้ (Grand Senora)',
+      desc: 'โรงสกัดพฤกษศาสตร์และน้ำมันหอมระเหย แปรรูปดอกไม้ดิบเป็นดอกไม้แปร (5 วิ/ชิ้น อัตรา 1:1)',
+      coords: 'X: 837.9, Y: 2157.6, Z: 30.0',
+      zone: 'GRAND SENORA DESERT · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 837.9, y: 2157.6,
+      status: 'PROCESSING 🟢',
+      statusClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+      group: 'flower',
+      color: '#f43f5e',
+      icon: '🧪',
+      label: 'โพลดอกไม้',
+      cdMinutes: 10
+    },
+    'flower-pack': {
+      id: 'flower-pack',
+      surgeId: 'spot-1789097510537',
+      title: '📦 แพ็คดอกไม้ (Industrial Docks)',
+      desc: 'โกดังรวมสินค้าท่าเรือใต้ แพ็คดอกไม้แปร 2 ชิ้น เป็นช่อดอกไม้แพ็ค 1 กล่อง (น้ำหนัก 1.0 kg) 5 วิ/ลัง',
+      coords: 'X: -585.4, Y: -2178.7, Z: 30.0',
+      zone: 'PORT OF LS · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: -585.4, y: -2178.7,
+      status: 'PACKING 🟢',
+      statusClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+      group: 'flower',
+      color: '#f43f5e',
+      icon: '📦',
+      label: 'แพ็คดอกไม้',
+      cdMinutes: 10
+    },
+    'spot-1789097510537': {
+      id: 'flower-pack',
+      surgeId: 'spot-1789097510537',
+      title: '📦 แพ็คดอกไม้ (Industrial Docks)',
+      desc: 'โกดังรวมสินค้าท่าเรือใต้ แพ็คดอกไม้แปร 2 ชิ้น เป็นช่อดอกไม้แพ็ค 1 กล่อง (น้ำหนัก 1.0 kg) 5 วิ/ลัง',
+      coords: 'X: -585.4, Y: -2178.7, Z: 30.0',
+      zone: 'PORT OF LS · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: -585.4, y: -2178.7,
+      status: 'PACKING 🟢',
+      statusClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+      group: 'flower',
+      color: '#f43f5e',
+      icon: '📦',
+      label: 'แพ็คดอกไม้',
+      cdMinutes: 10
+    },
+    'flower-sell': {
+      id: 'flower-sell',
+      surgeId: 'spot-1789096720791',
+      title: '💵 ขายดอกไม้ (Del Perro)',
+      desc: 'จุดรับซื้อดอกไม้แพ็ค 408 RD ต่อกล่อง โซน Del Perro ริมถนนชายหาด หรือส่งขายตรงให้หมอ (100 RD)',
+      coords: 'X: -1391.2, Y: -171.8, Z: 30.0',
+      zone: 'DEL PERRO BEACH · รับซื้อ 408 RD · สุจริต 100%',
+      x: -1391.2, y: -171.8,
+      status: 'EXPORT POINT 🟢',
+      statusClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+      group: 'flower',
+      color: '#f43f5e',
+      icon: '💵',
+      label: 'ขายดอกไม้ (408 RD)',
+      cdMinutes: 10
+    },
+    'spot-1789096720791': {
+      id: 'flower-sell',
+      surgeId: 'spot-1789096720791',
+      title: '💵 ขายดอกไม้ (Del Perro)',
+      desc: 'จุดรับซื้อดอกไม้แพ็ค 408 RD ต่อกล่อง โซน Del Perro ริมถนนชายหาด หรือส่งขายตรงให้หมอ (100 RD)',
+      coords: 'X: -1391.2, Y: -171.8, Z: 30.0',
+      zone: 'DEL PERRO BEACH · รับซื้อ 408 RD · สุจริต 100%',
+      x: -1391.2, y: -171.8,
+      status: 'EXPORT POINT 🟢',
+      statusClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+      group: 'flower',
+      color: '#f43f5e',
+      icon: '💵',
+      label: 'ขายดอกไม้ (408 RD)',
+      cdMinutes: 10
+    },
+
+    // === ⛏️ เหมือง & แร่ ===
+    'mine-pit': {
+      id: 'mine-pit',
+      surgeId: 'spot-1791604548177',
+      title: '⛏️ เหมืองขุดแร่ (Davis Quartz)',
+      desc: 'เหมืองหินเปิด Davis Quartz จุดขุดหินดิบ (Raw Stone 0.5 kg) เพื่อนำไปโม่สุ่มลุ้นสายแร่ทองคำ/ทองแดง/เพชร',
+      coords: 'X: 2949.8, Y: 2776.4, Z: 30.0',
+      zone: 'DAVIS QUARRY · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 2949.8, y: 2776.4,
+      status: 'MINE PIT 🟢',
+      statusClass: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
+      group: 'mine',
+      color: '#f97316',
+      icon: '⛏️',
+      label: 'เหมืองแร่',
+      cdMinutes: 10
+    },
+    'spot-1791604548177': {
+      id: 'mine-pit',
+      surgeId: 'spot-1791604548177',
+      title: '⛏️ เหมืองขุดแร่ (Davis Quartz)',
+      desc: 'เหมืองหินเปิด Davis Quartz จุดขุดหินดิบ (Raw Stone 0.5 kg) เพื่อนำไปโม่สุ่มลุ้นสายแร่ทองคำ/ทองแดง/เพชร',
+      coords: 'X: 2949.8, Y: 2776.4, Z: 30.0',
+      zone: 'DAVIS QUARRY · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 2949.8, y: 2776.4,
+      status: 'MINE PIT 🟢',
+      statusClass: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
+      group: 'mine',
+      color: '#f97316',
+      icon: '⛏️',
+      label: 'เหมืองแร่',
+      cdMinutes: 10
+    },
+    'stone-pro': {
+      id: 'stone-pro',
+      surgeId: 'spot-1791604573509',
+      title: '🪨 โพลหิน (Quarry Processor)',
+      desc: 'โรงโม่หิน แปรรูปหินก้อนดิบ 5 วิ/ชิ้น สุ่มลุ้นแร่: คอปเปอร์ดิบ 60%, ทองดิบ 40%, เพชร 1%',
+      coords: 'X: 2648.8, Y: 2805.6, Z: 30.0',
+      zone: 'DAVIS QUARRY · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 2648.8, y: 2805.6,
+      status: 'PROCESSING 🟢',
+      statusClass: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
+      group: 'mine',
+      color: '#f97316',
+      icon: '🪨',
+      label: 'โพลหิน',
+      cdMinutes: 10
+    },
+    'spot-1791604573509': {
+      id: 'stone-pro',
+      surgeId: 'spot-1791604573509',
+      title: '🪨 โพลหิน (Quarry Processor)',
+      desc: 'โรงโม่หิน แปรรูปหินก้อนดิบ 5 วิ/ชิ้น สุ่มลุ้นแร่: คอปเปอร์ดิบ 60%, ทองดิบ 40%, เพชร 1%',
+      coords: 'X: 2648.8, Y: 2805.6, Z: 30.0',
+      zone: 'DAVIS QUARRY · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 2648.8, y: 2805.6,
+      status: 'PROCESSING 🟢',
+      statusClass: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
+      group: 'mine',
+      color: '#f97316',
+      icon: '🪨',
+      label: 'โพลหิน',
+      cdMinutes: 10
+    },
+    'copper-smelt': {
+      id: 'copper-smelt',
+      surgeId: 'spot-1789097421919',
+      title: '🥉 โพลคอปเปอร์ (หลอมทองแดง)',
+      desc: 'เตาหลอมโลหะทองแดงใต้เมือง แปรรูป Raw Copper เป็น Copper Ingot (มูลค่า 400 RD)',
+      coords: 'X: 1110.4, Y: -2001.8, Z: 30.0',
+      zone: 'CYPRESS FLATS / SOUTH LS · หลอมทองแดง 400 RD',
+      x: 1110.4, y: -2001.8,
+      status: 'SMELTING 🟢',
+      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+      group: 'mine',
+      color: '#f59e0b',
+      icon: '🥉',
+      label: 'โพลคอปเปอร์ (400 RD)',
+      cdMinutes: 10
+    },
+    'spot-1789097421919': {
+      id: 'copper-smelt',
+      surgeId: 'spot-1789097421919',
+      title: '🥉 โพลคอปเปอร์ (หลอมทองแดง)',
+      desc: 'เตาหลอมโลหะทองแดงใต้เมือง แปรรูป Raw Copper เป็น Copper Ingot (มูลค่า 400 RD)',
+      coords: 'X: 1110.4, Y: -2001.8, Z: 30.0',
+      zone: 'CYPRESS FLATS / SOUTH LS · หลอมทองแดง 400 RD',
+      x: 1110.4, y: -2001.8,
+      status: 'SMELTING 🟢',
+      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+      group: 'mine',
+      color: '#f59e0b',
+      icon: '🥉',
+      label: 'โพลคอปเปอร์ (400 RD)',
+      cdMinutes: 10
+    },
+    'gold-smelt': {
+      id: 'gold-smelt',
+      surgeId: 'spot-1789097536201',
+      title: '🥇 โพลทอง (หลอมทองคำ)',
+      desc: 'เตาหลอมโลหะมีค่าโซนท่าเรือ แปรรูป Raw Gold เป็น Gold Ingot (มูลค่า 600 RD)',
+      coords: 'X: 1013.7, Y: -2534.7, Z: 30.0',
+      zone: 'PORT OF LS / SOUTH REFINER · หลอมทองคำ 600 RD',
+      x: 1013.7, y: -2534.7,
+      status: 'SMELTING 🟢',
+      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
+      group: 'mine',
+      color: '#eab308',
+      icon: '🥇',
+      label: 'โพลทอง (600 RD)',
+      cdMinutes: 10
+    },
+    'spot-1789097536201': {
+      id: 'gold-smelt',
+      surgeId: 'spot-1789097536201',
+      title: '🥇 โพลทอง (หลอมทองคำ)',
+      desc: 'เตาหลอมโลหะมีค่าโซนท่าเรือ แปรรูป Raw Gold เป็น Gold Ingot (มูลค่า 600 RD)',
+      coords: 'X: 1013.7, Y: -2534.7, Z: 30.0',
+      zone: 'PORT OF LS / SOUTH REFINER · หลอมทองคำ 600 RD',
+      x: 1013.7, y: -2534.7,
+      status: 'SMELTING 🟢',
+      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
+      group: 'mine',
+      color: '#eab308',
+      icon: '🥇',
+      label: 'โพลทอง (600 RD)',
+      cdMinutes: 10
+    },
+
+    // === 💎 คริสตัล (Crystal Sifting & Processing) ===
+    'crystal-sift': {
+      id: 'crystal-sift',
+      surgeId: 'spot-1791604124222',
+      title: '💎 ร่อนคริสตัล (Zancudo River)',
+      desc: 'จุดร่อนเศษคริสตัลริมลำธาร Zancudo ร่อนหาเศษคริสตัลดิบ (Crystal Shard 0.5 kg)',
+      coords: 'X: -513.7, Y: 2945.0, Z: 30.0',
+      zone: 'ZANCUDO RIVER / ROUTE 68 · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: -513.7, y: 2945.0,
+      status: 'CRYSTAL SIFT 🟢',
+      statusClass: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
+      group: 'crystal',
+      color: '#06b6d4',
+      icon: '💎',
+      label: 'ร่อนคริสตัล',
+      cdMinutes: 10
+    },
+    'spot-1791604124222': {
+      id: 'crystal-sift',
+      surgeId: 'spot-1791604124222',
+      title: '💎 ร่อนคริสตัล (Zancudo River)',
+      desc: 'จุดร่อนเศษคริสตัลริมลำธาร Zancudo ร่อนหาเศษคริสตัลดิบ (Crystal Shard 0.5 kg)',
+      coords: 'X: -513.7, Y: 2945.0, Z: 30.0',
+      zone: 'ZANCUDO RIVER / ROUTE 68 · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: -513.7, y: 2945.0,
+      status: 'CRYSTAL SIFT 🟢',
+      statusClass: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
+      group: 'crystal',
+      color: '#06b6d4',
+      icon: '💎',
+      label: 'ร่อนคริสตัล',
+      cdMinutes: 10
+    },
+    'crystal-pro': {
+      id: 'crystal-pro',
+      surgeId: 'spot-1791604164437',
+      title: '🔮 โพลคริสตัล (Port of LS)',
+      desc: 'แท่นประกอบคริสตัล สูตร: เศษคริสตัล 5 ชิ้น + ทองแดงแท่ง 3 ชิ้น ➔ คริสตัลสำเร็จ 1 ชิ้น',
+      coords: 'X: -110.0, Y: -2228.0, Z: 30.0',
+      zone: 'PORT OF LS / SOUTH DOCKS · สูตร: เศษคริสตัล 5 + ทองแดงแท่ง 3',
+      x: -110.0, y: -2228.0,
+      status: 'CRYSTAL PRO 🟢',
+      statusClass: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
+      group: 'crystal',
+      color: '#06b6d4',
+      icon: '🔮',
+      label: 'โพลคริสตัล',
+      cdMinutes: 10
+    },
+    'spot-1791604164437': {
+      id: 'crystal-pro',
+      surgeId: 'spot-1791604164437',
+      title: '🔮 โพลคริสตัล (Port of LS)',
+      desc: 'แท่นประกอบคริสตัล สูตร: เศษคริสตัล 5 ชิ้น + ทองแดงแท่ง 3 ชิ้น ➔ คริสตัลสำเร็จ 1 ชิ้น',
+      coords: 'X: -110.0, Y: -2228.0, Z: 30.0',
+      zone: 'PORT OF LS / SOUTH DOCKS · สูตร: เศษคริสตัล 5 + ทองแดงแท่ง 3',
+      x: -110.0, y: -2228.0,
+      status: 'CRYSTAL PRO 🟢',
+      statusClass: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
+      group: 'crystal',
+      color: '#06b6d4',
+      icon: '🔮',
+      label: 'โพลคริสตัล',
+      cdMinutes: 10
+    },
+
+    // === ⚙️ เหล็ก (Scrap Metal & Steel Smelting) ===
+    'scrap-farm-1': {
+      id: 'scrap-farm-1',
+      title: '⚙️ ฟาร์มเหล็ก 1 (South LS Scrap)',
+      desc: 'จุดเก็บเศษเหล็กในเมือง โซน Cypress Flats / Strawberry (10 วิ/รอบ ได้ 2 ชิ้น ชิ้นละ 0.25 kg)',
+      coords: 'X: 245.7, Y: -1807.9, Z: 30.0',
+      zone: 'SOUTH LS / CYPRESS SCRAP · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 245.7, y: -1807.9,
+      status: 'SCRAP FARM 🟢',
+      statusClass: 'bg-slate-500/15 text-slate-300 border-slate-500/30',
+      group: 'steel',
+      color: '#64748b',
+      icon: '⚙️',
+      label: 'ฟาร์มเหล็ก 1',
+      cdMinutes: 10
+    },
+    'scrap-farm-2': {
+      id: 'scrap-farm-2',
+      title: '⚙️ ฟาร์มเหล็ก 2 (Grand Senora Desert)',
+      desc: 'จุดเก็บเศษเหล็กทะเลทราย กองเศษเหล็ก Senora Desert (10 วิ/รอบ ได้ 2 ชิ้น ชิ้นละ 0.25 kg)',
+      coords: 'X: 2401.3, Y: 3110.5, Z: 30.0',
+      zone: 'GRAND SENORA DESERT · COOLDOWN: 10 MIN · สุจริต 100%',
+      x: 2401.3, y: 3110.5,
+      status: 'SCRAP FARM 🟢',
+      statusClass: 'bg-slate-500/15 text-slate-300 border-slate-500/30',
+      group: 'steel',
+      color: '#64748b',
+      icon: '⚙️',
+      label: 'ฟาร์มเหล็ก 2',
+      cdMinutes: 10
+    },
+    'steel-pro': {
+      id: 'steel-pro',
+      surgeId: 'spot-1789097391536',
+      title: '🏭 โพลเหล็ก (Cypress Flats Plant)',
+      desc: 'เตาหลอมโลหะอุตสาหกรรม หลอมเศษเหล็ก 2 ชิ้น เป็น Steel Ingot 1 แท่ง (5 วิ/แท่ง มูลค่า 195 RD)',
+      coords: 'X: 1481.4, Y: -1922.5, Z: 30.0',
+      zone: 'CYPRESS FLATS · เตาหลอมแท่งเหล็ก · มูลค่า 195 RD/แท่ง',
+      x: 1481.4, y: -1922.5,
+      status: 'SMELTING 🟢',
+      statusClass: 'bg-slate-500/15 text-slate-300 border-slate-500/30',
+      group: 'steel',
+      color: '#475569',
+      icon: '🏭',
+      label: 'โพลเหล็ก (195 RD)',
+      cdMinutes: 10
+    },
+    'spot-1789097391536': {
+      id: 'steel-pro',
+      surgeId: 'spot-1789097391536',
+      title: '🏭 โพลเหล็ก (Cypress Flats Plant)',
+      desc: 'เตาหลอมโลหะอุตสาหกรรม หลอมเศษเหล็ก 2 ชิ้น เป็น Steel Ingot 1 แท่ง (5 วิ/แท่ง มูลค่า 195 RD)',
+      coords: 'X: 1481.4, Y: -1922.5, Z: 30.0',
+      zone: 'CYPRESS FLATS · เตาหลอมแท่งเหล็ก · มูลค่า 195 RD/แท่ง',
+      x: 1481.4, y: -1922.5,
+      status: 'SMELTING 🟢',
+      statusClass: 'bg-slate-500/15 text-slate-300 border-slate-500/30',
+      group: 'steel',
+      color: '#475569',
+      icon: '🏭',
+      label: 'โพลเหล็ก (195 RD)',
+      cdMinutes: 10
+    }
+  };
+
+  let mapInstance: L.Map;
+  let currentTileLayer: L.TileLayer;
+  let markersLayer: L.LayerGroup;
+  let routesLayer: L.LayerGroup;
+  let markerInstances: Record<string, L.Marker> = {};
+
+  let currentSelectedId = 'wood-farm';
+  let activeFilter = 'all';
+  let soundEnabled = true;
+  let activeCooldowns: Record<string, any> = {};
+
+  try {
+    const stored = localStorage.getItem('runtown_astro_cooldowns');
+    if (stored) activeCooldowns = JSON.parse(stored);
+  } catch(e) {}
+
+  function saveCooldowns() {
+    try {
+      localStorage.setItem('runtown_astro_cooldowns', JSON.stringify(activeCooldowns));
+    } catch(e) {}
+  }
+
+  function playChime() {
+    if (!soundEnabled) return;
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      const ctx = new AudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.2, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.65);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.65);
+    } catch(e) {}
+  }
+
+  function formatTime(sec: number) {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  }
+
+  const GROUP_SVGS: Record<string, string> = {
+    wood: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2a1 1 0 0 1-.8-1.7L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z"/><path d="M12 22v-3"/></svg>',
+    pork: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>',
+    wheat: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m2 22 10-10"/><path d="M16 8a4 4 0 0 0-4-4c-2.2 0-4 1.8-4 4v1a4 4 0 0 0 4 4 4 4 0 0 0 4-4Z"/><path d="M19 13a4 4 0 0 0-4-4c-2.2 0-4 1.8-4 4v1a4 4 0 0 0 4 4 4 4 0 0 0 4-4Z"/></svg>',
+    flower: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 16.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 1 1 4.5 4.5 4.5 4.5 0 1 1-4.5 4.5"/><path d="M12 7.5V3"/><path d="M12 21v-4.5"/><path d="M7.5 12H3"/><path d="M21 12h-4.5"/></svg>',
+    mine: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>',
+    crystal: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>',
+    steel: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+    head_reset: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>',
+    safe: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>',
+  };
+
+  // Create Marker Icon with GTA V styled pin & glowing badge
+  function createCustomMarkerIcon(spot: any, isSelected: boolean) {
+    const borderColor = spot.color || '#f59e0b';
+    const svgIcon = GROUP_SVGS[spot.group] || GROUP_SVGS['pork'];
+    return L.divIcon({
+      className: 'gta-custom-div-icon',
+      html: `
+        <div class="gta-marker-container ${isSelected ? 'scale-115' : ''}">
+          <div class="gta-marker-badge" style="background: rgba(15, 23, 42, 0.95); border-color: ${borderColor}; color: #ffffff;">
+            <span style="display: inline-flex; align-items: center; color: ${borderColor};">${svgIcon}</span>
+            <span style="color: #ffffff; font-weight: 600;">${spot.label}</span>
+          </div>
+          <div class="gta-marker-icon-box" style="background: #0f172a; border: 2px solid ${borderColor}; color: ${borderColor};">
+            <div class="pulse-ring" style="border: 2px solid ${borderColor};"></div>
+            <span style="display: inline-flex; align-items: center;">${svgIcon}</span>
+          </div>
+        </div>
+      `,
+      iconSize: [120, 60],
+      iconAnchor: [60, 52]
+    });
+  }
+
+  function renderMarkers() {
+    if (!markersLayer) return;
+    markersLayer.clearLayers();
+    routesLayer.clearLayers();
+    markerInstances = {};
+
+    // 1. Plot Spots Matching Active Filter (Deduplicated by spot.id)
+    const renderedIds = new Set<string>();
+    Object.values(spotsData).forEach(spot => {
+      if (renderedIds.has(spot.id)) return;
+      renderedIds.add(spot.id);
+      if (activeFilter !== 'all' && spot.group !== activeFilter) return;
+
+      const latlng = gameCoordsToLatLng(spot.x, spot.y);
+      const isSelected = spot.id === currentSelectedId;
+      const marker = L.marker(latlng, {
+        icon: createCustomMarkerIcon(spot, isSelected),
+        riseOnHover: true
+      });
+
+      marker.on('click', () => {
+        selectSpot(spot.id, true);
+      });
+
+      marker.addTo(markersLayer);
+      markerInstances[spot.id] = marker;
+    });
+
+    // 2. Draw Realistic GPS Transport Routes Following Actual Roads
+    if (activeFilter === 'all' || activeFilter === 'wood') {
+      const woodPoints = (jobGpsRoadRoutes.wood || []).map((pt: any) => gameCoordsToLatLng(pt.x, pt.y));
+      if (woodPoints.length > 0) {
+        L.polyline(woodPoints, {
+          color: '#000000',
+          weight: 6,
+          opacity: 0.75,
+          lineJoin: 'round',
+          lineCap: 'round'
+        }).addTo(routesLayer);
+        L.polyline(woodPoints, {
+          color: '#f59e0b',
+          weight: 3.5,
+          opacity: 0.95,
+          dashArray: '8, 6',
+          lineJoin: 'round',
+          lineCap: 'round'
+        }).addTo(routesLayer);
+      }
+    }
+
+    if (activeFilter === 'all' || activeFilter === 'pork') {
+      const porkPoints = (jobGpsRoadRoutes.pork || []).map((pt: any) => gameCoordsToLatLng(pt.x, pt.y));
+      if (porkPoints.length > 0) {
+        L.polyline(porkPoints, {
+          color: '#000000',
+          weight: 6,
+          opacity: 0.75,
+          lineJoin: 'round',
+          lineCap: 'round'
+        }).addTo(routesLayer);
+        L.polyline(porkPoints, {
+          color: '#ec4899',
+          weight: 3.5,
+          opacity: 0.95,
+          dashArray: '8, 6',
+          lineJoin: 'round',
+          lineCap: 'round'
+        }).addTo(routesLayer);
+      }
+    }
+
+    if (activeFilter === 'all' || activeFilter === 'wheat') {
+      const wheatPoints = (jobGpsRoadRoutes.wheat || jobGpsRoadRoutes.agri || []).map((pt: any) => gameCoordsToLatLng(pt.x, pt.y));
+      if (wheatPoints.length > 0) {
+        L.polyline(wheatPoints, {
+          color: '#000000',
+          weight: 6,
+          opacity: 0.75,
+          lineJoin: 'round',
+          lineCap: 'round'
+        }).addTo(routesLayer);
+        L.polyline(wheatPoints, {
+          color: '#eab308',
+          weight: 3.5,
+          opacity: 0.95,
+          dashArray: '8, 6',
+          lineJoin: 'round',
+          lineCap: 'round'
+        }).addTo(routesLayer);
+      }
+    }
+
+    if (activeFilter === 'all' || activeFilter === 'flower') {
+      const flowerPoints = ((jobGpsRoadRoutes as any).flower || []).map((pt: any) => gameCoordsToLatLng(pt.x, pt.y));
+      if (flowerPoints.length > 0) {
+        L.polyline(flowerPoints, {
+          color: '#000000',
+          weight: 6,
+          opacity: 0.75,
+          lineJoin: 'round',
+          lineCap: 'round'
+        }).addTo(routesLayer);
+        L.polyline(flowerPoints, {
+          color: '#f43f5e',
+          weight: 3.5,
+          opacity: 0.95,
+          dashArray: '8, 6',
+          lineJoin: 'round',
+          lineCap: 'round'
+        }).addTo(routesLayer);
+      }
+    }
+
+    if (activeFilter === 'all' || activeFilter === 'mine') {
+      const minePoints = (jobGpsRoadRoutes.mine || []).map((pt: any) => gameCoordsToLatLng(pt.x, pt.y));
+      if (minePoints.length > 0) {
+        L.polyline(minePoints, {
+          color: '#000000',
+          weight: 6,
+          opacity: 0.75,
+          lineJoin: 'round',
+          lineCap: 'round'
+        }).addTo(routesLayer);
+        L.polyline(minePoints, {
+          color: '#f97316',
+          weight: 3.5,
+          opacity: 0.95,
+          dashArray: '8, 6',
+          lineJoin: 'round',
+          lineCap: 'round'
+        }).addTo(routesLayer);
+      }
+    }
+
+    if (activeFilter === 'all' || activeFilter === 'crystal') {
+      const crystalPoints = ((jobGpsRoadRoutes as any).crystal || []).map((pt: any) => gameCoordsToLatLng(pt.x, pt.y));
+      if (crystalPoints.length > 0) {
+        L.polyline(crystalPoints, {
+          color: '#000000',
+          weight: 6,
+          opacity: 0.75,
+          lineJoin: 'round',
+          lineCap: 'round'
+        }).addTo(routesLayer);
+        L.polyline(crystalPoints, {
+          color: '#06b6d4',
+          weight: 3.5,
+          opacity: 0.95,
+          dashArray: '8, 6',
+          lineJoin: 'round',
+          lineCap: 'round'
+        }).addTo(routesLayer);
+      }
+    }
+
+    if (activeFilter === 'all' || activeFilter === 'steel') {
+      const rawSteel = (jobGpsRoadRoutes as any).steel || [];
+      const steelLegs = (Array.isArray(rawSteel[0]) ? rawSteel : [rawSteel]).map((leg: any[]) =>
+        leg.map((pt: any) => gameCoordsToLatLng(pt.x, pt.y))
+      );
+
+      steelLegs.forEach((steelPoints: L.LatLng[]) => {
+        if (steelPoints.length > 0) {
+          L.polyline(steelPoints, {
+            color: '#000000',
+            weight: 6,
+            opacity: 0.75,
+            lineJoin: 'round',
+            lineCap: 'round'
+          }).addTo(routesLayer);
+          L.polyline(steelPoints, {
+            color: '#94a3b8',
+            weight: 3.5,
+            opacity: 0.95,
+            dashArray: '8, 6',
+            lineJoin: 'round',
+            lineCap: 'round'
+          }).addTo(routesLayer);
+        }
+      });
+    }
+  }
+
+  function selectSpot(id: string, flyTo: boolean = false) {
+    const data = spotsData[id];
+    if (!data) return;
+    currentSelectedId = id;
+
+    const titleEl = document.getElementById('mapPoiTitle');
+    const descEl = document.getElementById('mapPoiDesc');
+    const coordsEl = document.getElementById('mapPoiCoords');
+    const badgeEl = document.getElementById('mapStatusBadge');
+    const zoneEl = document.getElementById('mapPoiZone');
+
+    if (titleEl) titleEl.textContent = data.title;
+    if (descEl) descEl.textContent = data.desc;
+    if (coordsEl) coordsEl.textContent = data.coords;
+    if (zoneEl) zoneEl.textContent = data.zone || `${data.title.split(' ')[1] || data.label} · COOLDOWN: ${data.cdMinutes || 0} MIN · สุจริต 100%`;
+    if (badgeEl) {
+      badgeEl.textContent = data.status;
+      badgeEl.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full border ' + data.statusClass;
+    }
+
+    // Refresh marker icons to reflect selection
+    renderMarkers();
+
+    // Smooth flyTo in Leaflet
+    if (flyTo && mapInstance) {
+      const targetLatLng = gameCoordsToLatLng(data.x, data.y);
+      mapInstance.flyTo(targetLatLng, 5, { duration: 1.2 });
+    }
+
+    updateUI();
+  }
+
+  function updateUI() {
+    const now = Date.now();
+    const data = spotsData[currentSelectedId];
+    const cd = activeCooldowns[currentSelectedId];
+
+    const remEl = document.getElementById('spotCooldownRemaining');
+    const progEl = document.getElementById('spotCooldownProgress');
+    const statEl = document.getElementById('spotCooldownStatus');
+    const btnText = document.getElementById('startCooldownBtnText');
+    const startBtn = document.getElementById('startCooldownBtn') as HTMLButtonElement;
+
+    if (!data || data.cdMinutes === 0) {
+      if (remEl) remEl.textContent = '--:--';
+      if (progEl) progEl.style.width = '100%';
+      if (statEl) statEl.textContent = 'สถานะ: ไม่มีคูลดาวน์';
+      if (btnText) btnText.textContent = 'ไม่มีคูลดาวน์';
+      if (startBtn) startBtn.disabled = true;
+    } else if (cd && cd.expiresAt > now) {
+      const remainingSec = Math.max(0, Math.ceil((cd.expiresAt - now) / 1000));
+      const totalSec = cd.duration || 600;
+      const pct = Math.min(100, Math.round(((totalSec - remainingSec) / totalSec) * 100));
+
+      if (remEl) remEl.textContent = formatTime(remainingSec);
+      if (progEl) progEl.style.width = pct + '%';
+      if (statEl) statEl.textContent = `สถานะ: กำลังคูลดาวน์ (${pct}%)`;
+      if (btnText) btnText.textContent = 'ยกเลิกคูลดาวน์';
+      if (startBtn) startBtn.disabled = false;
+    } else {
+      if (remEl) remEl.textContent = '10:00';
+      if (progEl) progEl.style.width = '100%';
+      if (statEl) statEl.textContent = 'สถานะ: พร้อมกดฟาร์ม';
+      if (btnText) btnText.textContent = 'เริ่มคูลดาวน์ (10:00)';
+      if (startBtn) startBtn.disabled = false;
+    }
+
+    renderTray();
+  }
+
+  function renderTray() {
+    const now = Date.now();
+    const activeKeys = Object.keys(activeCooldowns).filter(k => activeCooldowns[k].expiresAt > now);
+    const countEl = document.getElementById('activeCdCount');
+    const listEl = document.getElementById('activeCdList');
+    if (countEl) countEl.textContent = String(activeKeys.length);
+
+    if (!listEl) return;
+    if (activeKeys.length === 0) {
+      listEl.innerHTML = '<div class="text-[11px] text-textMuted italic py-1 text-center">ไม่มีจุดที่ติดคูลดาวน์</div>';
+      return;
+    }
+
+    listEl.innerHTML = activeKeys.map(k => {
+      const remaining = Math.max(0, Math.ceil((activeCooldowns[k].expiresAt - now) / 1000));
+      const loc = spotsData[k] || { title: k };
+      return `
+        <div class="flex items-center justify-between p-2 rounded-lg border border-line bg-base text-xs font-mono">
+          <span class="text-white truncate cursor-pointer hover:text-mint" onclick="window.selectSpot('${k}', true)">${loc.title.split(' ')[0]} ${loc.title.split(' ')[1] || ''}</span>
+          <span class="text-amber-400 font-bold">${formatTime(remaining)}</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Set Layer Tile
+  function switchLayer(layerKey: keyof typeof TILE_LAYERS) {
+    const config = TILE_LAYERS[layerKey];
+    if (!config || !mapInstance) return;
+
+    if (currentTileLayer) {
+      mapInstance.removeLayer(currentTileLayer);
+    }
+
+    mapInstance.getContainer().style.backgroundColor = config.bgColor;
+    currentTileLayer = L.tileLayer(config.url, {
+      noWrap: true,
+      minZoom: 1,
+      maxZoom: 10,
+      maxNativeZoom: 7,
+      bounds: MAP_BOUNDS,
+      className: config.className
+    });
+    currentTileLayer.addTo(mapInstance);
+  }
+
+  // Initialize Real Leaflet GTA V Map
+  const mapContainer = document.getElementById('leafletMap');
+  if (mapContainer) {
+    const initialCenter = gameCoordsToLatLng(spotsData['wood-farm'].x, spotsData['wood-farm'].y);
+
+    mapInstance = L.map(mapContainer, {
+      crs: L.CRS.Simple,
+      minZoom: 1,
+      maxZoom: 10,
+      zoom: 3,
+      center: initialCenter,
+      maxBounds: MAP_MAX_BOUNDS,
+      maxBoundsViscosity: 0.8,
+      attributionControl: false,
+      zoomControl: false
+    });
+
+    L.control.zoom({ position: 'bottomright' }).addTo(mapInstance);
+
+    // Initial Layer: Game Radar (เรดาร์)
+    switchLayer('game');
+
+    // Groups
+    routesLayer = L.layerGroup().addTo(mapInstance);
+    markersLayer = L.layerGroup().addTo(mapInstance);
+
+    // Initial Markers
+    renderMarkers();
+
+    // Auto-select from URL search parameters ?spot=...
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetSpot = urlParams.get('spot');
+    if (targetSpot && spotsData[targetSpot]) {
+      const spotGroup = spotsData[targetSpot].group;
+      activeFilter = spotGroup;
+
+      document.querySelectorAll('.map-filter-btn').forEach(btn => {
+        const filter = btn.getAttribute('data-filter');
+        if (filter === spotGroup) {
+          btn.classList.remove('border-line', 'bg-paper', 'text-textSoft');
+          btn.classList.add('border-mint', 'bg-mint/20', 'text-mint', 'font-bold', 'active');
+        } else {
+          btn.classList.remove('border-mint', 'bg-mint/20', 'text-mint', 'font-bold', 'active');
+          btn.classList.add('border-line', 'bg-paper', 'text-textSoft');
+        }
+      });
+
+      renderMarkers();
+      selectSpot(targetSpot, true);
+    } else {
+      selectSpot('wood-farm', true);
+    }
+  }
+
+  // Layer buttons
+  document.querySelectorAll('.layer-switch-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.layer-switch-btn').forEach(b => {
+        b.classList.remove('text-mint', 'font-bold', 'bg-mint/15', 'active');
+        b.classList.add('text-textSoft');
+      });
+      btn.classList.remove('text-textSoft');
+      btn.classList.add('text-mint', 'font-bold', 'bg-mint/15', 'active');
+
+      const layer = btn.getAttribute('data-layer') as keyof typeof TILE_LAYERS;
+      if (layer) switchLayer(layer);
+    });
+  });
+
+  // Filter Buttons
+  document.querySelectorAll('.map-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.map-filter-btn').forEach(b => {
+        b.classList.remove('border-mint', 'bg-mint/20', 'text-mint', 'font-bold', 'active');
+        b.classList.add('border-line', 'bg-paper', 'text-textSoft');
+      });
+      btn.classList.remove('border-line', 'bg-paper', 'text-textSoft');
+      btn.classList.add('border-mint', 'bg-mint/20', 'text-mint', 'font-bold', 'active');
+
+      activeFilter = btn.getAttribute('data-filter') || 'all';
+      renderMarkers();
+
+      // If active filter has spots, fly to first
+      const firstMatching = Object.values(spotsData).find(s => activeFilter === 'all' || s.group === activeFilter);
+      if (firstMatching) {
+        selectSpot(firstMatching.id, true);
+      }
+    });
+  });
+
+  // Cooldown Controls
+  const startBtn = document.getElementById('startCooldownBtn');
+  if (startBtn) {
+    startBtn.addEventListener('click', () => {
+      const now = Date.now();
+      const cd = activeCooldowns[currentSelectedId];
+      if (cd && cd.expiresAt > now) {
+        delete activeCooldowns[currentSelectedId];
+      } else {
+        activeCooldowns[currentSelectedId] = {
+          expiresAt: now + 600000,
+          duration: 600,
+          notified: false
+        };
+      }
+      saveCooldowns();
+      updateUI();
+    });
+  }
+
+  const resetBtn = document.getElementById('resetCooldownBtn');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      delete activeCooldowns[currentSelectedId];
+      saveCooldowns();
+      updateUI();
+    });
+  }
+
+  const copyBtn = document.getElementById('copyGpsBtn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      const loc = spotsData[currentSelectedId];
+      if (loc) {
+        navigator.clipboard.writeText(loc.coords).then(() => {
+          alert('คัดลอกพิกัด GPS: ' + loc.coords);
+        });
+      }
+    });
+  }
+
+  const toggleSoundBtn = document.getElementById('toggleSoundBtn');
+  if (toggleSoundBtn) {
+    toggleSoundBtn.addEventListener('click', () => {
+      soundEnabled = !soundEnabled;
+      toggleSoundBtn.textContent = soundEnabled ? 'เสียงเตือน (เปิด)' : 'เสียงเตือน (ปิด)';
+    });
+  }
+
+  setInterval(() => {
+    const now = Date.now();
+    let changed = false;
+    Object.keys(activeCooldowns).forEach(k => {
+      const cd = activeCooldowns[k];
+      if (cd && cd.expiresAt <= now && !cd.notified) {
+        cd.notified = true;
+        changed = true;
+        playChime();
+        alert(`${spotsData[k]?.title || k}: คูลดาวน์ 10 นาทีครบแล้ว!`);
+      }
+    });
+    if (changed) saveCooldowns();
+    updateUI();
+  }, 1000);
+
+  (window as any).selectSpot = selectSpot;
+</script>

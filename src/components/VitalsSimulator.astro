@@ -1,0 +1,287 @@
+---
+// Interactive Mental Fatigue & Health Simulator
+import CyberIcon from './CyberIcon.astro';
+---
+
+<div class="rounded-2xl border border-line bg-card p-6 shadow-neon-card space-y-5 relative overflow-hidden">
+  
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-lineSubtle">
+    <div>
+      <div class="flex items-center gap-2 font-mono text-xs text-mint">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-danger animate-pulse"></span>
+        <span>VITALS & MENTAL FATIGUE SIMULATOR</span>
+      </div>
+      <h3 class="text-xl font-display font-extrabold text-white mt-0.5 flex items-center gap-2.5">
+        <CyberIcon name="brain" size={22} class="text-purple-400 shrink-0" />
+        <span>เครื่องจำลองหลอดสมอง & หลอดเลือด (Survival HUD)</span>
+      </h3>
+    </div>
+    <div class="flex items-center gap-2 font-mono text-xs">
+      <span class="px-2.5 py-1 rounded-full bg-white/5 border border-lineSubtle text-textSoft">
+        FIVEM RUN TOWN SURVIVAL
+      </span>
+    </div>
+  </div>
+
+  <!-- Interactive Controls & Gauges -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <!-- Left: Brain Fatigue Gauge (หลอดสมอง) -->
+    <div class="p-4 rounded-xl border border-line bg-paper space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="font-mono text-xs font-bold text-white flex items-center gap-1.5">
+          <CyberIcon name="brain" size={15} class="text-purple-400 shrink-0" />
+          <span>หลอดความล้าสมอง (Mental Fatigue)</span>
+        </span>
+        <strong id="simBrainVal" class="font-mono text-sm text-mint">15.0%</strong>
+      </div>
+
+      <!-- Meter bar -->
+      <div class="w-full h-3 rounded-full bg-black/60 border border-white/10 overflow-hidden relative">
+        <div id="simBrainBar" class="h-full bg-mint transition-all duration-300 rounded-full" style="width: 15%"></div>
+      </div>
+
+      <div class="flex items-center justify-between text-[11px] font-mono">
+        <span id="simBrainStatus" class="text-mint font-semibold">สถานะ: ปลอดภัย (Normal)</span>
+        <span class="text-textMuted">Overheat ที่ 100%</span>
+      </div>
+
+      <!-- Processing pieces slider -->
+      <div class="pt-2 space-y-2">
+        <div class="flex items-center justify-between text-xs text-textSoft font-mono">
+          <span>จำนวนชิ้นที่ขนไปโพล:</span>
+          <span id="simPiecesCount" class="text-mint font-bold">160 ชิ้น (รถ 60 โล)</span>
+        </div>
+        <input 
+          type="range" 
+          id="simPiecesSlider" 
+          min="0" 
+          max="360" 
+          value="160" 
+          class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-mint"
+        />
+        <div class="flex justify-between text-[10px] font-mono text-textMuted">
+          <span>0 ชิ้น</span>
+          <span>160 (รถ 60)</span>
+          <span>280 (รถ 120)</span>
+          <span>340 (รถ 150)</span>
+        </div>
+
+        <!-- Car presets -->
+        <div class="flex items-center gap-1.5 pt-1">
+          <button type="button" class="car-preset-btn text-[10px] font-mono px-2 py-1 rounded-lg bg-card border border-line hover:border-mint text-slate-200 transition-colors inline-flex items-center gap-1" data-pieces="160">
+            <CyberIcon name="truck" size={12} class="text-mint shrink-0" />
+            <span>รถ 60 โล</span>
+          </button>
+          <button type="button" class="car-preset-btn text-[10px] font-mono px-2 py-1 rounded-lg bg-card border border-line hover:border-amber-400 text-slate-200 transition-colors inline-flex items-center gap-1" data-pieces="280">
+            <CyberIcon name="truck" size={12} class="text-amber-400 shrink-0" />
+            <span>รถ 120 โล</span>
+          </button>
+          <button type="button" class="car-preset-btn text-[10px] font-mono px-2 py-1 rounded-lg bg-card border border-line hover:border-danger text-slate-200 transition-colors inline-flex items-center gap-1" data-pieces="340">
+            <CyberIcon name="truck" size={12} class="text-rose-400 shrink-0" />
+            <span>รถ 150 โล</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Health & Vitals Gauge (หลอดเลือด & น้ำ/อาหาร) -->
+    <div class="p-4 rounded-xl border border-line bg-paper space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="font-mono text-xs font-bold text-white flex items-center gap-1.5">
+          <CyberIcon name="heart" size={15} class="text-rose-400 shrink-0" />
+          <span>หลอดเลือด & พลังชีวิต (Health HP)</span>
+        </span>
+        <strong id="simHpVal" class="font-mono text-sm text-danger">100 / 100</strong>
+      </div>
+
+      <!-- HP Meter Bar -->
+      <div class="w-full h-3 rounded-full bg-black/60 border border-white/10 overflow-hidden relative">
+        <div id="simHpBar" class="h-full bg-danger transition-all duration-300 rounded-full shadow-[0_0_10px_rgba(255,77,109,0.5)]" style="width: 100%"></div>
+      </div>
+
+      <!-- Sub Vitals: Thirst & Hunger -->
+      <div class="grid grid-cols-2 gap-3 pt-1">
+        <div class="space-y-1">
+          <div class="flex justify-between text-[11px] font-mono text-textSoft items-center">
+            <span class="flex items-center gap-1">
+              <CyberIcon name="droplet" size={12} class="text-info shrink-0" />
+              <span>หลอดน้ำ (Thirst)</span>
+            </span>
+            <span id="simWaterVal" class="text-info font-bold">85%</span>
+          </div>
+          <div class="w-full h-1.5 rounded-full bg-black/60 overflow-hidden">
+            <div id="simWaterBar" class="h-full bg-info" style="width: 85%"></div>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <div class="flex justify-between text-[11px] font-mono text-textSoft items-center">
+            <span class="flex items-center gap-1">
+              <CyberIcon name="drumstick" size={12} class="text-amber-400 shrink-0" />
+              <span>ความหิว (Hunger)</span>
+            </span>
+            <span id="simFoodVal" class="text-amber-400 font-bold">90%</span>
+          </div>
+          <div class="w-full h-1.5 rounded-full bg-black/60 overflow-hidden">
+            <div id="simFoodBar" class="h-full bg-amber-400" style="width: 90%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="flex flex-wrap items-center gap-2 pt-2 text-xs font-mono">
+        <button type="button" id="drinkCoffeeBtn" class="flex-1 py-1.5 px-2 rounded-lg bg-card border border-line hover:border-mint text-textSoft hover:text-white transition-colors inline-flex items-center justify-center gap-1.5">
+          <CyberIcon name="coffee" size={13} class="text-amber-300 shrink-0" />
+          <span>ดื่มกาแฟ (-20% สมอง)</span>
+        </button>
+        <button type="button" id="resetBrainRouteBtn" class="flex-1 py-1.5 px-2 rounded-lg bg-mint/15 border border-mint/40 text-mint font-bold hover:bg-mint/25 transition-colors inline-flex items-center justify-center gap-1.5">
+          <CyberIcon name="martini" size={13} class="text-mint shrink-0" />
+          <span>ไปบาร์เขียว / อู่ช่าง (0%)</span>
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Warning & Advice Alert Box -->
+  <div id="simAlertBox" class="p-3.5 rounded-xl border border-mint/30 bg-mint/5 flex items-start gap-3 text-xs">
+    <CyberIcon name="lightbulb" size={20} class="text-amber-400 shrink-0 mt-0.5" />
+    <div class="space-y-0.5">
+      <strong id="simAlertTitle" class="text-mint font-bold block">คำแนะนำ: สภาพร่างกายและสมองปกติ</strong>
+      <p id="simAlertDesc" class="text-textSoft leading-relaxed text-[11px]">
+        สามารถทำงานและฟาร์มรอบใหม่ได้ทันที แนะนำให้แวะซื้อน้ำและอาหารพกใส่ท้ายรถอย่างน้อย 5 ชิ้นเสมอ
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let brainPct = 15;
+  let hpVal = 100;
+  let waterVal = 85;
+  let foodVal = 90;
+
+  const piecesSlider = document.getElementById('simPiecesSlider') as HTMLInputElement;
+  const piecesCount = document.getElementById('simPiecesCount');
+  const brainValEl = document.getElementById('simBrainVal');
+  const brainBarEl = document.getElementById('simBrainBar');
+  const brainStatusEl = document.getElementById('simBrainStatus');
+  const alertBox = document.getElementById('simAlertBox');
+  const alertTitle = document.getElementById('simAlertTitle');
+  const alertDesc = document.getElementById('simAlertDesc');
+
+  function updateVitals() {
+    if (brainValEl) brainValEl.textContent = `${brainPct.toFixed(1)}%`;
+    if (brainBarEl) {
+      brainBarEl.style.width = `${Math.min(100, brainPct)}%`;
+      if (brainPct > 80) {
+        brainBarEl.className = 'h-full bg-danger transition-all duration-300 rounded-full shadow-[0_0_15px_#ff4d6d] animate-pulse';
+        if (brainStatusEl) {
+          brainStatusEl.textContent = 'วิกฤต: สมองใกล้ระเบิด (CRITICAL)';
+          brainStatusEl.className = 'text-danger font-bold';
+        }
+        if (alertBox && alertTitle && alertDesc) {
+          alertBox.className = 'p-3.5 rounded-xl border border-danger/50 bg-danger/10 flex items-start gap-3 text-xs';
+          alertTitle.textContent = 'แจ้งเตือนวิกฤต: ค่าสมองสะสมสูง เสี่ยง Overheat สลบ (100%)';
+          alertTitle.className = 'text-danger font-bold block';
+          alertDesc.textContent = 'ระวังสะสมถึง 100%! ให้รีบไปที่บาร์เขียว หรือ อู่ช่าง เพื่อรีหัว (หรือดื่มเครื่องดื่มลดค่าสมอง) มิฉะนั้นตัวละครจะสลบล้มพับ';
+        }
+      } else if (brainPct > 50) {
+        brainBarEl.className = 'h-full bg-amber-400 transition-all duration-300 rounded-full shadow-[0_0_10px_#fbbf24]';
+        if (brainStatusEl) {
+          brainStatusEl.textContent = 'เริ่มล้า: ควรพักหรือดื่มชูกำลัง (WARNING)';
+          brainStatusEl.className = 'text-amber-400 font-bold';
+        }
+        if (alertBox && alertTitle && alertDesc) {
+          alertBox.className = 'p-3.5 rounded-xl border border-amber-500/40 bg-amber-500/10 flex items-start gap-3 text-xs';
+          alertTitle.textContent = 'คำเตือน: สมองเริ่มล้าสะสม';
+          alertTitle.className = 'text-amber-400 font-bold block';
+          alertDesc.textContent = 'หากทำต่ออีก 1 รอบจะเข้าสู่โซนอันตราย แนะนำให้ดื่มเครื่องดื่มชูกำลัง หรือเตรียมแวะจุดพักผ่อน';
+        }
+      } else {
+        brainBarEl.className = 'h-full bg-mint transition-all duration-300 rounded-full shadow-[0_0_10px_#45f2b4]';
+        if (brainStatusEl) {
+          brainStatusEl.textContent = 'สถานะ: ปลอดภัย (NORMAL)';
+          brainStatusEl.className = 'text-mint font-semibold';
+        }
+        if (alertBox && alertTitle && alertDesc) {
+          alertBox.className = 'p-3.5 rounded-xl border border-mint/30 bg-mint/5 flex items-start gap-3 text-xs';
+          alertTitle.textContent = 'คำแนะนำ: สภาพร่างกายและสมองปกติ';
+          alertTitle.className = 'text-mint font-bold block';
+          alertDesc.textContent = 'สามารถทำงานและฟาร์มรอบใหม่ได้ทันที แนะนำให้แวะซื้อน้ำและอาหารพกใส่ท้ายรถอย่างน้อย 5 ชิ้นเสมอ';
+        }
+      }
+    }
+  }
+
+  const carPresetBtns = document.querySelectorAll('.car-preset-btn');
+  const foodValEl = document.getElementById('simFoodVal');
+  const foodBarEl = document.getElementById('simFoodBar');
+
+  function calculateVitalsFromPieces(pieces: number) {
+    if (piecesCount) {
+      let carLabel = '';
+      if (pieces === 160) carLabel = ' (รถ 60 โล)';
+      else if (pieces === 280) carLabel = ' (รถ 120 โล)';
+      else if (pieces === 340) carLabel = ' (รถ 150 โล)';
+      piecesCount.textContent = `${pieces} ชิ้น${carLabel}`;
+    }
+
+    // เวลาโพล: 5 วิ/ชิ้น
+    const procTimeMin = (pieces * 5.0) / 60.0;
+    const totalCycleMin = procTimeMin + 3.5; // รวมสลับของท้ายรถและขับรถ
+
+    // ค่าสมอง: +0.25% ต่อชิ้น + Passive 0.42%/นาที
+    brainPct = Math.min(100, (pieces * 0.25) + (procTimeMin * 0.42));
+
+    // หลอดอาหาร: ลดลง 0.72%/นาที
+    const foodDrop = totalCycleMin * 0.72;
+    foodVal = Math.max(0, 100 - foodDrop);
+
+    if (foodValEl) foodValEl.textContent = `${foodVal.toFixed(1)}% (-${foodDrop.toFixed(1)}%)`;
+    if (foodBarEl) foodBarEl.style.width = `${foodVal}%`;
+
+    updateVitals();
+  }
+
+  if (piecesSlider) {
+    piecesSlider.addEventListener('input', (e) => {
+      const val = parseInt((e.target as HTMLInputElement).value, 10);
+      calculateVitalsFromPieces(val);
+    });
+  }
+
+  carPresetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const p = parseInt(btn.getAttribute('data-pieces') || '160', 10);
+      if (piecesSlider) piecesSlider.value = p.toString();
+      calculateVitalsFromPieces(p);
+    });
+  });
+
+  const coffeeBtn = document.getElementById('drinkCoffeeBtn');
+  if (coffeeBtn) {
+    coffeeBtn.addEventListener('click', () => {
+      brainPct = Math.max(0, brainPct - 20);
+      updateVitals();
+    });
+  }
+
+  const resetRouteBtn = document.getElementById('resetBrainRouteBtn');
+  if (resetRouteBtn) {
+    resetRouteBtn.addEventListener('click', () => {
+      brainPct = 0;
+      if (piecesSlider) piecesSlider.value = '0';
+      if (piecesCount) piecesCount.textContent = '0 ชิ้น';
+      if (foodValEl) foodValEl.textContent = '100%';
+      if (foodBarEl) foodBarEl.style.width = '100%';
+      updateVitals();
+    });
+  }
+
+  // Initial calculation
+  calculateVitalsFromPieces(160);
+</script>

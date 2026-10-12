@@ -1,0 +1,143 @@
+---
+import { getCollection } from 'astro:content';
+import GuideIcon from './GuideIcon.astro';
+import CyberIcon from './CyberIcon.astro';
+import { getCleanTitle } from '../utils/guideHelpers';
+
+interface Props {
+  currentSlug?: string;
+}
+
+const { currentSlug = '' } = Astro.props;
+
+const allGuides = await getCollection('guides');
+allGuides.sort((a, b) => a.data.order - b.data.order);
+
+// Category definitions
+const categoryConfig: Record<string, { label: string; icon: string }> = {
+  white_jobs: { label: 'งานขาว', icon: 'briefcase' },
+  black_jobs: { label: 'งานดำ', icon: 'skull' },
+  vehicles: { label: 'ยานพาหนะ', icon: 'truck' },
+  crafting: { label: 'คราฟต์อาวุธ', icon: 'swords' },
+  survival: { label: 'ค่าสมอง', icon: 'brain' },
+  food: { label: 'อาหาร', icon: 'drumstick' },
+};
+
+// Group guides by category
+const grouped = allGuides.reduce<Record<string, typeof allGuides>>((acc, guide) => {
+  const cat = guide.data.category;
+  if (!acc[cat]) acc[cat] = [];
+  acc[cat].push(guide);
+  return acc;
+}, {});
+---
+
+<aside class="w-full lg:w-80 shrink-0 py-6 pr-4 lg:border-r border-line/60 lg:min-h-[calc(100vh-4rem)]">
+  <div class="sticky top-20 space-y-6">
+
+    <!-- Search / Quick Jump helper (Command Palette Trigger) -->
+    <div class="px-1">
+      <button 
+        type="button" 
+        class="open-command-palette-btn w-full px-3.5 py-2.5 rounded-xl text-xs bg-paper border border-dashed border-mint/30 hover:border-mint text-left text-textMuted hover:text-white transition-all font-mono flex items-center justify-between cursor-pointer group shadow-sm"
+        title="กดเพื่อค้นหาคู่มือ (Ctrl+K)"
+      >
+        <span class="flex items-center gap-2">
+          <CyberIcon name="search" class="size-3.5 text-mint group-hover:scale-110 transition-transform" />
+          <span>ค้นหาคู่มือ...</span>
+        </span>
+        <kbd class="text-[10px] px-1.5 py-0.5 rounded bg-card border border-line text-textMuted font-mono group-hover:text-mint">
+          Ctrl+K
+        </kbd>
+      </button>
+    </div>
+
+    <!-- Category Tree -->
+    <nav class="space-y-5" id="sidebarTree">
+      {Object.entries(categoryConfig).map(([catKey, catInfo]) => {
+        const guides = grouped[catKey] || [];
+        if (guides.length === 0) return null;
+
+        return (
+          <div class="space-y-1.5 guide-category-group">
+            <div class="flex items-center gap-2 px-3 py-1 text-[11px] font-mono font-bold uppercase text-mint tracking-wider">
+              <CyberIcon name={catInfo.icon} class="size-3.5 text-mint shrink-0" />
+              <span>{catInfo.label}</span>
+              <span class="ml-auto text-[10px] text-textMuted font-normal">({guides.length})</span>
+            </div>
+
+            <ul class="space-y-1 border-l border-line/30 ml-3 pl-2">
+              {guides.map((guide) => {
+                const isActive = guide.slug === currentSlug;
+                return (
+                  <li class="guide-item">
+                    <a
+                      href={`/guides/${guide.slug}`}
+                      class={`group flex items-start justify-between gap-2 px-2.5 py-2 rounded-lg text-xs transition-all ${
+                        isActive
+                          ? 'bg-mint/15 text-mint font-bold border border-mint/40 shadow-[0_0_10px_rgba(69,242,180,0.2)]'
+                          : 'text-textSoft hover:text-white hover:bg-cardHover'
+                      }`}
+                    >
+                      <span class="flex items-start gap-2 flex-1 min-w-0">
+                        <GuideIcon icon={guide.data.icon} iconImage={guide.data.iconImage || guide.data.image} class="shrink-0 mt-0.5 text-xs" imgClass="w-3.5 h-3.5 object-contain shrink-0 mt-0.5" />
+                        <span class="break-words whitespace-normal leading-snug">{getCleanTitle(guide.data.title)}</span>
+                      </span>
+
+                      {guide.data.badge && (
+                        <span class={`text-[9px] font-mono px-1.5 py-0.5 rounded uppercase shrink-0 mt-0.5 font-bold ${
+                          guide.data.badge === 'HOT' ? 'bg-danger/20 text-danger border border-danger/30' :
+                          guide.data.badge.startsWith('CD') ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' :
+                          'bg-mint/15 text-mint border border-mint/30'
+                        }`}>
+                          {guide.data.badge}
+                        </span>
+                      )}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        );
+      })}
+    </nav>
+
+    <!-- Radar Shortcut Banner -->
+    <div class="p-3.5 rounded-xl border border-line bg-paper/80 space-y-2 text-xs">
+      <div class="flex items-center justify-between font-mono text-[10px] text-mint">
+        <span>GTA V RADAR MAP</span>
+        <span class="inline-flex items-center gap-1.5 text-mint"><span class="size-1.5 rounded-full bg-mint animate-pulse"></span>LIVE</span>
+      </div>
+      <p class="text-[11px] text-textSoft leading-relaxed">
+        เช็คตำแหน่งจุดทำงานทุกจุด และระบบนับถอยหลังคูลดาวน์ 10 นาที
+      </p>
+      <a 
+        href="/map" 
+        class="block text-center py-1.5 rounded-lg font-mono text-xs font-bold text-black bg-gradient-to-r from-mint to-lime hover:scale-101 transition-transform"
+      >
+        เปิดเรดาร์แผนที่ ➔
+      </a>
+    </div>
+
+  </div>
+</aside>
+
+<script>
+  // Simple Sidebar Search Filter
+  const input = document.getElementById('sidebarSearch') as HTMLInputElement;
+  if (input) {
+    input.addEventListener('input', (e) => {
+      const q = (e.target as HTMLInputElement).value.toLowerCase().trim();
+      const items = document.querySelectorAll('.guide-item');
+      items.forEach((item) => {
+        const text = item.textContent?.toLowerCase() || '';
+        if (q === '' || text.includes(q)) {
+          (item as HTMLElement).style.display = 'block';
+        } else {
+          (item as HTMLElement).style.display = 'none';
+        }
+      });
+    });
+  }
+</script>
