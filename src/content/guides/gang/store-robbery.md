@@ -58,17 +58,106 @@ risk: "สงครามแยก World (5vs5)"
 
 ## 🎮 ขั้นตอนการเข้าร่วม & กฎการแข่งขัน (Step-by-Step Flow)
 
-```mermaid
-flowchart TD
-    A["📍 1. ตรวจสอบแผนที่ (Map) ดูร้านค้าที่กำลังเปิด"] --> B["🚶‍♂️ 2. เดินทางไปหน้าร้าน สมัครกับ NPC ภายใน 5 นาที"]
-    B --> C["📋 3. กดปุ่ม 'G' เพื่อเปิดดูรายชื่อและสายการแข่งขัน"]
-    C --> D["🎲 4. ครบ 5 นาที ระบบจับคู่ Matchmaking อัตโนมัติ"]
-    D --> E["🎯 5. ย้ายเข้าสู่ Isolated World (ศัตรูมีมาร์กเกอร์สีแดงบนหัว)"]
-    E --> F["⏳ 6. เวลานับถอยหลัง 30 วินาที เตรียมความพร้อม (บังคับเริ่ม)"]
-    F --> G["⚔️ 7. ต่อสู้ 5vs5 ทีมแพ้ถูกชุบส่งกลับโลกปกติ"]
-    G --> H["🏆 8. ทีมชนะเลิศทีมสุดท้าย ได้รับสิทธิ์งัดร้านค้า"]
-    H --> I["🔓 9. ใช้ Breaching Kit เจาะร้าน ภายในเวลา 5 นาที"]
-```
+<div class="my-6 space-y-4 not-prose">
+  <div class="rounded-2xl border border-mint/30 bg-[#08120e]/80 p-5 shadow-[0_0_25px_rgba(69,242,180,0.06)]">
+    <div class="flex items-center gap-3 pb-3 mb-4 border-b border-lineSubtle">
+      <span class="px-2.5 py-0.5 rounded-lg bg-mint/15 text-mint border border-mint/30 font-mono text-xs font-bold">PHASE 1</span>
+      <h3 class="text-xs sm:text-sm font-display font-bold text-white tracking-wide uppercase">การเตรียมตัว & สมัครแข่งขันหน้าร้าน (5 นาที)</h3>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div class="p-3.5 rounded-xl bg-paper/90 border border-line hover:border-mint/50 transition-all">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="font-mono text-xs font-extrabold text-mint">STEP 01</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-mint/10 text-mint border border-mint/20">RADAR</span>
+        </div>
+        <div class="font-bold text-white text-sm">เช็คแผนที่เมือง (Map)</div>
+        <p class="text-xs text-slate-300 mt-1 leading-relaxed">ตรวจดู 3 ร้านค้าที่เปิดระบบ (12:00 - 03:00) และสังเกตสถานะคูลดาวน์ 40 นาที</p>
+      </div>
+      <div class="p-3.5 rounded-xl bg-paper/90 border border-line hover:border-mint/50 transition-all">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="font-mono text-xs font-extrabold text-mint">STEP 02</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-mint/10 text-mint border border-mint/20">NPC 5 MIN</span>
+        </div>
+        <div class="font-bold text-white text-sm">ลงทะเบียนกับ NPC หน้าร้าน</div>
+        <p class="text-xs text-slate-300 mt-1 leading-relaxed">สมาชิกทีม 5 คนไปหน้าร้าน สมัครแข่งขัน (ต้องมีรายชื่อใน Run Headquarter)</p>
+      </div>
+      <div class="p-3.5 rounded-xl bg-paper/90 border border-line hover:border-mint/50 transition-all">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="font-mono text-xs font-extrabold text-mint">STEP 03</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-mint/10 text-mint border border-mint/20">KEY [G]</span>
+        </div>
+        <div class="font-bold text-white text-sm">กด G ดูกระดาน Bracket</div>
+        <p class="text-xs text-slate-300 mt-1 leading-relaxed">กดปุ่ม G เพื่อตรวจสอบรายชื่อผู้เข้าแข่งขัน และสายการแข่งขันทั้งหมดแบบเรียลไทม์</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="rounded-2xl border border-rose-500/30 bg-[#160a0f]/80 p-5 shadow-[0_0_25px_rgba(244,63,94,0.06)]">
+    <div class="flex items-center gap-3 pb-3 mb-4 border-b border-lineSubtle">
+      <span class="px-2.5 py-0.5 rounded-lg bg-rose-500/15 text-rose-300 border border-rose-400/30 font-mono text-xs font-bold">PHASE 2</span>
+      <h3 class="text-xs sm:text-sm font-display font-bold text-white tracking-wide uppercase">สมรภูมิปะทะ 5vs5 ในมิติแยก (Isolated World)</h3>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <div class="p-3.5 rounded-xl bg-paper/90 border border-line hover:border-rose-400/50 transition-all">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="font-mono text-xs font-extrabold text-rose-400">STEP 04</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-500/10 text-rose-300 border border-rose-500/20">AUTO</span>
+        </div>
+        <div class="font-bold text-white text-sm">สุ่มประกบคู่ Matchmaking</div>
+        <p class="text-xs text-slate-300 mt-1 leading-relaxed">เมื่อครบเวลาสมัคร 5 นาที ระบบจะสุ่มจับคู่ทีมแข่งขันให้อัตโนมัติ</p>
+      </div>
+      <div class="p-3.5 rounded-xl bg-paper/90 border border-line hover:border-rose-400/50 transition-all">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="font-mono text-xs font-extrabold text-rose-400">STEP 05</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-500/10 text-rose-300 border border-rose-500/20">RED MARK</span>
+        </div>
+        <div class="font-bold text-white text-sm">ดึงเข้าสู่มิติแยก World</div>
+        <p class="text-xs text-slate-300 mt-1 leading-relaxed">วาร์ปเข้าสู่ Isolated World โดยฝ่ายตรงข้ามจะมี Marker สีแดงบนศีรษะชัดเจน</p>
+      </div>
+      <div class="p-3.5 rounded-xl bg-paper/90 border border-line hover:border-rose-400/50 transition-all">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="font-mono text-xs font-extrabold text-rose-400">STEP 06</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-500/10 text-rose-300 border border-rose-500/20">TIMER 30S</span>
+        </div>
+        <div class="font-bold text-white text-sm">นับถอยหลังเตรียมตัว 30 วิ</div>
+        <p class="text-xs text-slate-300 mt-1 leading-relaxed">มีเวลาเตรียมตัว 30 วินาที เมื่อหมดเวลาระบบจะบังคับเปิดฉากต่อสู้ทันที</p>
+      </div>
+      <div class="p-3.5 rounded-xl bg-paper/90 border border-line hover:border-rose-400/50 transition-all">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="font-mono text-xs font-extrabold text-rose-400">STEP 07</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-500/10 text-rose-300 border border-rose-500/20">AUTO REVIVE</span>
+        </div>
+        <div class="font-bold text-white text-sm">ปะทะ 5vs5 ตัดเชือก</div>
+        <p class="text-xs text-slate-300 mt-1 leading-relaxed">ทีมที่สมาชิกสลบหมดจะได้รับการชุบชีวิตอัตโนมัติแล้ววาร์ปส่งกลับโลกปกติ</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="rounded-2xl border border-amber-400/30 bg-[#141209]/80 p-5 shadow-[0_0_25px_rgba(245,158,11,0.06)]">
+    <div class="flex items-center gap-3 pb-3 mb-4 border-b border-lineSubtle">
+      <span class="px-2.5 py-0.5 rounded-lg bg-amber-400/15 text-amber-300 border border-amber-400/30 font-mono text-xs font-bold">PHASE 3</span>
+      <h3 class="text-xs sm:text-sm font-display font-bold text-white tracking-wide uppercase">ชัยชนะ & สิทธิ์การงัดตู้เซฟร้านค้า (5 นาที)</h3>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div class="p-3.5 rounded-xl bg-paper/90 border border-line hover:border-amber-400/50 transition-all">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="font-mono text-xs font-extrabold text-amber-400">STEP 08</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20">CHAMPION</span>
+        </div>
+        <div class="font-bold text-white text-sm">ทีมชนะเลิศทีมสุดท้าย</div>
+        <p class="text-xs text-slate-300 mt-1 leading-relaxed">ทีมที่ยืนหยัดเป็นทีมสุดท้ายของสายแข่ง จะได้รับสิทธิ์ในการงัดร้านค้านั้นแต่เพียงผู้เดียว</p>
+      </div>
+      <div class="p-3.5 rounded-xl bg-paper/90 border border-line hover:border-amber-400/50 transition-all">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="font-mono text-xs font-extrabold text-amber-400">STEP 09</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20">5 MIN LIMIT</span>
+        </div>
+        <div class="font-bold text-white text-sm">งัดร้านด้วย Breaching Kit</div>
+        <p class="text-xs text-slate-300 mt-1 leading-relaxed">ต้องใช้ไอเทม Breaching Kit เจาะตู้เซฟภายใน 5 นาที เพื่อรับ Diamond Ingot และเงินแดง</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 ### 1. การสมัครเข้าร่วม (Registration Phase)
 * สมาชิกทีม 5 คน เดินทางไปยังหน้าร้านค้าที่ขึ้นแจ้งเตือนบนแผนที่
