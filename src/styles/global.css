@@ -183,44 +183,136 @@ body {
   border-right: 1px solid rgba(69, 242, 180, 0.15);
 }
 
+/* Responsive Table Container & Master HUD Tables */
+.table-scroll-container,
+.prose-runtown .table-scroll-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1.75rem 0;
+  border-radius: 0.875rem;
+  border: 1px solid rgba(69, 242, 180, 0.28);
+  background: #090f0b;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(69, 242, 180, 0.05);
+}
+
+.table-scroll-container::-webkit-scrollbar,
+.prose-runtown table::-webkit-scrollbar {
+  height: 6px;
+}
+.table-scroll-container::-webkit-scrollbar-track,
+.prose-runtown table::-webkit-scrollbar-track {
+  background: #060a08;
+}
+.table-scroll-container::-webkit-scrollbar-thumb,
+.prose-runtown table::-webkit-scrollbar-thumb {
+  background: rgba(69, 242, 180, 0.4);
+  border-radius: 9999px;
+}
+.table-scroll-container::-webkit-scrollbar-thumb:hover,
+.prose-runtown table::-webkit-scrollbar-thumb:hover {
+  background: #45f2b4;
+  box-shadow: 0 0 10px #45f2b4;
+}
+
 .prose-runtown table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
   margin: 1.75rem 0;
-  font-size: 0.9rem;
-  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  border-radius: 0.875rem;
   overflow: hidden;
   border: 1px solid rgba(69, 242, 180, 0.25);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(69, 242, 180, 0.05);
+  background: #090f0b;
+}
+
+/* Fallback for un-wrapped tables on mobile/tablets */
+@media (max-width: 1024px) {
+  .prose-runtown table:not(.table-scroll-container > table) {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+.table-scroll-container > table {
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  min-width: 100%;
+  width: max-content;
+  display: table !important;
+}
+
+/* Ultra-Clean, High-Legibility Table Headers */
+.prose-runtown thead {
+  background: linear-gradient(180deg, #15241b 0%, #0d1712 100%);
+}
+
+.prose-runtown thead tr {
+  background: transparent;
 }
 
 .prose-runtown th {
-  background: #0d1611;
-  color: #45f2b4;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
+  background: #111e16;
+  color: #ffffff; /* Crisp high-contrast pure white */
+  font-family: var(--font-sans); /* Clean Thai typography (Prompt/sans) */
+  font-size: 0.875rem; /* 14px - clear, easy to read */
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 0.85rem 1.15rem;
-  border-bottom: 2px solid rgba(69, 242, 180, 0.25);
-  text-align: left;
+  letter-spacing: normal; /* Keep Thai vowels and marks naturally connected */
+  text-transform: none; /* No ugly distorted uppercase */
+  white-space: nowrap; /* Header words will NEVER get awkwardly chopped across lines! */
+  padding: 0.95rem 1.25rem;
+  border-bottom: 2px solid rgba(69, 242, 180, 0.45); /* Luminous neon divider */
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  line-height: 1.4;
+  vertical-align: middle;
 }
 
+.prose-runtown th:last-child {
+  border-right: none;
+}
+
+/* Markdown Column Text Alignment */
+.prose-runtown th {
+  text-align: left;
+}
+.prose-runtown th[align="center"],
+.prose-runtown th[style*="center"] {
+  text-align: center;
+}
+.prose-runtown th[align="right"],
+.prose-runtown th[style*="right"] {
+  text-align: right;
+}
+
+/* Clear, Readable Table Body Cells */
 .prose-runtown td {
-  padding: 0.85rem 1.15rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: #111b15;
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-right: 1px solid rgba(255, 255, 255, 0.04);
+  background: #0d1611;
   color: #f1f5f9;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  vertical-align: middle;
+}
+
+.prose-runtown td:last-child {
+  border-right: none;
 }
 
 .prose-runtown tr:nth-child(even) td {
-  background: #0c1410;
+  background: #09100c;
 }
 
 .prose-runtown tr:hover td {
-  background: #16241d;
+  background: #16261d;
+  color: #ffffff;
 }
 
 .prose-runtown code:not(pre code) {

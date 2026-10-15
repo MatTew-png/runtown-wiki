@@ -7,10 +7,10 @@ const jobs = [
     name: 'งานหมู',
     en: 'PORK',
     icon: 'package',
-    spec: 'ลูป 7.69 กม. · ดิบ 130-150 RD · กล่อง 422 RD · ฟาร์ม 15 นาที',
+    spec: 'ลูป 7.18 กม. · ดิบ 130-150 RD · กล่อง 380 RD · ฟาร์ม 15 นาที',
     unitLabel: 'กล่อง',
-    unitKg: 3,
-    unitPrice: 422,
+    unitKg: 1.0,
+    unitPrice: 380,
     minsPerRun: 23,
     brainPerRun: 8,
   },
@@ -21,7 +21,7 @@ const jobs = [
     icon: 'tree',
     spec: 'ลูป 14.0 กม. · กล่อง 479 RD · ขายผู้เล่น 500-600 RD',
     unitLabel: 'กล่อง',
-    unitKg: 1.1,
+    unitKg: 1.0,
     unitPrice: 479,
     minsPerRun: 35,
     brainPerRun: 12,
@@ -31,10 +31,10 @@ const jobs = [
     name: 'งานดอกไม้',
     en: 'FLOWERS',
     icon: 'flower',
-    spec: '8 วิ/ดอก · ขาย รพ. 100 RD/ดอก · กล่อง 408 RD',
+    spec: '8 วิ/ดอก · ขาย รพ. 120 RD/ดอก · กล่อง 424 RD',
     unitLabel: 'ดอก',
     unitKg: 0.5,
-    unitPrice: 100,
+    unitPrice: 120,
     minsPerRun: 14,
     brainPerRun: 10,
   },
@@ -43,20 +43,20 @@ const jobs = [
     name: 'งานจี่เหล็ก',
     en: 'SMELTING',
     icon: 'wrench',
-    spec: 'ลูป 1.2 กม. · แท่ง 195 RD · ขายอู่ช่าง',
+    spec: 'ลูป 1.2 กม. · แท่ง 233 RD · ขายอู่ช่าง 233-240 RD',
     unitLabel: 'แท่ง',
-    unitKg: 2,
-    unitPrice: 195,
+    unitKg: 0.5,
+    unitPrice: 233,
     minsPerRun: 12,
     brainPerRun: 6,
   },
 ];
 
 const capacities = [
-  { kg: 45, label: 'เดินเท้า (45 kg)' },
-  { kg: 60, label: 'รถเก๋ง (60 kg)' },
-  { kg: 120, label: 'กระบะ (120 kg)' },
-  { kg: 150, label: 'รถตู้/เฮฟวี่ (150 kg)' },
+  { kg: 30, label: 'กระเป๋าตัว (30 kg)' },
+  { kg: 75, label: 'รถเล็ก (60+15 kg)' },
+  { kg: 135, label: 'รถกลาง (120+15 kg)' },
+  { kg: 165, label: 'รถใหญ่ (150+15 kg)' },
 ];
 ---
 
@@ -116,7 +116,7 @@ const capacities = [
             <button
               type="button"
               class={`calc-cap-btn rounded-xl border px-3 py-3 text-center transition-all ${
-                c.kg === 120
+                c.kg === 135
                   ? 'border-mint bg-mint/10 text-mint font-bold active shadow-[0_0_15px_rgba(69,242,180,0.2)]'
                   : 'border-line bg-paper/60 text-textSoft hover:border-mint/40 hover:text-white font-medium'
               }`}
@@ -239,14 +239,14 @@ const capacities = [
 
 <script>
   const jobsData = {
-    pork: { name: 'งานหมู', en: 'PORK', unitLabel: 'กล่อง', unitKg: 3, unitPrice: 422, minsPerRun: 23, brainPerRun: 8 },
-    wood: { name: 'งานไม้', en: 'WOOD', unitLabel: 'กล่อง', unitKg: 1.1, unitPrice: 479, minsPerRun: 35, brainPerRun: 12 },
-    flowers: { name: 'งานดอกไม้', en: 'FLOWERS', unitLabel: 'ดอก', unitKg: 0.5, unitPrice: 100, minsPerRun: 14, brainPerRun: 10 },
-    smelting: { name: 'งานจี่เหล็ก', en: 'SMELTING', unitLabel: 'แท่ง', unitKg: 2, unitPrice: 195, minsPerRun: 12, brainPerRun: 6 },
+    pork: { name: 'งานหมู', en: 'PORK', unitLabel: 'กล่อง', unitKg: 1.0, unitPrice: 380, minsPerRun: 23, brainPerRun: 8 },
+    wood: { name: 'งานไม้', en: 'WOOD', unitLabel: 'กล่อง', unitKg: 1.0, unitPrice: 479, minsPerRun: 35, brainPerRun: 12 },
+    flowers: { name: 'งานดอกไม้', en: 'FLOWERS', unitLabel: 'ดอก', unitKg: 0.5, unitPrice: 120, minsPerRun: 14, brainPerRun: 10 },
+    smelting: { name: 'งานจี่เหล็ก', en: 'SMELTING', unitLabel: 'แท่ง', unitKg: 0.5, unitPrice: 233, minsPerRun: 12, brainPerRun: 6 },
   };
 
   let curJobId = 'pork';
-  let curCap = 120;
+  let curCap = 135;
   let curRuns = 3;
 
   const jobBtns = document.querySelectorAll('.calc-job-btn');
@@ -288,15 +288,15 @@ const capacities = [
     if (outBrainVal) outBrainVal.textContent = `${brain}%`;
     if (outBrainBar) {
       outBrainBar.style.width = `${Math.min(100, brain)}%`;
-      if (brain >= 60) {
+      if (brain >= 100) {
         outBrainBar.className = 'h-full bg-rose-500 rounded-full transition-all duration-300 shadow-[0_0_10px_#ff4d6d]';
-        if (outBrainTip) outBrainTip.textContent = 'ระวัง: ค่าสมองสูงเกิน 60% ควรแวะบาร์เขียวหรือรีหัวก่อนทำงานต่อ';
-      } else if (brain >= 40) {
+        if (outBrainTip) outBrainTip.textContent = 'วิกฤต: สมองแตะ 100% ตัวละครจะสลบเป็นลมทันที! รีบแวะบาร์เขียวหรืออู่ช่างรีเซ็ต 0%';
+      } else if (brain >= 70) {
         outBrainBar.className = 'h-full bg-amber-400 rounded-full transition-all duration-300';
-        if (outBrainTip) outBrainTip.textContent = 'สมองเริ่มล้าปานกลาง ควรดื่มกาแฟหรือชูกำลังระหว่างทาง';
+        if (outBrainTip) outBrainTip.textContent = 'สมองสะสมสูง แนะนำแวะบาร์เขียวหรืออู่ช่างเพื่อรีเซ็ตสมองกลับเป็น 0%';
       } else {
         outBrainBar.className = 'h-full bg-mint rounded-full transition-all duration-300';
-        if (outBrainTip) outBrainTip.textContent = 'ระดับสมองปลอดภัย แนะนำจอดพักดื่มน้ำทุก 3 รอบ';
+        if (outBrainTip) outBrainTip.textContent = 'ระดับสมองปลอดภัย ทำงานต่อเนื่องได้ตามปกติ';
       }
     }
   }

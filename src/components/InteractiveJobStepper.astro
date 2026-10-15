@@ -206,11 +206,11 @@ const jobsData: Record<string, JobData> = {
         num: '04',
         name: 'จุดรับซื้อข้าวสารของรัฐ',
         en: 'WHEAT EXPORT',
-        desc: 'นำกล่องข้าวไปขายรับเงิน 396 RD ต่อกล่อง หรือขายข้าวดิบให้พ่อครัวต้นละ 100 RD',
+        desc: 'นำกล่องข้าวไปขายรับเงิน 368 RD ต่อกล่อง หรือขายข้าวดิบให้พ่อครัวต้นละ 100 RD',
         tool: 'NPC รับซื้อรัฐ',
         duration: 'ทันที',
         weight: '-',
-        output: '396 RD / กล่อง (ขายคนทำอาหาร 100 RD)',
+        output: '368 RD / กล่อง (ขายคนทำอาหาร 100 RD)',
         coords: 'จุดรับซื้อข้าว Morningwood (ถนน Boulevard)',
         spotId: 'wheat-sell',
         image: '/maps/spots/wheat_sell.png',
@@ -267,11 +267,11 @@ const jobsData: Record<string, JobData> = {
         num: '04',
         name: 'จุดขายเหล็ก / ส่งอู่ช่างซ่อมรถ',
         en: 'SELL TO MECHANICS',
-        desc: 'ขายให้รัฐ 194 RD หรือส่งขายอู่ช่างได้ราคา 195 RD/แท่ง เพื่อนำไปทำกล่องซ่อมรถ',
+        desc: 'ขายให้รัฐ 233 RD หรือส่งขายอู่ช่างได้ราคา 233 - 240 RD/แท่ง เพื่อนำไปทำกล่องซ่อมรถ',
         tool: 'อู่ช่างซ่อมรถ / NPC รัฐ',
         duration: 'ทันที',
         weight: '-',
-        output: '194 - 195 RD / แท่ง',
+        output: '233 - 240 RD / แท่ง',
         coords: 'ส่งอู่ช่างซ่อมรถ & NPC รัฐ Cypress Flats',
         spotId: 'steel-smelt',
         image: '/maps/spots/steel_smelt.png',
@@ -328,11 +328,11 @@ const jobsData: Record<string, JobData> = {
         num: '04',
         name: 'ส่งขายตลาดค้าส่งเนื้อสัตว์',
         en: 'WHOLESALE EXPORT',
-        desc: 'ขายรับเงิน 422 RD ต่อกล่อง หรือขายหมูดิบให้เพื่อนผู้เล่นทำอาหารได้ 130 - 150 RD',
+        desc: 'ขายรับเงิน 380 RD ต่อกล่อง หรือขายหมูดิบให้เพื่อนผู้เล่นทำอาหารได้ 130 - 150 RD',
         tool: 'NPC ตลาดสด',
         duration: 'ทันที',
         weight: '-',
-        output: '422 RD / กล่อง (ขายคนทำอาหาร 150 RD)',
+        output: '380 RD / กล่อง (ขายคนทำอาหาร 150 RD)',
         coords: 'จุดรับซื้อเนื้อหมู Little Seoul / ตลาดค้าส่ง',
         spotId: 'pig-sell',
         image: '/maps/spots/pork_sell.png',
@@ -389,14 +389,136 @@ const jobsData: Record<string, JobData> = {
         num: '04',
         name: 'ส่งขายโรงพยาบาล & ตลาดรัฐ',
         en: 'SELL TO HOSPITAL',
-        desc: 'ขายกล่องละ 408 RD หรือนำดอกไม้สดไปขายให้คุณหมอทำยาที่ รพ. ได้ดอกละ 100 RD',
+        desc: 'ขายกล่องละ 424 RD หรือนำดอกไม้สดไปขายให้คุณหมอทำยาที่ รพ. ได้ดอกละ 120 RD',
         tool: 'เคาน์เตอร์ รพ. / ตลาดส่งออก',
         duration: 'ทันที',
         weight: '-',
-        output: '408 RD / กล่อง (ขาย รพ. 100 RD/ดอก)',
+        output: '424 RD / กล่อง (ส่ง รพ. 120 RD/ดอก)',
         coords: 'จุดรับซื้อ Del Perro (ริมหาด) / รพ. Pillbox Hill',
         spotId: 'flower-sell',
         image: '/maps/spots/flower_sell.png',
+      },
+    ],
+  },
+  crystal: {
+    id: 'crystal',
+    name: 'งานร่อนแร่คริสตัล',
+    en: 'CRYSTAL PANNING',
+    icon: 'gem',
+    tone: 'cyan',
+    steps: [
+      {
+        num: '01',
+        name: 'ตั้งเสาแร่ในโซนน้ำตื้น',
+        en: 'DEPLOY PANNING TRAY',
+        desc: 'กดใช้งาน Panning Tray ในพื้นที่น้ำตื้นตาม Blip บนเรดาร์ ตั้งได้พร้อมกันสูงสุด 2 เสา',
+        tool: 'ถาดร่อนแร่ Panning Tray (ตั้งได้สูงสุด 2 เสา)',
+        duration: 'รอบทำงานอัตโนมัติ',
+        weight: '0.50 กก. / ชิ้น',
+        output: 'แร่คริสตัลดิบ (Raw Crystal)',
+        coords: 'โซนน้ำตื้น (ดู Blip วงกลมบนแผนที่ GPS)',
+        spotId: 'crystal-farm',
+        image: '/maps/spots/crystal_sift.png',
+      },
+      {
+        num: '02',
+        name: 'เฝ้าเสา & ซ่อมเครื่องขัดข้อง (Shake)',
+        en: 'SHAKE & MONITOR',
+        desc: 'เฝ้าเครื่องในระยะโซน blip (ห้ามออกนอกโซนเด็ดขาด เสาจะพังทันที!) หากเครื่องขัดข้อง ให้กด Focus Menu > Shake แล้วกดปุ่ม A / D สลับกันตามจังหวะจนหลอดเต็ม (ห้ามกดรัวเกินไป)',
+        tool: 'Focus Menu > Shake (กด A/D สลับจังหวะ)',
+        duration: 'มินิเกมจนหลอดเต็ม',
+        weight: '-',
+        output: 'เครื่องทำงานต่อ / ได้ผลผลิตตามรอบ',
+        coords: 'เสาร่อนแร่ในโซนน้ำตื้น',
+        spotId: 'crystal-repair',
+        image: '/maps/spots/crystal_sift.png',
+      },
+      {
+        num: '03',
+        name: 'เก็บเกี่ยว & สต็อกทองแดง (5:3)',
+        en: 'HARVEST & PREP COPPER',
+        desc: 'เก็บ Raw Crystal ที่ได้จากเครื่อง และเตรียมแท่งทองแดง (Copper Ingot) มาในอัตราส่วน Raw Crystal 5 : Copper Ingot 3 เพื่อเตรียมนำไปหลอม',
+        tool: 'ตู้คอนเทนเนอร์ / ท้ายรถ',
+        duration: 'ทันที',
+        weight: 'ตามจำนวนที่แบก',
+        output: 'Raw Crystal x5 + Copper Ingot x3',
+        coords: 'จุดฟาร์มน้ำตื้น & จุดสต็อกของ',
+        spotId: 'crystal-prep',
+        image: '/maps/spots/copper_smelt.png',
+      },
+      {
+        num: '04',
+        name: 'หลอม Crystal Ingot ท่าเรือใต้',
+        en: 'SMELT CRYSTAL INGOT',
+        desc: 'นำ Raw Crystal x5 + Copper Ingot x3 มาหลอมรวมกันเป็น Crystal Ingot x1 วัตถุดิบสำคัญสำหรับใช้อัปเกรดอาวุธขั้นถัดไป',
+        tool: 'เตาหลอมโลหะ ท่าเรือใต้ (Industrial Docks)',
+        duration: '5 วินาที / ชิ้น',
+        weight: '1.00 กก. / ก้อน',
+        output: 'Crystal Ingot 1 ก้อน (สำหรับอัปเกรดอาวุธ)',
+        coords: 'โรงหลอมโลหะ ท่าเรือใต้ Industrial Docks',
+        spotId: 'crystal-process',
+        image: '/maps/spots/crystal_pro.png',
+      },
+    ],
+  },
+  kitchen: {
+    id: 'kitchen',
+    name: 'งานครัว & ส่งอาหาร',
+    en: 'RUN KITCHEN & DELIVERY',
+    icon: 'drumstick',
+    tone: 'amber',
+    steps: [
+      {
+        num: '01',
+        name: 'ย่างเนื้อ Doner & ปิ้งแป้ง (สาขา Downtown / Legion)',
+        en: 'ROAST MEAT & TOAST BREAD',
+        desc: 'หยิบเนื้อจากตู้แช่ราคา 2,500 RD (เลือก TAKE DONER SPLIT) วางบนเตาย่าง (PLACE SPLIT) ย่าง 3 นาที ทำได้พร้อมกัน 2 เครื่อง (1 ก้อนทำได้ 4 ชิ้น) และปิ้งแป้งโดยใช้ Rice Grain x2',
+        tool: 'ตู้แช่เนื้อ 2,500 RD + เตา Doner 2 เครื่อง',
+        duration: 'ย่างเนื้อ 3 นาที (ได้ 4 ชิ้น)',
+        weight: '0.30 กก. / ชิ้น',
+        output: 'เนื้อย่างสุก 1 ก้อน (4 ชิ้น) + แป้งปิ้งสุก',
+        coords: 'ร้านอาหาร Run Kitchen (สาขา Downtown / Legion)',
+        spotId: 'kitchen-downtown',
+        image: '/maps/spots/kitchen_cook.png',
+      },
+      {
+        num: '02',
+        name: 'หั่นเนื้อ & ประกอบ Kebab/Pita (สาขา Vespucci)',
+        en: 'SHAVE DONER & ASSEMBLE',
+        desc: 'หยิบแป้งที่ปิ้งเสร็จ (TAKE BREAD) เดินไปที่เสาเนื้อย่าง เลือก SHAVE DONER แล้วเลือก ADD DONER KEBAB เพื่อใส่เนื้อลงในแป้ง จากนั้นกด E เพื่อเสร็จสิ้นขั้นตอน (ห้ามออกนอกร้านระหว่างทำ)',
+        tool: 'มีดสไลด์ Shave Doner + แป้ง Wrap',
+        duration: 'ทันที (กด E)',
+        weight: '0.30 กก. / ชิ้น',
+        output: 'Kebab หรือ Pita 1 ชิ้น (ลดหิว 50% เครียด -10)',
+        coords: 'เคาน์เตอร์ประกอบอาหาร Run Kitchen (สาขา Vespucci)',
+        spotId: 'kitchen-vespucci',
+        image: '/maps/spots/kitchen_assemble.png',
+      },
+      {
+        num: '03',
+        name: 'เปิดแอป รันแมน รับออเดอร์ (สาขา Mirror Park)',
+        en: 'ACCEPT RUNMAN ORDER',
+        desc: 'เปิดโทรศัพท์ > แอป รันแมน > บัญชี > เข้า Runner Mode > เปิดส่งอาหาร ระบบจะสุ่ม NPC ออเดอร์ Kebab จำนวน 2-4 ชิ้น (NPC รับซื้อเฉพาะ Kebab เท่านั้น! ห้ามกดยกเลิก ไม่งั้นติดคูลดาวน์ 15 นาที)',
+        tool: 'สมาร์ทโฟน > แอป รันแมน (Runner Mode)',
+        duration: 'สุ่มเรียกงาน (คูลดาวน์ 3-5 นาที)',
+        weight: '-',
+        output: 'ออเดอร์ส่งอาหาร 2 - 4 ชิ้น',
+        coords: 'แอป รันแมน (สาขา Mirror Park / ทั่วเมือง)',
+        spotId: 'kitchen-mirror',
+        image: '/maps/spots/kitchen_app.png',
+      },
+      {
+        num: '04',
+        name: 'บิดส่งลูกค้า NPC รับเงินสด (สาขา Paleto Bay)',
+        en: 'DELIVER FOOD & CASH OUT',
+        desc: 'ขับรถไปยังจุดหมาย คุยกับ NPC เพื่อส่งมอบ Kebab รับเงินสดทันที 1,500 RD ต่อชิ้น (ออเดอร์ละ 3,000 - 6,000 RD!) ลุ้นโบนัส 10% ได้รับงานต่อเนื่องทันทีไม่ต้องรอคูลดาวน์',
+        tool: 'NPC ลูกค้าปลายทาง / รถ 60 กก.',
+        duration: 'ส่งทันที',
+        weight: '-',
+        output: '1,500 RD / ชิ้น (รวม 3,000 - 6,000 RD/จุด)',
+        coords: 'จุดนัดพบ NPC ลูกค้า (สาขา Paleto Bay / ทั่วเมือง)',
+        spotId: 'kitchen-paleto',
+        image: '/maps/spots/kitchen_deliver.png',
       },
     ],
   },
@@ -432,7 +554,7 @@ const initialStep = currentJobData.steps[0];
           class={`stepper-job-tab shrink-0 px-3.5 py-2 rounded-xl border text-xs font-mono transition-all flex items-center gap-2 ${
             job.id === activeJobKey
               ? 'border-mint bg-mint/15 text-mint font-bold shadow-[0_0_15px_rgba(69,242,180,0.2)] active'
-              : 'border-line bg-card/60 text-slate-400 hover:text-white hover:border-lineSubtle'
+              : 'border-line bg-card/60 text-slate-200 hover:text-white hover:border-lineSubtle'
           }`}
           data-job-id={job.id}
         >
@@ -455,8 +577,10 @@ const initialStep = currentJobData.steps[0];
         <span class="text-mint font-bold">STEP 01</span>
         <span class="size-2 rounded-full bg-mint"></span>
       </div>
-      <strong class="text-sm font-bold text-white block mt-1 group-hover:text-mint transition-colors">1. ฟาร์มของดิบ</strong>
-      <span class="text-[11px] text-textMuted block font-mono">เก็บวัตถุดิบต้นน้ำ</span>
+      <strong class="text-sm font-bold text-white block mt-1 group-hover:text-mint transition-colors">
+        1. {currentJobData.steps[0]?.name.split('(')[0].trim() || 'ฟาร์มของดิบ'}
+      </strong>
+      <span class="text-[11px] text-textMuted block font-mono">ขั้นตอนที่ 1</span>
     </button>
 
     <button
@@ -465,11 +589,13 @@ const initialStep = currentJobData.steps[0];
       data-step-index="1"
     >
       <div class="flex items-center justify-between text-xs font-mono">
-        <span class="text-slate-400 font-bold">STEP 02</span>
-        <span class="size-2 rounded-full bg-slate-700"></span>
+        <span class="text-slate-200 font-bold">STEP 02</span>
+        <span class="size-2 rounded-full bg-slate-600"></span>
       </div>
-      <strong class="text-sm font-bold text-white block mt-1 group-hover:text-mint transition-colors">2. แปรรูป (โพล)</strong>
-      <span class="text-[11px] text-textMuted block font-mono">เข้าโรงงานแปรรูป</span>
+      <strong class="text-sm font-bold text-white block mt-1 group-hover:text-mint transition-colors">
+        2. {currentJobData.steps[1]?.name.split('(')[0].trim() || 'แปรรูป (โพล)'}
+      </strong>
+      <span class="text-[11px] text-textMuted block font-mono">ขั้นตอนที่ 2</span>
     </button>
 
     <button
@@ -478,11 +604,13 @@ const initialStep = currentJobData.steps[0];
       data-step-index="2"
     >
       <div class="flex items-center justify-between text-xs font-mono">
-        <span class="text-slate-400 font-bold">STEP 03</span>
-        <span class="size-2 rounded-full bg-slate-700"></span>
+        <span class="text-slate-200 font-bold">STEP 03</span>
+        <span class="size-2 rounded-full bg-slate-600"></span>
       </div>
-      <strong class="text-sm font-bold text-white block mt-1 group-hover:text-mint transition-colors">3. แพ็กกล่องสินค้า</strong>
-      <span class="text-[11px] text-textMuted block font-mono">ลงกล่องลังเพิ่มราคา</span>
+      <strong class="text-sm font-bold text-white block mt-1 group-hover:text-mint transition-colors">
+        3. {currentJobData.steps[2]?.name.split('(')[0].trim() || 'แพ็กกล่องสินค้า'}
+      </strong>
+      <span class="text-[11px] text-textMuted block font-mono">ขั้นตอนที่ 3</span>
     </button>
 
     <button
@@ -491,11 +619,13 @@ const initialStep = currentJobData.steps[0];
       data-step-index="3"
     >
       <div class="flex items-center justify-between text-xs font-mono">
-        <span class="text-slate-400 font-bold">STEP 04</span>
-        <span class="size-2 rounded-full bg-slate-700"></span>
+        <span class="text-slate-200 font-bold">STEP 04</span>
+        <span class="size-2 rounded-full bg-slate-600"></span>
       </div>
-      <strong class="text-sm font-bold text-white block mt-1 group-hover:text-mint transition-colors">4. ส่งขายรับเงินสด</strong>
-      <span class="text-[11px] text-textMuted block font-mono">ส่งออกรับเงินก้อนโต</span>
+      <strong class="text-sm font-bold text-white block mt-1 group-hover:text-mint transition-colors">
+        4. {currentJobData.steps[3]?.name.split('(')[0].trim() || 'ส่งขายรับเงินสด'}
+      </strong>
+      <span class="text-[11px] text-textMuted block font-mono">ขั้นตอนที่ 4</span>
     </button>
   </div>
 
@@ -661,7 +791,7 @@ const initialStep = currentJobData.steps[0];
           { num: '01', name: 'ทุ่งนาข้าว Grapeseed', en: 'HARVEST WHEAT', desc: 'ขับไปทุ่งนาทางเหนือ ใช้เคียวยืนเกี่ยวข้าวดิบใส่รถ ชิวๆ วิวสวย', tool: 'เคียวเกี่ยวข้าว (200 RD / โอกาสพัง 2%)', duration: '10 วินาที / ชิ้น', weight: '0.50 กก. / ชิ้น', output: 'รวงข้าวดิบ (Raw Wheat)', coords: 'ทุ่งนาเกษตรกรรม Grapeseed (โซนเหนือ)', spotId: 'wheat-farm', image: '/maps/spots/wheat_farm.png' },
           { num: '02', name: 'โรงสีข้าว Grapeseed Mill', en: 'GRAIN MILLING', desc: 'ขับข้ามถนนมาโรงสี แปรรูปรวงข้าวดิบเป็นเมล็ดข้าวสารพร้อมหุง', tool: 'เครื่องสีข้าว', duration: '5 วินาที / ชิ้น', weight: '0.50 กก. / ชิ้น', output: 'ข้าวสารแปรรูป', coords: 'โรงสียุ้งฉางข้าว Grapeseed (เลียบทางรถไฟ)', spotId: 'wheat-pro', image: '/maps/spots/wheat_pro.png' },
           { num: '03', name: 'โกดังแพ็คกล่องข้าว', en: 'WHEAT PACKAGING', desc: 'นำข้าวสาร 2 ชิ้นมาแพ็คลงกล่องกระดาษหนา เพิ่มมูลค่ารับกำไรสูงสุด', tool: 'โต๊ะแพ็คกล่อง', duration: '5 วินาที / 2 ชิ้น', weight: '1.00 กก. / กล่อง', output: 'กล่องข้าวสาร 1 กล่อง', coords: 'โกดังแพ็คสินค้า Industrial Docks (ท่าเรือใต้)', spotId: 'wheat-pack', image: '/maps/spots/wheat_pack.png' },
-          { num: '04', name: 'จุดรับซื้อข้าวสารของรัฐ', en: 'WHEAT EXPORT', desc: 'นำกล่องข้าวไปขายรับเงิน 396 RD ต่อกล่อง หรือขายข้าวดิบให้พ่อครัวต้นละ 100 RD', tool: 'NPC รับซื้อรัฐ', duration: 'ทันที', weight: '-', output: '396 RD / กล่อง (ขายคนทำอาหาร 100 RD)', coords: 'จุดรับซื้อข้าว Morningwood (ถนน Boulevard)', spotId: 'wheat-sell', image: '/maps/spots/wheat_sell.png' }
+          { num: '04', name: 'จุดรับซื้อข้าวสารของรัฐ', en: 'WHEAT EXPORT', desc: 'นำกล่องข้าวไปขายรับเงิน 368 RD ต่อกล่อง หรือขายข้าวดิบให้พ่อครัวต้นละ 100 RD', tool: 'NPC รับซื้อรัฐ', duration: 'ทันที', weight: '-', output: '368 RD / กล่อง (ขายคนทำอาหาร 100 RD)', coords: 'จุดรับซื้อข้าว Morningwood (ถนน Boulevard)', spotId: 'wheat-sell', image: '/maps/spots/wheat_sell.png' }
         ]
       },
       smelting: {
@@ -670,7 +800,7 @@ const initialStep = currentJobData.steps[0];
           { num: '01', name: 'กองซากรถในเมือง (La Puerta)', en: 'SCAVENGE SCRAP METAL', desc: 'เก็บเศษเหล็กตามกองซากรถ ลูปสั้น 1.2 กม. ในเมือง เก็บ 1 ครั้งได้ทีละ 2 ชิ้นทันที!', tool: 'ถุงมือช่าง (200 RD / โอกาสพัง 2%)', duration: '10 วินาที (ได้ 2 ชิ้น!)', weight: '0.25 กก. / ชิ้น', output: 'เศษเหล็ก 2 ชิ้น', coords: 'กองซากรถในเมืองใต้ La Puerta', spotId: 'scrap-farm-1', image: '/maps/spots/scrap_farm_1.png' },
           { num: '02', name: 'กองซากรถทะเลทราย (Grand Senora)', en: 'DESERT SCRAP YARD', desc: 'จุดทางเลือกสำหรับคนอยู่โซนเหนือ ไม่ต้องลงมาในเมือง วิ่งฝากตู้เรเบลได้ง่าย', tool: 'ถุงมือช่าง (200 RD / โอกาสพัง 2%)', duration: '10 วินาที (ได้ 2 ชิ้น)', weight: '0.25 กก. / ชิ้น', output: 'เศษเหล็ก 2 ชิ้น', coords: 'กองซากรถทะเลทราย Grand Senora Desert', spotId: 'scrap-farm-2', image: '/maps/spots/scrap_farm_2.png' },
           { num: '03', name: 'เตาหลอมเหล็กเส้น Cypress Flats', en: 'STEEL SMELTER', desc: 'นำเศษเหล็ก 2 ชิ้นเข้าเตาหลอม แปรรูปเป็นเหล็กกล้า Steel Ingot พร้อมใช้งาน', tool: 'เตาหลอมไฟฟ้า', duration: '5 วินาที / 2 ชิ้น', weight: '0.50 กก. / แท่ง', output: 'แท่งเหล็กกล้า 1 แท่ง', coords: 'เตาหลอมความร้อนสูง Cypress Flats (ใต้เมือง)', spotId: 'steel-pro', image: '/maps/spots/steel_pro.png' },
-          { num: '04', name: 'จุดขายเหล็ก / ส่งอู่ช่างซ่อมรถ', en: 'SELL TO MECHANICS', desc: 'ขายให้รัฐ 194 RD หรือส่งขายอู่ช่างได้ราคา 195 RD/แท่ง เพื่อนำไปทำกล่องซ่อมรถ', tool: 'อู่ช่างซ่อมรถ / NPC รัฐ', duration: 'ทันที', weight: '-', output: '194 - 195 RD / แท่ง', coords: 'ส่งอู่ช่างซ่อมรถ & NPC รัฐ Cypress Flats', spotId: 'steel-smelt', image: '/maps/spots/steel_smelt.png' }
+          { num: '04', name: 'จุดขายเหล็ก / ส่งอู่ช่างซ่อมรถ', en: 'SELL TO MECHANICS', desc: 'ขายให้รัฐ 233 RD หรือส่งขายอู่ช่างได้ราคา 233 - 240 RD/แท่ง เพื่อนำไปทำกล่องซ่อมรถ', tool: 'อู่ช่างซ่อมรถ / NPC รัฐ', duration: 'ทันที', weight: '-', output: '233 - 240 RD / แท่ง', coords: 'ส่งอู่ช่างซ่อมรถ & NPC รัฐ Cypress Flats', spotId: 'steel-smelt', image: '/maps/spots/steel_smelt.png' }
         ]
       },
       pig: {
@@ -679,7 +809,7 @@ const initialStep = currentJobData.steps[0];
           { num: '01', name: 'คอกเลี้ยงหมู Grapeseed', en: 'RAISE LIVESTOCK', desc: 'ให้อาหารหมูและรอเวลาเจริญเติบโต 15 นาที ได้ผลผลิตก้อนโต 60 ชิ้น', tool: 'อาหารหมู', duration: '15 นาที / 60 ชิ้น', weight: '0.50 กก. / ชิ้น', output: 'หมูดิบ 60 ชิ้น', coords: 'คอกเลี้ยงหมู Grapeseed (โซนทะเลทราย)', spotId: 'pig-farm', image: '/maps/spots/pork_farm.png' },
           { num: '02', name: 'โรงชำแหละเนื้อหมู (South LS)', en: 'MEAT PROCESSING', desc: 'นำหมูเข้าโรงชำแหละ ตัดแต่งเป็นเนื้อหมูพร้อมบริโภคหรือทำอาหาร', tool: 'มีดชำแหละ (200 RD / โอกาสพัง 2%)', duration: '5 วินาที / ชิ้น', weight: '0.50 กก. / ชิ้น', output: 'เนื้อหมูชำแหละ 1 ชิ้น', coords: 'โรงชำแหละเนื้อหมู Cypress Flats (ใต้เมือง)', spotId: 'pig-pro', image: '/maps/spots/pork_pro.png' },
           { num: '03', name: 'โกดังแพ็คหมูกล่องสินค้า', en: 'PORK PACKAGING', desc: 'แพ็คเนื้อหมู 2 ชิ้นลงกล่องแช่แข็ง เพื่อส่งออกขายตลาดใหญ่', tool: 'โต๊ะแพ็คกล่องแช่เย็น', duration: '5 วินาที / 2 ชิ้น', weight: '1.00 กก. / กล่อง', output: 'กล่องเนื้อหมู 1 กล่อง', coords: 'โกดังแพ็คเนื้อหมู Industrial Docks (ท่าเรือใต้)', spotId: 'pig-pack', image: '/maps/spots/pork_pack.png' },
-          { num: '04', name: 'ส่งขายตลาดค้าส่งเนื้อสัตว์', en: 'WHOLESALE EXPORT', desc: 'ขายรับเงิน 422 RD ต่อกล่อง หรือขายหมูดิบให้เพื่อนผู้เล่นทำอาหารได้ 130 - 150 RD', tool: 'NPC ตลาดสด', duration: 'ทันที', weight: '-', output: '422 RD / กล่อง (ขายคนทำอาหาร 150 RD)', coords: 'จุดรับซื้อเนื้อหมู Little Seoul / ตลาดค้าส่ง', spotId: 'pig-sell', image: '/maps/spots/pork_sell.png' }
+          { num: '04', name: 'ส่งขายตลาดค้าส่งเนื้อสัตว์', en: 'WHOLESALE EXPORT', desc: 'ขายรับเงิน 380 RD ต่อกล่อง หรือขายหมูดิบให้เพื่อนผู้เล่นทำอาหารได้ 130 - 150 RD', tool: 'NPC ตลาดสด', duration: 'ทันที', weight: '-', output: '380 RD / กล่อง (ขายคนทำอาหาร 150 RD)', coords: 'จุดรับซื้อเนื้อหมู Little Seoul / ตลาดค้าส่ง', spotId: 'pig-sell', image: '/maps/spots/pork_sell.png' }
         ]
       },
       flowers: {
@@ -688,7 +818,25 @@ const initialStep = currentJobData.steps[0];
           { num: '01', name: 'สวนดอกไม้ Mount Chiliad', en: 'PICK FLOWERS', desc: 'เก็บดอกไม้บนไหล่เขา อากาศบริสุทธิ์ เก็บไวที่สุดในเกมเพียง 8 วินาทีต่อดอก!', tool: 'กรรไกรตัดดอก (200 RD / โอกาสพัง 2%)', duration: '8 วินาที (เร็วที่สุด)', weight: '0.50 กก. / ชิ้น', output: 'ดอกไม้สด', coords: 'ทุ่งดอกไม้ Mount Gordo (ไหล่เขา Chiliad)', spotId: 'flower-farm', image: '/maps/spots/flower_farm.png' },
           { num: '02', name: 'โรงสกัดน้ำมันหอมระเหย', en: 'ESSENTIAL OIL EXTRACTION', desc: 'นำดอกไม้สดเข้าโรงกลั่น สกัดเป็นหัวน้ำหอมและสารตั้งต้นยา', tool: 'หม้อกลั่นสกัด', duration: '5 วินาที / ชิ้น', weight: '0.50 กก. / ชิ้น', output: 'สารสกัดดอกไม้แปรรูป', coords: 'โรงสกัดสมุนไพร Grand Senora Desert', spotId: 'flower-pro', image: '/maps/spots/flower_pro.png' },
           { num: '03', name: 'โกดังแพ็คกล่องดอกไม้', en: 'FLOWER PACKAGING', desc: 'นำสารสกัดดอกไม้ 2 ชิ้นมาแพ็คลงกล่องส่งออกสินค้าหรู', tool: 'โต๊ะแพ็คกล่อง', duration: '5 วินาที / 2 ชิ้น', weight: '1.00 กก. / กล่อง', output: 'กล่องดอกไม้ 1 กล่อง', coords: 'โกดังแพ็คสินค้า Industrial Docks (ท่าเรือใต้)', spotId: 'flower-pack', image: '/maps/spots/flower_pack.png' },
-          { num: '04', name: 'ส่งขายโรงพยาบาล & ตลาดรัฐ', en: 'SELL TO HOSPITAL', desc: 'ขายกล่องละ 408 RD หรือนำดอกไม้สดไปขายให้คุณหมอทำยาที่ รพ. ได้ดอกละ 100 RD', tool: 'เคาน์เตอร์ รพ. / ตลาดส่งออก', duration: 'ทันที', weight: '-', output: '408 RD / กล่อง (ขาย รพ. 100 RD/ดอก)', coords: 'จุดรับซื้อ Del Perro (ริมหาด) / รพ. Pillbox Hill', spotId: 'flower-sell', image: '/maps/spots/flower_sell.png' }
+          { num: '04', name: 'ส่งขายโรงพยาบาล & ตลาดรัฐ', en: 'SELL TO HOSPITAL', desc: 'ขายกล่องละ 424 RD หรือนำดอกไม้สดไปขายให้คุณหมอทำยาที่ รพ. ได้ดอกละ 120 RD', tool: 'เคาน์เตอร์ รพ. / ตลาดส่งออก', duration: 'ทันที', weight: '-', output: '424 RD / กล่อง (ส่ง รพ. 120 RD/ดอก)', coords: 'จุดรับซื้อ Del Perro (ริมหาด) / รพ. Pillbox Hill', spotId: 'flower-sell', image: '/maps/spots/flower_sell.png' }
+        ]
+      },
+      crystal: {
+        name: 'งานร่อนแร่คริสตัล',
+        steps: [
+          { num: '01', name: 'ตั้งเสาแร่ในโซนน้ำตื้น', en: 'DEPLOY PANNING TRAY', desc: 'กดใช้งาน Panning Tray ในพื้นที่น้ำตื้นตาม Blip บนเรดาร์ ตั้งได้พร้อมกันสูงสุด 2 เสา', tool: 'ถาดร่อนแร่ Panning Tray (ตั้งได้สูงสุด 2 เสา)', duration: 'รอบทำงานอัตโนมัติ', weight: '0.50 กก. / ชิ้น', output: 'แร่คริสตัลดิบ (Raw Crystal)', coords: 'โซนน้ำตื้น (ดู Blip วงกลมบนแผนที่ GPS)', spotId: 'crystal-farm', image: '/maps/spots/crystal_sift.png' },
+          { num: '02', name: 'เฝ้าเสา & ซ่อมเครื่องขัดข้อง (Shake)', en: 'SHAKE & MONITOR', desc: 'เฝ้าเครื่องในระยะโซน blip (ห้ามออกนอกโซนเด็ดขาด เสาจะพังทันที!) หากเครื่องขัดข้อง ให้กด Focus Menu > Shake แล้วกดปุ่ม A / D สลับกันตามจังหวะจนหลอดเต็ม (ห้ามกดรัวเกินไป)', tool: 'Focus Menu > Shake (กด A/D สลับจังหวะ)', duration: 'มินิเกมจนหลอดเต็ม', weight: '-', output: 'เครื่องทำงานต่อ / ได้ผลผลิตตามรอบ', coords: 'เสาร่อนแร่ในโซนน้ำตื้น', spotId: 'crystal-repair', image: '/maps/spots/crystal_sift.png' },
+          { num: '03', name: 'เก็บเกี่ยว & สต็อกทองแดง (5:3)', en: 'HARVEST & PREP COPPER', desc: 'เก็บ Raw Crystal ที่ได้จากเครื่อง และเตรียมแท่งทองแดง (Copper Ingot) มาในอัตราส่วน Raw Crystal 5 : Copper Ingot 3 เพื่อเตรียมนำไปหลอม', tool: 'ตู้คอนเทนเนอร์ / ท้ายรถ', duration: 'ทันที', weight: 'ตามจำนวนที่แบก', output: 'Raw Crystal x5 + Copper Ingot x3', coords: 'จุดฟาร์มน้ำตื้น & จุดสต็อกของ', spotId: 'crystal-prep', image: '/maps/spots/copper_smelt.png' },
+          { num: '04', name: 'หลอม Crystal Ingot ท่าเรือใต้', en: 'SMELT CRYSTAL INGOT', desc: 'นำ Raw Crystal x5 + Copper Ingot x3 มาหลอมรวมกันเป็น Crystal Ingot x1 วัตถุดิบสำคัญสำหรับใช้อัปเกรดอาวุธขั้นถัดไป', tool: 'เตาหลอมโลหะ ท่าเรือใต้ (Industrial Docks)', duration: '5 วินาที / ชิ้น', weight: '1.00 กก. / ก้อน', output: 'Crystal Ingot 1 ก้อน (สำหรับอัปเกรดอาวุธ)', coords: 'โรงหลอมโลหะ ท่าเรือใต้ Industrial Docks', spotId: 'crystal-process', image: '/maps/spots/crystal_pro.png' }
+        ]
+      },
+      kitchen: {
+        name: 'งานครัว & ส่งอาหาร',
+        steps: [
+          { num: '01', name: 'ย่างเนื้อ Doner & ปิ้งแป้ง (สาขา Downtown / Legion)', en: 'ROAST MEAT & TOAST BREAD', desc: 'หยิบเนื้อจากตู้แช่ราคา 2,500 RD (TAKE DONER SPLIT) วางบนเตาย่าง (PLACE SPLIT) ย่าง 3 นาที ทำได้พร้อมกัน 2 เครื่อง (1 ก้อนทำได้ 4 ชิ้น) และปิ้งแป้งโดยใช้ Rice Grain x2', tool: 'ตู้แช่เนื้อ 2,500 RD + เตา Doner 2 เครื่อง', duration: 'ย่างเนื้อ 3 นาที (ได้ 4 ชิ้น)', weight: '0.30 กก. / ชิ้น', output: 'เนื้อย่างสุก 1 ก้อน (4 ชิ้น) + แป้งปิ้งสุก', coords: 'ร้านอาหาร Run Kitchen (สาขา Downtown / Legion)', spotId: 'kitchen-downtown', image: '/maps/spots/kitchen_cook.png' },
+          { num: '02', name: 'หั่นเนื้อ & ประกอบ Kebab/Pita (สาขา Vespucci)', en: 'SHAVE DONER & ASSEMBLE', desc: 'หยิบแป้งที่ปิ้งเสร็จ (TAKE BREAD) เดินไปที่เสาเนื้อย่าง เลือก SHAVE DONER แล้วเลือก ADD DONER KEBAB เพื่อใส่เนื้อลงในแป้ง จากนั้นกด E เพื่อเสร็จสิ้นขั้นตอน (ห้ามออกนอกร้านระหว่างทำ)', tool: 'มีดสไลด์ Shave Doner + แป้ง Wrap', duration: 'ทันที (กด E)', weight: '0.30 กก. / ชิ้น', output: 'Kebab หรือ Pita 1 ชิ้น (ลดหิว 50% เครียด -10)', coords: 'เคาน์เตอร์ประกอบอาหาร Run Kitchen (สาขา Vespucci)', spotId: 'kitchen-vespucci', image: '/maps/spots/kitchen_assemble.png' },
+          { num: '03', name: 'เปิดแอป รันแมน รับออเดอร์ (สาขา Mirror Park)', en: 'ACCEPT RUNMAN ORDER', desc: 'เปิดโทรศัพท์ > แอป รันแมน > บัญชี > เข้า Runner Mode > เปิดส่งอาหาร ระบบจะสุ่ม NPC ออเดอร์ Kebab จำนวน 2-4 ชิ้น (NPC รับซื้อเฉพาะ Kebab เท่านั้น! ห้ามกดยกเลิก ไม่งั้นติดคูลดาวน์ 15 นาที)', tool: 'สมาร์ทโฟน > แอป รันแมน (Runner Mode)', duration: 'สุ่มเรียกงาน (คูลดาวน์ 3-5 นาที)', weight: '-', output: 'ออเดอร์ส่งอาหาร 2 - 4 ชิ้น', coords: 'แอป รันแมน (สาขา Mirror Park / ทั่วเมือง)', spotId: 'kitchen-mirror', image: '/maps/spots/kitchen_app.png' },
+          { num: '04', name: 'บิดส่งลูกค้า NPC รับเงินสด (สาขา Paleto Bay)', en: 'DELIVER FOOD & CASH OUT', desc: 'ขับรถไปยังจุดหมาย คุยกับ NPC เพื่อส่งมอบ Kebab รับเงินสดทันที 1,500 RD ต่อชิ้น (ออเดอร์ละ 3,000 - 6,000 RD!) ลุ้นโบนัส 10% ได้รับงานต่อเนื่องทันทีไม่ต้องรอคูลดาวน์', tool: 'NPC ลูกค้าปลายทาง / รถ 60 กก.', duration: 'ส่งทันที', weight: '-', output: '1,500 RD / ชิ้น (รวม 3,000 - 6,000 RD/จุด)', coords: 'จุดนัดพบ NPC ลูกค้า (สาขา Paleto Bay / ทั่วเมือง)', spotId: 'kitchen-paleto', image: '/maps/spots/kitchen_deliver.png' }
         ]
       }
     };
@@ -747,8 +895,14 @@ const initialStep = currentJobData.steps[0];
         stageQuickRadarBtn.href = `/map?spot=${encodeURIComponent(step.spotId)}`;
       }
 
-      // Update active state on step buttons
+      // Update active state on step buttons & text labels
       document.querySelectorAll('.stepper-step-btn').forEach((btn, idx) => {
+        const stepData = jobObj.steps[idx];
+        if (stepData) {
+          const strong = btn.querySelector('strong');
+          if (strong) strong.textContent = `${idx + 1}. ${stepData.name.split('(')[0].trim()}`;
+        }
+
         if (idx === currentStep) {
           btn.className = 'stepper-step-btn active p-3 rounded-xl border border-mint bg-mint/15 text-left transition-all shadow-[0_0_20px_-5px_rgba(69,242,180,0.3)] group';
           const dot = btn.querySelector('.rounded-full');
@@ -758,9 +912,9 @@ const initialStep = currentJobData.steps[0];
         } else {
           btn.className = 'stepper-step-btn p-3 rounded-xl border border-line bg-card/70 text-left transition-all hover:border-lineSubtle group';
           const dot = btn.querySelector('.rounded-full');
-          if (dot) dot.className = 'size-2 rounded-full bg-slate-700';
+          if (dot) dot.className = 'size-2 rounded-full bg-slate-600';
           const txt = btn.querySelector('span');
-          if (txt) txt.className = 'text-slate-400 font-bold';
+          if (txt) txt.className = 'text-slate-200 font-bold';
         }
       });
     }
@@ -785,7 +939,7 @@ const initialStep = currentJobData.steps[0];
           if (t === tab) {
             t.className = 'stepper-job-tab shrink-0 px-3.5 py-2 rounded-xl border text-xs font-mono transition-all flex items-center gap-2 border-mint bg-mint/15 text-mint font-bold shadow-[0_0_15px_rgba(69,242,180,0.2)] active';
           } else {
-            t.className = 'stepper-job-tab shrink-0 px-3.5 py-2 rounded-xl border text-xs font-mono transition-all flex items-center gap-2 border-line bg-card/60 text-slate-400 hover:text-white hover:border-lineSubtle';
+            t.className = 'stepper-job-tab shrink-0 px-3.5 py-2 rounded-xl border text-xs font-mono transition-all flex items-center gap-2 border-line bg-card/60 text-slate-200 hover:text-white hover:border-lineSubtle';
           }
         });
 

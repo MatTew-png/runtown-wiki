@@ -122,10 +122,16 @@ const cleanTitle = getCleanTitle(title);
 
     if (calcBtn) {
       calcBtn.addEventListener('click', () => {
-        const estimator = document.querySelector('.job-estimator-card') || document.getElementById('calculator');
-        if (estimator) {
-          estimator.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const tabCalc = document.getElementById('btnTabCalc');
+        if (tabCalc) {
+          tabCalc.click();
         }
+        setTimeout(() => {
+          const estimator = document.getElementById('hqCalculatorApp') || document.querySelector('.job-estimator-card') || document.getElementById('calculator');
+          if (estimator) {
+            estimator.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 50);
       });
     }
 

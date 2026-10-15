@@ -52,6 +52,14 @@ const { activeCategory = '' } = Astro.props;
         <CyberIcon name="skull" class="size-3.5" /> งานดำ
       </a>
       <a 
+        href="/guides/gang/headquarter" 
+        class={`px-2.5 py-1.5 rounded-lg transition-all inline-flex items-center gap-1.5 ${activeCategory === 'gang' ? 'text-amber-400 font-bold bg-amber-400/15 border border-amber-400/40' : 'text-amber-300/90 hover:text-amber-300 hover:bg-amber-400/10'}`}
+      >
+        <img src="/items/icons/transparent/hq_coin.png" class="size-4 object-contain shrink-0" alt="HQ Coin" />
+        <span>ระบบแก๊ง (HQ)</span>
+        <span class="text-[9px] px-1 py-0.2 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30 font-bold font-mono">NEW</span>
+      </a>
+      <a 
         href="/guides/logistics/vehicles" 
         class={`px-2.5 py-1.5 rounded-lg transition-all inline-flex items-center gap-1.5 ${activeCategory === 'vehicles' ? 'text-mint font-bold bg-mint/10 border border-mint/30' : 'text-textSoft hover:text-white hover:bg-white/5'}`}
       >

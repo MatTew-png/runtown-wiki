@@ -10,6 +10,7 @@ import InteractiveJobStepper from '../components/InteractiveJobStepper.astro';
 import ImageLightboxModal from '../components/ImageLightboxModal.astro';
 import GuideIcon from '../components/GuideIcon.astro';
 import CyberIcon from '../components/CyberIcon.astro';
+import HqCalculator from '../components/HqCalculator.astro';
 import { getCleanTitle } from '../utils/guideHelpers';
 
 interface Props {
@@ -61,8 +62,12 @@ const whiteJobMap: Record<string, string> = {
   'jobs/smelting': 'smelting',
   'jobs/pig': 'pig',
   'jobs/flowers': 'flowers',
+  'jobs/crystal': 'crystal',
+  'jobs/kitchen': 'kitchen',
+  'jobs/food-delivery': 'kitchen',
 };
 const targetWhiteJob = whiteJobMap[slug];
+const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
 ---
 
 <BaseLayout title={`${getCleanTitle(title)} | RUN TOWN Wiki`} description={description} activeCategory={category}>
@@ -215,15 +220,24 @@ const targetWhiteJob = whiteJobMap[slug];
             <span>{headings.filter(h => h.depth === 2).length} หัวข้อ</span>
           </div>
           <div class="flex flex-wrap gap-2 pt-1">
-            {headings.filter(h => h.depth === 2).map((h) => (
-              <a 
-                href={`#${h.slug}`} 
-                class="px-2.5 py-1 rounded-lg border border-lineSubtle bg-paper text-slate-300 hover:text-mint hover:border-mint/50 transition-colors text-[11px] flex items-center gap-1"
-              >
-                <span>{h.text}</span>
-                <span class="text-textMuted text-[9px]">➔</span>
-              </a>
-            ))}
+            {headings.filter(h => h.depth === 2).map((h) => {
+              const isCalcHeading = isDualTabJob && /ราคา|ต้นทุน|กำไร|ความจุ|ค่าเที่ยว|โมเดล|roi|benchmark/i.test(h.text);
+              return (
+                <a 
+                  href={`#${h.slug}`} 
+                  class={`px-2.5 py-1 rounded-lg border text-[11px] flex items-center gap-1.5 transition-all ${
+                    isCalcHeading 
+                      ? 'border-amber-500/30 bg-amber-500/10 text-amber-300 hover:border-amber-400 hover:text-white' 
+                      : 'border-lineSubtle bg-paper text-slate-300 hover:text-mint hover:border-mint/50'
+                  }`}
+                  data-tab-hint={isCalcHeading ? 'calc' : 'steps'}
+                >
+                  <span>{isCalcHeading ? '💰' : '📋'}</span>
+                  <span>{h.text}</span>
+                  <span class="text-textMuted text-[9px]">➔</span>
+                </a>
+              );
+            })}
           </div>
         </nav>
       )}
@@ -241,24 +255,115 @@ const targetWhiteJob = whiteJobMap[slug];
         </div>
       )}
 
-      {targetWhiteJob && (
-        <InteractiveJobStepper 
-          initialJob={targetWhiteJob} 
-          showJobSelector={slug === 'jobs/white'} 
-        />
-      )}
+      {isDualTabJob ? (
+        <div class="job-guide-tabs-wrapper space-y-6">
+          <!-- Dual-Mode Tab Control Header -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-2 rounded-2xl bg-paper/95 border border-line backdrop-blur-md shadow-neon-card">
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              <!-- Tab 1 Button: Steps -->
+              <button
+                type="button"
+                id="btnTabSteps"
+                class="job-tab-btn flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer bg-mint text-black shadow-[0_0_15px_rgba(69,242,180,0.35)]"
+                data-tab="steps"
+              >
+                <CyberIcon name="file-text" class="size-4 shrink-0" />
+                <span>📋 ขั้นตอนการทำงาน</span>
+                <span class="text-[9px] px-1.5 py-0.5 rounded bg-black/20 text-black uppercase font-bold tracking-wider hidden md:inline">
+                  WORKFLOW
+                </span>
+              </button>
 
-      {(category === 'white_jobs' || category === 'black_jobs') && (
-        <JobEstimator 
-          defaultItemWeight={parseFloat(itemWeight || '0.5') || 0.5} 
-          itemName={title} 
-        />
-      )}
+              <!-- Tab 2 Button: Calculations & Economics -->
+              <button
+                type="button"
+                id="btnTabCalc"
+                class="job-tab-btn flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer text-textMuted hover:text-white hover:bg-white/5 border border-transparent"
+                data-tab="calc"
+              >
+                <CyberIcon name="scale" class="size-4 shrink-0 text-amber-400" />
+                <span>💰 คำนวณรายได้ & ค่าเที่ยว</span>
+                <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-400/15 text-amber-300 border border-amber-400/30 uppercase font-bold tracking-wider hidden md:inline">
+                  CALCULATOR & ROI
+                </span>
+              </button>
+            </div>
 
-      <!-- Markdown Content Slot -->
-      <div class="prose-runtown">
-        <slot />
-      </div>
+            <!-- Active Mode Status Indicator -->
+            <div class="hidden sm:flex items-center gap-2 pr-3 text-[11px] font-mono text-textMuted">
+              <span id="tabModePulseDot" class="size-2 rounded-full bg-mint animate-pulse"></span>
+              <span id="tabModeStatusText" class="text-mint font-semibold">ขั้นตอนการทำงาน (Step-by-Step)</span>
+            </div>
+          </div>
+
+          <!-- Tab Panel 1: Steps & Workflow -->
+          <div id="panelSteps" class="job-tab-panel space-y-6">
+            <InteractiveJobStepper 
+              initialJob={targetWhiteJob} 
+              showJobSelector={false} 
+            />
+            <div id="slotContentSteps" class="prose-runtown space-y-6"></div>
+          </div>
+
+          <!-- Tab Panel 2: Calculations, Trip Rates & Estimator at Bottom -->
+          <div id="panelCalc" class="job-tab-panel space-y-6 hidden">
+            <div id="slotContentCalc" class="prose-runtown space-y-6"></div>
+            
+            <!-- Estimator at the bottom of calculations as requested -->
+            <div id="calculatorBottomWrapper" class="pt-6 border-t border-line/60">
+              <div class="mb-3 flex items-center justify-between font-mono text-xs text-textMuted">
+                <span class="text-amber-400 font-bold flex items-center gap-1.5 uppercase tracking-wider">
+                  <CyberIcon name="scale" class="size-4 text-amber-400" />
+                  <span>เครื่องมือจำลองคำนวณกำไร & ค่าเที่ยวสด (Live ROI Simulator)</span>
+                </span>
+                <span class="text-[10px] text-textMuted font-mono">ปรับน้ำหนักและคำนวณรอบวิ่งได้อิสระ</span>
+              </div>
+              <JobEstimator 
+                defaultItemWeight={parseFloat(itemWeight || '0.5') || 0.5} 
+                itemName={title} 
+                slug={slug}
+              />
+            </div>
+          </div>
+
+          <!-- Hidden Raw Slot source for JS to distribute sections -->
+          <div id="rawSlotSource" class="hidden">
+            <slot />
+          </div>
+          <noscript>
+            <style>
+              #rawSlotSource { display: block !important; }
+              .job-guide-tabs-wrapper > .job-tab-panel { display: none !important; }
+            </style>
+          </noscript>
+        </div>
+      ) : (
+        <!-- Default Single-Page Layout for Non-White Job Guides or Hub -->
+        <>
+          {targetWhiteJob && (
+            <InteractiveJobStepper 
+              initialJob={targetWhiteJob} 
+              showJobSelector={slug === 'jobs/white'} 
+            />
+          )}
+
+          {(category === 'white_jobs' || category === 'black_jobs') && (
+            <JobEstimator 
+              defaultItemWeight={parseFloat(itemWeight || '0.5') || 0.5} 
+              itemName={title} 
+              slug={slug}
+            />
+          )}
+
+          {category === 'gang' && (
+            <HqCalculator />
+          )}
+
+          <div class="prose-runtown">
+            <slot />
+          </div>
+        </>
+      )}
 
     </article>
 
@@ -277,4 +382,145 @@ const targetWhiteJob = whiteJobMap[slug];
       });
     });
   }
+
+  // Dual-Tab System for White Jobs: Steps vs Calculation & Trip Economics
+  function initJobTabs() {
+    const rawSlot = document.getElementById('rawSlotSource');
+    const stepsSlot = document.getElementById('slotContentSteps');
+    const calcSlot = document.getElementById('slotContentCalc');
+    const btnSteps = document.getElementById('btnTabSteps');
+    const btnCalc = document.getElementById('btnTabCalc');
+    const panelSteps = document.getElementById('panelSteps');
+    const panelCalc = document.getElementById('panelCalc');
+    const statusText = document.getElementById('tabModeStatusText');
+    const pulseDot = document.getElementById('tabModePulseDot');
+
+    if (!rawSlot || !stepsSlot || !calcSlot || !btnSteps || !btnCalc || !panelSteps || !panelCalc) {
+      return;
+    }
+
+    // Partition sections from rawSlot if not already done
+    if (rawSlot.children.length > 0) {
+      const calcKeywords = [
+        'ราคา', 'ต้นทุน', 'กำไร', 'ความจุท้ายรถ', 'ความจุ', 'ค่าเที่ยว', 'โมเดลธุรกิจ', 'roi', 'benchmark', 'economics', 'payload'
+      ];
+
+      let currentTarget = stepsSlot;
+      const elements = Array.from(rawSlot.children);
+
+      elements.forEach((el) => {
+        if (el.tagName === 'H2') {
+          const headingText = el.textContent ? el.textContent.toLowerCase() : '';
+          const isCalc = calcKeywords.some(kw => headingText.includes(kw));
+          currentTarget = isCalc ? calcSlot : stepsSlot;
+        }
+        currentTarget.appendChild(el);
+      });
+    }
+
+    function switchJobTab(mode: string) {
+      if (mode === 'calc') {
+        panelSteps.classList.add('hidden');
+        panelCalc.classList.remove('hidden');
+
+        btnSteps.className = 'job-tab-btn flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer text-textMuted hover:text-white hover:bg-white/5 border border-transparent';
+        btnCalc.className = 'job-tab-btn active flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer bg-gradient-to-r from-amber-400 to-amber-500 text-black shadow-[0_0_15px_rgba(251,191,36,0.35)]';
+
+        if (statusText) {
+          statusText.textContent = 'คำนวณรายได้ & ค่าเที่ยว (Economics)';
+          statusText.className = 'text-amber-400 font-semibold';
+        }
+        if (pulseDot) {
+          pulseDot.className = 'size-2 rounded-full bg-amber-400 animate-pulse';
+        }
+      } else {
+        panelCalc.classList.add('hidden');
+        panelSteps.classList.remove('hidden');
+
+        btnCalc.className = 'job-tab-btn flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer text-textMuted hover:text-white hover:bg-white/5 border border-transparent';
+        btnSteps.className = 'job-tab-btn active flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer bg-mint text-black shadow-[0_0_15px_rgba(69,242,180,0.35)]';
+
+        if (statusText) {
+          statusText.textContent = 'ขั้นตอนการทำงาน (Step-by-Step)';
+          statusText.className = 'text-mint font-semibold';
+        }
+        if (pulseDot) {
+          pulseDot.className = 'size-2 rounded-full bg-mint animate-pulse';
+        }
+      }
+    }
+
+    btnSteps.onclick = () => {
+      switchJobTab('steps');
+      const url = new URL(window.location.href);
+      url.searchParams.set('tab', 'steps');
+      window.history.replaceState({}, '', url.toString());
+    };
+
+    btnCalc.onclick = () => {
+      switchJobTab('calc');
+      const url = new URL(window.location.href);
+      url.searchParams.set('tab', 'calc');
+      window.history.replaceState({}, '', url.toString());
+    };
+
+    // Initial check for query param or hash
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    const hash = window.location.hash.toLowerCase();
+    const isCalcHash = hash.includes('calc') || hash.includes('price') || hash.includes('ราคา') || hash.includes('ความจุ') || hash.includes('ต้นทุน') || hash.includes('กำไร');
+
+    if (tabParam === 'calc' || isCalcHash) {
+      switchJobTab('calc');
+    } else {
+      switchJobTab('steps');
+    }
+
+    // Intercept Quick TOC and anchor links
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+      link.addEventListener('click', () => {
+        const href = link.getAttribute('href');
+        if (!href || href === '#') return;
+        const targetId = decodeURIComponent(href.slice(1));
+        const targetEl = document.getElementById(targetId) || document.getElementById(href.slice(1));
+        if (!targetEl) return;
+
+        if (calcSlot.contains(targetEl)) {
+          switchJobTab('calc');
+          setTimeout(() => {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 60);
+        } else if (stepsSlot.contains(targetEl)) {
+          switchJobTab('steps');
+          setTimeout(() => {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 60);
+        }
+      });
+    });
+  }
+
+  // Wrap markdown tables in responsive scroll containers
+  function setupResponsiveTables() {
+    document.querySelectorAll('.prose-runtown table').forEach((table) => {
+      if (!table.parentElement?.classList.contains('table-scroll-container')) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'table-scroll-container';
+        table.parentNode?.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+  }
+
+  function initGuidePage() {
+    initJobTabs();
+    setupResponsiveTables();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGuidePage);
+  } else {
+    initGuidePage();
+  }
+  document.addEventListener('astro:page-load', initGuidePage);
 </script>

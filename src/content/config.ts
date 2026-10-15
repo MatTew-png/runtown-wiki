@@ -5,7 +5,7 @@ const guidesCollection = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    category: z.enum(['white_jobs', 'black_jobs', 'vehicles', 'crafting', 'survival', 'food', 'general']),
+    category: z.enum(['white_jobs', 'black_jobs', 'vehicles', 'crafting', 'survival', 'food', 'general', 'gang']),
     categoryName: z.string(),
     order: z.number().default(99),
     icon: z.string().default('file-text'),

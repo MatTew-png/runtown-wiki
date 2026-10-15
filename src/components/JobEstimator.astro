@@ -1,135 +1,340 @@
 ---
-// Job Payload & Logistics Estimator Component
+// Job Payload & Logistics Estimator Component (Live Logistics Estimator)
+// RUN TOWN Theme: Dark + High-Contrast Pure White + Mint Green Accent (No dark fonts!)
 import CyberIcon from './CyberIcon.astro';
 
 interface Props {
   defaultItemWeight?: number;
   itemName?: string;
   defaultPrice?: number;
+  slug?: string;
 }
 
-const { defaultItemWeight = 0.5, itemName = 'ไอเทมทั่วไป', defaultPrice = 100 } = Astro.props;
+const { 
+  defaultItemWeight = 0.5, 
+  itemName = 'ไอเทมทั่วไป', 
+  defaultPrice = 100,
+  slug = '' 
+} = Astro.props;
+
+// Contextual Smart Presets by Guide Slug (Fixed Official Item Weights & Rev 81 Prices)
+const presetsMap: Record<string, Array<{ label: string; weight: number; price: number; time: number }>> = {
+  'jobs/woodcutting': [
+    { label: '📦 ไม้แพ็ค (479 RD)', weight: 1.0, price: 479, time: 5 },
+    { label: '🔥 ไม้แพ็คขายคน (550 RD)', weight: 1.0, price: 550, time: 5 },
+    { label: '🪵 ไม้แปร (171 RD)', weight: 0.5, price: 171, time: 5 },
+    { label: '🌲 ไม้ดิบ (99 RD)', weight: 0.5, price: 99, time: 10 },
+  ],
+  'jobs/pig': [
+    { label: '📦 หมูแพ็ค (380 RD)', weight: 1.0, price: 380, time: 5 },
+    { label: '🥩 หมูดิบขายคน (140 RD)', weight: 0.5, price: 140, time: 0 },
+    { label: '🥓 หมูแปร (149 RD)', weight: 0.5, price: 149, time: 5 },
+    { label: '🐷 หมูดิบระบบ (97 RD)', weight: 0.5, price: 97, time: 0 },
+  ],
+  'jobs/flowers': [
+    { label: '🌸 ส่ง รพ. (120 RD)', weight: 0.5, price: 120, time: 0 },
+    { label: '📦 ดอกไม้แพ็ค (424 RD)', weight: 1.0, price: 424, time: 5 },
+    { label: '💐 ดอกไม้แปร (155 RD)', weight: 0.5, price: 155, time: 5 },
+    { label: '🌿 ดอกไม้สด (88 RD)', weight: 0.5, price: 88, time: 0 },
+  ],
+  'jobs/wheat': [
+    { label: '📦 ข้าวแพ็ค (368 RD)', weight: 1.0, price: 368, time: 5 },
+    { label: '🌾 ข้าวดิบขายคน (100 RD)', weight: 0.5, price: 100, time: 0 },
+    { label: '🍚 ข้าวแปร (134 RD)', weight: 0.5, price: 134, time: 5 },
+    { label: '🌱 ข้าวดิบระบบ (77 RD)', weight: 0.5, price: 77, time: 0 },
+  ],
+  'jobs/smelting': [
+    { label: '🔩 แท่งเหล็ก (233 RD)', weight: 0.5, price: 233, time: 5 },
+    { label: '🔧 ขายช่างซ่อม (240 RD)', weight: 0.5, price: 240, time: 5 },
+    { label: '⚙️ เศษเหล็ก (83 RD)', weight: 0.25, price: 83, time: 10 },
+  ],
+  'jobs/mining': [
+    { label: '🥇 แท่งทอง (600 RD)', weight: 0.5, price: 600, time: 5 },
+    { label: '🥉 แท่งทองแดง (400 RD)', weight: 0.5, price: 400, time: 5 },
+    { label: '💎 เพชรแท้ (10,000 RD)', weight: 0.5, price: 10000, time: 0 },
+    { label: '⛏️ หินเฉลี่ย EV (580 RD)', weight: 0.5, price: 580, time: 5 },
+  ],
+  'jobs/crystal': [
+    { label: '⚔️ Crystal Ingot (1.0 kg)', weight: 1.0, price: 1500, time: 5 },
+    { label: '💎 Raw Crystal (0.5 kg)', weight: 0.5, price: 200, time: 0 },
+    { label: '🥉 Copper Ingot (0.5 kg)', weight: 0.5, price: 400, time: 5 },
+  ],
+  'jobs/kitchen': [
+    { label: '🥙 ส่ง Kebab 0.3kg (1,500 RD)', weight: 0.3, price: 1500, time: 5 },
+    { label: '🥩 ต้นทุนเนื้อ Doner (625 RD)', weight: 0.3, price: 625, time: 5 },
+    { label: '🌾 ข้าวสาร Rice Grain x2 (150 RD)', weight: 0.3, price: 150, time: 5 },
+  ],
+  'jobs/food-delivery': [
+    { label: '🥙 ส่ง Kebab 0.3kg (1,500 RD)', weight: 0.3, price: 1500, time: 5 },
+    { label: '🥩 ต้นทุนเนื้อ Doner (625 RD)', weight: 0.3, price: 625, time: 5 },
+  ],
+};
+
+const activePresets = presetsMap[slug] || [
+  { label: '📦 สินค้าแพ็คกล่อง (1.0 kg)', weight: 1.0, price: 400, time: 5 },
+  { label: '🪵 ของแปรรูป (0.5 kg)', weight: 0.5, price: 150, time: 5 },
+  { label: '⚙️ ของเบา/เศษเหล็ก (0.25 kg)', weight: 0.25, price: 83, time: 10 },
+];
+
+const initialWeight = activePresets[0]?.weight ?? defaultItemWeight;
+const initialPrice = activePresets[0]?.price ?? defaultPrice;
+const initialTime = activePresets[0]?.time ?? 5;
 ---
 
-<div class="job-estimator-card p-5 rounded-2xl border border-dashed border-mint/40 bg-[#0a110d] space-y-4 my-8 shadow-neon-card">
-  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-lineSubtle">
-    <div class="flex items-center gap-2">
-      <CyberIcon name="zap" size={20} class="text-mint shrink-0" />
-      <h3 class="text-sm font-display font-extrabold text-white">
-        เครื่องคำนวณความจุท้ายรถ & รายได้ (Live Logistics Estimator)
-      </h3>
+<div class="job-estimator-card p-5 sm:p-6 rounded-2xl border-2 border-mint/35 bg-[#0a120e] space-y-5 my-8 shadow-[0_0_30px_rgba(69,242,180,0.12)] relative overflow-hidden text-white">
+  <div class="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-mint/10 blur-3xl pointer-events-none"></div>
+
+  <!-- Header Strip: Crisp White Title with Neon Accent -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/15">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-mint/20 border border-mint/40 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(69,242,180,0.25)]">
+        <CyberIcon name="zap" size={20} class="text-mint" />
+      </div>
+      <div>
+        <h3 class="text-base sm:text-lg font-display font-extrabold text-white tracking-tight flex items-center gap-2">
+          <span>เครื่องคำนวณความจุท้ายรถ & รายได้</span>
+          <span class="text-xs font-mono text-mint font-semibold hidden sm:inline">(Live Logistics Estimator)</span>
+        </h3>
+        <p class="text-xs font-mono text-slate-200">
+          คำนวณแบบเต็มพิกัด 100% ท้ายรถ + กระเป๋าตัวละคร 15 กก.
+        </p>
+      </div>
     </div>
-    <span class="text-[11px] font-mono px-2 py-0.5 rounded-full bg-mint/10 text-mint border border-mint/30 font-bold">
-      SAFETY BUFFER: 10 KG
-    </span>
+    <div class="flex items-center gap-2">
+      <span class="text-xs font-mono px-3 py-1 rounded-full bg-mint/20 text-mint border border-mint/40 font-bold flex items-center gap-2 shadow-sm">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-mint animate-pulse"></span>
+        <span>เต็มรถ 100% + ในตัว 15 KG</span>
+      </span>
+    </div>
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
-    <!-- Vehicle Selector -->
-    <div class="space-y-1.5">
-      <label class="text-[11px] font-mono text-slate-300 font-bold flex items-center gap-1.5">
-        <CyberIcon name="truck" size={14} class="text-mint shrink-0" />
-        <span>เลือกรถที่ใช้:</span>
+  <!-- Step 1: Preset Quick Switcher (Fixed weights & prices) -->
+  {activePresets.length > 0 && (
+    <div class="space-y-2">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-mono text-white font-bold flex items-center gap-1.5 uppercase tracking-wider">
+          <CyberIcon name="filter" size={13} class="text-mint shrink-0" />
+          <span>1. เลือกไอเทมของอาชีพนี้ (น้ำหนัก & ราคาตายตัว):</span>
+        </span>
+        <span class="text-[11px] font-mono text-mint font-semibold">คลิกเลือก 1 ครั้ง ปรับค่าทันที</span>
+      </div>
+      <div class="flex flex-wrap gap-2.5" id="estimatorPresetsList">
+        {activePresets.map((p, idx) => (
+          <button
+            type="button"
+            class={`estimator-preset-btn px-3.5 py-2 rounded-xl border text-xs font-mono font-bold transition-all flex items-center gap-2 cursor-pointer ${
+              idx === 0 
+                ? 'border-mint bg-mint/25 text-white shadow-[0_0_15px_rgba(69,242,180,0.35)]' 
+                : 'border-white/20 bg-[#121f17] text-white hover:border-mint/60 hover:bg-[#16271e]'
+            }`}
+            data-weight={p.weight}
+            data-price={p.price}
+            data-time={p.time}
+          >
+            <span>{p.label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- Step 2: Controls Grid (Vehicle & Buffs) -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-1">
+    
+    <!-- Vehicle Selector: Simple รถ 60 โล, 120 โล, 150 โล -->
+    <div class="space-y-1.5 bg-[#101b14] p-3 rounded-xl border border-white/15">
+      <label class="text-xs font-mono text-white font-bold flex items-center gap-1.5">
+        <CyberIcon name="truck" size={15} class="text-mint shrink-0" />
+        <span>2. เลือกรถที่ใช้ขนของ:</span>
       </label>
-      <select id="estimatorTrunkSelect" class="w-full bg-[#101914] border border-line text-white rounded-xl px-3 py-2 text-xs font-mono focus:border-mint focus:outline-none">
-        <option value="60">รถ 60 กก. (จุสุทธิ 50 กก.)</option>
-        <option value="120" selected>รถ 120 กก. (จุสุทธิ 110 กก.)</option>
-        <option value="150">รถ 150 กก. (จุสุทธิ 140 กก.)</option>
+      <select 
+        id="estimatorTrunkSelect" 
+        class="w-full bg-[#0a120e] border border-mint/40 text-white font-bold rounded-xl px-3.5 py-2.5 text-xs font-mono focus:border-mint focus:outline-none focus:ring-1 focus:ring-mint transition-colors cursor-pointer"
+      >
+        <option value="60">🛵 รถ 60 โล</option>
+        <option value="120" selected>🚗 รถ 120 โล (ยอดนิยม)</option>
+        <option value="150">🛻 รถ 150 โล (บรรทุกหนัก)</option>
       </select>
     </div>
 
-    <!-- Item Weight Input -->
-    <div class="space-y-1.5">
-      <label class="text-[11px] font-mono text-slate-300 font-bold flex items-center gap-1.5">
-        <CyberIcon name="scale" size={14} class="text-mint shrink-0" />
-        <span>น้ำหนัก/ชิ้น (กก.):</span>
+    <!-- Body Carry Toggle (+15 kg) -->
+    <div class="bg-[#101b14] p-3 rounded-xl border border-white/15 flex flex-col justify-between space-y-2">
+      <label class="flex items-center gap-2.5 cursor-pointer select-none">
+        <input 
+          type="checkbox" 
+          id="estimatorBodyCarry" 
+          checked 
+          class="w-4 h-4 rounded border-white/30 bg-[#0a120e] text-mint focus:ring-mint accent-[#45f2b4] cursor-pointer"
+        />
+        <span class="text-white font-bold flex items-center gap-1.5 text-xs">
+          <CyberIcon name="package" size={15} class="text-mint shrink-0" />
+          <span>รวมกระเป๋าในตัว (+15 กก.)</span>
+        </span>
       </label>
-      <input 
-        type="number" 
-        id="estimatorWeightInput" 
-        value={defaultItemWeight} 
-        step="0.05" 
-        min="0.01" 
-        class="w-full bg-[#101914] border border-line text-mint font-bold rounded-xl px-3 py-2 text-xs font-mono focus:border-mint focus:outline-none"
-      />
+      <div class="flex items-center justify-between text-xs font-mono pt-1 border-t border-white/10">
+        <span class="text-slate-200 text-[11px]">ความจุรวมเที่ยวนี้:</span>
+        <span id="estimatorTotalCapBadge" class="px-2.5 py-0.5 rounded-lg bg-mint/20 text-mint border border-mint/40 font-extrabold text-xs">
+          135 กก.
+        </span>
+      </div>
     </div>
 
-    <!-- Time per Item Input -->
-    <div class="space-y-1.5">
-      <label class="text-[11px] font-mono text-slate-300 font-bold flex items-center gap-1.5">
-        <CyberIcon name="clock" size={14} class="text-mint shrink-0" />
-        <span>เวลาโพรเซส/ชิ้น (วิ):</span>
+    <!-- Speed Buff Toggle: +25% Faster Process & Pack -->
+    <div class="bg-[#101b14] p-3 rounded-xl border border-white/15 flex flex-col justify-between space-y-2">
+      <label class="flex items-center gap-2.5 cursor-pointer select-none">
+        <input 
+          type="checkbox" 
+          id="estimatorSpeedBuff" 
+          class="w-4 h-4 rounded border-white/30 bg-[#0a120e] text-amber-400 focus:ring-amber-400 accent-[#fbbf24] cursor-pointer"
+        />
+        <span class="text-white font-bold flex items-center gap-1.5 text-xs">
+          <CyberIcon name="zap" size={15} class="text-amber-400 shrink-0" />
+          <span>ไอเทมเร่งสปีดโพล/แพ็ค (+25%)</span>
+        </span>
       </label>
-      <input 
-        type="number" 
-        id="estimatorTimeInput" 
-        value="5" 
-        step="1" 
-        min="1" 
-        class="w-full bg-[#101914] border border-line text-white rounded-xl px-3 py-2 text-xs font-mono focus:border-mint focus:outline-none"
-      />
+      <div class="flex items-center justify-between text-xs font-mono pt-1 border-t border-white/10">
+        <span class="text-slate-200 text-[11px]">สถานะสปีด:</span>
+        <span id="estimatorSpeedBadge" class="px-2.5 py-0.5 rounded-lg bg-white/10 text-white border border-white/20 font-bold text-xs">
+          ปกติ (5.0 วิ/ชิ้น)
+        </span>
+      </div>
     </div>
 
-    <!-- Unit Price Input -->
-    <div class="space-y-1.5">
-      <label class="text-[11px] font-mono text-slate-300 font-bold flex items-center gap-1.5">
-        <CyberIcon name="dollar" size={14} class="text-amber-400 shrink-0" />
-        <span>ราคาขาย/ชิ้น (RD):</span>
-      </label>
-      <input 
-        type="number" 
-        id="estimatorPriceInput" 
-        value={defaultPrice} 
-        step="1" 
-        min="0" 
-        class="w-full bg-[#101914] border border-line text-amber-300 font-bold rounded-xl px-3 py-2 text-xs font-mono focus:border-mint focus:outline-none"
-      />
+  </div>
+
+  <!-- Hidden/Readonly Fine-tune Parameters (In case player wants to review) -->
+  <div class="p-3 rounded-xl bg-[#0e1711] border border-white/15 grid grid-cols-3 gap-3 text-xs font-mono">
+    <div>
+      <span class="text-slate-200 text-[11px] font-bold block mb-1">น้ำหนักต่อชิ้น:</span>
+      <div class="flex items-center gap-1">
+        <input 
+          type="number" 
+          id="estimatorWeightInput" 
+          value={initialWeight} 
+          step="0.05" 
+          min="0.01" 
+          class="w-full bg-[#0a120e] border border-mint/40 text-mint font-extrabold rounded-lg px-2.5 py-1 text-xs font-mono focus:border-mint focus:outline-none"
+        />
+        <span class="text-white font-bold text-xs">กก.</span>
+      </div>
+    </div>
+    <div>
+      <span class="text-slate-200 text-[11px] font-bold block mb-1">เวลาฐาน/ชิ้น:</span>
+      <div class="flex items-center gap-1">
+        <input 
+          type="number" 
+          id="estimatorTimeInput" 
+          value={initialTime} 
+          step="1" 
+          min="0" 
+          class="w-full bg-[#0a120e] border border-white/30 text-white font-extrabold rounded-lg px-2.5 py-1 text-xs font-mono focus:border-mint focus:outline-none"
+        />
+        <span class="text-white font-bold text-xs">วิ</span>
+      </div>
+    </div>
+    <div>
+      <span class="text-slate-200 text-[11px] font-bold block mb-1">ราคาขาย/ชิ้น:</span>
+      <div class="flex items-center gap-1">
+        <input 
+          type="number" 
+          id="estimatorPriceInput" 
+          value={initialPrice} 
+          step="1" 
+          min="0" 
+          class="w-full bg-[#0a120e] border border-amber-400/50 text-amber-300 font-extrabold rounded-lg px-2.5 py-1 text-xs font-mono focus:border-mint focus:outline-none"
+        />
+        <span class="text-amber-400 font-bold text-xs">RD</span>
+      </div>
     </div>
   </div>
 
-  <!-- Live Output Matrix -->
-  <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
-    <div class="p-3 rounded-xl bg-card border border-line text-center">
-      <span class="block text-[10px] font-mono text-slate-400 font-semibold uppercase">บรรจุได้สูงสุด</span>
-      <strong id="estimatorMaxItems" class="text-lg font-mono font-extrabold text-mint">220</strong>
-      <span class="block text-[10px] font-mono text-textMuted">ชิ้น / คัน</span>
+  <!-- Live Output Matrix Cards: 100% Crisp White & Neon Contrast -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 pt-1">
+    
+    <!-- Output 1: Max Items -->
+    <div class="p-4 rounded-xl bg-[#111c15] border-2 border-mint/30 text-center space-y-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+      <span class="block text-xs font-mono text-slate-200 font-bold uppercase tracking-wider">
+        บรรจุได้สูงสุด
+      </span>
+      <strong id="estimatorMaxItems" class="text-3xl sm:text-4xl font-mono font-extrabold text-mint tracking-tight block">
+        135
+      </strong>
+      <span class="block text-xs font-mono text-white font-semibold" id="estimatorItemUnitLabel">
+        กล่อง / เที่ยว
+      </span>
     </div>
 
-    <div class="p-3 rounded-xl bg-card border border-line text-center">
-      <span class="block text-[10px] font-mono text-slate-400 font-semibold uppercase">น้ำหนักของที่จุ</span>
-      <strong id="estimatorTotalWeight" class="text-lg font-mono font-extrabold text-white">110.0</strong>
-      <span class="block text-[10px] font-mono text-textMuted">กก. (เหลือ 10 กก.)</span>
+    <!-- Output 2: Payload Weight -->
+    <div class="p-4 rounded-xl bg-[#111c15] border-2 border-white/20 text-center space-y-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+      <span class="block text-xs font-mono text-slate-200 font-bold uppercase tracking-wider">
+        น้ำหนักของที่บรรจุ
+      </span>
+      <strong id="estimatorTotalWeight" class="text-3xl sm:text-4xl font-mono font-extrabold text-white tracking-tight block">
+        135.0
+      </strong>
+      <span class="block text-xs font-mono text-white font-semibold" id="estimatorWeightSubLabel">
+        กก. (เต็ม 135 กก.)
+      </span>
     </div>
 
-    <div class="p-3 rounded-xl bg-card border border-line text-center">
-      <span class="block text-[10px] font-mono text-slate-400 font-semibold uppercase">เวลาโพรเซสเต็มคัน</span>
-      <strong id="estimatorTotalTime" class="text-lg font-mono font-extrabold text-amber-300">18.3</strong>
-      <span class="block text-[10px] font-mono text-textMuted">นาที</span>
+    <!-- Output 3: Processing Time -->
+    <div class="p-4 rounded-xl bg-[#111c15] border-2 border-amber-500/30 text-center space-y-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+      <span class="block text-xs font-mono text-slate-200 font-bold uppercase tracking-wider">
+        เวลาโพรเซสเต็มคัน
+      </span>
+      <strong id="estimatorTotalTime" class="text-3xl sm:text-4xl font-mono font-extrabold text-amber-300 tracking-tight block">
+        11.3
+      </strong>
+      <span class="block text-xs font-mono text-white font-semibold" id="estimatorTimeSubLabel">
+        นาที (5.0 วิ/ชิ้น)
+      </span>
     </div>
 
-    <div class="p-3 rounded-xl bg-card border border-line text-center">
-      <span class="block text-[10px] font-mono text-slate-400 font-semibold uppercase">มูลค่าเต็มคันรถ</span>
-      <strong id="estimatorTotalRevenue" class="text-lg font-mono font-extrabold text-emerald-400">22,000 RD</strong>
-      <span class="block text-[10px] font-mono text-textMuted">รายได้ต่อรอบ</span>
+    <!-- Output 4: Total Revenue -->
+    <div class="p-4 rounded-xl bg-[#111c15] border-2 border-emerald-500/40 text-center space-y-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+      <span class="block text-xs font-mono text-slate-200 font-bold uppercase tracking-wider">
+        มูลค่าขายเต็มคันรถ
+      </span>
+      <strong id="estimatorTotalRevenue" class="text-2xl sm:text-3xl font-mono font-extrabold text-[#a5ff5f] tracking-tight block">
+        64,665 RD
+      </strong>
+      <span class="block text-xs font-mono text-emerald-200 font-bold">
+        รายได้สุทธิต่อเที่ยว
+      </span>
+    </div>
+
+  </div>
+
+  <!-- Verified Game Mechanics Telemetry Footer: Crisp High-Contrast Fonts -->
+  <div class="pt-3 border-t border-white/15 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-mono">
+    <div class="flex items-start gap-2.5 bg-[#101b14] p-3 rounded-xl border border-amber-500/25">
+      <CyberIcon name="alert-triangle" size={16} class="text-amber-400 shrink-0 mt-0.5" />
+      <div>
+        <strong class="text-amber-300 text-xs block mb-0.5">กลไกหลอดสมอง (ความเหนื่อย):</strong>
+        <p class="text-white leading-relaxed text-[11px]">
+          การฟาร์ม, การโพร, และการแพ็คกล่อง เร่งให้หลอดเหนื่อยขึ้นเท่ากันทุกอาชีพ (การขับรถไม่เร่งความเร็ว) ตัวละครจะสลบทันทีเมื่อแตะ 100% ไม่มีอาการเตือนที่ 70-80%
+        </p>
+      </div>
+    </div>
+    
+    <div class="flex items-start gap-2.5 bg-[#101b14] p-3 rounded-xl border border-mint/25">
+      <CyberIcon name="shield" size={16} class="text-mint shrink-0 mt-0.5" />
+      <div>
+        <strong class="text-mint text-xs block mb-0.5">จุดรีเซ็ตสมอง 0% & การขนส่ง:</strong>
+        <p class="text-white leading-relaxed text-[11px]">
+          แวะล้างหลอดสมองเหลือ 0% ได้ทันทีที่ <span class="text-white font-extrabold underline decoration-mint">บาร์เขียว (Del Perro)</span> หรือ <span class="text-white font-extrabold underline decoration-mint">อู่ช่าง (Chumash)</span> ควบคู่กับการขนของเต็มรถ 100% + ในตัว 15 กก.
+        </p>
+      </div>
     </div>
   </div>
 
-  <!-- Status & Guidelines Footer -->
-  <div class="pt-2 border-t border-lineSubtle flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-slate-400 gap-2">
-    <div class="flex items-center gap-1.5">
-      <span class="inline-block w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-      <span>ค่าสมอง (Mental Fatigue): <span class="text-amber-300 font-bold">[ รออัปเดตสถิติจากการทดสอบจริง ]</span></span>
-    </div>
-    <div class="text-slate-400 flex items-center gap-1.5">
-      <CyberIcon name="package" size={13} class="text-mint shrink-0" />
-      <span>ถ่ายโอนในตัว: <span class="text-white font-bold">25 กก.</span> (กระเป๋า 30 กก. - ของจำเป็น 5 กก.)</span>
-    </div>
-  </div>
 </div>
 
 <script>
   function setupJobEstimator() {
     const trunkSelect = document.getElementById('estimatorTrunkSelect') as HTMLSelectElement | null;
+    const bodyCarryCheck = document.getElementById('estimatorBodyCarry') as HTMLInputElement | null;
+    const speedBuffCheck = document.getElementById('estimatorSpeedBuff') as HTMLInputElement | null;
     const weightInput = document.getElementById('estimatorWeightInput') as HTMLInputElement | null;
     const timeInput = document.getElementById('estimatorTimeInput') as HTMLInputElement | null;
     const priceInput = document.getElementById('estimatorPriceInput') as HTMLInputElement | null;
@@ -138,34 +343,112 @@ const { defaultItemWeight = 0.5, itemName = 'ไอเทมทั่วไป',
     const outWeight = document.getElementById('estimatorTotalWeight');
     const outTime = document.getElementById('estimatorTotalTime');
     const outRevenue = document.getElementById('estimatorTotalRevenue');
+    const outCapBadge = document.getElementById('estimatorTotalCapBadge');
+    const outSpeedBadge = document.getElementById('estimatorSpeedBadge');
+    const outWeightSub = document.getElementById('estimatorWeightSubLabel');
+    const outTimeSub = document.getElementById('estimatorTimeSubLabel');
+    const outItemUnit = document.getElementById('estimatorItemUnitLabel');
 
     if (!trunkSelect || !weightInput || !timeInput || !outMax || !outWeight || !outTime) return;
 
     function recalculate() {
-      const grossTrunk = parseFloat(trunkSelect!.value) || 120;
-      const netTrunk = Math.max(10, grossTrunk - 10); // 10 kg safety buffer
+      const carTrunk = parseFloat(trunkSelect!.value) || 0;
+      const hasBodyCarry = bodyCarryCheck ? bodyCarryCheck.checked : true;
+      const bodyCarry = hasBodyCarry ? 15 : 0;
+      const totalCapacity = carTrunk + bodyCarry;
+
       const unitWeight = Math.max(0.01, parseFloat(weightInput!.value) || 0.5);
-      const timePerItem = Math.max(1, parseFloat(timeInput!.value) || 5);
+      const baseTimePerItem = Math.max(0, parseFloat(timeInput!.value) || 0);
+      const isBuffActive = speedBuffCheck ? speedBuffCheck.checked : false;
+      
+      // Speed buff: 25% faster (multiply by 0.75) if base time > 0
+      const effectiveTimePerItem = (baseTimePerItem > 0 && isBuffActive) 
+        ? +(baseTimePerItem * 0.75).toFixed(2) 
+        : baseTimePerItem;
+
       const unitPrice = Math.max(0, parseFloat(priceInput?.value || '0'));
 
-      const maxItems = Math.floor(netTrunk / unitWeight);
+      // Calculate payload
+      const maxItems = totalCapacity > 0 ? Math.floor(totalCapacity / unitWeight) : 0;
       const totalWeight = (maxItems * unitWeight).toFixed(1);
-      const totalSeconds = maxItems * timePerItem;
+      const totalSeconds = maxItems * effectiveTimePerItem;
       const totalMinutes = (totalSeconds / 60).toFixed(1);
       const totalRevenue = maxItems * unitPrice;
 
+      // Update UI elements
       outMax!.textContent = maxItems.toLocaleString();
       outWeight!.textContent = totalWeight;
       outTime!.textContent = totalMinutes;
+
+      if (outCapBadge) {
+        outCapBadge.textContent = `${totalCapacity} กก.${carTrunk > 0 && hasBodyCarry ? ` (รถ ${carTrunk} + ในตัว 15)` : ''}`;
+      }
+
+      if (outSpeedBadge) {
+        if (baseTimePerItem === 0) {
+          outSpeedBadge.className = 'px-2.5 py-0.5 rounded-lg bg-mint/20 text-mint border border-mint/40 font-bold text-xs';
+          outSpeedBadge.textContent = 'ขายสดไม่ต้องโพล';
+        } else if (isBuffActive) {
+          outSpeedBadge.className = 'px-2.5 py-0.5 rounded-lg bg-amber-400/25 text-amber-300 border border-amber-400/50 font-extrabold text-xs shadow-[0_0_10px_rgba(251,191,36,0.3)]';
+          outSpeedBadge.textContent = `⚡ เปิดบัฟ 25% (${effectiveTimePerItem} วิ/ชิ้น)`;
+        } else {
+          outSpeedBadge.className = 'px-2.5 py-0.5 rounded-lg bg-white/10 text-white border border-white/20 font-bold text-xs';
+          outSpeedBadge.textContent = `ปกติ (${baseTimePerItem.toFixed(1)} วิ/ชิ้น)`;
+        }
+      }
+
+      if (outWeightSub) {
+        outWeightSub.textContent = `กก. (เต็ม ${totalCapacity} กก.)`;
+      }
+
+      if (outTimeSub) {
+        if (baseTimePerItem === 0) {
+          outTimeSub.textContent = 'ไม่ต้องแปรรูป (ขายสดได้ทันที)';
+        } else if (isBuffActive) {
+          outTimeSub.textContent = `นาที (⚡ บัฟเร่ง 25%: ${effectiveTimePerItem} วิ/ชิ้น)`;
+        } else {
+          outTimeSub.textContent = `นาที (ความเร็วปกติ ${baseTimePerItem.toFixed(1)} วิ/ชิ้น)`;
+        }
+      }
+
+      if (outItemUnit) {
+        outItemUnit.textContent = unitWeight >= 1.0 ? 'กล่อง / เที่ยว' : 'ชิ้น / เที่ยว';
+      }
+
       if (outRevenue) {
         outRevenue.textContent = `${totalRevenue.toLocaleString()} RD`;
       }
     }
 
+    // Preset buttons click listeners
+    const presetBtns = document.querySelectorAll('.estimator-preset-btn');
+    presetBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const w = btn.getAttribute('data-weight');
+        const p = btn.getAttribute('data-price');
+        const t = btn.getAttribute('data-time');
+
+        if (w && weightInput) weightInput.value = w;
+        if (p && priceInput) priceInput.value = p;
+        if (t && timeInput) timeInput.value = t;
+
+        // Update active style
+        presetBtns.forEach((b) => {
+          b.className = 'estimator-preset-btn px-3.5 py-2 rounded-xl border text-xs font-mono font-bold transition-all flex items-center gap-2 cursor-pointer border-white/20 bg-[#121f17] text-white hover:border-mint/60 hover:bg-[#16271e]';
+        });
+        btn.className = 'estimator-preset-btn px-3.5 py-2 rounded-xl border text-xs font-mono font-bold transition-all flex items-center gap-2 cursor-pointer border-mint bg-mint/25 text-white shadow-[0_0_15px_rgba(69,242,180,0.35)]';
+
+        recalculate();
+      });
+    });
+
     trunkSelect.addEventListener('change', recalculate);
+    if (bodyCarryCheck) bodyCarryCheck.addEventListener('change', recalculate);
+    if (speedBuffCheck) speedBuffCheck.addEventListener('change', recalculate);
     weightInput.addEventListener('input', recalculate);
     timeInput.addEventListener('input', recalculate);
     if (priceInput) priceInput.addEventListener('input', recalculate);
+
     recalculate();
   }
 

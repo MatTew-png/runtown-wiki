@@ -1,0 +1,294 @@
+---
+// Interactive Gang HQ Coin & Upgrade Material Calculator
+import CyberIcon from './CyberIcon.astro';
+---
+
+<div class="my-6 p-5 sm:p-7 rounded-2xl border border-amber-500/40 bg-card/95 shadow-[0_0_35px_rgba(245,158,11,0.12)] space-y-6 not-prose" id="hqCalculatorApp">
+  
+  <!-- Header with Quick Badges -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-lineSubtle">
+    <div class="flex items-center gap-2.5">
+      <div class="size-9 rounded-xl bg-amber-500/15 border border-amber-400/40 flex items-center justify-center shrink-0">
+        <img src="/items/icons/transparent/hq_coin.png" class="size-6 object-contain" alt="HQ Coin" />
+      </div>
+      <div>
+        <h3 class="text-base font-display font-extrabold text-white flex items-center gap-2">
+          <span>เครื่องมือคำนวณวัตถุดิบ HQ Coin</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30 uppercase font-bold">
+            LIVE ROI
+          </span>
+        </h3>
+        <p class="text-xs text-textMuted">คำนวณยอดวัตถุดิบและเงินแดงที่ต้องฟาร์มตามเป้าหมายของแก๊ง</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-1.5 font-mono text-xs">
+      <span class="text-textMuted">อัตราคราฟต์:</span>
+      <span class="px-2 py-0.5 rounded bg-mint/15 text-mint border border-mint/30 font-bold">สำเร็จ 100%</span>
+    </div>
+  </div>
+
+  <!-- Goal Selector & Coin Input -->
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+    <!-- Preset Goal Dropdown -->
+    <div class="md:col-span-7 space-y-1.5">
+      <label for="hqGoalSelect" class="block text-xs font-mono text-textMuted uppercase font-bold flex items-center gap-1.5">
+        <CyberIcon name="star" class="size-3.5 text-amber-400" />
+        <span>เลือกเป้าหมายการอัพเกรด (Upgrade Goal):</span>
+      </label>
+      <select 
+        id="hqGoalSelect" 
+        class="w-full px-3.5 py-2.5 rounded-xl bg-paper border border-line text-xs sm:text-sm text-white font-mono focus:border-amber-400 focus:outline-none transition-colors cursor-pointer"
+      >
+        <option value="45" selected>สร้างแก๊งใหม่ ➔ LV.4 เต็ม MAX (ใช้ 45 เหรียญ / 30 คน)</option>
+        <option value="10">ขึ้นแก๊งใหม่ LV.1 (10 เหรียญ / 10 คน)</option>
+        <option value="10_lv2">อัพจาก LV.1 ➔ LV.2 (10 เหรียญ / 15 คน)</option>
+        <option value="10_lv3">อัพจาก LV.2 ➔ LV.3 (10 เหรียญ / 20 คน)</option>
+        <option value="15_lv4">อัพจาก LV.3 ➔ LV.4 MAX (15 เหรียญ / 25+5 คน)</option>
+        <option value="35">อัพจาก LV.1 ➔ LV.4 MAX (35 เหรียญ)</option>
+        <option value="25">อัพจาก LV.2 ➔ LV.4 MAX (25 เหรียญ)</option>
+        <option value="custom">กำหนดจำนวนเหรียญเอง (Custom)...</option>
+      </select>
+    </div>
+
+    <!-- Direct Coin Counter -->
+    <div class="md:col-span-5 space-y-1.5">
+      <label for="hqCoinInput" class="block text-xs font-mono text-textMuted uppercase font-bold flex items-center justify-between">
+        <span class="flex items-center gap-1.5">
+          <CyberIcon name="package" class="size-3.5 text-amber-400" />
+          <span>จำนวน HQ Coin:</span>
+        </span>
+        <span id="hqExpBadge" class="text-amber-400 font-bold">+22,500 EXP</span>
+      </label>
+      <div class="flex items-center gap-2">
+        <button 
+          type="button" 
+          id="hqBtnMinus" 
+          class="size-10 rounded-xl bg-paper border border-line hover:border-amber-400 text-white font-bold flex items-center justify-center transition-colors shrink-0 text-base"
+          title="ลด 1 เหรียญ"
+        >
+          -
+        </button>
+        <input 
+          type="number" 
+          id="hqCoinInput" 
+          value="45" 
+          min="1" 
+          max="500" 
+          class="w-full px-3 py-2 rounded-xl bg-paper border border-line text-center text-lg font-bold text-amber-300 font-mono focus:border-amber-400 focus:outline-none transition-colors"
+        />
+        <button 
+          type="button" 
+          id="hqBtnPlus" 
+          class="size-10 rounded-xl bg-paper border border-line hover:border-amber-400 text-white font-bold flex items-center justify-center transition-colors shrink-0 text-base"
+          title="เพิ่ม 1 เหรียญ"
+        >
+          +
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Shortcut Buttons Row -->
+  <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-lineSubtle">
+    <span class="text-[11px] font-mono text-textMuted">ลัดด่วน:</span>
+    <button type="button" class="hq-quick-btn px-2.5 py-1 rounded-lg bg-paper hover:bg-amber-400/15 border border-line hover:border-amber-400/50 text-[11px] font-mono text-slate-300 hover:text-white transition-all" data-coins="10">10 เหรียญ (LV.1)</button>
+    <button type="button" class="hq-quick-btn px-2.5 py-1 rounded-lg bg-paper hover:bg-amber-400/15 border border-line hover:border-amber-400/50 text-[11px] font-mono text-slate-300 hover:text-white transition-all" data-coins="15">15 เหรียญ (LV.4)</button>
+    <button type="button" class="hq-quick-btn px-2.5 py-1 rounded-lg bg-paper hover:bg-amber-400/15 border border-line hover:border-amber-400/50 text-[11px] font-mono text-slate-300 hover:text-white transition-all" data-coins="20">20 เหรียญ</button>
+    <button type="button" class="hq-quick-btn px-2.5 py-1 rounded-lg bg-paper hover:bg-amber-400/15 border border-line hover:border-amber-400/50 text-[11px] font-mono text-slate-300 hover:text-white transition-all" data-coins="35">35 เหรียญ</button>
+    <button type="button" class="hq-quick-btn px-2.5 py-1 rounded-lg bg-amber-400/15 hover:bg-amber-400/25 border border-amber-400/40 text-[11px] font-mono text-amber-300 font-bold transition-all" data-coins="45">45 เหรียญ (MAX)</button>
+  </div>
+
+  <!-- Results 5-Card Grid -->
+  <div>
+    <div class="flex items-center justify-between mb-3 font-mono text-xs">
+      <span class="text-amber-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+        <CyberIcon name="package" class="size-3.5 text-amber-400" />
+        <span>ยอดวัตถุดิบรวมที่ต้องใช้ฟาร์ม (Total Materials)</span>
+      </span>
+      <span class="text-textMuted text-[11px]" id="hqSummaryHint">สำหรับ 45 เหรียญ</span>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+      <!-- Cut Diamond -->
+      <div class="p-4 rounded-xl border border-line bg-paper/80 hover:border-cyan-400/60 transition-all flex flex-col items-center text-center group">
+        <img src="/items/icons/transparent/cut_diamond.png" alt="Cut Diamond" class="size-11 object-contain mb-2 group-hover:scale-105 transition-transform filter drop-shadow-[0_0_8px_rgba(34,211,238,0.3)]" />
+        <span class="text-xs font-mono text-slate-300 font-medium">Cut Diamond</span>
+        <span class="text-xl font-mono font-extrabold text-cyan-300 mt-1" id="resCutDiamond">135</span>
+        <span class="text-[10px] font-mono text-slate-500 mt-0.5">3 ชิ้น / เหรียญ</span>
+      </div>
+
+      <!-- Gold Ingot -->
+      <div class="p-4 rounded-xl border border-line bg-paper/80 hover:border-amber-400/60 transition-all flex flex-col items-center text-center group">
+        <img src="/items/icons/transparent/gold_ingot.png" alt="Gold Ingot" class="size-11 object-contain mb-2 group-hover:scale-105 transition-transform filter drop-shadow-[0_0_8px_rgba(245,158,11,0.3)]" />
+        <span class="text-xs font-mono text-slate-300 font-medium">Gold Ingot</span>
+        <span class="text-xl font-mono font-extrabold text-amber-300 mt-1" id="resGoldIngot">450</span>
+        <span class="text-[10px] font-mono text-slate-500 mt-0.5">10 ชิ้น / เหรียญ</span>
+      </div>
+
+      <!-- Steel Ingot -->
+      <div class="p-4 rounded-xl border border-line bg-paper/80 hover:border-slate-300/60 transition-all flex flex-col items-center text-center group">
+        <img src="/items/icons/transparent/steel_ingot.png" alt="Steel Ingot" class="size-11 object-contain mb-2 group-hover:scale-105 transition-transform filter drop-shadow-[0_0_8px_rgba(203,213,225,0.3)]" />
+        <span class="text-xs font-mono text-slate-300 font-medium">Steel Ingot</span>
+        <span class="text-xl font-mono font-extrabold text-slate-200 mt-1" id="resSteelIngot">900</span>
+        <span class="text-[10px] font-mono text-slate-500 mt-0.5">20 ชิ้น / เหรียญ</span>
+      </div>
+
+      <!-- Crystal Ingot -->
+      <div class="p-4 rounded-xl border border-line bg-paper/80 hover:border-purple-400/60 transition-all flex flex-col items-center text-center group">
+        <img src="/items/icons/transparent/crystal_ingot.png" alt="Crystal Ingot" class="size-11 object-contain mb-2 group-hover:scale-105 transition-transform filter drop-shadow-[0_0_8px_rgba(192,132,252,0.3)]" />
+        <span class="text-xs font-mono text-slate-300 font-medium">Crystal Ingot</span>
+        <span class="text-xl font-mono font-extrabold text-purple-300 mt-1" id="resCrystalIngot">225</span>
+        <span class="text-[10px] font-mono text-slate-500 mt-0.5">5 ชิ้น / เหรียญ</span>
+      </div>
+
+      <!-- Black Money -->
+      <div class="col-span-2 sm:col-span-1 p-4 rounded-xl border border-danger/40 bg-paper/80 hover:border-danger transition-all flex flex-col items-center text-center group">
+        <img src="/items/icons/transparent/black_money.png" alt="Black Money" class="size-11 object-contain mb-2 group-hover:scale-105 transition-transform filter drop-shadow-[0_0_8px_rgba(244,63,94,0.3)]" />
+        <span class="text-xs font-mono text-slate-300 font-medium">Black Money</span>
+        <span class="text-xl font-mono font-extrabold text-danger mt-1" id="resBlackMoney">450,000</span>
+        <span class="text-[10px] font-mono text-slate-500 mt-0.5">10,000 บาท / เหรียญ</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Action Bar: Copy to Discord & Share -->
+  <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-lineSubtle">
+    <div class="flex items-center gap-2 text-xs font-mono text-textMuted">
+      <CyberIcon name="shield-check" class="size-4 text-amber-400" />
+      <span>สูตรทางการเซิร์ฟเวอร์ RUN TOWN (อัพเดท ต.ค. 2026)</span>
+    </div>
+
+    <button 
+      type="button" 
+      id="hqCopyDiscordBtn" 
+      class="w-full sm:w-auto px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-mono text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(245,158,11,0.25)] hover:scale-102 cursor-pointer"
+    >
+      <CyberIcon name="package" class="size-3.5 text-black" />
+      <span id="hqCopyDiscordText">📋 คัดลอกรายการของลง Discord แก๊ง</span>
+    </button>
+  </div>
+
+</div>
+
+<script>
+  function initHqCalculator() {
+    const goalSelect = document.getElementById('hqGoalSelect') as HTMLSelectElement | null;
+    const coinInput = document.getElementById('hqCoinInput') as HTMLInputElement | null;
+    const btnMinus = document.getElementById('hqBtnMinus');
+    const btnPlus = document.getElementById('hqBtnPlus');
+    const resCutDiamond = document.getElementById('resCutDiamond');
+    const resGoldIngot = document.getElementById('resGoldIngot');
+    const resSteelIngot = document.getElementById('resSteelIngot');
+    const resCrystalIngot = document.getElementById('resCrystalIngot');
+    const resBlackMoney = document.getElementById('resBlackMoney');
+    const expBadge = document.getElementById('hqExpBadge');
+    const summaryHint = document.getElementById('hqSummaryHint');
+    const copyDiscordBtn = document.getElementById('hqCopyDiscordBtn');
+    const copyDiscordText = document.getElementById('hqCopyDiscordText');
+    const quickBtns = document.querySelectorAll('.hq-quick-btn');
+
+    if (!goalSelect || !coinInput) return;
+
+    function calculate() {
+      const coins = Math.max(1, parseInt(coinInput?.value || '45', 10) || 1);
+      const cutDiamond = coins * 3;
+      const goldIngot = coins * 10;
+      const steelIngot = coins * 20;
+      const crystalIngot = coins * 5;
+      const blackMoney = coins * 10000;
+      const totalExp = coins * 500;
+
+      if (resCutDiamond) resCutDiamond.textContent = cutDiamond.toLocaleString();
+      if (resGoldIngot) resGoldIngot.textContent = goldIngot.toLocaleString();
+      if (resSteelIngot) resSteelIngot.textContent = steelIngot.toLocaleString();
+      if (resCrystalIngot) resCrystalIngot.textContent = crystalIngot.toLocaleString();
+      if (resBlackMoney) resBlackMoney.textContent = blackMoney.toLocaleString();
+      if (expBadge) expBadge.textContent = `+${totalExp.toLocaleString()} EXP`;
+      if (summaryHint) summaryHint.textContent = `สำหรับ ${coins.toLocaleString()} เหรียญ (${(cutDiamond + goldIngot + steelIngot + crystalIngot).toLocaleString()} ชิ้น)`;
+    }
+
+    goalSelect.addEventListener('change', () => {
+      const val = goalSelect.value;
+      if (val === 'custom') {
+        coinInput.focus();
+        return;
+      }
+      if (val === '10_lv2' || val === '10_lv3') {
+        coinInput.value = '10';
+      } else if (val === '15_lv4') {
+        coinInput.value = '15';
+      } else {
+        coinInput.value = val;
+      }
+      calculate();
+    });
+
+    coinInput.addEventListener('input', () => {
+      goalSelect.value = 'custom';
+      calculate();
+    });
+
+    btnMinus?.addEventListener('click', () => {
+      const current = Math.max(1, parseInt(coinInput.value, 10) || 1);
+      if (current > 1) {
+        coinInput.value = (current - 1).toString();
+        goalSelect.value = 'custom';
+        calculate();
+      }
+    });
+
+    btnPlus?.addEventListener('click', () => {
+      const current = Math.max(1, parseInt(coinInput.value, 10) || 1);
+      coinInput.value = (current + 1).toString();
+      goalSelect.value = 'custom';
+      calculate();
+    });
+
+    quickBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const c = btn.getAttribute('data-coins');
+        if (c && coinInput) {
+          coinInput.value = c;
+          goalSelect.value = c === '45' ? '45' : c === '10' ? '10' : 'custom';
+          calculate();
+        }
+      });
+    });
+
+    copyDiscordBtn?.addEventListener('click', () => {
+      const coins = Math.max(1, parseInt(coinInput.value, 10) || 1);
+      const cutDiamond = (coins * 3).toLocaleString();
+      const goldIngot = (coins * 10).toLocaleString();
+      const steelIngot = (coins * 20).toLocaleString();
+      const crystalIngot = (coins * 5).toLocaleString();
+      const blackMoney = (coins * 10000).toLocaleString();
+      const totalExp = (coins * 500).toLocaleString();
+
+      const text = [
+        `👑 **[RUN TOWN] รายการของที่ต้องฟาร์มสำหรับ HQ Coin (${coins} เหรียญ)**`,
+        `⭐ EXP ที่ได้รับ: +${totalExp} EXP`,
+        `💎 Cut Diamond: ${cutDiamond} ชิ้น`,
+        `🪙 Gold Ingot: ${goldIngot} ชิ้น`,
+        `🧱 Steel Ingot: ${steelIngot} ชิ้น`,
+        `🔮 Crystal Ingot: ${crystalIngot} ชิ้น`,
+        `💵 Black Money: ${blackMoney} บาท`,
+        `📌 ข้อมูลจาก: https://runtown.in.th/guides/gang/headquarter`
+      ].join('\n');
+
+      navigator.clipboard.writeText(text).then(() => {
+        if (copyDiscordText) {
+          copyDiscordText.textContent = '✓ คัดลอกสำเร็จ! นำไปวางใน Discord ได้เลย';
+          setTimeout(() => {
+            copyDiscordText.textContent = '📋 คัดลอกรายการของลง Discord แก๊ง';
+          }, 2500);
+        }
+      });
+    });
+
+    calculate();
+  }
+
+  initHqCalculator();
+  document.addEventListener('astro:page-load', initHqCalculator);
+</script>

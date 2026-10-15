@@ -25,6 +25,7 @@ const vehicleGuides = allGuides.filter(g => g.data.category === 'vehicles');
 const craftingGuides = allGuides.filter(g => g.data.category === 'crafting');
 const survivalGuides = allGuides.filter(g => g.data.category === 'survival');
 const foodGuides = allGuides.filter(g => g.data.category === 'food');
+const gangGuides = allGuides.filter(g => g.data.category === 'gang');
 ---
 
 <BaseLayout title="RUN TOWN ✦ FiveM Wiki Hub" activeCategory="home">
@@ -86,7 +87,16 @@ const foodGuides = allGuides.filter(g => g.data.category === 'food');
           class="inline-flex items-center justify-center gap-2.5 rounded-xl border border-line bg-card/60 px-6 py-3.5 text-sm font-semibold text-slate-200 transition-colors hover:bg-white/5 hover:text-mint hover:border-mint/40"
         >
           <CyberIcon name="briefcase" class="size-4 text-slate-400 group-hover:text-mint" />
-          <span>ดูกระดาน 7 งานขาว</span>
+          <span>ดูกระดาน 8 งานขาว</span>
+        </a>
+        <a
+          href="/guides/gang/headquarter"
+          class="inline-flex items-center justify-center gap-2.5 rounded-xl border border-amber-400/60 bg-gradient-to-r from-amber-500/20 via-amber-400/15 to-transparent px-6 py-3.5 text-sm font-extrabold text-amber-300 backdrop-blur-md transition-all hover:bg-amber-400/25 hover:shadow-[0_0_24px_rgba(245,158,11,0.4)] hover:scale-102"
+        >
+          <img src="/items/icons/transparent/hq_coin.png" class="size-5 object-contain shrink-0" alt="HQ Coin" />
+          <span>ระบบแก๊ง Headquarter</span>
+          <span class="rounded bg-amber-400/30 px-1.5 py-0.5 text-[10px] font-mono text-amber-200 uppercase font-bold">NEW</span>
+          <span>➔</span>
         </a>
       </div>
 
@@ -98,7 +108,7 @@ const foodGuides = allGuides.filter(g => g.data.category === 'food');
         </div>
         <div class="bg-card/90 px-5 py-4 backdrop-blur-md">
           <dt class="text-xs text-slate-400 font-mono">งานขาว</dt>
-          <dd class="mt-1 font-mono text-2xl font-bold text-lime">7</dd>
+          <dd class="mt-1 font-mono text-2xl font-bold text-lime">8</dd>
         </div>
         <div class="bg-card/90 px-5 py-4 backdrop-blur-md">
           <dt class="text-xs text-slate-400 font-mono">Safe Zones</dt>
@@ -114,7 +124,7 @@ const foodGuides = allGuides.filter(g => g.data.category === 'food');
       <div class="mt-6 flex flex-wrap items-center gap-2 font-mono text-xs max-w-4xl">
         <a href="/guides/jobs/white" class="cyber-tilt-card px-3.5 py-2 rounded-xl border border-mint/30 bg-card hover:border-mint transition-colors text-left flex items-center gap-2">
           <CyberIcon name="briefcase" class="size-3.5 text-mint" />
-          <span class="text-slate-300 text-xs font-semibold">งานขาว (7)</span>
+          <span class="text-slate-300 text-xs font-semibold">งานขาว (8)</span>
         </a>
         <a href="/guides/jobs/black" class="cyber-tilt-card px-3.5 py-2 rounded-xl border border-danger/40 bg-card hover:border-danger transition-colors text-left flex items-center gap-2">
           <CyberIcon name="skull" class="size-3.5 text-danger" />
@@ -394,10 +404,10 @@ const foodGuides = allGuides.filter(g => g.data.category === 'food');
 
           <div class="border-t border-lineSubtle pt-4 space-y-3">
             <p class="font-mono text-3xl font-bold text-lime">
-              422 RD <span class="text-xs font-normal text-slate-400">/ กล่อง</span>
+              380 RD <span class="text-xs font-normal text-slate-400">/ กล่อง</span>
             </p>
             <div class="flex flex-wrap gap-2">
-              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">ลูป 7 กม.</span>
+              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">ลูป 7.18 กม.</span>
               <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">มือใหม่</span>
             </div>
           </div>
@@ -541,13 +551,13 @@ const foodGuides = allGuides.filter(g => g.data.category === 'food');
     <BentoJobsGrid />
   </section>
 
-  <!-- 6 Master Category Cards -->
+  <!-- 7 Master Category Cards -->
   <section class="max-w-[1280px] mx-auto px-4 sm:px-6 py-10 space-y-8">
     
     <div class="flex items-center justify-between pb-3 border-b border-line">
       <div>
         <span class="text-xs font-mono font-bold text-mint uppercase tracking-wider">// KNOWLEDGE BASE</span>
-        <h2 class="text-xl sm:text-2xl font-display font-extrabold text-white">คลังข้อมูลความรู้หลัก (6 หมวดหมู่)</h2>
+        <h2 class="text-xl sm:text-2xl font-display font-extrabold text-white">คลังข้อมูลความรู้หลัก (7 หมวดหมู่)</h2>
       </div>
       <a href="/guides" class="text-xs font-mono text-mint hover:underline font-bold">
         ดูสารบัญทั้งหมด ➔
@@ -798,6 +808,49 @@ const foodGuides = allGuides.filter(g => g.data.category === 'food');
         <div class="pt-3 border-t border-lineSubtle">
           <a href="/guides/food/nutrition" class="w-full block text-center py-2.5 rounded-xl font-mono text-xs font-bold text-black bg-mint hover:bg-mint/90 transition-colors shadow-md">
             ดูตารางอาหาร ➔
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 7: แก๊ง & ครอบครัว (Gang & Headquarter) -->
+      <div class="category-stagger-card cyber-tilt-card p-6 rounded-2xl border border-amber-400/40 bg-card hover:border-amber-400 transition-all shadow-neon-card space-y-4 group flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="size-11 rounded-xl bg-amber-400/15 border border-amber-400/40 p-1.5 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(245,158,11,0.25)]">
+              <img src="/items/icons/transparent/hq_coin.png" class="size-8 object-contain" alt="HQ Coin" />
+            </div>
+            <span class="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-amber-400/20 text-[#facc15] border border-amber-400/40 font-bold">
+              NEW SYSTEM
+            </span>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-display font-extrabold text-white group-hover:text-amber-400 transition-colors">
+              แก๊ง & ครอบครัว (Headquarter)
+            </h3>
+            <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+              สูตรคราฟต์ HQ Coin, ตารางวัตถุดิบอัพเลเวล LV.1 ถึง LV.4 Max (30 คน), คลัง Supplies ตู้เซฟเรเบล, และระบบบัตร Dogtag
+            </p>
+          </div>
+
+          <ul class="space-y-1.5 pt-2 border-t border-lineSubtle text-xs font-mono">
+            {gangGuides.map((g) => (
+              <li>
+                <a href={`/guides/${g.slug}`} class="text-slate-200 hover:text-amber-400 flex items-start justify-between gap-2 py-1 transition-colors group/item">
+                  <span class="flex items-center gap-2 min-w-0">
+                    <GuideIcon icon={g.data.icon} iconImage={g.data.iconImage || g.data.image} class="text-sm shrink-0" imgClass="w-4 h-4 object-contain shrink-0" />
+                    <span class="break-words whitespace-normal leading-snug">{getCleanTitle(g.data.title)}</span>
+                  </span>
+                  <span class="text-textMuted group-hover/item:text-amber-400 shrink-0 mt-0.5 transition-colors">➔</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="pt-3 border-t border-lineSubtle">
+          <a href="/guides/gang/headquarter" class="w-full block text-center py-2.5 rounded-xl font-mono text-xs font-bold text-black bg-amber-400 hover:bg-amber-300 transition-colors shadow-md">
+            ดูระบบแก๊ง Headquarter ➔
           </a>
         </div>
       </div>

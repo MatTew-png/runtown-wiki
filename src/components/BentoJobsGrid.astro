@@ -20,7 +20,7 @@ import CyberIcon from './CyberIcon.astro';
         ทั้งหมด
       </button>
       <button type="button" class="bento-filter-tab px-3 py-1.5 rounded-lg text-textSoft hover:text-white hover:bg-card transition-all inline-flex items-center gap-1.5" data-bento-filter="white">
-        <CyberIcon name="briefcase" class="size-3.5" /> งานขาว (7)
+        <CyberIcon name="briefcase" class="size-3.5" /> งานขาว (8)
       </button>
       <button type="button" class="bento-filter-tab px-3 py-1.5 rounded-lg text-textSoft hover:text-white hover:bg-card transition-all inline-flex items-center gap-1.5" data-bento-filter="black">
         <CyberIcon name="skull" class="size-3.5" /> งานดำ (4)
@@ -181,7 +181,36 @@ import CyberIcon from './CyberIcon.astro';
       </div>
     </a>
 
-    <!-- 6. ขายยา (Street Dealing - งานดำ) -->
+    <!-- 6. ครัว & ส่งอาหาร (Run Kitchen & Delivery) -->
+    <a 
+      href="/guides/jobs/kitchen" 
+      class="bento-card group relative p-5 rounded-2xl border border-dashed border-amber-400/30 bg-[#12140c] hover:border-amber-400 hover:bg-[#1a1e11] transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-neon-card"
+      data-type="white"
+    >
+      <div class="space-y-3 relative z-10">
+        <div class="flex items-center justify-between">
+          <CyberIcon name="drumstick" box={true} tone="amber" class="size-6" />
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-mint/15 text-mint border border-mint/30 font-bold">
+            1,500 RD/ชิ้น
+          </span>
+        </div>
+        <div>
+          <h3 class="text-base font-display font-extrabold text-white group-hover:text-amber-300 transition-colors">
+            ครัว & ส่งอาหาร (Run Kitchen)
+          </h3>
+          <p class="text-xs text-textSoft mt-1 leading-relaxed">
+            ย่างเนื้อ Doner 3 นาที + ปิ้งแป้งข้าว ➔ คราฟต์ Kebab & Pita (ลดหิว 50% ลดเครียด -10) วิ่งส่งแอป รันแมน 1,500 RD/ชิ้น!
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-lineSubtle flex items-center justify-between text-[11px] font-mono text-textMuted mt-4">
+        <span class="flex items-center gap-1.5"><CyberIcon name="zap" class="size-3.5 text-amber-400" /> Blip พิซซ่า 🍕</span>
+        <span class="text-amber-300 font-bold group-hover:translate-x-1 transition-transform">รายละเอียด ➔</span>
+      </div>
+    </a>
+
+    <!-- 7. ขายยา (Street Dealing - งานดำ) -->
     <a 
       href="/guides/jobs/drug-dealing" 
       class="bento-card group relative p-5 rounded-2xl border border-dashed border-danger/30 bg-[#140c0f] hover:border-danger hover:bg-[#1e1115] transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-neon-card"

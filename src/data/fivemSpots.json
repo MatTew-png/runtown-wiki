@@ -1,5 +1,107 @@
 [
   {
+    "id": "spot-1791857764051",
+    "name": "ร้านเคบับ (Paleto Bay)",
+    "category": "restaurant",
+    "icon": "/blips/radar_pizza_this_orange.png",
+    "color": "#f97316",
+    "x": -164.9,
+    "y": 6334.6,
+    "z": 30,
+    "postal": "",
+    "cooldownMinutes": 10,
+    "yieldDescription": "Kebab / Pita (ลดหิว 50% ลดเครียด -10) · ส่ง 1,500 RD",
+    "requiredItems": [],
+    "notes": "ร้านอาหาร Run Kitchen สาขา Paleto Bay โซนเหนือสุดของเกาะ ทำเคบับและพิต้า พร้อมเปิดรับงานส่งอาหารแอป รันแมน",
+    "createdAt": 1791857764051,
+    "updatedAt": 1791857764051
+  },
+  {
+    "id": "spot-1791857735934",
+    "name": "ร้านเคบับ (Mirror Park)",
+    "category": "restaurant",
+    "icon": "/blips/radar_pizza_this_orange.png",
+    "color": "#f97316",
+    "x": 1141.4,
+    "y": -460.7,
+    "z": 30,
+    "postal": "",
+    "cooldownMinutes": 10,
+    "yieldDescription": "Kebab / Pita (ลดหิว 50% ลดเครียด -10) · ส่ง 1,500 RD",
+    "requiredItems": [],
+    "notes": "ร้านอาหาร Run Kitchen สาขา Mirror Park / East LS ฝั่งตะวันออก ทำเคบับและพิต้า พร้อมเปิดรับงานส่งอาหารแอป รันแมน",
+    "createdAt": 1791857735934,
+    "updatedAt": 1791857735934
+  },
+  {
+    "id": "spot-1791857709561",
+    "name": "ร้านเคบับ (Downtown)",
+    "category": "restaurant",
+    "icon": "/blips/radar_pizza_this_orange.png",
+    "color": "#f97316",
+    "x": 307.8,
+    "y": -719.8,
+    "z": 30,
+    "postal": "",
+    "cooldownMinutes": 10,
+    "yieldDescription": "Kebab / Pita (ลดหิว 50% ลดเครียด -10) · ส่ง 1,500 RD",
+    "requiredItems": [],
+    "notes": "ร้านอาหาร Run Kitchen สาขา Downtown / Legion Square ใจกลางเมือง ทำเคบับและพิต้า พร้อมเปิดรับงานส่งอาหารแอป รันแมน",
+    "createdAt": 1791857709561,
+    "updatedAt": 1791857709561
+  },
+  {
+    "id": "spot-1791857684353",
+    "name": "ร้านเคบับ (Vespucci)",
+    "category": "restaurant",
+    "icon": "/blips/radar_pizza_this_orange.png",
+    "color": "#f97316",
+    "x": -1267.9,
+    "y": -1204.5,
+    "z": 30,
+    "postal": "",
+    "cooldownMinutes": 10,
+    "yieldDescription": "Kebab / Pita (ลดหิว 50% ลดเครียด -10) · ส่ง 1,500 RD",
+    "requiredItems": [],
+    "notes": "ร้านอาหาร Run Kitchen สาขา Vespucci / South-West LS ทำเคบับและพิต้า พร้อมเปิดรับงานส่งอาหารแอป รันแมน",
+    "createdAt": 1791857684353,
+    "updatedAt": 1791857684353
+  },
+  {
+    "id": "spot-1791854342552",
+    "name": "ร้านค้าทะเลทราย",
+    "category": "shop",
+    "icon": "/blips/radar_buyers_request.png",
+    "color": "#22c55e",
+    "x": 1967.2,
+    "y": 3736.6,
+    "z": 30,
+    "postal": "",
+    "cooldownMinutes": 10,
+    "yieldDescription": "อุปกรณ์ฟาร์มชิ้นละ 200 RD",
+    "requiredItems": [],
+    "notes": "ร้านค้าซื้ออุปกรณ์ฟาร์มได้ทุกอย่างทั้งหมด (ขวาน, เคียว, อีเตอร์, ถุงมือ, มีด ฯลฯ)",
+    "createdAt": 1791854342552,
+    "updatedAt": 1791854342552
+  },
+  {
+    "id": "spot-1791853769352",
+    "name": "ร้านค้าเมืองบน",
+    "category": "shop",
+    "icon": "/blips/radar_buyers_request.png",
+    "color": "#22c55e",
+    "x": 156,
+    "y": 6637.1,
+    "z": 30,
+    "postal": "",
+    "cooldownMinutes": 10,
+    "yieldDescription": "อุปกรณ์ฟาร์มชิ้นละ 200 RD",
+    "requiredItems": [],
+    "notes": "ร้านค้าซื้ออุปกรณ์ฟาร์มได้ทุกอย่างทั้งหมด (ขวาน, เคียว, อีเตอร์, ถุงมือ, มีด ฯลฯ)",
+    "createdAt": 1791853769352,
+    "updatedAt": 1791853769352
+  },
+  {
     "id": "spot-1791604573509",
     "name": "โพลหิน",
     "category": "farm",
@@ -1370,11 +1472,11 @@
     "z": 30,
     "postal": "",
     "cooldownMinutes": 10,
-    "yieldDescription": "",
+    "yieldDescription": "อุปกรณ์ฟาร์มชิ้นละ 200 RD",
     "requiredItems": [],
-    "notes": "",
+    "notes": "มีร้านค้าซื้ออุปกรณ์ฟาร์มได้ทุกอย่างทั้งหมด (ขวาน, เคียว, อีเตอร์, ถุงมือ, มีด ฯลฯ)",
     "createdAt": 1789097466769,
-    "updatedAt": 1789097466769
+    "updatedAt": 1791854568666
   },
   {
     "id": "spot-1789097435869",
@@ -1489,11 +1591,11 @@
     "z": 30,
     "postal": "",
     "cooldownMinutes": 10,
-    "yieldDescription": "",
+    "yieldDescription": "อุปกรณ์ฟาร์มชิ้นละ 200 RD",
     "requiredItems": [],
-    "notes": "",
+    "notes": "มีร้านค้าซื้ออุปกรณ์ฟาร์มได้ทุกอย่างทั้งหมด (ขวาน, เคียว, อีเตอร์, ถุงมือ, มีด ฯลฯ)",
     "createdAt": 1789097316804,
-    "updatedAt": 1789097316804
+    "updatedAt": 1791854568666
   },
   {
     "id": "spot-1789097291487",
@@ -1523,11 +1625,11 @@
     "z": 30,
     "postal": "",
     "cooldownMinutes": 10,
-    "yieldDescription": "",
+    "yieldDescription": "อุปกรณ์ฟาร์มชิ้นละ 200 RD",
     "requiredItems": [],
-    "notes": "",
+    "notes": "มีร้านค้าซื้ออุปกรณ์ฟาร์มได้ทุกอย่างทั้งหมด (ขวาน, เคียว, อีเตอร์, ถุงมือ, มีด ฯลฯ)",
     "createdAt": 1789097276171,
-    "updatedAt": 1789097276171
+    "updatedAt": 1791854568666
   },
   {
     "id": "spot-1789097231871",
@@ -1693,11 +1795,11 @@
     "z": 30,
     "postal": "",
     "cooldownMinutes": 10,
-    "yieldDescription": "",
+    "yieldDescription": "อุปกรณ์ฟาร์มชิ้นละ 200 RD",
     "requiredItems": [],
-    "notes": "",
+    "notes": "มีร้านค้าซื้ออุปกรณ์ฟาร์มได้ทุกอย่างทั้งหมด (ขวาน, เคียว, อีเตอร์, ถุงมือ, มีด ฯลฯ)",
     "createdAt": 1789096983908,
-    "updatedAt": 1789096983908
+    "updatedAt": 1791854568666
   },
   {
     "id": "spot-1789096945374",
@@ -1829,11 +1931,11 @@
     "z": 30,
     "postal": "",
     "cooldownMinutes": 10,
-    "yieldDescription": "",
+    "yieldDescription": "อุปกรณ์ฟาร์มชิ้นละ 200 RD",
     "requiredItems": [],
-    "notes": "",
+    "notes": "มีร้านค้าซื้ออุปกรณ์ฟาร์มได้ทุกอย่างทั้งหมด (ขวาน, เคียว, อีเตอร์, ถุงมือ, มีด ฯลฯ)",
     "createdAt": 1789096643659,
-    "updatedAt": 1789096643659
+    "updatedAt": 1791854568665
   },
   {
     "id": "spot-1789096582660",
@@ -1880,11 +1982,11 @@
     "z": 30,
     "postal": "",
     "cooldownMinutes": 10,
-    "yieldDescription": "",
+    "yieldDescription": "อุปกรณ์ฟาร์มชิ้นละ 200 RD",
     "requiredItems": [],
-    "notes": "",
+    "notes": "มีร้านค้าซื้ออุปกรณ์ฟาร์มได้ทุกอย่างทั้งหมด (ขวาน, เคียว, อีเตอร์, ถุงมือ, มีด ฯลฯ)",
     "createdAt": 1789096538636,
-    "updatedAt": 1789096538636
+    "updatedAt": 1791854568666
   },
   {
     "id": "spot-1789096452106",
@@ -1931,11 +2033,11 @@
     "z": 30,
     "postal": "",
     "cooldownMinutes": 10,
-    "yieldDescription": "",
+    "yieldDescription": "อุปกรณ์ฟาร์มชิ้นละ 200 RD",
     "requiredItems": [],
-    "notes": "",
+    "notes": "มีร้านค้าซื้ออุปกรณ์ฟาร์มได้ทุกอย่างทั้งหมด (ขวาน, เคียว, อีเตอร์, ถุงมือ, มีด ฯลฯ)",
     "createdAt": 1789096402896,
-    "updatedAt": 1789096402896
+    "updatedAt": 1791854568665
   },
   {
     "id": "spot-1789096384446",
@@ -1948,11 +2050,11 @@
     "z": 30,
     "postal": "",
     "cooldownMinutes": 10,
-    "yieldDescription": "",
+    "yieldDescription": "อุปกรณ์ฟาร์มชิ้นละ 200 RD",
     "requiredItems": [],
-    "notes": "",
+    "notes": "มีร้านค้าซื้ออุปกรณ์ฟาร์มได้ทุกอย่างทั้งหมด (ขวาน, เคียว, อีเตอร์, ถุงมือ, มีด ฯลฯ)",
     "createdAt": 1789096384446,
-    "updatedAt": 1789096384446
+    "updatedAt": 1791854568665
   },
   {
     "id": "spot-1789096362145",
@@ -1982,11 +2084,11 @@
     "z": 30,
     "postal": "",
     "cooldownMinutes": 10,
-    "yieldDescription": "",
+    "yieldDescription": "อุปกรณ์ฟาร์มชิ้นละ 200 RD",
     "requiredItems": [],
-    "notes": "",
+    "notes": "มีร้านค้าซื้ออุปกรณ์ฟาร์มได้ทุกอย่างทั้งหมด (ขวาน, เคียว, อีเตอร์, ถุงมือ, มีด ฯลฯ)",
     "createdAt": 1789096326164,
-    "updatedAt": 1789096326164
+    "updatedAt": 1791854568665
   },
   {
     "id": "spot-1789096309666",
@@ -1999,11 +2101,11 @@
     "z": 30,
     "postal": "",
     "cooldownMinutes": 10,
-    "yieldDescription": "",
+    "yieldDescription": "อุปกรณ์ฟาร์มชิ้นละ 200 RD",
     "requiredItems": [],
-    "notes": "",
+    "notes": "มีร้านค้าซื้ออุปกรณ์ฟาร์มได้ทุกอย่างทั้งหมด (ขวาน, เคียว, อีเตอร์, ถุงมือ, มีด ฯลฯ)",
     "createdAt": 1789096309666,
-    "updatedAt": 1789096309666
+    "updatedAt": 1791854568665
   },
   {
     "id": "spot-1788704324414",
