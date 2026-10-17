@@ -167,47 +167,53 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       
-      <!-- Rule 1: Hunger & Thirst -->
+      <!-- Rule 1: Hunger -->
       <div class="cyber-tilt-card p-6 rounded-2xl border border-rose-500/40 bg-card hover:border-rose-400 transition-all shadow-neon-card space-y-4 flex flex-col justify-between">
         <div class="space-y-3">
           <div class="flex items-center justify-between">
             <CyberIcon name="drumstick" box={true} tone="rose" class="size-6" />
             <span class="text-[11px] font-mono px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40 font-bold">
-              อันตรายถึงชีวิต (ห้าม 0%)
+              ความหิว (ห้ามแตะ 100%)
             </span>
           </div>
           <h3 class="text-lg font-display font-extrabold text-white">
-            1. หลอดอาหาร & น้ำ (อย่าปล่อยให้หมดเด็ดขาด!)
+            1. หลอดอาหาร (ระบบความหิว)
           </h3>
           <p class="text-sm text-slate-300 leading-relaxed">
-            ตัวละครของคุณจะเผาผลาญอาหารและน้ำตลอดเวลา หากหลอดใดหลอดหนึ่งลดลงจนเหลือ <strong class="text-rose-400">0%</strong> เลือดจะลดลงอย่างรวดเร็วจนสลบหมดสติทันที
+            ตัวละครจะมีความหิวสะสมตลอดเวลา หากหลอดอาหารพุ่งแตะ <strong class="text-rose-400 font-bold">100%</strong> ตัวละครจะสลบ หรือ เสียชีวิต ต้องรอมีคนมาชุบ หรือเรียกหมอมาชุบ หรือเกิดโรงพยาบาล
           </p>
 
           <!-- Telemetry Meter -->
           <div class="space-y-1.5 p-3 rounded-xl bg-slate-950/70 border border-line">
             <div class="flex items-baseline justify-between text-xs font-mono">
-              <span class="text-slate-400">อัตราการลดลง:</span>
-              <span class="text-rose-400 font-bold text-base">-0.72% <span class="text-xs text-slate-400 font-normal">/ นาที</span></span>
+              <span class="text-slate-400">ระดับความหิวสะสม:</span>
+              <span class="text-rose-400 font-bold text-base">100% <span class="text-xs text-rose-300 font-normal">= สลบ / เสียชีวิตทันที</span></span>
             </div>
             <div class="h-2 rounded-full bg-slate-900 border border-line overflow-hidden">
-              <div class="h-full w-[20%] rounded-full bg-gradient-to-r from-rose-500 to-amber-400"></div>
+              <div class="h-full w-[95%] rounded-full bg-gradient-to-r from-mint via-amber-400 to-rose-500"></div>
             </div>
           </div>
 
-          <div class="p-3 rounded-xl bg-slate-950/80 border border-line text-xs space-y-1.5 text-slate-200">
+          <div class="p-3.5 rounded-xl bg-slate-950/80 border border-line text-xs space-y-2 text-slate-200">
             <p class="font-bold text-rose-300 flex items-center gap-1.5">
               <CyberIcon name="lightbulb" class="size-4 text-amber-300" />
               <span>คำแนะนำสำหรับมือใหม่:</span>
             </p>
-            <ul class="list-disc list-inside space-y-1 text-textMuted">
-              <li>แวะร้านสะดวกซื้อ (24/7) ซื้อเบอร์เกอร์และน้ำดื่มพกติดกระเป๋า 3–5 ชิ้นเสมอ</li>
-              <li>อย่ารอให้หลอดแดง ให้กดกินทันทีเมื่อหลอดเริ่มลดต่ำกว่า 50%</li>
+            <ul class="space-y-1.5 text-textMuted font-sans">
+              <li class="flex items-start gap-2">
+                <span class="font-mono text-mint font-bold shrink-0">•</span>
+                <span>แวะร้านค้าเพื่อซื้อแซนวิชตามร้าน</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-mono text-mint font-bold shrink-0">•</span>
+                <span>หรือเดินทางไปที่จุดรีหัวตามบาร์หรืออู่ช่าง</span>
+              </li>
             </ul>
           </div>
         </div>
         <div class="pt-3 border-t border-lineSubtle">
           <a href="/guides/food/nutrition" class="text-xs font-mono font-bold text-rose-300 hover:text-rose-200 flex items-center justify-between">
-            <span>ดูตารางอาหาร & เวลาเผาผลาญ</span>
+            <span>ดูตารางอาหาร & เสบียง</span>
             <span>➔</span>
           </a>
         </div>
