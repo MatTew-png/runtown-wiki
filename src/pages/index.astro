@@ -223,37 +223,43 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
             </span>
           </div>
           <h3 class="text-lg font-display font-extrabold text-white">
-            2. หลอดสมอง & อาการล้า (หัวร้อน-หัวตึง โดนสตั๊น)
+            2. หลอดสมอง & อาการล้า (หัวร้อน-หัวตึง)
           </h3>
           <p class="text-sm text-slate-300 leading-relaxed">
-            ทุกครั้งที่ยืนฟาร์ม ตัดไม้ ขุดแร่ หรือยืนแปรรูปของ หลอดสมองจะสะสมความล้าเรื่อยๆ หากพุ่งแตะ <strong class="text-purple-300">100%</strong> ตัวละครจะหน้ามืดและติดสตั๊น ขยับไม่ได้
+            ทุกครั้งที่ยืนฟาร์ม ตัดไม้ ขุดแร่ หรือยืนแปรรูปของ หลอดสมองจะสะสมความล้าเรื่อยๆ หากพุ่งแตะ <strong class="text-rose-400 font-bold">100%</strong> ตัวละครจะสลบ หรือ เสียชีวิต ต้องรอมีคนมาชุบ หรือเรียกหมอมาชุบ หรือเกิดโรงพยาบาล
           </p>
 
           <!-- Telemetry Meter -->
           <div class="space-y-1.5 p-3 rounded-xl bg-slate-950/70 border border-line">
             <div class="flex items-baseline justify-between text-xs font-mono">
               <span class="text-slate-400">สถานะสมองสะสม:</span>
-              <span class="text-amber-300 font-bold text-base">100% <span class="text-xs text-rose-400 font-normal">= สตั๊น 2 นาที</span></span>
+              <span class="text-rose-400 font-bold text-base">100% <span class="text-xs text-rose-300 font-normal">= สลบ / เสียชีวิตทันที</span></span>
             </div>
             <div class="h-2 rounded-full bg-slate-900 border border-line overflow-hidden">
-              <div class="h-full w-[90%] rounded-full bg-gradient-to-r from-mint via-amber-400 to-rose-500"></div>
+              <div class="h-full w-[95%] rounded-full bg-gradient-to-r from-mint via-amber-400 to-rose-500"></div>
             </div>
           </div>
 
-          <div class="p-3 rounded-xl bg-slate-950/80 border border-line text-xs space-y-1.5 text-slate-200">
+          <div class="p-3.5 rounded-xl bg-slate-950/80 border border-line text-xs space-y-2 text-slate-200">
             <p class="font-bold text-purple-300 flex items-center gap-1.5">
               <CyberIcon name="lightbulb" class="size-4 text-amber-300" />
-              <span>วิธีแก้ปัญหาง่ายๆ:</span>
+              <span>วิธีการแก้ปัญหา (มีแค่ 2 วิธีนี้เท่านั้น):</span>
             </p>
-            <ul class="list-disc list-inside space-y-1 text-textMuted">
-              <li>ขับรถไปนั่งพักผ่อนที่ <strong class="text-white">บาร์เขียว (Del Perro)</strong> หรือ <strong class="text-white">อู่ช่าง (Chumash)</strong></li>
-              <li>นั่งฟังเพลงหรือเต้นชิลล์ๆ หลอดสมองจะลดลงฮวบฮาบกลับมาเป็น 0% ทันที</li>
+            <ul class="space-y-1.5 text-textMuted font-sans">
+              <li class="flex items-start gap-2">
+                <span class="font-mono text-mint font-bold shrink-0">1.</span>
+                <span><strong class="text-white">ไปรีที่สถานที่ต่าง</strong> (เดินทางไปพักผ่อนตามจุดบริการต่างๆ ในเมือง)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-mono text-amber-300 font-bold shrink-0">2.</span>
+                <span><strong class="text-white">ใช้ไอเทมช่วยรีหัว</strong> <span class="text-slate-400 font-mono text-[11px]">(ข้อมูลไอเทมจะอัปเดตเร็วๆ นี้)</span></span>
+              </li>
             </ul>
           </div>
         </div>
         <div class="pt-3 border-t border-lineSubtle">
           <a href="/guides/survival/vitals" class="text-xs font-mono font-bold text-purple-300 hover:text-purple-200 flex items-center justify-between">
-            <span>ดูกลไกหลอดสมอง & จุดพักผ่อน</span>
+            <span>ดูกลไกหลอดสมอง & วิธีรีหัว</span>
             <span>➔</span>
           </a>
         </div>
