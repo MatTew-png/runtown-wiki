@@ -284,18 +284,18 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
             3. ยานพาหนะ & ท้ายรถ (กุญแจสำคัญ ไม่ต้องเดินแบก)
           </h3>
           <p class="text-sm text-slate-300 leading-relaxed">
-            กระเป๋าตัวละครแบกของได้จำกัด หากเดินเก็บของดิบแล้ววิ่งไปขาย จะเสียเวลามาก <strong class="text-amber-300">การมีรถขนของคือจุดเปลี่ยนของชีวิตในเมือง!</strong>
+            กระเป๋าตัวละครเริ่มต้นรับได้แค่ <strong class="text-amber-300 font-bold">30 กก.</strong> (สามารถทำเควสเพื่ออัพเกรดเพิ่มได้) หากเดินเก็บของดิบแล้ววิ่งไปขายจะเสียเวลามาก <strong class="text-amber-300">การมีรถขนของคือจุดเปลี่ยนของชีวิตในเมือง!</strong>
           </p>
 
           <!-- Telemetry Meter -->
           <div class="space-y-2 p-3 rounded-xl bg-slate-950/70 border border-line text-xs font-mono">
             <div>
               <div class="flex items-baseline justify-between text-[11px]">
-                <span class="text-slate-400">กระเป๋าตัวละคร (เดินเท้า)</span>
-                <span class="text-mint font-bold">45.0 กก.</span>
+                <span class="text-slate-400">กระเป๋าตัวละคร (เริ่มต้น)</span>
+                <span class="text-mint font-bold">30.0 กก. <span class="text-[10px] text-textMuted font-normal">(เควสอัพเกรดได้)</span></span>
               </div>
               <div class="h-1.5 rounded-full bg-slate-900 border border-line overflow-hidden mt-1">
-                <div class="h-full w-[35%] rounded-full bg-mint"></div>
+                <div class="h-full w-[25%] rounded-full bg-mint"></div>
               </div>
             </div>
             <div>
@@ -309,14 +309,24 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
             </div>
           </div>
 
-          <div class="p-3 rounded-xl bg-slate-950/80 border border-line text-xs space-y-1.5 text-slate-200">
+          <div class="p-3.5 rounded-xl bg-slate-950/80 border border-line text-xs space-y-2 text-slate-200">
             <p class="font-bold text-amber-300 flex items-center gap-1.5">
               <CyberIcon name="lightbulb" class="size-4 text-amber-300" />
               <span>คำแนะนำสำหรับมือใหม่:</span>
             </p>
-            <ul class="list-disc list-inside space-y-1 text-textMuted">
-              <li>เริ่มต้นด้วยรถท้าย 60 กก. หรือ 120 กก. ขับไปจอดเทียบจุดฟาร์ม</li>
-              <li>ขนวัตถุดิบใส่ท้ายรถให้เต็มความจุก่อน แล้วค่อยขับไปแปรรูปและส่งขายทีเดียว</li>
+            <ul class="space-y-1.5 text-textMuted font-sans">
+              <li class="flex items-start gap-2">
+                <span class="font-mono text-amber-300 font-bold shrink-0">•</span>
+                <span>มีรถโลเริ่มต้น <strong class="text-white">60 กก., 120 กก., 150 กก.</strong> ขับไปจอดเทียบจุดฟาร์มเพื่อขนของ</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-mono text-amber-300 font-bold shrink-0">•</span>
+                <span>กระเป๋าตัวละครเริ่มต้นรับได้แค่ 30 กก. แต่สามารถทำเควสอัพเกรดได้ในภายหลัง</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-mono text-amber-300 font-bold shrink-0">•</span>
+                <span>ขนวัตถุดิบใส่ท้ายรถให้เต็มความจุก่อน แล้วค่อยขับไปแปรรูปและส่งขายทีเดียว</span>
+              </li>
             </ul>
           </div>
         </div>
