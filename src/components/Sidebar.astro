@@ -203,6 +203,9 @@ const activeCategory = allGuides.find((g) => g.slug === currentSlug)?.data.categ
 
 <script>
   function setAccordion(btn: HTMLElement, panel: HTMLElement, open: boolean) {
+    const isCurrentlyOpen = panel.classList.contains('is-open');
+    if (isCurrentlyOpen === open) return;
+
     const group = btn.closest('.guide-category-group');
     const chevron = btn.querySelector('.accordion-chevron');
     const icon = btn.querySelector('.category-icon');

@@ -472,7 +472,12 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
       });
     }
 
+    let currentTabMode: string | null = null;
+
     function switchJobTab(mode: string) {
+      if (currentTabMode === mode) return;
+      currentTabMode = mode;
+
       if (mode === 'calc') {
         panelSteps.classList.add('hidden');
         panelCalc.classList.remove('hidden');
@@ -519,6 +524,7 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
     }
 
     btnSteps.onclick = () => {
+      if (currentTabMode === 'steps') return;
       switchJobTab('steps');
       const url = new URL(window.location.href);
       url.searchParams.set('tab', 'steps');
@@ -526,6 +532,7 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
     };
 
     btnCalc.onclick = () => {
+      if (currentTabMode === 'calc') return;
       switchJobTab('calc');
       const url = new URL(window.location.href);
       url.searchParams.set('tab', 'calc');

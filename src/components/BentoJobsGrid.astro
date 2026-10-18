@@ -337,12 +337,19 @@ import CyberIcon from './CyberIcon.astro';
 <script>
   import { gsap } from 'gsap';
 
+  let currentFilter = 'all';
+
   function setupBentoFilter() {
     const tabs = document.querySelectorAll('.bento-filter-tab');
     const cards = document.querySelectorAll<HTMLElement>('.bento-card');
+    if (!tabs.length || !cards.length) return;
 
     tabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
+      (tab as HTMLElement).onclick = () => {
+        const filter = tab.getAttribute('data-bento-filter') || 'all';
+        if (filter === currentFilter) return;
+        currentFilter = filter;
+
         tabs.forEach((t) => {
           t.classList.remove('bg-mint/15', 'text-mint', 'border-mint/40', 'font-bold');
           t.classList.add('text-textSoft');
@@ -350,8 +357,9 @@ import CyberIcon from './CyberIcon.astro';
         tab.classList.remove('text-textSoft');
         tab.classList.add('bg-mint/15', 'text-mint', 'border-mint/40', 'font-bold');
 
-        const filter = tab.getAttribute('data-bento-filter');
-        
+        // Kill any in-flight tweens on cards to prevent fighting animations
+        gsap.killTweensOf(cards);
+
         const toHide: HTMLElement[] = [];
         const toShow: HTMLElement[] = [];
 
@@ -365,30 +373,48 @@ import CyberIcon from './CyberIcon.astro';
         });
 
         // GSAP Stagger Morph Animation
-        gsap.to(toHide, {
-          opacity: 0,
-          scale: 0.92,
-          y: -10,
-          duration: 0.18,
-          ease: 'power2.in',
-          onComplete: () => {
-            toHide.forEach((c) => (c.style.display = 'none'));
-            toShow.forEach((c) => (c.style.display = 'flex'));
-            gsap.fromTo(
-              toShow,
-              { opacity: 0, scale: 0.94, y: 15 },
-              {
-                opacity: 1,
-                scale: 1,
-                y: 0,
-                duration: 0.35,
-                stagger: 0.04,
-                ease: 'back.out(1.2)',
-              }
-            );
-          },
-        });
-      });
+        if (toHide.length > 0) {
+          gsap.to(toHide, {
+            opacity: 0,
+            scale: 0.95,
+            duration: 0.15,
+            ease: 'power2.in',
+            overwrite: 'auto',
+            onComplete: () => {
+              toHide.forEach((c) => (c.style.display = 'none'));
+              toShow.forEach((c) => (c.style.display = 'flex'));
+              gsap.fromTo(
+                toShow,
+                { opacity: 0, scale: 0.96 },
+                {
+                  opacity: 1,
+                  scale: 1,
+                  duration: 0.25,
+                  stagger: 0.03,
+                  ease: 'power2.out',
+                  overwrite: 'auto',
+                  clearProps: 'scale',
+                }
+              );
+            },
+          });
+        } else {
+          toShow.forEach((c) => (c.style.display = 'flex'));
+          gsap.fromTo(
+            toShow,
+            { opacity: 0, scale: 0.96 },
+            {
+              opacity: 1,
+              scale: 1,
+              duration: 0.25,
+              stagger: 0.03,
+              ease: 'power2.out',
+              overwrite: 'auto',
+              clearProps: 'scale',
+            }
+          );
+        }
+      };
     });
   }
 

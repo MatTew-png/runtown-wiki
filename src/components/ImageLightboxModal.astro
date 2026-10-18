@@ -143,11 +143,15 @@ import CyberIcon from './CyberIcon.astro';
       if (e.target === modal) closeLightbox();
     });
 
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-        closeLightbox();
-      }
-    });
+    if (!(window as any).__lightboxKeyBound) {
+      (window as any).__lightboxKeyBound = true;
+      window.addEventListener('keydown', (e) => {
+        const m = document.getElementById('imageLightboxModal');
+        if (e.key === 'Escape' && m && !m.classList.contains('hidden')) {
+          closeLightbox();
+        }
+      });
+    }
 
     if (copyGpsBtn) {
       copyGpsBtn.addEventListener('click', () => {

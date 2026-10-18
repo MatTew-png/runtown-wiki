@@ -489,7 +489,7 @@ body {
    Smooth Component Motion & Micro-Interactions (Apple & Emil Kowalski)
    ========================================================================== */
 
-/* 1. Global Tactile Buttons & Interactive Elements */
+/* 1. Global Tactile Buttons & Interactive Elements (Spam-Click Resilient) */
 button:not(:disabled),
 .btn,
 a[role="button"],
@@ -497,30 +497,29 @@ a[role="button"],
 .stepper-step-btn,
 .stepper-job-tab,
 .category-accordion-btn {
-  transition: transform 0.2s var(--ease-out-expo),
-              box-shadow 0.2s var(--ease-out-expo),
-              background-color 0.2s ease,
-              border-color 0.2s ease,
-              color 0.15s ease;
+  transition: box-shadow 0.18s var(--ease-out-expo),
+              background-color 0.18s ease,
+              border-color 0.18s ease,
+              color 0.15s ease,
+              opacity 0.12s ease;
   user-select: none;
+  touch-action: manipulation;
 }
 
 button:not(:disabled):active,
 .btn:active,
-a[role="button"]:active,
-.job-tab-btn:active,
-.stepper-step-btn:active {
-  transform: scale(0.975);
+a[role="button"]:active {
+  opacity: 0.82;
 }
 
-/* 2. Smooth Interactive Cards & Elevations */
+/* 2. Smooth Interactive Cards & Elevations (Transform delegated to GSAP GPU engine without CSS transition fight) */
 .cyber-tilt-card,
 .bento-card,
 .category-stagger-card {
-  transition: border-color 0.25s ease,
-              box-shadow 0.28s var(--ease-out-expo),
-              background-color 0.25s ease,
-              transform 0.28s var(--ease-out-expo);
+  transition: border-color 0.22s ease,
+              box-shadow 0.25s var(--ease-out-expo),
+              background-color 0.22s ease;
+  will-change: transform;
 }
 
 /* 3. Smooth Form Controls (Inputs, Selects, Checkboxes) */
@@ -547,8 +546,8 @@ textarea:focus {
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
-  transition: grid-template-rows 0.28s var(--ease-out-expo),
-              opacity 0.22s ease;
+  transition: grid-template-rows 0.25s var(--ease-out-expo),
+              opacity 0.2s ease;
 }
 
 .category-accordion-panel.is-open {
@@ -561,19 +560,17 @@ textarea:focus {
   overflow: hidden;
 }
 
-/* 5. Smooth Tab Panel Entrance */
+/* 5. Smooth Tab Panel Entrance (Pure Opacity Dissolve - Zero Vertical Shift / Jitter) */
 .job-tab-panel {
-  animation: smoothTabEntrance 0.28s var(--ease-out-expo) forwards;
+  animation: smoothTabEntrance 0.18s ease-out forwards;
 }
 
 @keyframes smoothTabEntrance {
   from {
     opacity: 0;
-    transform: translateY(6px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 

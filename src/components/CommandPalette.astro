@@ -193,19 +193,23 @@ const allGuides = await getCollection('guides');
       }
     }
 
-    // Keyboard Shortcuts: Ctrl+K or Cmd+K
-    window.addEventListener('keydown', (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        if (modal?.classList.contains('opacity-0')) {
-          openPalette();
-        } else {
+    // Keyboard Shortcuts: Ctrl+K or Cmd+K (bind once globally)
+    if (!(window as any).__cmdPaletteKeyBound) {
+      (window as any).__cmdPaletteKeyBound = true;
+      window.addEventListener('keydown', (e) => {
+        const m = document.getElementById('commandPaletteModal');
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          if (m?.classList.contains('opacity-0')) {
+            openPalette();
+          } else {
+            closePalette();
+          }
+        } else if (e.key === 'Escape' && !m?.classList.contains('opacity-0')) {
           closePalette();
         }
-      } else if (e.key === 'Escape' && !modal?.classList.contains('opacity-0')) {
-        closePalette();
-      }
-    });
+      });
+    }
 
     // Close on backdrop click
     if (modal) {

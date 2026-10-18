@@ -727,6 +727,7 @@ const items: ItemCard[] = [
 
     filterButtons.forEach(btn => {
       btn.onclick = () => {
+        if (btn.classList.contains('active')) return;
         const target = btn.getAttribute('data-filter');
         
         // Update active button state

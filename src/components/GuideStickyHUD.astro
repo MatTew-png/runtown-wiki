@@ -162,14 +162,20 @@ const h2Headings = headings.filter((h) => h.depth === 2);
         }
       };
 
-      // Close on outside click
-      document.addEventListener('click', (e) => {
-        if (!dropdownMenu.contains(e.target as Node) && !dropdownBtn.contains(e.target as Node)) {
-          dropdownMenu.classList.add('hidden');
-          dropdownBtn.setAttribute('aria-expanded', 'false');
-          if (chevron) chevron.classList.remove('rotate-180');
-        }
-      });
+      // Close on outside click (bind once globally)
+      if (!(window as any).__hudOutsideClickBound) {
+        (window as any).__hudOutsideClickBound = true;
+        document.addEventListener('click', (e) => {
+          const m = document.getElementById('hudSectionDropdownMenu');
+          const b = document.getElementById('hudSectionDropdownBtn');
+          const ch = b?.querySelector('.dropdown-chevron');
+          if (m && b && !m.contains(e.target as Node) && !b.contains(e.target as Node)) {
+            m.classList.add('hidden');
+            b.setAttribute('aria-expanded', 'false');
+            if (ch) ch.classList.remove('rotate-180');
+          }
+        });
+      }
 
       // Smooth jump on link click
       headingLinks.forEach((link) => {
@@ -182,6 +188,10 @@ const h2Headings = headings.filter((h) => h.depth === 2);
     }
 
     // ScrollSpy to highlight active heading
+    if ((window as any).__hudObserver) {
+      (window as any).__hudObserver.disconnect();
+    }
+
     const headings = Array.from(document.querySelectorAll('article h2[id]')) as HTMLElement[];
     if (headings.length > 0 && activeText) {
       const observer = new IntersectionObserver(
@@ -208,10 +218,14 @@ const h2Headings = headings.filter((h) => h.depth === 2);
       );
 
       headings.forEach((h) => observer.observe(h));
+      (window as any).__hudObserver = observer;
     }
 
     // Micro Reading Progress Bar
     if (progressBar) {
+      if ((window as any).__hudScrollHandler) {
+        window.removeEventListener('scroll', (window as any).__hudScrollHandler);
+      }
       const updateProgress = () => {
         const article = document.querySelector('article');
         if (!article) return;
@@ -224,6 +238,7 @@ const h2Headings = headings.filter((h) => h.depth === 2);
         const currentProgress = Math.min(100, Math.max(0, (-rect.top / totalHeight) * 100));
         progressBar.style.width = `${currentProgress}%`;
       };
+      (window as any).__hudScrollHandler = updateProgress;
       window.addEventListener('scroll', updateProgress, { passive: true });
       updateProgress();
     }
