@@ -15,6 +15,7 @@ interface Props {
   vehicleTier?: string;
   itemWeight?: string;
   cooldown?: number;
+  headings?: { depth: number; slug: string; text: string }[];
 }
 
 const {
@@ -29,36 +30,38 @@ const {
   vehicleTier = '120 กก.',
   itemWeight = '0.5 kg',
   cooldown,
+  headings = [],
 } = Astro.props;
 
 const cleanTitle = getCleanTitle(title);
+const h2Headings = headings.filter((h) => h.depth === 2);
 ---
 
 <!-- Sticky Telemetry HUD Bar (Focus Mode Top Strip) -->
 <aside 
   id="guideStickyHud" 
-  class="sticky top-16 z-30 -mx-4 sm:-mx-6 px-4 sm:px-6 py-2.5 bg-[#050b08]/95 backdrop-blur-md border-b border-line shadow-sm transition-all duration-300"
-  aria-label="สรุปสถิติด่วน"
+  class="sticky top-16 z-30 -mx-4 sm:-mx-6 px-4 sm:px-6 py-2 bg-[#050b08]/95 backdrop-blur-md border-b border-line shadow-sm transition-all duration-300"
+  aria-label="สรุปสถิติด่วนและนำทาง"
 >
-  <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+  <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
     
     <!-- Left: Identity & Category -->
     <div class="flex items-center gap-2.5 min-w-0">
-      <GuideIcon icon={icon} iconImage={iconImage || image} class="text-lg inline-block shrink-0" imgClass="w-5 h-5 object-contain shrink-0" />
+      <GuideIcon icon={icon} iconImage={iconImage || image} class="text-base inline-block shrink-0" imgClass="w-5 h-5 object-contain shrink-0" />
       <div class="min-w-0">
         <div class="flex items-center gap-2">
           <span class="text-[10px] font-mono px-2 py-0.2 rounded bg-mint/15 text-mint border border-mint/30 font-bold uppercase shrink-0">
             {categoryName}
           </span>
-          <h2 class="text-xs sm:text-sm font-bold text-white truncate max-w-[200px] sm:max-w-xs font-display">
+          <h2 class="text-xs sm:text-sm font-bold text-white truncate max-w-[140px] sm:max-w-xs font-display">
             {cleanTitle}
           </h2>
         </div>
       </div>
     </div>
 
-    <!-- Middle: Quick Telemetry Pills (Hidden on very small screens, visible on sm+) -->
-    <div class="hidden md:flex items-center gap-4 text-xs font-mono">
+    <!-- Middle: Quick Telemetry Pills (Hidden on small screens) -->
+    <div class="hidden lg:flex items-center gap-4 text-xs font-mono">
       <div class="flex items-center gap-1.5 text-textMuted">
         <CyberIcon name="truck" class="size-3.5 text-lime shrink-0" />
         <span>ท้ายรถ: <strong class="text-lime">{vehicleTier}</strong></span>
@@ -79,16 +82,55 @@ const cleanTitle = getCleanTitle(title);
       </div>
     </div>
 
-    <!-- Right: Quick Action Controls -->
+    <!-- Right: Navigation Dropdown & Action Controls -->
     <div class="flex items-center gap-2 font-mono text-xs">
+      
+      <!-- Quick Headings Dropdown Jump -->
+      {h2Headings.length > 0 && (
+        <div class="relative" id="hudSectionDropdownWrapper">
+          <button
+            type="button"
+            id="hudSectionDropdownBtn"
+            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-line bg-paper hover:border-mint text-textSoft hover:text-white transition-all text-[11px] cursor-pointer"
+            title="กระโดดไปที่หัวข้อในหน้านี้"
+            aria-expanded="false"
+          >
+            <CyberIcon name="file-text" class="size-3 text-mint shrink-0" />
+            <span id="hudActiveHeadingText" class="truncate max-w-[90px] sm:max-w-[150px]">สารบัญ ({h2Headings.length})</span>
+            <CyberIcon name="chevron-down" class="size-2.5 text-textMuted shrink-0 transition-transform duration-200 dropdown-chevron" />
+          </button>
+
+          <!-- Dropdown Popover Menu -->
+          <div 
+            id="hudSectionDropdownMenu" 
+            class="absolute right-0 top-full mt-1.5 w-64 sm:w-72 max-h-80 overflow-y-auto rounded-xl bg-card border border-line p-1.5 shadow-2xl backdrop-blur-xl hidden z-50 font-mono text-xs space-y-0.5 custom-scrollbar"
+          >
+            <div class="px-2.5 py-1 text-[10px] text-textMuted uppercase font-bold tracking-wider border-b border-lineSubtle mb-1 flex items-center justify-between">
+              <span>หัวข้อในหน้านี้ (Quick Jump)</span>
+              <span class="text-mint">{h2Headings.length} ส่วน</span>
+            </div>
+            {h2Headings.map((h, i) => (
+              <a
+                href={`#${h.slug}`}
+                class="hud-heading-link flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-textSoft hover:text-white hover:bg-cardHover text-[11px] transition-colors truncate"
+                data-slug={h.slug}
+              >
+                <span class="text-mint/60 font-bold text-[10px] shrink-0">{i + 1}.</span>
+                <span class="truncate">{h.text}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
       <button 
         type="button" 
         id="hudQuickCalcBtn"
-        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-mint/40 bg-mint/10 text-mint hover:bg-mint/20 transition-colors font-bold text-[11px]"
+        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-mint/40 bg-mint/10 text-mint hover:bg-mint/20 transition-colors font-bold text-[11px] cursor-pointer"
         title="เลื่อนไปที่เครื่องคำนวณกำไร"
       >
         <CyberIcon name="zap" class="size-3.5 text-mint" />
-        <span>คำนวณกำไร</span>
+        <span class="hidden sm:inline">คำนวณกำไร</span>
       </button>
 
       <a 
@@ -97,13 +139,13 @@ const cleanTitle = getCleanTitle(title);
         title="เปิดแผนที่ใหญ่"
       >
         <CyberIcon name="map" class="size-3.5 text-slate-400" />
-        <span class="hidden sm:inline">Live Map</span>
+        <span class="hidden sm:inline">Map</span>
       </a>
 
       <button 
         type="button" 
         id="hudCopyLinkBtn"
-        class="inline-flex items-center gap-1 px-2 py-1 rounded-lg border border-line bg-card hover:border-mint text-slate-400 hover:text-white transition-colors text-[11px]"
+        class="inline-flex items-center gap-1 px-2 py-1 rounded-lg border border-line bg-card hover:border-mint text-slate-400 hover:text-white transition-colors text-[11px] cursor-pointer"
         title="คัดลอกลิงก์หน้านี้"
       >
         <CyberIcon name="copy" class="size-3 text-slate-400" />
@@ -119,7 +161,77 @@ const cleanTitle = getCleanTitle(title);
     const calcBtn = document.getElementById('hudQuickCalcBtn');
     const copyBtn = document.getElementById('hudCopyLinkBtn');
     const feedback = document.getElementById('hudCopyFeedback');
+    const dropdownBtn = document.getElementById('hudSectionDropdownBtn');
+    const dropdownMenu = document.getElementById('hudSectionDropdownMenu');
+    const chevron = dropdownBtn?.querySelector('.dropdown-chevron');
+    const activeText = document.getElementById('hudActiveHeadingText');
+    const headingLinks = document.querySelectorAll('.hud-heading-link');
 
+    // Section Dropdown Toggle
+    if (dropdownBtn && dropdownMenu) {
+      dropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = !dropdownMenu.classList.contains('hidden');
+        if (isOpen) {
+          dropdownMenu.classList.add('hidden');
+          dropdownBtn.setAttribute('aria-expanded', 'false');
+          if (chevron) chevron.classList.remove('rotate-180');
+        } else {
+          dropdownMenu.classList.remove('hidden');
+          dropdownBtn.setAttribute('aria-expanded', 'true');
+          if (chevron) chevron.classList.add('rotate-180');
+        }
+      });
+
+      // Close on outside click
+      document.addEventListener('click', (e) => {
+        if (!dropdownMenu.contains(e.target as Node) && !dropdownBtn.contains(e.target as Node)) {
+          dropdownMenu.classList.add('hidden');
+          dropdownBtn.setAttribute('aria-expanded', 'false');
+          if (chevron) chevron.classList.remove('rotate-180');
+        }
+      });
+
+      // Smooth jump on link click
+      headingLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+          dropdownMenu.classList.add('hidden');
+          dropdownBtn.setAttribute('aria-expanded', 'false');
+          if (chevron) chevron.classList.remove('rotate-180');
+        });
+      });
+    }
+
+    // ScrollSpy to highlight active heading
+    const headings = Array.from(document.querySelectorAll('article h2[id]')) as HTMLElement[];
+    if (headings.length > 0 && activeText) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const id = entry.target.id;
+              const text = entry.target.textContent?.trim().replace(/^[0-9.]+\s*/, '') || '';
+              if (text) {
+                activeText.textContent = text.length > 18 ? text.slice(0, 16) + '...' : text;
+              }
+              headingLinks.forEach((l) => {
+                const slug = l.getAttribute('data-slug');
+                if (slug === id) {
+                  l.classList.add('bg-mint/15', 'text-mint', 'font-bold');
+                } else {
+                  l.classList.remove('bg-mint/15', 'text-mint', 'font-bold');
+                }
+              });
+            }
+          });
+        },
+        { rootMargin: '-80px 0px -60% 0px' }
+      );
+
+      headings.forEach((h) => observer.observe(h));
+    }
+
+    // Calculator button
     if (calcBtn) {
       calcBtn.addEventListener('click', () => {
         const tabCalc = document.getElementById('btnTabCalc');
@@ -135,6 +247,7 @@ const cleanTitle = getCleanTitle(title);
       });
     }
 
+    // Copy link
     if (copyBtn) {
       copyBtn.addEventListener('click', () => {
         navigator.clipboard.writeText(window.location.href).then(() => {

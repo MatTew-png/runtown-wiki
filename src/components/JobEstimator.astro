@@ -96,14 +96,14 @@ const initialTime = activePresets[0]?.time ?? 5;
           <span class="text-xs font-mono text-mint font-semibold hidden sm:inline">(Live Logistics Estimator)</span>
         </h3>
         <p class="text-xs font-mono text-slate-200">
-          คำนวณแบบเต็มพิกัด 100% ท้ายรถ + กระเป๋าตัวละคร 15 กก.
+          คำนวณแบบเต็มพิกัด 100% ท้ายรถ + กระเป๋าตัวละคร 30 กก.
         </p>
       </div>
     </div>
     <div class="flex items-center gap-2">
       <span class="text-xs font-mono px-3 py-1 rounded-full bg-mint/20 text-mint border border-mint/40 font-bold flex items-center gap-2 shadow-sm">
         <span class="inline-block w-2.5 h-2.5 rounded-full bg-mint animate-pulse"></span>
-        <span>เต็มรถ 100% + ในตัว 15 KG</span>
+        <span>เต็มรถ 100% + ในตัว 30 KG</span>
       </span>
     </div>
   </div>
@@ -157,7 +157,7 @@ const initialTime = activePresets[0]?.time ?? 5;
       </select>
     </div>
 
-    <!-- Body Carry Toggle (+15 kg) -->
+    <!-- Body Carry Toggle (+30 kg) -->
     <div class="bg-[#101b14] p-3 rounded-xl border border-white/15 flex flex-col justify-between space-y-2">
       <label class="flex items-center gap-2.5 cursor-pointer select-none">
         <input 
@@ -168,13 +168,13 @@ const initialTime = activePresets[0]?.time ?? 5;
         />
         <span class="text-white font-bold flex items-center gap-1.5 text-xs">
           <CyberIcon name="package" size={15} class="text-mint shrink-0" />
-          <span>รวมกระเป๋าในตัว (+15 กก.)</span>
+          <span>รวมกระเป๋าในตัว (+30 กก.)</span>
         </span>
       </label>
       <div class="flex items-center justify-between text-xs font-mono pt-1 border-t border-white/10">
         <span class="text-slate-200 text-[11px]">ความจุรวมเที่ยวนี้:</span>
         <span id="estimatorTotalCapBadge" class="px-2.5 py-0.5 rounded-lg bg-mint/20 text-mint border border-mint/40 font-extrabold text-xs">
-          135 กก.
+          150 กก.
         </span>
       </div>
     </div>
@@ -322,7 +322,7 @@ const initialTime = activePresets[0]?.time ?? 5;
       <div>
         <strong class="text-mint text-xs block mb-0.5">จุดรีเซ็ตสมอง 0% & การขนส่ง:</strong>
         <p class="text-white leading-relaxed text-[11px]">
-          แวะล้างหลอดสมองเหลือ 0% ได้ทันทีที่ <span class="text-white font-extrabold underline decoration-mint">บาร์เขียว (Del Perro)</span> หรือ <span class="text-white font-extrabold underline decoration-mint">อู่ช่าง (Chumash)</span> ควบคู่กับการขนของเต็มรถ 100% + ในตัว 15 กก.
+          แวะล้างหลอดสมองเหลือ 0% ได้ทันทีที่ <span class="text-white font-extrabold underline decoration-mint">บาร์เขียว (Del Perro)</span> หรือ <span class="text-white font-extrabold underline decoration-mint">อู่ช่าง (Chumash)</span> ควบคู่กับการขนของเต็มรถ 100% + ในตัว 30 กก.
         </p>
       </div>
     </div>
@@ -354,7 +354,7 @@ const initialTime = activePresets[0]?.time ?? 5;
     function recalculate() {
       const carTrunk = parseFloat(trunkSelect!.value) || 0;
       const hasBodyCarry = bodyCarryCheck ? bodyCarryCheck.checked : true;
-      const bodyCarry = hasBodyCarry ? 15 : 0;
+      const bodyCarry = hasBodyCarry ? 30 : 0;
       const totalCapacity = carTrunk + bodyCarry;
 
       const unitWeight = Math.max(0.01, parseFloat(weightInput!.value) || 0.5);
@@ -381,7 +381,7 @@ const initialTime = activePresets[0]?.time ?? 5;
       outTime!.textContent = totalMinutes;
 
       if (outCapBadge) {
-        outCapBadge.textContent = `${totalCapacity} กก.${carTrunk > 0 && hasBodyCarry ? ` (รถ ${carTrunk} + ในตัว 15)` : ''}`;
+        outCapBadge.textContent = `${totalCapacity} กก.${carTrunk > 0 && hasBodyCarry ? ` (รถ ${carTrunk} + ในตัว 30)` : ''}`;
       }
 
       if (outSpeedBadge) {

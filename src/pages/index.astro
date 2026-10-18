@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import MarqueeTicker from '../components/MarqueeTicker.astro';
 import BrainFatigueMeter from '../components/BrainFatigueMeter.astro';
 import FoodHungerMeter from '../components/FoodHungerMeter.astro';
-import ItemGallery from '../components/ItemGallery.astro';
 import BentoJobsGrid from '../components/BentoJobsGrid.astro';
 import SafeHubs from '../components/SafeHubs.astro';
 import ProfitCalculator from '../components/ProfitCalculator.astro';
@@ -173,24 +172,24 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
           <div class="flex items-center justify-between">
             <CyberIcon name="drumstick" box={true} tone="rose" class="size-6" />
             <span class="text-[11px] font-mono px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40 font-bold">
-              ความหิว (ห้ามแตะ 100%)
+              หลอดอาหาร (ห้ามเหลือ 0%)
             </span>
           </div>
           <h3 class="text-lg font-display font-extrabold text-white">
             1. หลอดอาหาร (ระบบความหิว)
           </h3>
           <p class="text-sm text-slate-300 leading-relaxed">
-            ตัวละครจะมีความหิวสะสมตลอดเวลา หากหลอดอาหารพุ่งแตะ <strong class="text-rose-400 font-bold">100%</strong> ตัวละครจะสลบ หรือ เสียชีวิต ต้องรอมีคนมาชุบ หรือเรียกหมอมาชุบ หรือเกิดโรงพยาบาล
+            ตัวละครจะเผาผลาญอาหารตลอดเวลา หากหลอดอาหารลดลงจนเหลือ <strong class="text-rose-400 font-bold">0%</strong> ตัวละครจะสลบ หรือ เสียชีวิต ต้องรอมีคนมาชุบ หรือเรียกหมอมาชุบ หรือเกิดโรงพยาบาล
           </p>
 
           <!-- Telemetry Meter -->
           <div class="space-y-1.5 p-3 rounded-xl bg-slate-950/70 border border-line">
             <div class="flex items-baseline justify-between text-xs font-mono">
-              <span class="text-slate-400">ระดับความหิวสะสม:</span>
-              <span class="text-rose-400 font-bold text-base">100% <span class="text-xs text-rose-300 font-normal">= สลบ / เสียชีวิตทันที</span></span>
+              <span class="text-slate-400">ระดับหลอดอาหาร:</span>
+              <span class="text-rose-400 font-bold text-base">0% <span class="text-xs text-rose-300 font-normal">= สลบ / เสียชีวิตทันที</span></span>
             </div>
             <div class="h-2 rounded-full bg-slate-900 border border-line overflow-hidden">
-              <div class="h-full w-[95%] rounded-full bg-gradient-to-r from-mint via-amber-400 to-rose-500"></div>
+              <div class="h-full w-[8%] rounded-full bg-rose-500 shadow-[0_0_10px_#ff4d6d] animate-pulse"></div>
             </div>
           </div>
 
@@ -461,7 +460,7 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
 
           <div class="border-t border-lineSubtle pt-4 space-y-3">
             <p class="font-mono text-3xl font-bold text-lime">
-              47,000+ RD <span class="text-xs font-normal text-slate-400">/ เต็มกระบะ</span>
+              479 RD <span class="text-xs font-normal text-slate-400">/ กล่อง</span>
             </p>
             <div class="flex flex-wrap gap-2">
               <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">120 กก.</span>
@@ -496,11 +495,11 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
 
           <div class="border-t border-lineSubtle pt-4 space-y-3">
             <p class="font-mono text-3xl font-bold text-lime">
-              100 RD <span class="text-xs font-normal text-slate-400">/ ดอก</span>
+              120 RD <span class="text-xs font-normal text-slate-400">/ ดอก</span>
             </p>
             <div class="flex flex-wrap gap-2">
               <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">8 วิ/ชิ้น</span>
-              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">ไวสุด</span>
+              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">ส่ง รพ. 120 RD</span>
             </div>
           </div>
         </div>
@@ -531,11 +530,11 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
 
           <div class="border-t border-lineSubtle pt-4 space-y-3">
             <p class="font-mono text-3xl font-bold text-lime">
-              195 RD <span class="text-xs font-normal text-slate-400">/ แท่ง</span>
+              233 RD <span class="text-xs font-normal text-slate-400">/ แท่ง</span>
             </p>
             <div class="flex flex-wrap gap-2">
               <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">1.2 กม.</span>
-              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">ส่งอู่ช่าง</span>
+              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">ขายช่าง 233-240 RD</span>
             </div>
           </div>
         </div>
@@ -884,19 +883,7 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
 
   </section>
 
-  <!-- Section 5: Real Item Screenshots Crafting Gallery -->
-  <section class="max-w-[1280px] mx-auto px-4 sm:px-6 py-12 border-t border-line">
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-6">
-      <div>
-        <span class="text-xs font-mono font-bold text-lime uppercase tracking-wider">// CRAFTING DATABASE</span>
-        <h2 class="text-xl sm:text-2xl font-display font-extrabold text-white">คลังไอเทม & ตารางคราฟต์อาวุธ Patch 1.3.0</h2>
-      </div>
-      <span class="text-xs font-mono text-textMuted">ภาพถ่ายไอเทมจริงจากระบบเกม RUN TOWN FiveM</span>
-    </div>
-    <ItemGallery />
-  </section>
-
-  <!-- Section 6: Advanced Farming Simulation & Estimator HUDs (For Veterans) -->
+  <!-- Section 5: Advanced Farming Simulation & Estimator HUDs (For Veterans) -->
   <section class="max-w-[1280px] mx-auto px-4 sm:px-6 py-12 border-t border-line space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-line">
       <div>

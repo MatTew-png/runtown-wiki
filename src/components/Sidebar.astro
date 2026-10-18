@@ -31,97 +31,158 @@ const grouped = allGuides.reduce<Record<string, typeof allGuides>>((acc, guide) 
   acc[cat].push(guide);
   return acc;
 }, {});
+// Active category determination
+const activeCategory = allGuides.find((g) => g.slug === currentSlug)?.data.category || (currentSlug.startsWith('jobs/') ? 'white_jobs' : '');
 ---
 
 <aside class="w-full lg:w-80 shrink-0 py-6 pr-4 lg:border-r border-line/60 lg:min-h-[calc(100vh-4rem)]">
-  <div class="sticky top-20 space-y-6">
+  <div class="sticky top-20 space-y-5 max-h-[calc(100vh-5.5rem)] overflow-y-auto pr-2 custom-scrollbar">
 
-    <!-- Search / Quick Jump helper (Command Palette Trigger) -->
-    <div class="px-1">
+    <!-- Search & Live Filter Controls -->
+    <div class="space-y-2.5 px-0.5">
+      <!-- Global Command Palette Trigger -->
       <button 
         type="button" 
-        class="open-command-palette-btn w-full px-3.5 py-2.5 rounded-xl text-xs bg-paper border border-dashed border-mint/30 hover:border-mint text-left text-textMuted hover:text-white transition-all font-mono flex items-center justify-between cursor-pointer group shadow-sm"
-        title="กดเพื่อค้นหาคู่มือ (Ctrl+K)"
+        class="open-command-palette-btn w-full px-3.5 py-2 rounded-xl text-xs bg-paper border border-dashed border-mint/30 hover:border-mint text-left text-textMuted hover:text-white transition-all font-mono flex items-center justify-between cursor-pointer group shadow-sm"
+        title="กดเพื่อค้นหาคู่มือทั่วทั้งระบบ (Ctrl+K)"
       >
         <span class="flex items-center gap-2">
           <CyberIcon name="search" class="size-3.5 text-mint group-hover:scale-110 transition-transform" />
-          <span>ค้นหาคู่มือ...</span>
+          <span>ค้นหาทั่วระบบ...</span>
         </span>
         <kbd class="text-[10px] px-1.5 py-0.5 rounded bg-card border border-line text-textMuted font-mono group-hover:text-mint">
           Ctrl+K
         </kbd>
       </button>
+
+      <!-- Instant Live Filter Input -->
+      <div class="relative">
+        <CyberIcon name="filter" class="absolute left-2.5 top-2.5 size-3.5 text-textMuted pointer-events-none" />
+        <input 
+          type="text" 
+          id="sidebarLiveFilter" 
+          placeholder="กรองคู่มือในหน้านี้..." 
+          class="w-full pl-8 pr-7 py-1.5 rounded-lg bg-card border border-lineSubtle focus:border-mint text-xs text-white placeholder-textMuted font-mono outline-none transition-colors"
+        />
+        <button 
+          type="button" 
+          id="sidebarClearFilter" 
+          class="absolute right-2 top-2 text-textMuted hover:text-white hidden text-xs font-mono"
+          title="ล้างคำค้นหา"
+        >
+          ✕
+        </button>
+      </div>
+
+      <!-- Quick Expand / Collapse Accordion Buttons -->
+      <div class="flex items-center justify-between px-1 text-[10px] font-mono text-textMuted">
+        <span class="font-semibold uppercase tracking-wider text-slate-400">หมวดหมู่ ({Object.keys(grouped).length})</span>
+        <div class="flex items-center gap-2">
+          <button type="button" id="btnExpandAllCat" class="hover:text-mint transition-colors cursor-pointer">[+] ขยายหมด</button>
+          <span class="text-lineSubtle">|</span>
+          <button type="button" id="btnCollapseAllCat" class="hover:text-mint transition-colors cursor-pointer">[-] ยุบหมด</button>
+        </div>
+      </div>
     </div>
 
-    <!-- Category Tree -->
-    <nav class="space-y-5" id="sidebarTree">
+    <!-- Category Accordion Tree -->
+    <nav class="space-y-2.5" id="sidebarTree">
       {Object.entries(categoryConfig).map(([catKey, catInfo]) => {
         const guides = grouped[catKey] || [];
         if (guides.length === 0) return null;
+        const isCatActive = catKey === activeCategory;
 
         return (
-          <div class="space-y-1.5 guide-category-group">
-            <div class={`flex items-center gap-2 px-3 py-1 text-[11px] font-mono font-bold uppercase tracking-wider ${catKey === 'gang' ? 'text-amber-400' : 'text-mint'}`}>
-              {catKey === 'gang' ? (
-                <img src="/items/icons/transparent/hq_coin.png" class="size-3.5 object-contain shrink-0" alt="HQ Coin" />
-              ) : (
-                <CyberIcon name={catInfo.icon} class="size-3.5 text-mint shrink-0" />
-              )}
-              <span>{catInfo.label}</span>
-              {catKey === 'gang' && (
-                <span class="text-[9px] px-1 py-0.2 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30 font-bold">NEW</span>
-              )}
-              <span class="ml-auto text-[10px] text-textMuted font-normal">({guides.length})</span>
-            </div>
+          <div class="guide-category-group rounded-xl border border-lineSubtle/40 bg-card/40 overflow-hidden transition-all" data-category={catKey}>
+            <!-- Accordion Header Button -->
+            <button
+              type="button"
+              class={`category-accordion-btn w-full flex items-center justify-between px-3 py-2 text-[11px] font-mono font-bold uppercase tracking-wider transition-all cursor-pointer group select-none ${
+                isCatActive
+                  ? (catKey === 'gang' ? 'bg-amber-400/15 text-amber-300 border-b border-amber-400/30' : 'bg-mint/10 text-mint border-b border-mint/20')
+                  : 'text-textMuted hover:text-white hover:bg-cardHover'
+              }`}
+              data-target={`cat-panel-${catKey}`}
+              aria-expanded={isCatActive ? "true" : "false"}
+            >
+              <div class="flex items-center gap-2 min-w-0">
+                {catKey === 'gang' ? (
+                  <img src="/items/icons/transparent/hq_coin.png" class="size-3.5 object-contain shrink-0" alt="HQ Coin" />
+                ) : (
+                  <CyberIcon name={catInfo.icon} class={`size-3.5 shrink-0 ${isCatActive ? 'text-mint' : 'text-textMuted group-hover:text-white'}`} />
+                )}
+                <span class="truncate">{catInfo.label}</span>
+                {catKey === 'gang' && (
+                  <span class="text-[9px] px-1 py-0.2 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30 font-bold shrink-0">NEW</span>
+                )}
+              </div>
 
-            <ul class="space-y-1 border-l border-line/30 ml-3 pl-2">
-              {guides.map((guide) => {
-                const isActive = guide.slug === currentSlug;
-                return (
-                  <li class="guide-item">
-                    <a
-                      href={`/guides/${guide.slug}`}
-                      class={`group flex items-start justify-between gap-2 px-2.5 py-2 rounded-lg text-xs transition-all ${
-                        isActive
-                          ? (guide.data.category === 'gang'
-                              ? 'bg-amber-400/15 text-amber-300 font-bold border border-amber-400/40 shadow-[0_0_10px_rgba(245,158,11,0.25)]'
-                              : 'bg-mint/15 text-mint font-bold border border-mint/40 shadow-[0_0_10px_rgba(69,242,180,0.2)]')
-                          : 'text-textSoft hover:text-white hover:bg-cardHover'
-                      }`}
-                    >
-                      <span class="flex items-start gap-2 flex-1 min-w-0">
-                        <GuideIcon icon={guide.data.icon} iconImage={guide.data.iconImage || guide.data.image} class="shrink-0 mt-0.5 text-xs" imgClass="w-3.5 h-3.5 object-contain shrink-0 mt-0.5" />
-                        <span class="break-words whitespace-normal leading-snug">{getCleanTitle(guide.data.title)}</span>
-                      </span>
+              <div class="flex items-center gap-1.5 shrink-0 ml-2">
+                <span class="text-[10px] text-textMuted font-mono group-hover:text-slate-300">({guides.length})</span>
+                <CyberIcon 
+                  name="chevron-down" 
+                  class={`size-3 text-textMuted group-hover:text-mint transition-transform duration-200 accordion-chevron ${isCatActive ? 'rotate-180' : ''}`} 
+                />
+              </div>
+            </button>
 
-                      {guide.data.badge && (
-                        <span class={`text-[9px] font-mono px-1.5 py-0.5 rounded uppercase shrink-0 mt-0.5 font-bold ${
-                          guide.data.badge === 'HOT' ? 'bg-danger/20 text-danger border border-danger/30' :
-                          guide.data.badge === 'NEW SYSTEM' ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30' :
-                          guide.data.badge.startsWith('CD') ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' :
-                          'bg-mint/15 text-mint border border-mint/30'
-                        }`}>
-                          {guide.data.badge}
+            <!-- Collapsible Content List -->
+            <div 
+              id={`cat-panel-${catKey}`}
+              class={`category-accordion-panel overflow-hidden transition-all duration-200 ${
+                isCatActive ? 'max-h-[1000px] opacity-100 py-1' : 'max-h-0 opacity-0 py-0 pointer-events-none'
+              }`}
+            >
+              <ul class="space-y-1 ml-2 pl-2 mr-2 border-l border-line/40 my-1">
+                {guides.map((guide) => {
+                  const isActive = guide.slug === currentSlug;
+                  return (
+                    <li class="guide-item" data-title={guide.data.title.toLowerCase()} data-cat={catKey}>
+                      <a
+                        href={`/guides/${guide.slug}`}
+                        class={`group flex items-start justify-between gap-2 px-2.5 py-1.5 rounded-lg text-xs transition-all ${
+                          isActive
+                            ? (guide.data.category === 'gang'
+                                ? 'bg-amber-400/15 text-amber-300 font-bold border border-amber-400/40 shadow-[0_0_10px_rgba(245,158,11,0.25)]'
+                                : 'bg-mint/15 text-mint font-bold border border-mint/40 shadow-[0_0_10px_rgba(69,242,180,0.2)]')
+                            : 'text-textSoft hover:text-white hover:bg-cardHover'
+                        }`}
+                      >
+                        <span class="flex items-start gap-2 flex-1 min-w-0">
+                          <GuideIcon icon={guide.data.icon} iconImage={guide.data.iconImage || guide.data.image} class="shrink-0 mt-0.5 text-xs" imgClass="w-3.5 h-3.5 object-contain shrink-0 mt-0.5" />
+                          <span class="break-words whitespace-normal leading-snug">{getCleanTitle(guide.data.title)}</span>
                         </span>
-                      )}
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
+
+                        {guide.data.badge && (
+                          <span class={`text-[9px] font-mono px-1.5 py-0.5 rounded uppercase shrink-0 mt-0.5 font-bold ${
+                            guide.data.badge === 'HOT' ? 'bg-danger/20 text-danger border border-danger/30' :
+                            guide.data.badge === 'NEW SYSTEM' ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30' :
+                            guide.data.badge === 'MASTER HUB' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30' :
+                            guide.data.badge.startsWith('CD') ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' :
+                            'bg-mint/15 text-mint border border-mint/30'
+                          }`}>
+                            {guide.data.badge}
+                          </span>
+                        )}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
         );
       })}
     </nav>
 
     <!-- Radar Shortcut Banner -->
-    <div class="p-3.5 rounded-xl border border-line bg-paper/80 space-y-2 text-xs">
+    <div class="p-3 rounded-xl border border-line bg-paper/80 space-y-2 text-xs">
       <div class="flex items-center justify-between font-mono text-[10px] text-mint">
         <span>GTA V RADAR MAP</span>
         <span class="inline-flex items-center gap-1.5 text-mint"><span class="size-1.5 rounded-full bg-mint animate-pulse"></span>LIVE</span>
       </div>
       <p class="text-[11px] text-textSoft leading-relaxed">
-        เช็คตำแหน่งจุดทำงานทุกจุด และระบบนับถอยหลังคูลดาวน์ 10 นาที
+        เช็คตำแหน่งจุดทำงานทุกจุด พิกัด Vector3 และเส้นทางทั่วเกาะ Los Santos
       </p>
       <a 
         href="/map" 
@@ -135,20 +196,102 @@ const grouped = allGuides.reduce<Record<string, typeof allGuides>>((acc, guide) 
 </aside>
 
 <script>
-  // Simple Sidebar Search Filter
-  const input = document.getElementById('sidebarSearch') as HTMLInputElement;
-  if (input) {
-    input.addEventListener('input', (e) => {
-      const q = (e.target as HTMLInputElement).value.toLowerCase().trim();
-      const items = document.querySelectorAll('.guide-item');
-      items.forEach((item) => {
-        const text = item.textContent?.toLowerCase() || '';
-        if (q === '' || text.includes(q)) {
-          (item as HTMLElement).style.display = 'block';
-        } else {
-          (item as HTMLElement).style.display = 'none';
-        }
+  function initSidebarAccordion() {
+    const accordions = document.querySelectorAll('.category-accordion-btn');
+    const filterInput = document.getElementById('sidebarLiveFilter') as HTMLInputElement | null;
+    const clearBtn = document.getElementById('sidebarClearFilter');
+    const btnExpandAll = document.getElementById('btnExpandAllCat');
+    const btnCollapseAll = document.getElementById('btnCollapseAllCat');
+
+    function toggleAccordion(btn: HTMLElement, forceOpen?: boolean) {
+      const targetId = btn.getAttribute('data-target');
+      if (!targetId) return;
+      const panel = document.getElementById(targetId);
+      const chevron = btn.querySelector('.accordion-chevron');
+      if (!panel) return;
+
+      const isOpen = forceOpen !== undefined ? !forceOpen : btn.getAttribute('aria-expanded') === 'true';
+
+      if (!isOpen) {
+        // Expand
+        btn.setAttribute('aria-expanded', 'true');
+        panel.classList.remove('max-h-0', 'opacity-0', 'py-0', 'pointer-events-none');
+        panel.classList.add('max-h-[1000px]', 'opacity-100', 'py-1');
+        if (chevron) chevron.classList.add('rotate-180');
+      } else {
+        // Collapse
+        btn.setAttribute('aria-expanded', 'false');
+        panel.classList.remove('max-h-[1000px]', 'opacity-100', 'py-1');
+        panel.classList.add('max-h-0', 'opacity-0', 'py-0', 'pointer-events-none');
+        if (chevron) chevron.classList.remove('rotate-180');
+      }
+    }
+
+    accordions.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        toggleAccordion(btn as HTMLElement);
       });
     });
+
+    if (btnExpandAll) {
+      btnExpandAll.addEventListener('click', () => {
+        accordions.forEach((btn) => toggleAccordion(btn as HTMLElement, true));
+      });
+    }
+
+    if (btnCollapseAll) {
+      btnCollapseAll.addEventListener('click', () => {
+        accordions.forEach((btn) => toggleAccordion(btn as HTMLElement, false));
+      });
+    }
+
+    // Live Filter
+    if (filterInput) {
+      filterInput.addEventListener('input', (e) => {
+        const q = (e.target as HTMLInputElement).value.toLowerCase().trim();
+        if (clearBtn) {
+          clearBtn.style.display = q ? 'block' : 'none';
+        }
+
+        const groups = document.querySelectorAll('.guide-category-group');
+
+        groups.forEach((group) => {
+          const items = group.querySelectorAll('.guide-item');
+          const btn = group.querySelector('.category-accordion-btn') as HTMLElement;
+          let matchCount = 0;
+
+          items.forEach((item) => {
+            const title = item.getAttribute('data-title') || item.textContent?.toLowerCase() || '';
+            if (!q || title.includes(q)) {
+              (item as HTMLElement).style.display = '';
+              matchCount++;
+            } else {
+              (item as HTMLElement).style.display = 'none';
+            }
+          });
+
+          if (!q) {
+            // Restore group visibility
+            (group as HTMLElement).style.display = '';
+          } else if (matchCount > 0) {
+            (group as HTMLElement).style.display = '';
+            // Auto expand when there are search matches
+            if (btn) toggleAccordion(btn, true);
+          } else {
+            (group as HTMLElement).style.display = 'none';
+          }
+        });
+      });
+    }
+
+    if (clearBtn && filterInput) {
+      clearBtn.addEventListener('click', () => {
+        filterInput.value = '';
+        filterInput.dispatchEvent(new Event('input'));
+      });
+    }
   }
+
+  initSidebarAccordion();
+  document.addEventListener('astro:page-load', initSidebarAccordion);
 </script>

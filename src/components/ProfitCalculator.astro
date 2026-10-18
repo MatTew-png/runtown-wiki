@@ -54,9 +54,9 @@ const jobs = [
 
 const capacities = [
   { kg: 30, label: 'กระเป๋าตัว (30 kg)' },
-  { kg: 75, label: 'รถเล็ก (60+15 kg)' },
-  { kg: 135, label: 'รถกลาง (120+15 kg)' },
-  { kg: 165, label: 'รถใหญ่ (150+15 kg)' },
+  { kg: 60, label: 'รถเล็ก (60 kg)' },
+  { kg: 120, label: 'รถกลาง (120 kg)' },
+  { kg: 150, label: 'รถใหญ่ (150 kg)' },
 ];
 ---
 
@@ -106,17 +106,24 @@ const capacities = [
         </div>
       </div>
 
-      <!-- 02: Trunk Capacity -->
-      <div>
-        <span class="font-mono text-xs font-semibold tracking-[0.2em] text-textMuted uppercase block mb-3">
-          02 · ความจุท้ายรถ
-        </span>
+      <!-- 02: Trunk Capacity & Custom Weight -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="font-mono text-xs font-semibold tracking-[0.2em] text-textMuted uppercase">
+            02 · ความจุท้ายรถ & สัมภาระ
+          </span>
+          <span class="font-mono text-xs text-mint">
+            คำนวณที่: <strong id="calcCurrentCapDisplay" class="text-white font-bold">120</strong> kg
+          </span>
+        </div>
+
+        <!-- 4 Preset Quick Buttons -->
         <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {capacities.map((c) => (
             <button
               type="button"
               class={`calc-cap-btn rounded-xl border px-3 py-3 text-center transition-all ${
-                c.kg === 135
+                c.kg === 120
                   ? 'border-mint bg-mint/10 text-mint font-bold active shadow-[0_0_15px_rgba(69,242,180,0.2)]'
                   : 'border-line bg-paper/60 text-textSoft hover:border-mint/40 hover:text-white font-medium'
               }`}
@@ -126,6 +133,29 @@ const capacities = [
               <span class="mt-0.5 block text-[11px] text-textMuted">{c.label.split(' ')[0]}</span>
             </button>
           ))}
+        </div>
+
+        <!-- Custom Weight Input: User can type ANY number directly! -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 p-3 rounded-xl border border-line bg-paper/60 hover:border-mint/40 transition-colors">
+          <label for="calcCustomCapInput" class="text-xs font-mono text-slate-200 flex items-center gap-1.5 shrink-0 font-medium">
+            <CyberIcon name="wrench" class="size-3.5 text-mint" />
+            <span>หรือระบุความจุเอง (กก.):</span>
+          </label>
+          <div class="relative flex-1">
+            <input
+              type="number"
+              id="calcCustomCapInput"
+              min="1"
+              max="2000"
+              value="120"
+              placeholder="พิมพ์ตัวเลขน้ำหนัก เช่น 60, 75, 90, 120, 135, 150..."
+              class="w-full rounded-lg border border-line bg-paper/90 px-3.5 py-2 font-mono text-xs sm:text-sm text-white placeholder:text-textMuted focus:border-mint focus:outline-none focus:ring-1 focus:ring-mint transition-all pr-12"
+            />
+            <span class="absolute right-3.5 top-1/2 -translate-y-1/2 font-mono text-xs text-mint font-bold pointer-events-none">kg</span>
+          </div>
+          <span class="text-[11px] font-mono text-textMuted hidden lg:inline">
+            (ใส่เลขเผื่อพื้นที่ขนของไปโพรได้เอง)
+          </span>
         </div>
       </div>
 
@@ -186,22 +216,22 @@ const capacities = [
         <div>
           <span class="text-xs font-mono text-textMuted block">กำไรสุทธิโดยประมาณ</span>
           <strong id="calcNetProfit" class="font-mono text-4xl sm:text-5xl font-extrabold text-mint drop-shadow-[0_0_15px_rgba(69,242,180,0.35)] block mt-1">
-            54,606 RD
+            129,960 RD
           </strong>
         </div>
 
         <dl class="space-y-2.5 pt-2 border-t border-lineSubtle font-mono text-xs">
           <div class="flex justify-between">
             <dt class="text-textMuted">รายได้รวม (Gross):</dt>
-            <dd id="calcGross" class="text-white font-bold">57,480 RD</dd>
+            <dd id="calcGross" class="text-white font-bold">136,800 RD</dd>
           </div>
           <div class="flex justify-between">
-            <dt class="text-textMuted">ค่าน้ำมัน & สเบียง (~5%):</dt>
-            <dd id="calcCost" class="text-rose-400">-2,874 RD</dd>
+            <dt class="text-textMuted">ค่าน้ำมัน & เสบียง (~5%):</dt>
+            <dd id="calcCost" class="text-rose-400">-6,840 RD</dd>
           </div>
           <div class="flex justify-between">
             <dt class="text-textMuted">ของที่จุได้ต่อรอบ:</dt>
-            <dd id="calcUnits" class="text-slate-200">40 กล่อง</dd>
+            <dd id="calcUnits" class="text-slate-200">120 กล่อง / รอบ</dd>
           </div>
           <div class="flex justify-between">
             <dt class="text-textMuted">เวลาโดยประมาณ:</dt>
@@ -222,7 +252,7 @@ const capacities = [
             <div id="calcBrainBar" class="h-full bg-mint rounded-full transition-all duration-300" style="width: 24%"></div>
           </div>
           <p id="calcBrainTip" class="text-[11px] text-textMuted leading-relaxed">
-            ระดับสมองปลอดภัย แนะนำจอดพักดื่มน้ำทุก 3 รอบ
+            ระดับสมองปลอดภัย ทำงานต่อเนื่องได้ตามปกติ
           </p>
         </div>
       </div>
@@ -246,11 +276,13 @@ const capacities = [
   };
 
   let curJobId = 'pork';
-  let curCap = 135;
+  let curCap = 120;
   let curRuns = 3;
 
   const jobBtns = document.querySelectorAll('.calc-job-btn');
   const capBtns = document.querySelectorAll('.calc-cap-btn');
+  const customCapInput = document.getElementById('calcCustomCapInput') as HTMLInputElement | null;
+  const currentCapDisplay = document.getElementById('calcCurrentCapDisplay');
   const runsSlider = document.getElementById('calcRunsSlider') as HTMLInputElement | null;
   const runsDisplay = document.getElementById('calcRunsDisplay');
   const runsMinus = document.getElementById('calcRunsMinus');
@@ -269,7 +301,7 @@ const capacities = [
 
   function calculate() {
     const job = (jobsData as any)[curJobId] || jobsData.pork;
-    const unitsPerRun = Math.floor(curCap / job.unitKg);
+    const unitsPerRun = job.unitKg > 0 ? Math.floor(curCap / job.unitKg) : 0;
     const gross = unitsPerRun * job.unitPrice * curRuns;
     const cost = gross * 0.05;
     const net = gross - cost;
@@ -290,15 +322,34 @@ const capacities = [
       outBrainBar.style.width = `${Math.min(100, brain)}%`;
       if (brain >= 100) {
         outBrainBar.className = 'h-full bg-rose-500 rounded-full transition-all duration-300 shadow-[0_0_10px_#ff4d6d]';
-        if (outBrainTip) outBrainTip.textContent = 'วิกฤต: สมองแตะ 100% ตัวละครจะสลบเป็นลมทันที! รีบแวะบาร์เขียวหรืออู่ช่างรีเซ็ต 0%';
+        if (outBrainTip) outBrainTip.textContent = 'วิกฤต: สมองแตะ 100% ตัวละครจะสลบหรือเสียชีวิตทันที! ต้องรอคนชุบ เรียกหมอ หรือเกิด รพ. (รีเซ็ตได้ที่สถานที่รีหัว หรือใช้ไอเทมช่วยรี)';
       } else if (brain >= 70) {
         outBrainBar.className = 'h-full bg-amber-400 rounded-full transition-all duration-300';
-        if (outBrainTip) outBrainTip.textContent = 'สมองสะสมสูง แนะนำแวะบาร์เขียวหรืออู่ช่างเพื่อรีเซ็ตสมองกลับเป็น 0%';
+        if (outBrainTip) outBrainTip.textContent = 'สมองสะสมสูง แนะนำแวะสถานที่รีหัว (บาร์เขียว/อู่ช่าง) หรือใช้ไอเทมช่วยรีหัวกลับเป็น 0%';
       } else {
         outBrainBar.className = 'h-full bg-mint rounded-full transition-all duration-300';
         if (outBrainTip) outBrainTip.textContent = 'ระดับสมองปลอดภัย ทำงานต่อเนื่องได้ตามปกติ';
       }
     }
+  }
+
+  function setCapacity(cap: number, updateInput = true) {
+    curCap = Math.max(0, cap);
+    if (currentCapDisplay) currentCapDisplay.textContent = String(curCap);
+    if (updateInput && customCapInput) customCapInput.value = String(curCap);
+
+    capBtns.forEach(b => {
+      const btnCap = parseFloat(b.getAttribute('data-capacity') || '0');
+      if (btnCap === curCap) {
+        b.classList.remove('border-line', 'bg-paper/60', 'text-textSoft', 'font-medium');
+        b.classList.add('border-mint', 'bg-mint/10', 'text-mint', 'font-bold', 'shadow-[0_0_15px_rgba(69,242,180,0.2)]', 'active');
+      } else {
+        b.classList.remove('border-mint', 'bg-mint/10', 'text-mint', 'font-bold', 'shadow-[0_0_15px_rgba(69,242,180,0.2)]', 'active');
+        b.classList.add('border-line', 'bg-paper/60', 'text-textSoft', 'font-medium');
+      }
+    });
+
+    calculate();
   }
 
   jobBtns.forEach(btn => {
@@ -316,16 +367,17 @@ const capacities = [
 
   capBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      capBtns.forEach(b => {
-        b.classList.remove('border-mint', 'bg-mint/10', 'text-mint', 'font-bold', 'shadow-[0_0_15px_rgba(69,242,180,0.2)]', 'active');
-        b.classList.add('border-line', 'bg-paper/60', 'text-textSoft', 'font-medium');
-      });
-      btn.classList.remove('border-line', 'bg-paper/60', 'text-textSoft', 'font-medium');
-      btn.classList.add('border-mint', 'bg-mint/10', 'text-mint', 'font-bold', 'shadow-[0_0_15px_rgba(69,242,180,0.2)]', 'active');
-      curCap = parseInt(btn.getAttribute('data-capacity') || '120', 10);
-      calculate();
+      const cap = parseFloat(btn.getAttribute('data-capacity') || '120');
+      setCapacity(cap, true);
     });
   });
+
+  if (customCapInput) {
+    customCapInput.addEventListener('input', () => {
+      const val = parseFloat(customCapInput.value);
+      setCapacity(isNaN(val) ? 0 : val, false);
+    });
+  }
 
   if (runsSlider) {
     runsSlider.addEventListener('input', () => {

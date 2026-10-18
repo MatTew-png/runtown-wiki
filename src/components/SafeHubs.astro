@@ -4,7 +4,7 @@ import CyberIcon from './CyberIcon.astro';
 interface SafeHub {
   name: string;
   desc: string;
-  coord: string;
+  location: string;
   mapUrl: string;
   iconName: string;
   tone: 'rose' | 'mint' | 'lime' | 'cyan';
@@ -16,37 +16,37 @@ const hubs: SafeHub[] = [
     iconName: 'hospital',
     tone: 'rose',
     name: 'โรงพยาบาล Pillbox Hill',
-    desc: 'รักษาชีวิต ฉุกเฉิน & จุดขายดอกไม้สดส่งตรงคุณหมอ',
-    coord: 'X: 298.5, Y: -584.2',
-    mapUrl: '/map?spot=pillbox',
-    services: ['ฟื้นคืนชีพ', 'Safe Zone 100%', 'ส่งดอกไม้'],
+    desc: 'ศูนย์การแพทย์ฉุกเฉิน ชุบชีวิตเมื่อสลบ/บาดเจ็บ & จุดรับซื้อดอกไม้สดส่งตรงคุณหมอ (120 RD/ดอก)',
+    location: 'ใจกลางเมือง (Downtown Pillbox)',
+    mapUrl: '/map?spot=hospital',
+    services: ['ฟื้นคืนชีพ / ชุบชีวิต', 'Safe Zone 100%', 'ขายดอกไม้ 120 RD'],
   },
   {
     iconName: 'martini',
     tone: 'mint',
     name: 'บาร์เขียว Del Perro',
-    desc: 'พื้นที่พักผ่อนริมหาด รีเซ็ตหลอดสมองเป็น 0% ฟรีทันที',
-    coord: 'X: -1393.2, Y: -606.8',
-    mapUrl: '/map?spot=bar_green',
-    services: ['รีเซ็ตสมอง 0%', 'Safe Zone 100%', 'ร้านอาหาร'],
+    desc: 'พื้นที่พักผ่อนริมหาด จุดรีหัวลดความล้าของสมองไม่ให้แตะ 100% และซื้ออาหารเครื่องดื่มเติมความหิว',
+    location: 'ริมชายหาด Del Perro Beach',
+    mapUrl: '/map?spot=bar-green',
+    services: ['รีหัวลดสมองล้า', 'Safe Zone 100%', 'เติมหลอดอาหาร'],
   },
   {
     iconName: 'wrench',
     tone: 'lime',
     name: 'อู่ช่าง Chumash / ในเมือง',
-    desc: 'จุดรับซื้อแท่งเหล็กหลอม & ซ่อมแซมสภาพยานพาหนะ',
-    coord: 'X: -339.1, Y: -136.4',
-    mapUrl: '/map?spot=garage_reset',
-    services: ['ขายแท่งเหล็ก', 'ซ่อมรถยนต์', 'Safe Zone 100%'],
+    desc: 'จุดซ่อมแซมยานพาหนะ คืนสภาพรถขนของให้พร้อมวิ่ง จุดรีหัวพักผ่อน และรับซื้อแท่งเหล็กหลอม (233-240 RD)',
+    location: 'โซน Chumash & ในเมือง',
+    mapUrl: '/map?spot=garage-reset',
+    services: ['ซ่อมยานพาหนะ', 'จุดรีหัวพักผ่อน', 'Safe Zone 100%'],
   },
   {
     iconName: 'vault',
     tone: 'cyan',
     name: 'ตู้เซฟเรเบล (Safe Stash Hubs)',
-    desc: 'จุดฝากของคลังส่วนตัว ถ่ายเทน้ำหนักตัวและท้ายรถฉุกเฉิน',
-    coord: 'จุดกระจายทั่วเมือง',
+    desc: 'จุดฝากของคลังส่วนตัว ถ่ายเทน้ำหนักตัว (เริ่มต้น 30 kg) และของท้ายรถฉุกเฉิน ป้องกันของตกหล่นสูญหาย',
+    location: 'จุดบริการตู้เซฟทั่วเกาะ',
     mapUrl: '/map',
-    services: ['คลังเก็บของ', 'ถ่ายเทน้ำหนัก', 'จุดพักของ'],
+    services: ['คลังเก็บของส่วนตัว', 'ถ่ายเทน้ำหนัก', 'Safe Zone 100%'],
   },
 ];
 ---
@@ -61,7 +61,7 @@ const hubs: SafeHub[] = [
       </h2>
     </div>
     <p class="text-xs sm:text-sm font-mono text-slate-300 max-w-md">
-      ปักหมุดไว้ในใจ — เขต Safe Zone 100% ห้ามก่อเหตุความรุนแรง ช่วยฟื้นตัว ล้างสมอง และพักรถ
+      ปักหมุดไว้ในใจ — เขต Safe Zone 100% ห้ามก่อเหตุความรุนแรง ช่วยฟื้นฟูตัวละคร รีหัวลดความล้า และซ่อมพักรถ
     </p>
   </div>
 
@@ -98,10 +98,11 @@ const hubs: SafeHub[] = [
             </div>
             <a
               href={hub.mapUrl}
-              class="inline-flex items-center gap-1 font-mono text-xs font-bold text-mint hover:text-lime transition-colors"
+              class="inline-flex items-center gap-1.5 font-mono text-xs font-bold text-mint hover:text-lime transition-colors group-hover:translate-x-0.5 duration-200"
             >
-              <CyberIcon name="map-pin" class="size-3.5 text-mint" />
-              <span>{hub.coord}</span>
+              <CyberIcon name="map-pin" class="size-3.5 text-mint shrink-0" />
+              <span>{hub.location}</span>
+              <span class="text-textMuted group-hover:text-lime transition-colors">➔</span>
             </a>
           </div>
         </div>

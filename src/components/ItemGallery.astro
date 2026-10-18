@@ -300,13 +300,13 @@ const items: ItemCard[] = [
     name: 'Steel Ingot (เหล็กกล้าแท่ง)',
     category: 'materials',
     type: 'แร่หลอมบริสุทธิ์ (Mineral)',
-    badge: '0.50 กก. | 194 - 195 RD',
+    badge: '0.50 กก. | 233 - 240 RD',
     badgeColor: 'bg-slate-400/20 text-slate-300 border-slate-400/40',
     image: '/items/cards/steel_ingot.png',
     icon: '/items/icons/transparent/steel_ingot.png',
-    stats: 'น้ำหนัก: 0.50 กก. | หลอม 5 วิ (2:1) จากเศษเหล็ก | ขายช่าง 195 RD',
+    stats: 'น้ำหนัก: 0.50 กก. | หลอม 5 วิ (2:1) จากเศษเหล็ก | ขายระบบ 233 RD / ขายช่าง 233-240 RD',
     recipe: ['เศษเหล็ก (Scrap Metal) x2', 'จุดโพลเหล็กเตาหลอม (5 วินาที)'],
-    cost: '194 - 195 RD'
+    cost: '233 - 240 RD'
   },
   {
     id: 'copper-ingot',
@@ -721,12 +721,12 @@ const items: ItemCard[] = [
   }
 
   // Filter tabs handling
-  document.addEventListener('DOMContentLoaded', () => {
+  function initGalleryFilters() {
     const filterButtons = document.querySelectorAll('#galleryFilterNav button');
     const cards = document.querySelectorAll('.gallery-card');
 
     filterButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.onclick = () => {
         const target = btn.getAttribute('data-filter');
         
         // Update active button state
@@ -746,8 +746,15 @@ const items: ItemCard[] = [
             card.classList.add('hidden');
           }
         });
-      });
+      };
     });
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGalleryFilters);
+  } else {
+    initGalleryFilters();
+  }
+  document.addEventListener('astro:page-load', initGalleryFilters);
 </script>
 

@@ -50,73 +50,111 @@ const events = [
 
 <section id="events" class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24 border-t border-line">
   <div class="space-y-3">
-    <p class="font-mono text-xs font-semibold tracking-[0.2em] text-cyan-300 uppercase">// EVENT RADAR & COUNTDOWN</p>
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <p class="font-mono text-xs font-semibold tracking-[0.2em] text-cyan-300 uppercase">// EVENT RADAR & COUNTDOWN</p>
+      <span class="inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 font-mono text-xs font-bold text-amber-300">
+        <CyberIcon name="lock" class="size-3.5 text-amber-400" />
+        <span>ปิดปรับปรุงชั่วคราว · รออัปเดตรอบกิจกรรม</span>
+      </span>
+    </div>
     <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
       ตารางกิจกรรมประจำวัน & ตัวนับเวลากล่องดรอป
     </h2>
     <p class="text-sm text-textSoft max-w-2xl leading-relaxed">
-      เช็คเวลากล่องแอร์ดรอปเสรี ตลาดประมูลรถ และรอบรีสตาร์ตเซิร์ฟเวอร์แบบ Realtime ตามเวลาประเทศไทย
+      เช็คเวลากล่องแอร์ดรอปเสรี ตลาดประมูลรถ และรอบรีสตาร์ตเซิร์ฟเวอร์แบบ Realtime ตามเวลาประเทศไทย (ปิดปรับปรุงระบบชั่วคราวเพื่อรออัปเดตตารางเวลาที่แน่นอนตามประกาศของเซิร์ฟเวอร์)
     </p>
   </div>
 
-  <div class="mt-10 grid gap-6 lg:grid-cols-3">
-    {events.map((e) => (
-      <div class="event-card rounded-2xl border border-line bg-card/70 p-6 backdrop-blur-md shadow-neon-card space-y-5 flex flex-col justify-between" data-event-id={e.id}>
-        <div class="space-y-3">
-          <div class="flex items-center justify-between">
-            <span class={`font-mono text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
-              e.tone === 'rose' ? 'border-rose/40 bg-rose/10 text-rose' :
-              e.tone === 'amber' ? 'border-amber-400/40 bg-amber-400/10 text-amber-300' :
-              'border-mint/40 bg-mint/10 text-mint'
-            }`}>
-              {e.badge}
-            </span>
-            <span class="event-status-pill text-[10px] font-mono font-bold text-mint flex items-center gap-1.5">
-              <span class="size-1.5 rounded-full bg-mint animate-pulse"></span>
-              <span class="event-status-text">SCHEDULED</span>
-            </span>
-          </div>
+  <!-- Content Container with Visual Lock Overlay: ปิดแบบมองเห็นได้ (Disabled & Maintenance Overlay) -->
+  <div class="relative mt-10">
+    <!-- Dimmed / Disabled Underlying Content (ยังมองเห็นการ์ดและตารางกิจกรรมทั้งหมด) -->
+    <div class="opacity-30 grayscale-[50%] pointer-events-none select-none filter blur-[0.5px]">
+      <div class="grid gap-6 lg:grid-cols-3">
+        {events.map((e) => (
+          <div class="event-card rounded-2xl border border-line bg-card/70 p-6 backdrop-blur-md shadow-neon-card space-y-5 flex flex-col justify-between" data-event-id={e.id}>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class={`font-mono text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
+                  e.tone === 'rose' ? 'border-rose/40 bg-rose/10 text-rose' :
+                  e.tone === 'amber' ? 'border-amber-400/40 bg-amber-400/10 text-amber-300' :
+                  'border-mint/40 bg-mint/10 text-mint'
+                }`}>
+                  {e.badge}
+                </span>
+                <span class="event-status-pill text-[10px] font-mono font-bold text-mint flex items-center gap-1.5">
+                  <span class="size-1.5 rounded-full bg-mint"></span>
+                  <span class="event-status-text">SCHEDULED</span>
+                </span>
+              </div>
 
-          <div class="flex items-center gap-3 pt-1">
-            <span class="grid size-11 place-items-center rounded-xl bg-paper border border-line text-mint">
-              <CyberIcon name={e.icon} class="size-5" />
-            </span>
-            <div>
-              <h3 class="text-lg font-display font-bold text-white">{e.name}</h3>
-              <span class="font-mono text-xs text-textMuted">{e.en}</span>
+              <div class="flex items-center gap-3 pt-1">
+                <span class="grid size-11 place-items-center rounded-xl bg-paper border border-line text-mint">
+                  <CyberIcon name={e.icon} class="size-5" />
+                </span>
+                <div>
+                  <h3 class="text-lg font-display font-bold text-white">{e.name}</h3>
+                  <span class="font-mono text-xs text-textMuted">{e.en}</span>
+                </div>
+              </div>
+
+              <!-- Countdown Box -->
+              <div class="p-3.5 rounded-xl bg-slate-950/80 border border-lineSubtle space-y-1 text-center font-mono">
+                <span class="text-[10px] text-textMuted uppercase tracking-wider block">รอบถัดไปนับถอยหลัง</span>
+                <strong class="event-countdown font-mono text-2xl sm:text-3xl font-extrabold text-white tracking-widest block">
+                  --:--:--
+                </strong>
+                <span class="text-[11px] text-textMuted block">{e.scheduleLabel}</span>
+              </div>
+
+              <div class="space-y-2 text-xs font-mono pt-1">
+                <div class="flex items-start justify-between gap-2">
+                  <span class="text-textMuted">พิกัดจุดจัด:</span>
+                  <span class="text-slate-200 text-right">{e.zones.map(z => z.name).join(' / ')}</span>
+                </div>
+                <div class="p-2.5 rounded-xl bg-card border border-lineSubtle text-[11px] text-amber-300 flex items-start gap-1.5">
+                  <CyberIcon name="lightbulb" class="size-3.5 text-amber-300 shrink-0 mt-0.5" />
+                  <span>{e.note}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-lineSubtle flex items-center justify-between font-mono text-xs">
+              <span class="text-mint font-bold inline-flex items-center gap-1">
+                <CyberIcon name="map" class="size-3.5" />
+                <span>ดูพิกัดบนแผนที่</span>
+              </span>
+              <span class="text-textMuted text-[10px]">เวลาไทย (UTC+7)</span>
             </div>
           </div>
+        ))}
+      </div>
+    </div>
 
-          <!-- Countdown Box -->
-          <div class="p-3.5 rounded-xl bg-slate-950/80 border border-lineSubtle space-y-1 text-center font-mono">
-            <span class="text-[10px] text-textMuted uppercase tracking-wider block">รอบถัดไปนับถอยหลัง</span>
-            <strong class="event-countdown font-mono text-2xl sm:text-3xl font-extrabold text-white tracking-widest block">
-              --:--:--
-            </strong>
-            <span class="text-[11px] text-textMuted block">{e.scheduleLabel}</span>
-          </div>
-
-          <div class="space-y-2 text-xs font-mono pt-1">
-            <div class="flex items-start justify-between gap-2">
-              <span class="text-textMuted">พิกัดจุดจัด:</span>
-              <span class="text-slate-200 text-right">{e.zones.map(z => z.name).join(' / ')}</span>
-            </div>
-            <div class="p-2.5 rounded-xl bg-card border border-lineSubtle text-[11px] text-amber-300 flex items-start gap-1.5">
-              <CyberIcon name="lightbulb" class="size-3.5 text-amber-300 shrink-0 mt-0.5" />
-              <span>{e.note}</span>
-            </div>
-          </div>
+    <!-- Centered Cyberpunk Maintenance Banner Overlay -->
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+      <div class="max-w-md rounded-2xl border border-amber-400/40 bg-slate-950/90 p-6 sm:p-8 backdrop-blur-xl shadow-[0_0_50px_rgba(251,191,36,0.18)] text-center space-y-4">
+        <div class="mx-auto grid size-14 place-items-center rounded-2xl border border-amber-400/40 bg-amber-400/10 text-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.2)]">
+          <CyberIcon name="lock" class="size-7" />
         </div>
-
-        <div class="pt-3 border-t border-lineSubtle flex items-center justify-between font-mono text-xs">
-          <a href="/map" class="text-mint hover:underline font-bold inline-flex items-center gap-1">
-            <CyberIcon name="map" class="size-3.5" />
-            <span>ดูพิกัดบนแผนที่</span>
-          </a>
-          <span class="text-textMuted text-[10px]">เวลาไทย (UTC+7)</span>
+        <div class="space-y-2">
+          <span class="inline-block font-mono text-[11px] font-bold uppercase tracking-widest text-amber-400 bg-amber-400/10 border border-amber-400/30 px-3 py-1 rounded-full">
+            UNDER MAINTENANCE · ปิดปรับปรุงชั่วคราว
+          </span>
+          <h3 class="text-xl sm:text-2xl font-display font-bold text-white tracking-tight">
+            ตารางกิจกรรม & นับถอยหลังกล่องดรอป
+          </h3>
+          <p class="text-xs sm:text-sm text-textSoft leading-relaxed font-sans">
+            ระบบเรดาร์กิจกรรมและตัวนับเวลาปิดปรับปรุงชั่วคราว เพื่อรออัปเดตตารางเวลากล่องแอร์ดรอป ตลาดประมูล และรอบรีสตาร์ตเซิร์ฟเวอร์ที่แน่นอนตามประกาศของเมือง
+          </p>
+        </div>
+        <div class="pt-2">
+          <div class="inline-flex items-center gap-2 rounded-lg border border-line bg-paper/90 px-3.5 py-1.5 font-mono text-[11px] text-textMuted">
+            <span class="size-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <span>สถานะ: ปิดการใช้งานชั่วคราว (แสดงตัวอย่างโครงสร้าง)</span>
+          </div>
         </div>
       </div>
-    ))}
+    </div>
   </div>
 </section>
 

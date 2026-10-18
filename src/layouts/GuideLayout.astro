@@ -92,6 +92,7 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
         vehicleTier={vehicleTier}
         itemWeight={itemWeight}
         cooldown={cooldown}
+        headings={headings}
       />
       
       <!-- Breadcrumb -->
@@ -371,7 +372,43 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
 
   <!-- Fullscreen Image & Map Lightbox Modal -->
   <ImageLightboxModal />
+
+  <!-- Floating Back-to-Top & Quick-Jump Floating Dock -->
+  <aside 
+    id="floatingQuickJumpDock"
+    class="fixed bottom-6 right-6 z-40 flex items-center gap-2 p-1.5 rounded-2xl bg-[#050b08]/90 border border-line shadow-2xl backdrop-blur-md opacity-0 translate-y-4 pointer-events-none transition-all duration-300 font-mono text-xs"
+    aria-label="เมนูลอยนำทางด่วน"
+  >
+    {headings && headings.filter(h => h.depth === 2).length > 0 && (
+      <button
+        type="button"
+        id="btnFloatingTOC"
+        class="px-3 py-2 rounded-xl bg-card border border-lineSubtle hover:border-mint text-textSoft hover:text-white flex items-center gap-1.5 transition-colors cursor-pointer"
+        title="เปิดสารบัญหัวข้อ"
+      >
+        <CyberIcon name="file-text" class="size-3.5 text-mint" />
+        <span class="hidden sm:inline">สารบัญ</span>
+      </button>
+    )}
+
+    <button
+      type="button"
+      id="btnFloatingBackToTop"
+      class="px-3 py-2 rounded-xl bg-mint/15 text-mint border border-mint/40 hover:bg-mint hover:text-black font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+      title="เลื่อนกลับขึ้นบนสุด"
+    >
+      <CyberIcon name="chevron-up" class="size-3.5" />
+      <span class="hidden sm:inline">บนสุด</span>
+    </button>
+  </aside>
 </BaseLayout>
+
+<style>
+  :global(.prose-runtown h2),
+  :global(.prose-runtown h3) {
+    scroll-margin-top: 6.5rem;
+  }
+</style>
 
 <script>
   const shareBtn = document.getElementById('shareGuideBtn');
@@ -512,9 +549,39 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
     });
   }
 
+  function initFloatingDock() {
+    const dock = document.getElementById('floatingQuickJumpDock');
+    const btnTop = document.getElementById('btnFloatingBackToTop');
+    const btnToc = document.getElementById('btnFloatingTOC');
+
+    if (!dock) return;
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 350) {
+        dock.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+      } else {
+        dock.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+      }
+    }, { passive: true });
+
+    btnTop?.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    btnToc?.addEventListener('click', () => {
+      const dropdownBtn = document.getElementById('hudSectionDropdownBtn');
+      if (dropdownBtn) {
+        dropdownBtn.click();
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  }
+
   function initGuidePage() {
     initJobTabs();
     setupResponsiveTables();
+    initFloatingDock();
   }
 
   if (document.readyState === 'loading') {

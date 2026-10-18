@@ -44,236 +44,356 @@ updatedAt: "09 ตุลาคม 2026"
 
 ---
 
-## 1. งานตัดไม้ (Woodcutting)
-* **เหมาะสำหรับ:** คนชอบงานวิ่งลูปยาว และอยากได้เงินค่ากล่องแพ็คสูงที่สุดในเกม (479 RD/กล่อง หรือขายผู้เล่นได้ถึง 500 - 600 RD)
-* **วิธีทำง่ายๆ:** ขับไปป่าทางเหนือ ตัดไม้ดิบ ➔ ขับไปโรงเลื่อยใกล้ๆ แปรรูปเป็นไม้แผ่น ➔ ขนเข้าโกดังท่าเรือแพ็คใส่กล่อง ➔ นำไปขายรับเงินสด
-* **น้ำหนักไอเทม:** ไม้ดิบ 0.50 กก. | ไม้แปรรูป 0.50 กก. | ไม้แพ็คกล่อง 1.00 กก.
-* **เวลาที่ใช้:** ตัดไม้ 10 วิ/ชิ้น | แปรรูป 5 วิ/ชิ้น (1:1) | แพ็คกล่อง 5 วิ/2 ชิ้น (ใช้ไม้แปรรูป 2 ชิ้น ได้ 1 กล่อง)
-* **ราคาขาย:** ไม้ดิบ 99 RD | ไม้แปรรูป 171 RD | **ไม้แพ็คกล่อง 479 RD** *(ขายผู้เล่นคนอื่นได้ 500 - 600 RD)*
-* **อุปกรณ์:** ขวานตัดไม้ ซื้อที่ร้านค้าทั่วไปราคา **200 RD** (ไม่มีหลอดความทนทาน มีโอกาสพัง 2% ต่อการฟาร์ม 1 ชิ้น)
-* **เส้นทางแนะนำ:** จุดตัดไม้ (ป่าสน Paleto Forest โซนเหนือ) ➔ โรงเลื่อยแปรรูป (Paleto Sawmill เลียบทางรถไฟ) ➔ โกดังแพ็คกล่อง (ท่าเรือใต้ Industrial Docks) ➔ จุดรับซื้อไม้ (El Burro Hills ฝั่งตะวันออก)
+## 8 อาชีพงานขาวสุจริต (8 White Jobs Directory)
+เลือกอาชีพที่คุณสนใจเพื่อดูภาพรวม และกดเปิดอ่านคู่มือเจาะลึกพร้อมเรดาร์แผนที่และตัวคำนวณกำไรสด:
 
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-3">
-  <div class="rounded-xl border border-amber-500/30 bg-slate-900/90 overflow-hidden shadow-lg group">
-    <div class="p-2 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between text-xs">
-      <span class="font-bold text-white flex items-center gap-1.5"> จุดฟาร์มไม้ (Paleto Forest)</span>
-      <a href="/map?spot=wood-farm" class="text-amber-400 hover:text-amber-300 font-mono text-[11px]">เปิดเรดาร์ ➔</a>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+
+  <!-- 1. Woodcutting -->
+  <div class="rounded-2xl border border-amber-500/30 bg-slate-900/90 p-5 shadow-xl hover:border-amber-400 transition-all flex flex-col justify-between group">
+    <div class="space-y-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <img src="/icons/tool_axe_2_1000.png" alt="ขวาน" class="w-7 h-7 object-contain inline-block shrink-0" />
+          <h3 class="text-base font-bold text-white group-hover:text-amber-300 transition-colors">1. งานตัดไม้ (Woodcutting)</h3>
+        </div>
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 font-bold">
+          🔥 กล่องแพ็ค 479 RD
+        </span>
+      </div>
+      <p class="text-xs text-slate-300 leading-relaxed">
+        งานยอดนิยมสำหรับคนชอบวิ่งลูปยาวเหนือลงใต้ ได้เงินค่ากล่องแพ็คสูงที่สุดในเกม หรือนำไปขายให้ผู้เล่นสร้างสิ่งก่อสร้างได้ราคาสูงถึง 500 - 600 RD
+      </p>
+      <div class="grid grid-cols-2 gap-2 text-[11px] font-mono pt-2 border-t border-slate-800">
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">อุปกรณ์ & โอกาสพัง</span>
+          <strong class="text-white">ขวาน 200 RD (2%)</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">เวลาฟาร์ม</span>
+          <strong class="text-amber-300">10 วินาที / ชิ้น</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">น้ำหนัก (ดิบ ➔ กล่อง)</span>
+          <strong class="text-white">0.5 kg ➔ 1.0 kg</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">ราคาขาย (Eco / P2P)</span>
+          <strong class="text-amber-400">479 / 500-600 RD</strong>
+        </div>
+      </div>
     </div>
-    <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/wood_farm.png" alt="จุดฟาร์มไม้" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+    <div class="pt-4 mt-3 border-t border-slate-800/80 flex items-center justify-between">
+      <span class="text-[11px] text-slate-400 font-mono">ลูป: Paleto ➔ Sawmill ➔ Docks ➔ El Burro</span>
+      <a href="/guides/jobs/woodcutting" class="px-3 py-1.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/40 hover:bg-amber-400 hover:text-black font-bold text-xs font-mono transition-all flex items-center gap-1.5">
+        <span>คู่มือเต็ม & แผนที่</span>
+        <span>➔</span>
+      </a>
     </div>
   </div>
-  <div class="rounded-xl border border-amber-500/30 bg-slate-900/90 overflow-hidden shadow-lg group">
-    <div class="p-2 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between text-xs">
-      <span class="font-bold text-white flex items-center gap-1.5"> จุดขายไม้ (El Burro Hills)</span>
-      <a href="/map?spot=wood-sell" class="text-amber-400 hover:text-amber-300 font-mono text-[11px]">เปิดเรดาร์ ➔</a>
+
+  <!-- 2. Mining -->
+  <div class="rounded-2xl border border-blue-500/30 bg-slate-900/90 p-5 shadow-xl hover:border-blue-400 transition-all flex flex-col justify-between group">
+    <div class="space-y-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <img src="/icons/tool_pickaxe_2_1000.png" alt="อีเตอร์" class="w-7 h-7 object-contain inline-block shrink-0" />
+          <h3 class="text-base font-bold text-white group-hover:text-blue-300 transition-colors">2. งานขุดแร่ (Mining)</h3>
+        </div>
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-300 border border-blue-500/30 font-bold">
+          💎 ลุ้นเพชร 10,000 RD
+        </span>
+      </div>
+      <p class="text-xs text-slate-300 leading-relaxed">
+        ขุดหินลุ้นแร่มีค่า นำหินมาทุบคัดแยกแร่ทองแดง (60%), ทองคำ (40%) หรือลุ้นเพชรดิบราคาสูงถึง 10,000 RD เหมาะกับคนชอบสุ่มลุ้นโชค
+      </p>
+      <div class="grid grid-cols-2 gap-2 text-[11px] font-mono pt-2 border-t border-slate-800">
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">อุปกรณ์ & โอกาสพัง</span>
+          <strong class="text-white">อีเตอร์ 200 RD (2%)</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">เวลาฟาร์ม</span>
+          <strong class="text-blue-300">10 วินาที / ชิ้น</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">น้ำหนักหิน</span>
+          <strong class="text-white">0.5 kg / ก้อน</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">ราคาแร่ที่ได้</span>
+          <strong class="text-blue-400">Copper 400 / Gold 600</strong>
+        </div>
+      </div>
     </div>
-    <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/wood_sell.png" alt="จุดขายไม้" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+    <div class="pt-4 mt-3 border-t border-slate-800/80 flex items-center justify-between">
+      <span class="text-[11px] text-slate-400 font-mono">ลูป: Davis Quartz ➔ ปากเหมือง ➔ Cypress</span>
+      <a href="/guides/jobs/mining" class="px-3 py-1.5 rounded-lg bg-blue-500/15 text-blue-300 border border-blue-500/40 hover:bg-blue-400 hover:text-black font-bold text-xs font-mono transition-all flex items-center gap-1.5">
+        <span>คู่มือเต็ม & แผนที่</span>
+        <span>➔</span>
+      </a>
     </div>
   </div>
+
+  <!-- 3. Wheat -->
+  <div class="rounded-2xl border border-yellow-500/30 bg-slate-900/90 p-5 shadow-xl hover:border-yellow-400 transition-all flex flex-col justify-between group">
+    <div class="space-y-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <img src="/icons/tool_sickle_2_1000.png" alt="เคียว" class="w-7 h-7 object-contain inline-block shrink-0" />
+          <h3 class="text-base font-bold text-white group-hover:text-yellow-300 transition-colors">3. งานฟาร์มข้าว (Wheat Farming)</h3>
+        </div>
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 font-bold">
+          🌾 เหมาะสำหรับมือใหม่
+        </span>
+      </div>
+      <p class="text-xs text-slate-300 leading-relaxed">
+        เกี่ยวข้าวในทุ่ง Grapeseed แปลงใหญ่ ขับรถแปรรูปใกล้ๆ หรือขายข้าวดิบให้คนทำอาหารต้นละ 100 RD โดยไม่ต้องขับรถไปแพ็คกล่อง
+      </p>
+      <div class="grid grid-cols-2 gap-2 text-[11px] font-mono pt-2 border-t border-slate-800">
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">อุปกรณ์ & โอกาสพัง</span>
+          <strong class="text-white">เคียว 200 RD (2%)</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">เวลาฟาร์ม</span>
+          <strong class="text-yellow-300">10 วินาที / ชิ้น</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">น้ำหนัก (ดิบ ➔ กล่อง)</span>
+          <strong class="text-white">0.5 kg ➔ 1.0 kg</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">ราคาขาย (Eco / P2P)</span>
+          <strong class="text-yellow-400">368 RD / คน 100 RD</strong>
+        </div>
+      </div>
+    </div>
+    <div class="pt-4 mt-3 border-t border-slate-800/80 flex items-center justify-between">
+      <span class="text-[11px] text-slate-400 font-mono">ลูป: Grapeseed ➔ โรงสี ➔ ท่าเรือ ➔ Morningwood</span>
+      <a href="/guides/jobs/wheat" class="px-3 py-1.5 rounded-lg bg-yellow-500/15 text-yellow-300 border border-yellow-500/40 hover:bg-yellow-400 hover:text-black font-bold text-xs font-mono transition-all flex items-center gap-1.5">
+        <span>คู่มือเต็ม & แผนที่</span>
+        <span>➔</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 4. Iron Smelting -->
+  <div class="rounded-2xl border border-slate-500/30 bg-slate-900/90 p-5 shadow-xl hover:border-slate-400 transition-all flex flex-col justify-between group">
+    <div class="space-y-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <img src="/items/icons/transparent/steel_ingot.png" alt="เหล็ก" class="w-7 h-7 object-contain inline-block shrink-0" />
+          <h3 class="text-base font-bold text-white group-hover:text-slate-200 transition-colors">4. งานจี่เหล็ก & เศษเหล็ก (Smelting)</h3>
+        </div>
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-500/20 text-slate-300 border border-slate-500/30 font-bold">
+          ⚡ 10 วิ ได้ 2 ชิ้น!
+        </span>
+      </div>
+      <p class="text-xs text-slate-300 leading-relaxed">
+        เก็บเศษเหล็กตามกองซากรถ ได้ของเบิ้ล 2 ชิ้นต่อรอบ นำมาหลอมเป็นแท่งเหล็กกล้า ขายร้านค้า 233 RD หรือส่งให้อู่ช่างซ่อมรถในเมือง
+      </p>
+      <div class="grid grid-cols-2 gap-2 text-[11px] font-mono pt-2 border-t border-slate-800">
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">อุปกรณ์ & โอกาสพัง</span>
+          <strong class="text-white">ถุงมือช่าง 200 RD (2%)</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">เวลาฟาร์ม</span>
+          <strong class="text-slate-300">10 วิ (ได้ 2 ชิ้น)</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">น้ำหนัก (เศษ ➔ แท่ง)</span>
+          <strong class="text-white">0.25 kg ➔ 0.5 kg</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">ราคาขาย (Eco / อู่ช่าง)</span>
+          <strong class="text-slate-300">233 / 233 - 240 RD</strong>
+        </div>
+      </div>
+    </div>
+    <div class="pt-4 mt-3 border-t border-slate-800/80 flex items-center justify-between">
+      <span class="text-[11px] text-slate-400 font-mono">ลูป: La Puerta / ทะเลทราย ➔ Cypress Flats</span>
+      <a href="/guides/jobs/smelting" class="px-3 py-1.5 rounded-lg bg-slate-500/20 text-slate-200 border border-slate-500/40 hover:bg-slate-300 hover:text-black font-bold text-xs font-mono transition-all flex items-center gap-1.5">
+        <span>คู่มือเต็ม & แผนที่</span>
+        <span>➔</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 5. Pig -->
+  <div class="rounded-2xl border border-pink-500/30 bg-slate-900/90 p-5 shadow-xl hover:border-pink-400 transition-all flex flex-col justify-between group">
+    <div class="space-y-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <img src="/icons/tool_knife_2_1000.png" alt="มีด" class="w-7 h-7 object-contain inline-block shrink-0" />
+          <h3 class="text-base font-bold text-white group-hover:text-pink-300 transition-colors">5. งานเลี้ยงหมู (Pig Livestock)</h3>
+        </div>
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30 font-bold">
+          🚚 ลูปสั้นสุด 7.18 กม.
+        </span>
+      </div>
+      <p class="text-xs text-slate-300 leading-relaxed">
+        ให้อาหารหมูแล้ว AFK รอหมูโต 15 นาที ได้หมูสด 60 ชิ้นทันที มีระยะทางรวมสั้นที่สุดในเกม ประหยัดค่าน้ำมันและไม่ต้องยืนกดย้ำๆ
+      </p>
+      <div class="grid grid-cols-2 gap-2 text-[11px] font-mono pt-2 border-t border-slate-800">
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">อุปกรณ์ & โอกาสพัง</span>
+          <strong class="text-white">มีด 200 RD (2%)</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">เวลาฟาร์ม</span>
+          <strong class="text-pink-300">15 นาที (ได้ 60 ชิ้น)</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">น้ำหนัก (ดิบ ➔ กล่อง)</span>
+          <strong class="text-white">0.5 kg ➔ 1.0 kg</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">ราคาขาย (Eco / P2P)</span>
+          <strong class="text-pink-400">380 RD / ชิ้น 130-150 RD</strong>
+        </div>
+      </div>
+    </div>
+    <div class="pt-4 mt-3 border-t border-slate-800/80 flex items-center justify-between">
+      <span class="text-[11px] text-slate-400 font-mono">ลูป: Grand Senora ➔ Cypress ➔ Docks ➔ Little Seoul</span>
+      <a href="/guides/jobs/pig" class="px-3 py-1.5 rounded-lg bg-pink-500/15 text-pink-300 border border-pink-500/40 hover:bg-pink-400 hover:text-black font-bold text-xs font-mono transition-all flex items-center gap-1.5">
+        <span>คู่มือเต็ม & แผนที่</span>
+        <span>➔</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 6. Flowers -->
+  <div class="rounded-2xl border border-rose-500/30 bg-slate-900/90 p-5 shadow-xl hover:border-rose-400 transition-all flex flex-col justify-between group">
+    <div class="space-y-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <img src="/icons/tool_scissors_2_1000.png" alt="กรรไกร" class="w-7 h-7 object-contain inline-block shrink-0" />
+          <h3 class="text-base font-bold text-white group-hover:text-rose-300 transition-colors">6. งานเก็บดอกไม้ (Flower Gathering)</h3>
+        </div>
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-300 border border-rose-500/30 font-bold">
+          ⚡ เก็บไวสุด 8 วิ/ชิ้น
+        </span>
+      </div>
+      <p class="text-xs text-slate-300 leading-relaxed">
+        งานที่เก็บไวที่สุดในเกม (8 วินาทีต่อชิ้น) หรือนำดอกไม้สดไปส่งให้คุณหมอที่ รพ. Pillbox Hill รับเงินสดทันทีดอกละ 120 RD โดยไม่ต้องแพ็คกล่อง
+      </p>
+      <div class="grid grid-cols-2 gap-2 text-[11px] font-mono pt-2 border-t border-slate-800">
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">อุปกรณ์ & โอกาสพัง</span>
+          <strong class="text-white">กรรไกร 200 RD (2%)</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">เวลาฟาร์ม</span>
+          <strong class="text-rose-300">8 วินาที / ชิ้น</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">น้ำหนัก (ดิบ ➔ กล่อง)</span>
+          <strong class="text-white">0.5 kg ➔ 1.0 kg</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">ราคาขาย (Eco / รพ.)</span>
+          <strong class="text-rose-400">424 RD / ดอกละ 120 RD</strong>
+        </div>
+      </div>
+    </div>
+    <div class="pt-4 mt-3 border-t border-slate-800/80 flex items-center justify-between">
+      <span class="text-[11px] text-slate-400 font-mono">ลูป: Mount Gordo ➔ ทะเลทราย ➔ Docks ➔ Del Perro</span>
+      <a href="/guides/jobs/flowers" class="px-3 py-1.5 rounded-lg bg-rose-500/15 text-rose-300 border border-rose-500/40 hover:bg-rose-400 hover:text-black font-bold text-xs font-mono transition-all flex items-center gap-1.5">
+        <span>คู่มือเต็ม & แผนที่</span>
+        <span>➔</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 7. Crystal -->
+  <div class="rounded-2xl border border-cyan-500/30 bg-slate-900/90 p-5 shadow-xl hover:border-cyan-400 transition-all flex flex-col justify-between group">
+    <div class="space-y-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <img src="/items/icons/transparent/crystal_ingot.png" alt="คริสตัล" class="w-7 h-7 object-contain inline-block shrink-0" />
+          <h3 class="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">7. งานคริสตัล (Crystal Panning)</h3>
+        </div>
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 font-bold">
+          ⚔️ สำหรับอัปเกรดอาวุธ
+        </span>
+      </div>
+      <p class="text-xs text-slate-300 leading-relaxed">
+        ตั้งเสาแร่ 2 เสาริมแม่น้ำ Zancudo River กดจังหวะ Shake & Sift แล้วนำ Raw Crystal 5 ชิ้น + Copper Ingot 3 แท่ง ไปหลอมเป็นแท่งคริสตัลสำหรับคราฟต์อาวุธ
+      </p>
+      <div class="grid grid-cols-2 gap-2 text-[11px] font-mono pt-2 border-t border-slate-800">
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">อุปกรณ์</span>
+          <strong class="text-white">Panning Tray (ตั้ง 2 เสา)</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">ระบบมินิเกม</span>
+          <strong class="text-cyan-300">Shake A/D ตามจังหวะ</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">น้ำหนัก</span>
+          <strong class="text-white">0.5 kg / ชิ้น</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">ผลผลิตสำคัญ</span>
+          <strong class="text-cyan-400">Crystal Ingot (ป้อนแก๊ง)</strong>
+        </div>
+      </div>
+    </div>
+    <div class="pt-4 mt-3 border-t border-slate-800/80 flex items-center justify-between">
+      <span class="text-[11px] text-slate-400 font-mono">ลูป: Zancudo River ➔ Elysian Docks</span>
+      <a href="/guides/jobs/crystal" class="px-3 py-1.5 rounded-lg bg-cyan-500/15 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-400 hover:text-black font-bold text-xs font-mono transition-all flex items-center gap-1.5">
+        <span>คู่มือเต็ม & แผนที่</span>
+        <span>➔</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 8. Kitchen & Delivery -->
+  <div class="rounded-2xl border border-emerald-500/30 bg-slate-900/90 p-5 shadow-xl hover:border-emerald-400 transition-all flex flex-col justify-between group">
+    <div class="space-y-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">🥙</span>
+          <h3 class="text-base font-bold text-white group-hover:text-emerald-300 transition-colors">8. งานครัว & ส่งอาหาร (Run Kitchen)</h3>
+        </div>
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-bold">
+          💵 1,500 RD / ชิ้น
+        </span>
+      </div>
+      <p class="text-xs text-slate-300 leading-relaxed">
+        ย่างเนื้อ Doner ปิ้งแป้งเคบับ ส่งอาหารผ่านแอปรันแมนรับ 1,500 RD/ชิ้น หรือพกไว้กินเองเพื่อฟื้นฟูค่าความหิว 50% และลดค่าความเครียด -10 ทันที
+      </p>
+      <div class="grid grid-cols-2 gap-2 text-[11px] font-mono pt-2 border-t border-slate-800">
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">อุปกรณ์</span>
+          <strong class="text-white">เตา Doner & แอป รันแมน</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">เวลาย่างเนื้อ</span>
+          <strong class="text-emerald-300">3 นาที (ได้ 4 ชิ้น)</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">สูตรแป้ง</span>
+          <strong class="text-white">Rice Grain x2 ต่อแป้ง</strong>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-950/80 border border-slate-800">
+          <span class="text-slate-400 block text-[10px]">รายได้ส่งรันแมน</span>
+          <strong class="text-emerald-400">3,000 - 6,000 RD/ออเดอร์</strong>
+        </div>
+      </div>
+    </div>
+    <div class="pt-4 mt-3 border-t border-slate-800/80 flex items-center justify-between">
+      <span class="text-[11px] text-slate-400 font-mono">สาขา: Vespucci / Legion / Mirror Park / Paleto</span>
+      <a href="/guides/jobs/kitchen" class="px-3 py-1.5 rounded-lg bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-400 hover:text-black font-bold text-xs font-mono transition-all flex items-center gap-1.5">
+        <span>คู่มือเต็ม & แผนที่</span>
+        <span>➔</span>
+      </a>
+    </div>
+  </div>
+
 </div>
-
----
-
-## 2. งานขุดแร่ (Mining)
-* **เหมาะสำหรับ:** คนชอบการสุ่มลุ้นโชค อยากรวยทางลัดด้วย "เพชรดิบ" ดรอปยากแต่ขายได้ถึงก้อนละ **10,000 RD**!
-* **วิธีทำง่ายๆ:** ขับไปเหมืองหิน Davis ➔ กดยืนขุดหิน ➔ ขับมาปากทางเข้าเหมือง (ห่างแค่ 380 เมตร) นำหินไปทุบแยกแร่ เพื่อลุ้นรับทองแดง ทองคำ หรือเพชร ➔ นำแร่ที่ได้ไปหลอมเป็นแท่งแล้วขาย
-* **อุปกรณ์:** อีเตอร์ (Pickaxe) ซื้อได้ที่ร้านค้าทั่วไปราคา **200 RD** (ไม่มีหลอดความทนทาน มีโอกาสพัง 2% ต่อการฟาร์ม 1 ชิ้น)
-* **โอกาสสุ่มได้แร่ (เมื่อทุบหิน 5 วิ/ก้อน):**
-  - **Raw Copper (ทองแดงดิบ):** ออกบ่อยสุด **60%** (นำไปหลอมเป็นแท่งทองแดง ขายได้ **400 RD**)
-  - **Raw Gold (ทองคำดิบ):** ออกปานกลาง **40%** (นำไปหลอมเป็นแท่งทองคำ ขายได้ **600 RD**)
-  - **Diamond (เพชร):** โชคหล่นทับ **1%** (ขายพ่อค้าแร่รับเหนาะๆ **10,000 RD**)
-* **เส้นทางแนะนำ:** จุดขุดหิน (เหมืองหิน Davis Quartz ฝั่งตะวันออก) ➔ จุดทุบแยกแร่ (ปากทางเข้าเหมือง) ➔ โรงหลอมโลหะใต้เมือง (Cypress Flats)
-
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-3">
-  <div class="rounded-xl border border-amber-500/30 bg-slate-900/90 overflow-hidden shadow-lg group">
-    <div class="p-2 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between text-xs">
-      <span class="font-bold text-white flex items-center gap-1.5"> จุดเหมืองขุดหิน (Davis Quartz)</span>
-      <a href="/map?spot=mine-pit" class="text-amber-400 hover:text-amber-300 font-mono text-[11px]">เปิดเรดาร์ ➔</a>
-    </div>
-    <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/mine_farm.png" alt="จุดเหมืองขุดหิน" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
-    </div>
-  </div>
-  <div class="rounded-xl border border-amber-500/30 bg-slate-900/90 overflow-hidden shadow-lg group">
-    <div class="p-2 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between text-xs">
-      <span class="font-bold text-white flex items-center gap-1.5"> จุดโพลหิน/คัดแยกแร่</span>
-      <a href="/map?spot=stone-pro" class="text-amber-400 hover:text-amber-300 font-mono text-[11px]">เปิดเรดาร์ ➔</a>
-    </div>
-    <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/mine_stone_pro.png" alt="จุดโพลหิน" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
-    </div>
-  </div>
-</div>
-
----
-
-## 3. งานฟาร์มข้าว (Wheat Farming)
-* **เหมาะสำหรับ:** มือใหม่ที่อยากทำงานชิวๆ หรืออยากหาเงินด่วนด้วยการขายข้าวดิบให้คนทำอาหาร
-* **วิธีทำง่ายๆ:** ขับไปทุ่งนา Grapeseed ทางเหนือ ➔ ใช้เคียวยืนเกี่ยวข้าวดิบ ➔ ขับไปโรงสีข้าวข้างๆ แปรรูปเป็นข้าวสาร ➔ ขนไปโกดังแพ็คกล่อง ➔ ขายรับเงินก้อนโต **368 RD/กล่อง**
-* **ทางเลือกรวยไว:** ไม่ต้องขับรถลงใต้ไปแพ็คกล่อง แต่ให้เก็บข้าวดิบแล้วขายต่อให้ผู้เล่นสายทำอาหาร/เลี้ยงหมู ได้ราคาสูงถึง **ต้นละ 100 RD**!
-* **อุปกรณ์:** เคียวเกี่ยวข้าว (Sickle) ซื้อได้ที่ร้านค้าทั่วไปราคา **200 RD** (ไม่มีหลอดความทนทาน มีโอกาสพัง 2% ต่อการฟาร์ม 1 ชิ้น)
-* **เส้นทางแนะนำ:** ทุ่งนาเกี่ยวข้าว (ทุ่ง Grapeseed โซนเหนือ) ➔ โรงสีแปรรูป (โรงสีข้าวข้างทางรถไฟ) ➔ โกดังแพ็คกล่อง (ท่าเรือใต้ Industrial Docks) ➔ จุดรับซื้อข้าว (Morningwood ในเมือง)
-
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-3">
-  <div class="rounded-xl border border-amber-500/30 bg-slate-900/90 overflow-hidden shadow-lg group">
-    <div class="p-2 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between text-xs">
-      <span class="font-bold text-white flex items-center gap-1.5"> จุดฟาร์มข้าว (Grapeseed Fields)</span>
-      <a href="/map?spot=wheat-farm" class="text-amber-400 hover:text-amber-300 font-mono text-[11px]">เปิดเรดาร์ ➔</a>
-    </div>
-    <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/wheat_farm.png" alt="จุดฟาร์มข้าว" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
-    </div>
-  </div>
-  <div class="rounded-xl border border-amber-500/30 bg-slate-900/90 overflow-hidden shadow-lg group">
-    <div class="p-2 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between text-xs">
-      <span class="font-bold text-white flex items-center gap-1.5"> จุดโพลข้าว (Grapeseed Mill)</span>
-      <a href="/map?spot=wheat-pro" class="text-amber-400 hover:text-amber-300 font-mono text-[11px]">เปิดเรดาร์ ➔</a>
-    </div>
-    <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/wheat_pro.png" alt="จุดโพลข้าว" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
-    </div>
-  </div>
-</div>
-
----
-
-## 4. งานจี่เหล็ก & เศษเหล็ก (Iron Smelting & Scrap Metal)
-* **เหมาะสำหรับ:** คนชอบฟาร์มในเมือง ไม่ต้องขับรถไกล มีจุดเก็บเศษเหล็กให้เลือกตามสะดวก
-* **จุดเด่นพิเศษ:** เก็บเศษเหล็ก 1 ครั้ง (10 วินาที) **ได้ทีละ 2 ชิ้นทันที!** 
-* **วิธีทำง่ายๆ:** ไปเก็บเศษเหล็กตามกองซากรถ ➔ นำเศษเหล็ก 2 ชิ้นเข้าเตาหลอมความร้อน แปรรูปเป็น **เหล็กกล้า 1 แท่ง (Steel Ingot)** (ใช้เวลาแค่ 5 วิ) ➔ นำไปขายให้ร้านค้ารัฐ (233 RD) หรือขายให้อู่ช่างซ่อมรถ (233 - 240 RD)
-* **อุปกรณ์:** ถุงมือช่าง ซื้อได้ที่ร้านค้าทั่วไปราคา **200 RD** (ไม่มีหลอดความทนทาน มีโอกาสพัง 2% ต่อการเก็บ 1 ชิ้น)
-* **เลือกจุดเก็บได้ 2 ที่ (ไม่จำเป็นต้องไปทั้ง 2 ที่ เลือกที่ไหนก็ได้):**
-  - **จุดที่ 1 (กองซากรถในเมืองใต้ La Puerta):** ใกล้เตาหลอมมาก ขับแค่ 1.2 กม. วิ่งลูปไวสุดๆ
-  - **จุดที่ 2 (กองซากรถทะเลทราย Grand Senora):** สำหรับคนที่อยู่โซนเหนือ เก็บใส่ตู้เรเบลได้สะดวก
-* **จุดเตาหลอมเหล็ก:** เตาหลอมความร้อนสูง Cypress Flats (โซนโรงงานใต้เมือง)
-
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-3">
-  <div class="rounded-xl border border-slate-500/30 bg-slate-900/90 overflow-hidden shadow-lg group">
-    <div class="p-2 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between text-xs">
-      <span class="font-bold text-white flex items-center gap-1.5"> ฟาร์มเศษเหล็ก 1 (La Puerta)</span>
-      <a href="/map?spot=scrap-farm-1" class="text-slate-300 hover:text-white font-mono text-[11px]">เปิดเรดาร์ ➔</a>
-    </div>
-    <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/scrap_farm_1.png" alt="ฟาร์มเศษเหล็ก 1" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
-    </div>
-  </div>
-  <div class="rounded-xl border border-slate-500/30 bg-slate-900/90 overflow-hidden shadow-lg group">
-    <div class="p-2 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between text-xs">
-      <span class="font-bold text-white flex items-center gap-1.5"> โพลหลอมเหล็กเส้น (Cypress)</span>
-      <a href="/map?spot=steel-pro" class="text-slate-300 hover:text-white font-mono text-[11px]">เปิดเรดาร์ ➔</a>
-    </div>
-    <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/steel_pro.png" alt="โพลเหล็ก" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
-    </div>
-  </div>
-</div>
-
----
-
-## 5. งานเลี้ยงหมู (Pig Livestock)
-* **เหมาะสำหรับ:** คนชอบสาย AFK สบายๆ ให้อาหารหมูแล้วนั่งรอ ไม่ต้องยืนกดย้ำๆ ให้เมื่อยมือ
-* **จุดเด่นที่สุด:** **ระยะทางขับรถสั้นที่สุดในเกม (เพียง 7.18 กม.)** ประหยัดน้ำมัน วิ่งทำรอบได้ไวมาก
-* **วิธีทำง่ายๆ:** ขับไปคอกหมูทะเลทราย ➔ ซื้ออาหารหมูใส่ราง ➔ นั่งรอหมูโต **15 นาที** (1 คอก ได้หมูสดถึง **60 ชิ้น** เต็มท้ายรถทันที!) ➔ ชำแหละเนื้อหมู ➔ นำเข้าโรงเชือดแปรรูป ➔ แพ็คใส่กล่อง ➔ นำไปขายรับเงิน **380 RD/กล่อง** (หรือขายเนื้อสดให้คนทำอาหารชิ้นละ 130 - 150 RD)
-* **อุปกรณ์:** มีดชำแหละ ซื้อได้ที่ร้านค้าทั่วไปราคา **200 RD** (ไม่มีหลอดความทนทาน มีโอกาสพัง 2% ต่อการเก็บ 1 ชิ้น)
-* **เส้นทางแนะนำ:** คอกเลี้ยงหมู (Grand Senora Desert ทะเลทราย) ➔ โรงชำแหละเนื้อ (Cypress Flats ใต้เมือง) ➔ โกดังแพ็คกล่อง (ท่าเรือใต้) ➔ จุดรับซื้อเนื้อหมู (Little Seoul / Strawberry)
-
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-3">
-  <div class="rounded-xl border border-pink-500/30 bg-slate-900/90 overflow-hidden shadow-lg group">
-    <div class="p-2 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between text-xs">
-      <span class="font-bold text-white flex items-center gap-1.5"> จุดฟาร์มหมู (Grand Senora Hog Pen)</span>
-      <a href="/map?spot=pork-farm" class="text-pink-400 hover:text-pink-300 font-mono text-[11px]">เปิดเรดาร์ ➔</a>
-    </div>
-    <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/pork_farm.png" alt="จุดฟาร์มหมู" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
-    </div>
-  </div>
-  <div class="rounded-xl border border-pink-500/30 bg-slate-900/90 overflow-hidden shadow-lg group">
-    <div class="p-2 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between text-xs">
-      <span class="font-bold text-white flex items-center gap-1.5"><span>🥩</span> จุดโพลหมู (Cypress Slaughterhouse)</span>
-      <a href="/map?spot=pork-pro" class="text-pink-400 hover:text-pink-300 font-mono text-[11px]">เปิดเรดาร์ ➔</a>
-    </div>
-    <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/pork_pro.png" alt="จุดโพลหมู" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
-    </div>
-  </div>
-</div>
-
----
-
-## 6. งานเก็บดอกไม้ (Flower Gathering)
-* **เหมาะสำหรับ:** คนชอบความเร็วสูง! **เก็บไวที่สุดในเกมเพียง 8 วินาที/ชิ้น**  (งานอื่นต้องรอ 10 วิ)
-* **วิธีทำง่ายๆ:** ไปทุ่งดอกไม้สดแถบเขา Mount Gordo / Grapeseed ➔ กดยืนเก็บดอกไม้สด (แป๊บเดียวเต็มคันรถ) ➔ นำไปโรงสกัดแปรรูป ➔ นำไปแพ็คกล่อง ➔ ขายรับเงินก้อน **424 RD/กล่อง**
-* **สูตรลัดหาเงินไว:** ไม่ต้องขับรถไปแพ็คกล่อง แต่ให้ขับรถเอาดอกไม้สดไปส่งให้ **คุณหมอที่โรงพยาบาล Pillbox Hill** รับเงินสดทันที **ดอกละ 120 RD** (คุณหมอต้องการดอกไม้สดไปคราฟต์ยารักษาคน)
-* **อุปกรณ์:** กรรไกรตัดดอกไม้ ซื้อได้ที่ร้านค้าทั่วไปราคา **200 RD** (ไม่มีหลอดความทนทาน มีโอกาสพัง 2% ต่อการฟาร์ม 1 ชิ้น)
-* **เส้นทางแนะนำ:** ทุ่งดอกไม้ (ไหล่เขา Mount Gordo / Chiliad) ➔ โรงสกัดสมุนไพร (Grand Senora Desert) ➔ โกดังแพ็คกล่อง (ท่าเรือใต้ Industrial Docks) ➔ จุดรับซื้อ (Del Perro ริมหาด) หรือส่ง รพ. Pillbox Hill กลางเมือง
-
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-3">
-  <div class="rounded-xl border border-pink-500/30 bg-slate-900/90 overflow-hidden shadow-lg group">
-    <div class="p-2 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between text-xs">
-      <span class="font-bold text-white flex items-center gap-1.5"> จุดฟาร์มดอกไม้ (Mount Gordo / Grapeseed)</span>
-      <a href="/map?spot=flower-farm" class="text-pink-400 hover:text-pink-300 font-mono text-[11px]">เปิดเรดาร์ ➔</a>
-    </div>
-    <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/flower_farm.png" alt="จุดฟาร์มดอกไม้" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
-    </div>
-  </div>
-  <div class="rounded-xl border border-pink-500/30 bg-slate-900/90 overflow-hidden shadow-lg group">
-    <div class="p-2 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between text-xs">
-      <span class="font-bold text-white flex items-center gap-1.5"> จุดโพลดอกไม้ (Grand Senora Desert)</span>
-      <a href="/map?spot=flower-pro" class="text-pink-400 hover:text-pink-300 font-mono text-[11px]">เปิดเรดาร์ ➔</a>
-    </div>
-    <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/flower_pro.png" alt="จุดโพลดอกไม้" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
-    </div>
-  </div>
-</div>
-
----
-
-## 7. งานคริสตัล (Crystal Job & Panning)
-* **เหมาะสำหรับ:** สายอัปเกรดอาวุธระดับพรีเมียม และคนที่ต้องการไอเทมป้อนระบบคราฟต์ตีบวกของเมือง
-* **วิธีทำง่ายๆ:** ไปพื้นที่น้ำตื้นแม่น้ำ Zancudo (ดูโซน Blip บนแผนที่) ➔ ใช้ **Panning Tray** กดตั้งเสาแร่ (ตั้งได้พร้อมกันสูงสุด 2 เสา) ➔ ยืนเฝ้าในโซน Blip ➔ เมื่อเครื่องขัดข้อง ให้กด **Focus Menu > Shake** แล้วกดปุ่ม **A / D ตามจังหวะ** จนหลอดเต็ม ➔ เมื่อจบรอบจะได้รับ **Raw Crystal** ➔ นำไปผสมกับ **Copper Ingot 3 แท่ง** ที่ท่าเรือใต้
-* **สูตรผสม (Recipe):** **Raw Crystal 5 ชิ้น + Copper Ingot 3 แท่ง ➔ Crystal Ingot 1 แท่ง** (ใช้สำหรับอัปเกรดอาวุธขั้นถัดไป)
-* **อุปกรณ์:** Panning Tray (ถาดร่อนแร่) ซื้อได้ที่ร้านค้าทั่วไป
-* **เส้นทางสำคัญ:**
-  - **จุดตั้งเสาแร่ริมน้ำตื้น:** ริมแม่น้ำ Zancudo River (ดู Blip บนแผนที่)
-  - **จุดโพลแท่งคริสตัล:** โกดังท่าเรือใต้ Port of LS (Elysian Docks)
-
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-3">
-  <div class="rounded-xl border border-cyan-500/30 bg-slate-900/90 overflow-hidden shadow-lg group">
-    <div class="p-2 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between text-xs">
-      <span class="font-bold text-white flex items-center gap-1.5"> จุดร่อนคริสตัล (Zancudo River)</span>
-      <a href="/map?spot=crystal-sift" class="text-cyan-400 hover:text-cyan-300 font-mono text-[11px]">เปิดเรดาร์ ➔</a>
-    </div>
-    <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/crystal_sift.png" alt="จุดร่อนคริสตัล" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
-    </div>
-  </div>
-  <div class="rounded-xl border border-cyan-500/30 bg-slate-900/90 overflow-hidden shadow-lg group">
-    <div class="p-2 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between text-xs">
-      <span class="font-bold text-white flex items-center gap-1.5"> จุดโพลคริสตัล (Elysian Docks)</span>
-      <a href="/map?spot=crystal-pro" class="text-cyan-400 hover:text-cyan-300 font-mono text-[11px]">เปิดเรดาร์ ➔</a>
-    </div>
-    <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/crystal_pro.png" alt="จุดโพลคริสตัล" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
-    </div>
-  </div>
-</div>
-
----
-
-## 8. งานครัว & ส่งอาหาร (Run Kitchen & Food Delivery)
-* **เหมาะสำหรับ:** ไรเดอร์สายซิ่งที่ชอบความคล่องตัว หรือคนที่อยากทำอาหารคุณภาพสูงไว้กินเองเพื่อ **ลดค่าความหิว 50% และลดความเครียด -10**
-* **วิธีทำง่ายๆ:**
-  1. **ย่างเนื้อ:** ไปที่ร้านอาหาร (Blip รูปพิซซ่า 🍕) ➔ ซื้อเนื้อ Doner Split 2,500 RD จากตู้แช่ ➔ ย่าง 3 นาทีบนเตาหมุน (ทำได้พร้อมกัน 2 เครื่อง, 1 ก้อนทำได้ 4 ชิ้น)
-  2. **ปิ้งแป้ง:** คราฟต์แป้งบนโต๊ะโดยใช้ **Rice Grain (ข้าวสาร) x2 ต่อแป้ง 1 ชิ้น** ➔ วางบนเครื่องปิ้ง ปิดฝา รอจนเสร็จ
-  3. **รวมร่าง:** หยิบแป้งขึ้นมา ➔ สไลด์เนื้อย่าง (`SHAVE DONER`) ➔ ใส่เนื้อลงในแป้ง (`ADD DONER KEBAB`) ➔ กด `E` ได้รับ Kebab หรือ Pita
-  4. **ส่งอาหาร:** เปิดแอป **รันแมน** > บัญชี > เข้า **Runner Mode** > เปิด **ส่งอาหาร** ➔ รับออเดอร์ NPC ลูกค้า (สั่ง 2–4 ชิ้น) ➔ ขี่รถไปส่งรับเงิน **1,500 RD ต่อชิ้น!** (3,000 – 6,000 RD ต่อออเดอร์)
-* **อุปกรณ์:** ตู้แช่เนื้อ 2,500 RD + เตา Doner 2 เครื่อง + สมาร์ทโฟนแอป รันแมน
-* **กฎสำคัญ:** ห้ามเดินออกนอกร้านไกลเกินไปขณะย่างเนื้อ 3 นาที (ระบบจะลบเนื้อทิ้ง) และห้ามกดยกเลิกงานในแอป รันแมน เพราะจะติดโทษคูลดาวน์ 15 นาที!
-* **สาขาร้านอาหาร (4 จุดทั่วเกาะ):** [Vespucci](/map?spot=kitchen-vespucci), [Downtown Legion](/map?spot=kitchen-downtown), [Mirror Park](/map?spot=kitchen-mirror), และ [Paleto Bay (เมืองบน)](/map?spot=kitchen-paleto) ➔ จุดนัดพบ NPC ลูกค้าทั่วเมือง
 
 ---
 

@@ -1,194 +1,902 @@
 ---
 import CyberIcon from './CyberIcon.astro';
 
-const tier1 = [
-  { id: 'scrap', name: 'เศษเหล็ก', en: 'Scrap Metal', icon: 'wrench' },
-  { id: 'log', name: 'ท่อนไม้', en: 'Wood Log', icon: 'tree' },
-  { id: 'copper', name: 'แร่ทองแดง', en: 'Copper Ore', icon: 'gem' },
-  { id: 'gold', name: 'แร่ทองคำ', en: 'Gold Ore', icon: 'gem' },
-];
-
-const tier2 = [
-  { id: 'ingot', name: 'แท่งเหล็กกล้า', en: 'Steel Ingot', recipe: '3 เศษเหล็ก', ingredients: ['scrap'], icon: 'wrench' },
-  { id: 'plank', name: 'ไม้แปรรูป', en: 'Plank', recipe: '2 ท่อนไม้', ingredients: ['log'], icon: 'tree' },
-  { id: 'spring', name: 'สปริงเหล็ก', en: 'Spring', recipe: '1 เศษเหล็ก + 1 ทองแดง', ingredients: ['scrap', 'copper'], icon: 'wrench' },
-  { id: 'barrel', name: 'ลำกล้องกลึง', en: 'Gun Barrel', recipe: '2 เศษเหล็ก + 2 ทองแดง', ingredients: ['scrap', 'copper'], icon: 'wrench' },
-  { id: 'grip', name: 'ด้ามจับไม้', en: 'Grip', recipe: '1 ท่อนไม้', ingredients: ['log'], icon: 'tree' },
-  { id: 'toolkit', name: 'กล่องเครื่องมือ', en: 'Toolkit', recipe: '1 ทองแดง + 1 ทองคำ', ingredients: ['copper', 'gold'], icon: 'wrench' },
-];
-
-const tier3 = [
-  { id: 'knuckles', name: 'สนับมือเหล็ก', en: 'Brass Knuckles', station: 'โรงกลึงลับ Cypress Flats', value: '1,200 RD', mins: '2 นาที', ingredients: ['ingot', 'scrap'], icon: 'swords' },
-  { id: 'switchblade', name: 'มีดพับพกพา', en: 'Switchblade', station: 'ใต้สะพาน La Mesa', value: '1,800 RD', mins: '3 นาที', ingredients: ['ingot', 'grip', 'scrap', 'log'], icon: 'swords' },
-  { id: 'crowbar', name: 'ชะแลงงัดของ', en: 'Crowbar', station: 'โรงกลึงลับ Cypress Flats', value: '950 RD', mins: '2 นาที', ingredients: ['ingot', 'scrap'], icon: 'swords' },
-  { id: 'pistol', name: 'ปืนพก Vintage', en: 'Vintage Pistol', station: 'ใต้สะพาน La Mesa', value: '12,500 RD', mins: '8 นาที', ingredients: ['ingot', 'spring', 'barrel', 'toolkit', 'scrap', 'copper', 'gold'], icon: 'swords' },
+// Real RUN TOWN Patch 1.3.0 Weapon Crafting Data
+const weapons = [
+  {
+    id: 'machete',
+    name: 'Machete Lv.1',
+    damage: 18,
+    type: 'edge',
+    typeLabel: 'สายคม (Edge Core)',
+    color: '#ff4d6d',
+    borderClass: 'border-rose-500/50 hover:border-rose-400',
+    bgClass: 'bg-rose-500/10',
+    textClass: 'text-rose-400',
+    icon: '/items/icons/transparent/machete_lv1.png',
+    blueprintIcon: '/items/icons/transparent/blueprint_machete_lv1.png',
+    blueprintName: 'Blueprint: Machete LV1 x1',
+    baseWeapon: 'Bottle (ขวดแตก) x1',
+    baseWeaponIcon: '/items/icons/transparent/bottle.png',
+    coreType: 'edge',
+    coreName: 'Edge Core',
+    coreIcon: '/items/icons/transparent/edge_core.png',
+    coreCount: 100,
+    crystalCount: 100,
+    tableFee: 250000,
+    boxCostPerUnit: 10000,
+    materials: {
+      cement: 200,   // 2 * 100
+      wood: 1000,    // 10 * 100
+      steel: 2000,   // 20 * 100
+      gold: 500,     // 5 * 100
+      crystal: 100,
+    },
+    totalFee: 1250000, // 250k table + 1,000,000 (100 boxes * 10k)
+    badge: 'DMG 18 · สูงสุดในเซิร์ฟ',
+    desc: 'อาวุธประชิดที่รุนแรงที่สุดในแพตช์ 1.3.0 โจมตี 6-7 ครั้งสามารถน็อกผู้เล่นเลือด 100 ได้ทันที',
+  },
+  {
+    id: 'knife',
+    name: 'Knife Lv.1',
+    damage: 16,
+    type: 'edge',
+    typeLabel: 'สายคม (Edge Core)',
+    color: '#ff4d6d',
+    borderClass: 'border-rose-500/50 hover:border-rose-400',
+    bgClass: 'bg-rose-500/10',
+    textClass: 'text-rose-400',
+    icon: '/items/icons/transparent/knife_lv1.png',
+    blueprintIcon: '/items/icons/transparent/blueprint_knife_lv1.png',
+    blueprintName: 'Blueprint: Knife LV1 x1',
+    baseWeapon: 'Bottle (ขวดแตก) x1',
+    baseWeaponIcon: '/items/icons/transparent/bottle.png',
+    coreType: 'edge',
+    coreName: 'Edge Core',
+    coreIcon: '/items/icons/transparent/edge_core.png',
+    coreCount: 100,
+    crystalCount: 100,
+    tableFee: 350000,
+    boxCostPerUnit: 10000,
+    materials: {
+      cement: 200,
+      wood: 1000,
+      steel: 2000,
+      gold: 500,
+      crystal: 100,
+    },
+    totalFee: 1350000, // 350k table + 1M boxes
+    badge: 'DMG 16 · มีดพกสมดุล',
+    desc: 'มีดสั้นมาตรฐานของสายไฟต์ มีความคล่องตัวสูง ดาเมจ 16 หน่วยต่อการฟัน 1 ครั้ง',
+  },
+  {
+    id: 'dagger',
+    name: 'Dagger Lv.1',
+    damage: 16,
+    type: 'impact',
+    typeLabel: 'สายแทง (Impact Core)',
+    color: '#45f2b4',
+    borderClass: 'border-mint/50 hover:border-mint',
+    bgClass: 'bg-mint/10',
+    textClass: 'text-mint',
+    icon: '/items/icons/transparent/dagger_lv1.png',
+    blueprintIcon: '/items/icons/transparent/blueprint_knife_lv1.png',
+    blueprintName: 'Blueprint: Knife LV1 x1',
+    baseWeapon: 'Bottle (ขวดแตก) x1',
+    baseWeaponIcon: '/items/icons/transparent/bottle.png',
+    coreType: 'impact',
+    coreName: 'Impact Core',
+    coreIcon: '/items/icons/transparent/impact_core.png',
+    coreCount: 100,
+    crystalCount: 100,
+    tableFee: 350000,
+    boxCostPerUnit: 10000,
+    materials: {
+      cement: 200,
+      wood: 1000,
+      steel: 2000,
+      gold: 500,
+      crystal: 100,
+    },
+    totalFee: 1350000,
+    badge: 'DMG 16 · มีดสั้นกระแทก',
+    desc: 'แดกเกอร์ที่ใช้ Impact Core แกนกระแทกในการหลอม ดาเมจ 16 รวดเร็วและชะงักสูง',
+  },
+  {
+    id: 'knuckle',
+    name: 'Knuckle Lv.1',
+    damage: 14,
+    type: 'impact',
+    typeLabel: 'สายหมัด (Impact Core)',
+    color: '#facc15',
+    borderClass: 'border-amber-400/50 hover:border-amber-400',
+    bgClass: 'bg-amber-400/10',
+    textClass: 'text-amber-300',
+    icon: '/items/icons/transparent/knuckle_lv1.png',
+    blueprintIcon: '/items/icons/transparent/blueprint_knuckle_lv1.png',
+    blueprintName: 'Blueprint: Knuckle LV1 x1',
+    baseWeapon: 'ไม่ต้องใช้เบสอาวุธ',
+    baseWeaponIcon: '',
+    coreType: 'impact',
+    coreName: 'Impact Core',
+    coreIcon: '/items/icons/transparent/impact_core.png',
+    coreCount: 75,
+    crystalCount: 100,
+    tableFee: 250000,
+    boxCostPerUnit: 10000,
+    materials: {
+      cement: 150,  // 2 * 75
+      wood: 750,    // 10 * 75
+      steel: 1500,  // 20 * 75
+      gold: 375,    // 5 * 75
+      crystal: 100,
+    },
+    totalFee: 1000000, // 250k table + 750k boxes
+    badge: 'DMG 14 · คราฟต์ตรงได้เลย',
+    desc: 'จุดเด่นที่สุดคือ ไม่ต้องใช้เบสอาวุธตั้งต้น คราฟต์ขึ้นตรงได้ทันทีและใช้คอร์เพียง 75 ชิ้น',
+  },
+  {
+    id: 'poolcue',
+    name: 'Poolcue Lv.1',
+    damage: 12,
+    type: 'impact',
+    typeLabel: 'สายทุบ (Impact Core)',
+    color: '#38bdf8',
+    borderClass: 'border-cyan-400/50 hover:border-cyan-400',
+    bgClass: 'bg-cyan-400/10',
+    textClass: 'text-cyan-300',
+    icon: '/items/icons/transparent/poolcue_lv1.png',
+    blueprintIcon: '/items/icons/transparent/blueprint_poolcue_lv1.png',
+    blueprintName: 'Blueprint: Pool Cue LV1 x1',
+    baseWeapon: 'Bat หรือ Golf Club x1',
+    baseWeaponIcon: '/items/icons/transparent/bat.png',
+    coreType: 'impact',
+    coreName: 'Impact Core',
+    coreIcon: '/items/icons/transparent/impact_core.png',
+    coreCount: 150,
+    crystalCount: 150,
+    tableFee: 350000,
+    boxCostPerUnit: 10000,
+    materials: {
+      cement: 300,  // 2 * 150
+      wood: 1500,   // 10 * 150
+      steel: 3000,  // 20 * 150
+      gold: 750,    // 5 * 150
+      crystal: 150,
+    },
+    totalFee: 1850000, // 350k table + 1.5M boxes
+    badge: 'DMG 12 · ระยะฟาดกว้าง',
+    desc: 'อาวุธประชิดสายทุบยาว เหมาะสำหรับไฟต์แบบรักษาระยะและมีอัตราชะงักศัตรูต่อเนื่อง',
+  },
 ];
 ---
 
 <section id="crafting" class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24 border-t border-line">
-  <div class="space-y-3">
-    <p class="font-mono text-xs font-semibold tracking-[0.2em] text-lime uppercase">// WEAPON CRAFTING MATRIX</p>
-    <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
-      ผังสายการผลิตวัตถุดิบ & อาวุธ
-    </h2>
-    <p class="text-sm text-textSoft max-w-2xl leading-relaxed">
-      แตะที่อาวุธ TIER 3 ด้านขวาสุดเพื่อดูสูตรส่วนผสม วัตถุดิบต้นน้ำที่ต้องเตรียม และจุดโต๊ะคราฟต์ลับ
-    </p>
-  </div>
-
-  <div class="mt-10 grid gap-6 lg:grid-cols-3">
-    
-    <!-- Tier 1 Column -->
-    <div class="rounded-2xl border border-line bg-card/60 p-5 backdrop-blur-md space-y-4">
-      <div class="flex items-center justify-between pb-3 border-b border-lineSubtle">
-        <span class="font-mono text-xs font-bold text-slate-300">TIER 1 · วัตถุดิบดิบ</span>
-        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-paper border border-line text-textMuted">ฟาร์มธรรมชาติ</span>
-      </div>
-      <div class="space-y-2.5">
-        {tier1.map(item => (
-          <div class="craft-node p-3.5 rounded-xl border border-line bg-paper/80 flex items-center justify-between transition-all" data-item-id={item.id}>
-            <div class="flex items-center gap-3">
-              <span class="grid size-8 place-items-center rounded-lg bg-card border border-line text-mint">
-                <CyberIcon name={item.icon} class="size-4" />
-              </span>
-              <div>
-                <strong class="text-xs font-bold text-white block">{item.name}</strong>
-                <span class="font-mono text-[10px] text-textMuted">{item.en}</span>
-              </div>
-            </div>
-            <span class="text-[10px] font-mono text-mint">วัตถุดิบต้นน้ำ</span>
-          </div>
-        ))}
-      </div>
-    </div>
-
-    <!-- Tier 2 Column -->
-    <div class="rounded-2xl border border-line bg-card/60 p-5 backdrop-blur-md space-y-4">
-      <div class="flex items-center justify-between pb-3 border-b border-lineSubtle">
-        <span class="font-mono text-xs font-bold text-amber-300">TIER 2 · ชิ้นส่วนแปรรูป</span>
-        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300">โพลแปรรูป</span>
-      </div>
-      <div class="space-y-2.5">
-        {tier2.map(item => (
-          <div class="craft-node p-3.5 rounded-xl border border-line bg-paper/80 flex items-center justify-between transition-all" data-item-id={item.id}>
-            <div class="flex items-center gap-3">
-              <span class="grid size-8 place-items-center rounded-lg bg-card border border-line text-amber-400">
-                <CyberIcon name={item.icon} class="size-4" />
-              </span>
-              <div>
-                <strong class="text-xs font-bold text-white block">{item.name}</strong>
-                <span class="font-mono text-[10px] text-textMuted">{item.recipe}</span>
-              </div>
-            </div>
-            <span class="text-[10px] font-mono text-amber-300">แปรรูป 1:1</span>
-          </div>
-        ))}
-      </div>
-    </div>
-
-    <!-- Tier 3 Column -->
-    <div class="rounded-2xl border border-line bg-card/60 p-5 backdrop-blur-md space-y-4">
-      <div class="flex items-center justify-between pb-3 border-b border-lineSubtle">
-        <span class="font-mono text-xs font-bold text-lime">TIER 3 · อาวุธสำเร็จรูป</span>
-        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-lime/10 border border-lime/30 text-lime">โต๊ะคราฟต์ลับ</span>
-      </div>
-      <div class="space-y-2.5">
-        {tier3.map((item, i) => (
-          <button
-            type="button"
-            class={`craft-target-btn w-full p-3.5 rounded-xl border text-left transition-all ${
-              i === 0 ? 'border-lime bg-lime/10 shadow-[0_0_20px_-5px_rgba(165,255,95,0.4)] active' : 'border-line bg-paper/80 hover:border-lime/40'
-            }`}
-            data-target-id={item.id}
-            data-ingredients={item.ingredients.join(',')}
-            data-station={item.station}
-            data-value={item.value}
-            data-mins={item.mins}
-            data-title={item.name}
-          >
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-3">
-                <span class="grid size-8 place-items-center rounded-lg bg-card border border-line text-lime">
-                  <CyberIcon name={item.icon} class="size-4" />
-                </span>
-                <div>
-                  <strong class="text-xs font-bold text-white block">{item.name}</strong>
-                  <span class="font-mono text-[10px] text-textMuted">{item.en}</span>
-                </div>
-              </div>
-              <span class="text-xs font-mono font-bold text-lime">{item.value}</span>
-            </div>
-          </button>
-        ))}
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Active Recipe Info Banner -->
-  <div class="mt-6 p-4 rounded-2xl border border-lime/30 bg-card/90 backdrop-blur-md flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-xs shadow-neon-card">
-    <div class="space-y-1">
+  
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div class="space-y-3">
       <div class="flex items-center gap-2">
-        <span class="size-2 rounded-full bg-lime animate-pulse"></span>
-        <strong id="craftActiveTitle" class="text-white text-sm">สนับมือเหล็ก (Brass Knuckles)</strong>
+        <p class="font-mono text-xs font-semibold tracking-[0.2em] text-lime uppercase">// CRAFTING PRODUCTION TREE</p>
+        <span class="inline-flex items-center gap-1 rounded-full border border-lime/30 bg-lime/10 px-2.5 py-0.5 font-mono text-[10px] font-bold text-lime">
+          PATCH 1.3.0
+        </span>
       </div>
-      <p class="text-textSoft text-[11px]">
-        จุดคราฟต์: <span id="craftActiveStation" class="text-lime font-bold">โรงกลึงลับ Cypress Flats</span> · เวลาคราฟต์: <span id="craftActiveMins" class="text-amber-300">2 นาที</span>
+      <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
+        ผังสายการผลิตวัตถุดิบ & อาวุธ (Production Tree)
+      </h2>
+      <p class="text-sm text-textSoft max-w-2xl leading-relaxed">
+        แผนภาพโครงสร้างสายการผลิต (Hierarchy Tree) แสดงการเชื่อมโยงจาก <strong>วัตถุดิบงานขาวต้นน้ำ ➔ การแปรรูป ➔ การตีกล่องและแกนคอร์ ➔ ขึ้นรูปอาวุธสำเร็จรูป</strong>
       </p>
     </div>
-    <div class="flex items-center gap-2">
-      <a href="/guides/crafting/weapons" class="px-4 py-2 rounded-xl bg-lime text-slate-950 font-bold text-xs hover:bg-lime/90 transition-colors">
-        ดูตารางดาเมจ & คู่มือคราฟต์ ➔
+
+    <!-- Quick Action Badge -->
+    <div class="flex items-center gap-2 shrink-0">
+      <a
+        href="/guides/crafting/weapons"
+        class="inline-flex items-center gap-1.5 rounded-xl border border-lime/40 bg-lime/10 px-4 py-2.5 font-mono text-xs font-bold text-lime hover:bg-lime hover:text-slate-950 transition-all shadow-[0_0_20px_-5px_rgba(165,255,95,0.3)]"
+      >
+        <CyberIcon name="swords" class="size-4" />
+        <span>ดูสถิติดาเมจทั้ง 5 ชนิด ➔</span>
       </a>
     </div>
+  </div>
+
+  <!-- Weapon Selector Tabs (Root Node Switcher) -->
+  <div class="mt-8 space-y-2">
+    <span class="block font-mono text-xs text-textMuted uppercase tracking-wider">
+      เลือกอาวุธเป้าหมายเพื่อแสดงผังต้นไม้การผลิต:
+    </span>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5" id="craftTreeTabs">
+      {weapons.map((w, idx) => (
+        <button
+          type="button"
+          class={`craft-weapon-btn group relative flex items-center gap-2.5 p-3 rounded-xl border text-left transition-all ${
+            idx === 0
+              ? 'border-lime bg-lime/10 shadow-[0_0_20px_-5px_rgba(165,255,95,0.4)] active ring-1 ring-lime'
+              : 'border-line bg-card/70 hover:border-lime/40 hover:bg-paper/80'
+          }`}
+          data-weapon-id={w.id}
+        >
+          <div class="size-11 shrink-0 rounded-lg bg-slate-950/80 border border-lineSubtle p-1 flex items-center justify-center group-hover:scale-105 transition-transform">
+            <img src={w.icon} alt={w.name} class="size-9 object-contain drop-shadow" />
+          </div>
+          <div class="min-w-0 flex-1">
+            <strong class="block text-xs font-bold text-white truncate group-hover:text-lime transition-colors">
+              {w.name}
+            </strong>
+            <span class="block font-mono text-[10px] text-lime font-bold">
+              DMG {w.damage}
+            </span>
+            <span class="block text-[10px] text-textMuted truncate">
+              {w.type === 'edge' ? '🩸 Edge Core' : '💥 Impact Core'}
+            </span>
+          </div>
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <!-- Interactive Tree Canvas Container -->
+  <div class="mt-8 rounded-3xl border border-line bg-card/90 p-4 sm:p-6 lg:p-8 backdrop-blur-xl shadow-neon-card relative overflow-hidden">
+    
+    <!-- Top Bar: Active Weapon Summary & Flow Indicator -->
+    <div class="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-lineSubtle font-mono text-xs">
+      <div class="flex items-center gap-2.5">
+        <span class="size-2 rounded-full bg-lime animate-pulse"></span>
+        <span class="text-textMuted">กำลังแสดงผังสายตรงสำหรับ:</span>
+        <strong id="treeActiveName" class="text-white font-bold text-sm">Machete Lv.1</strong>
+        <span id="treeActiveBadge" class="rounded px-2 py-0.5 text-[10px] font-bold bg-rose-500/10 border border-rose-500/30 text-rose-400">
+          DMG 18 · สูงสุดในเซิร์ฟ
+        </span>
+      </div>
+
+      <div class="flex items-center gap-3 text-textMuted text-[11px]">
+        <span class="flex items-center gap-1.5">
+          <span class="size-2 rounded-full bg-amber-400"></span>
+          <span>Tier 1 วัตถุดิบดิบ</span>
+        </span>
+        <span>➔</span>
+        <span class="flex items-center gap-1.5">
+          <span class="size-2 rounded-full bg-cyan-400"></span>
+          <span>Tier 2 แปรรูป</span>
+        </span>
+        <span>➔</span>
+        <span class="flex items-center gap-1.5">
+          <span class="size-2 rounded-full bg-purple-400"></span>
+          <span>Tier 3 แกนคอร์</span>
+        </span>
+        <span>➔</span>
+        <span class="flex items-center gap-1.5">
+          <span class="size-2 rounded-full bg-lime"></span>
+          <span>Tier 4 อาวุธ</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Tree Viewport (Scrollable horizontally on small screens) -->
+    <div class="mt-8 overflow-x-auto pb-4">
+      <div class="min-w-[880px] grid grid-cols-4 gap-6 lg:gap-8 items-stretch relative">
+        
+        <!-- ================= STAGE 1: RAW MATERIALS (รากฐาน - แหล่งฟาร์มดิบ) ================= -->
+        <div class="space-y-4 flex flex-col justify-between">
+          <div class="flex items-center justify-between pb-2 border-b border-amber-400/30">
+            <span class="font-mono text-xs font-bold text-amber-400 flex items-center gap-1.5">
+              <span class="grid size-5 place-items-center rounded-full bg-amber-400/20 text-[10px]">1</span>
+              <span>วัตถุดิบงานขาวต้นน้ำ</span>
+            </span>
+            <span class="text-[10px] font-mono text-textMuted">ฟาร์มธรรมชาติ</span>
+          </div>
+
+          <div class="space-y-3 flex-1 flex flex-col justify-around">
+            <!-- Node: Raw Stone -->
+            <div class="tree-node group p-3 rounded-2xl border border-line bg-paper/70 hover:border-amber-400/40 transition-all flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="grid size-9 place-items-center rounded-xl bg-slate-900 border border-lineSubtle">
+                  <CyberIcon name="package" class="size-4 text-amber-400" />
+                </span>
+                <div>
+                  <strong class="text-xs font-bold text-white block">หินดิบ (Raw Stone)</strong>
+                  <span class="font-mono text-[10px] text-textMuted">⛏️ เหมือง Davis Quartz</span>
+                </div>
+              </div>
+              <span class="font-mono text-[11px] text-amber-300 font-bold">โม่ปูน</span>
+            </div>
+
+            <!-- Node: Wood Log -->
+            <div class="tree-node group p-3 rounded-2xl border border-line bg-paper/70 hover:border-amber-400/40 transition-all flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="grid size-9 place-items-center rounded-xl bg-slate-900 border border-lineSubtle">
+                  <CyberIcon name="tree" class="size-4 text-amber-400" />
+                </span>
+                <div>
+                  <strong class="text-xs font-bold text-white block">ท่อนไม้ (Wood Log)</strong>
+                  <span class="font-mono text-[10px] text-textMuted">🪓 โรงตัดไม้ Paleto</span>
+                </div>
+              </div>
+              <span class="font-mono text-[11px] text-amber-300 font-bold">เลื่อยแพ็ค</span>
+            </div>
+
+            <!-- Node: Scrap Metal -->
+            <div class="tree-node group p-3 rounded-2xl border border-line bg-paper/70 hover:border-amber-400/40 transition-all flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="grid size-9 place-items-center rounded-xl bg-slate-900 border border-lineSubtle">
+                  <CyberIcon name="wrench" class="size-4 text-amber-400" />
+                </span>
+                <div>
+                  <strong class="text-xs font-bold text-white block">เศษเหล็ก (Scrap)</strong>
+                  <span class="font-mono text-[10px] text-textMuted">⚙️ กองขยะ / จุดจี่</span>
+                </div>
+              </div>
+              <span class="font-mono text-[11px] text-amber-300 font-bold">จี่เหล็ก</span>
+            </div>
+
+            <!-- Node: Gold Ore -->
+            <div class="tree-node group p-3 rounded-2xl border border-line bg-paper/70 hover:border-amber-400/40 transition-all flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="grid size-9 place-items-center rounded-xl bg-slate-900 border border-lineSubtle">
+                  <CyberIcon name="gem" class="size-4 text-amber-400" />
+                </span>
+                <div>
+                  <strong class="text-xs font-bold text-white block">แร่ทองคำ (Gold Ore)</strong>
+                  <span class="font-mono text-[10px] text-textMuted">💎 จุดร่อนแร่แม่น้ำ</span>
+                </div>
+              </div>
+              <span class="font-mono text-[11px] text-amber-300 font-bold">หลอมแท่ง</span>
+            </div>
+
+            <!-- Node: Raw Crystal -->
+            <div class="tree-node group p-3 rounded-2xl border border-line bg-paper/70 hover:border-cyan-400/40 transition-all flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="grid size-9 place-items-center rounded-xl bg-slate-900 border border-lineSubtle">
+                  <CyberIcon name="gem" class="size-4 text-cyan-400" />
+                </span>
+                <div>
+                  <strong class="text-xs font-bold text-white block">ทรายคริสตัล (Raw)</strong>
+                  <span class="font-mono text-[10px] text-textMuted">🌊 หาดร่อนคริสตัล</span>
+                </div>
+              </div>
+              <span class="font-mono text-[11px] text-cyan-300 font-bold">หลอมแท่ง</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= STAGE 2: PROCESSED MATERIALS (ลำต้น - ชิ้นส่วนแปรรูป) ================= -->
+        <div class="space-y-4 flex flex-col justify-between">
+          <div class="flex items-center justify-between pb-2 border-b border-cyan-400/30">
+            <span class="font-mono text-xs font-bold text-cyan-400 flex items-center gap-1.5">
+              <span class="grid size-5 place-items-center rounded-full bg-cyan-400/20 text-[10px]">2</span>
+              <span>ชิ้นส่วนแปรรูป (โพร)</span>
+            </span>
+            <span class="text-[10px] font-mono text-textMuted">โรงงานแปรรูป</span>
+          </div>
+
+          <div class="space-y-3 flex-1 flex flex-col justify-around">
+            <!-- Node: Cement -->
+            <div class="tree-node p-3 rounded-2xl border border-line bg-paper/80 flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <img src="/items/icons/transparent/cement.png" alt="Cement" class="size-8 object-contain" />
+                <div>
+                  <strong class="text-xs font-bold text-white block">Cement (ปูน)</strong>
+                  <span class="font-mono text-[10px] text-textMuted">ถุงละ 2 ชิ้น / กล่อง</span>
+                </div>
+              </div>
+              <span id="treeQtyCement" class="font-mono text-xs font-bold text-cyan-300">x200</span>
+            </div>
+
+            <!-- Node: Wood Crate -->
+            <div class="tree-node p-3 rounded-2xl border border-line bg-paper/80 flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <img src="/items/icons/transparent/wood_crate.png" alt="Wood Crate" class="size-8 object-contain" />
+                <div>
+                  <strong class="text-xs font-bold text-white block">Wood Crate (ลังไม้)</strong>
+                  <span class="font-mono text-[10px] text-textMuted">ลังละ 10 ชิ้น / กล่อง</span>
+                </div>
+              </div>
+              <span id="treeQtyWood" class="font-mono text-xs font-bold text-cyan-300">x1,000</span>
+            </div>
+
+            <!-- Node: Steel Ingot -->
+            <div class="tree-node p-3 rounded-2xl border border-line bg-paper/80 flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <img src="/items/icons/transparent/steel_ingot.png" alt="Steel Ingot" class="size-8 object-contain" />
+                <div>
+                  <strong class="text-xs font-bold text-white block">Steel Ingot (เหล็กแท่ง)</strong>
+                  <span class="font-mono text-[10px] text-textMuted">แท่งละ 20 ชิ้น / กล่อง</span>
+                </div>
+              </div>
+              <span id="treeQtySteel" class="font-mono text-xs font-bold text-cyan-300">x2,000</span>
+            </div>
+
+            <!-- Node: Gold Ingot -->
+            <div class="tree-node p-3 rounded-2xl border border-line bg-paper/80 flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <img src="/items/icons/transparent/gold_ingot.png" alt="Gold Ingot" class="size-8 object-contain" />
+                <div>
+                  <strong class="text-xs font-bold text-white block">Gold Ingot (ทองแท่ง)</strong>
+                  <span class="font-mono text-[10px] text-textMuted">แท่งละ 5 ชิ้น / กล่อง</span>
+                </div>
+              </div>
+              <span id="treeQtyGold" class="font-mono text-xs font-bold text-cyan-300">x500</span>
+            </div>
+
+            <!-- Node: Crystal Ingot (Direct feed to Stage 4) -->
+            <div class="tree-node p-3 rounded-2xl border border-cyan-400/40 bg-cyan-400/10 flex items-center justify-between shadow-[0_0_15px_-4px_rgba(56,189,248,0.3)]">
+              <div class="flex items-center gap-2.5">
+                <img src="/items/icons/transparent/crystal_ingot.png" alt="Crystal Ingot" class="size-8 object-contain" />
+                <div>
+                  <strong class="text-xs font-bold text-white block">Crystal Ingot (คริสตัล)</strong>
+                  <span class="font-mono text-[10px] text-cyan-300">เข้าโต๊ะคราฟต์โดยตรง</span>
+                </div>
+              </div>
+              <span id="treeQtyCrystal" class="font-mono text-xs font-bold text-cyan-300">x100</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= STAGE 3: BOX SETS & CORES (กิ่งก้าน - ตีกล่อง & หลอมคอร์) ================= -->
+        <div class="space-y-4 flex flex-col justify-between">
+          <div class="flex items-center justify-between pb-2 border-b border-purple-400/30">
+            <span class="font-mono text-xs font-bold text-purple-400 flex items-center gap-1.5">
+              <span class="grid size-5 place-items-center rounded-full bg-purple-400/20 text-[10px]">3</span>
+              <span>กล่องอาวุธ & แกนคอร์</span>
+            </span>
+            <span class="text-[10px] font-mono text-textMuted">โต๊ะช่างตีกล่อง</span>
+          </div>
+
+          <div class="space-y-4 flex-1 flex flex-col justify-center">
+            
+            <!-- Step 3.1: Weapon Box Set -->
+            <div class="tree-node p-3.5 rounded-2xl border border-line bg-paper/90 relative group">
+              <span class="absolute -top-2.5 left-4 px-2 py-0.5 rounded bg-slate-900 border border-line text-[9px] font-mono text-textMuted">
+                แกนรวม 4 วัตถุดิบ
+              </span>
+              <div class="flex items-center justify-between pt-1">
+                <div class="flex items-center gap-2.5">
+                  <img src="/items/icons/transparent/weapon_box_set.png" alt="Weapon Box Set" class="size-10 object-contain drop-shadow" />
+                  <div>
+                    <strong class="text-xs font-bold text-white block">Weapon Box Set</strong>
+                    <span class="font-mono text-[10px] text-textMuted">ค่าตี $10,000 / กล่อง</span>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <span id="treeQtyBox" class="font-mono text-xs font-bold text-white block">x100</span>
+                  <span id="treeBoxFee" class="font-mono text-[10px] text-amber-300">$1,000,000</span>
+                </div>
+              </div>
+              <div class="mt-2 text-[10px] font-mono text-textMuted border-t border-lineSubtle pt-1.5 flex justify-between">
+                <span>โอกาสสำเร็จ: 100%</span>
+                <span class="text-purple-300 font-bold">แปลง 1:1 เป็น Core ➔</span>
+              </div>
+            </div>
+
+            <!-- Curved Connector Visual Arrow -->
+            <div class="flex justify-center -my-1 text-purple-400/70 font-mono text-xs">
+              ↓ แปลงเป็น Core ที่ต้องการ ↓
+            </div>
+
+            <!-- Step 3.2: Target Core Node -->
+            <div id="treeCoreCard" class="tree-node p-4 rounded-2xl border border-rose-500/50 bg-rose-500/10 shadow-[0_0_20px_-5px_rgba(255,77,109,0.35)] relative">
+              <span id="treeCoreTag" class="absolute -top-2.5 right-4 px-2 py-0.5 rounded bg-slate-950 border border-rose-500/40 text-[9px] font-mono font-bold text-rose-400">
+                โอกาสโบนัส x2 (3%)
+              </span>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <img id="treeCoreIcon" src="/items/icons/transparent/edge_core.png" alt="Core" class="size-11 object-contain drop-shadow" />
+                  <div>
+                    <strong id="treeCoreTitle" class="text-sm font-bold text-white block">Edge Core</strong>
+                    <span id="treeCoreType" class="font-mono text-[10px] text-rose-300">การันตีสายคม / มีด</span>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <span id="treeCoreQty" class="font-mono text-base font-extrabold text-white block">x100</span>
+                  <span class="font-mono text-[10px] text-emerald-400">สำเร็จ 100%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3.3: Base Weapon / Blueprint Pre-requisites -->
+            <div class="p-3 rounded-2xl border border-line bg-paper/60 space-y-2">
+              <div class="flex items-center justify-between text-xs font-mono">
+                <span class="text-textMuted flex items-center gap-1.5">
+                  <img id="treeBpIcon" src="/items/icons/transparent/blueprint_machete_lv1.png" alt="BP" class="size-4 object-contain" />
+                  <span id="treeBpName" class="text-white font-bold truncate max-w-[130px]">Blueprint Machete</span>
+                </span>
+                <span class="text-lime font-bold">x1</span>
+              </div>
+              <div id="treeBaseRow" class="flex items-center justify-between text-xs font-mono border-t border-lineSubtle pt-1.5">
+                <span class="text-textMuted flex items-center gap-1.5">
+                  <img id="treeBaseIcon" src="/items/icons/transparent/bottle.png" alt="Base" class="size-4 object-contain" />
+                  <span id="treeBaseName" class="text-slate-200 truncate max-w-[130px]">Bottle (ขวดแตก)</span>
+                </span>
+                <span class="text-amber-300 font-bold">x1</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ================= STAGE 4: FINAL WEAPON (ยอดไม้ - อาวุธสำเร็จรูป) ================= -->
+        <div class="space-y-4 flex flex-col justify-between">
+          <div class="flex items-center justify-between pb-2 border-b border-lime/40">
+            <span class="font-mono text-xs font-bold text-lime flex items-center gap-1.5">
+              <span class="grid size-5 place-items-center rounded-full bg-lime/20 text-[10px]">4</span>
+              <span>อาวุธสำเร็จรูป (Lv.1)</span>
+            </span>
+            <span class="text-[10px] font-mono text-textMuted">โต๊ะคราฟต์ลับ</span>
+          </div>
+
+          <!-- Final Target Weapon Card -->
+          <div class="flex-1 flex flex-col justify-center">
+            <div class="tree-node p-5 rounded-3xl border-2 border-lime/60 bg-gradient-to-b from-card to-paper/90 shadow-[0_0_35px_-5px_rgba(165,255,95,0.45)] relative overflow-hidden text-center space-y-4">
+              
+              <div class="absolute -right-12 -top-12 size-32 bg-lime/10 rounded-full blur-2xl pointer-events-none"></div>
+
+              <div class="relative mx-auto size-24 rounded-2xl bg-slate-950/90 border border-line p-2 flex items-center justify-center shadow-inner group">
+                <img id="treeFinalIcon" src="/items/icons/transparent/machete_lv1.png" alt="Weapon" class="size-20 object-contain drop-shadow-[0_0_15px_rgba(165,255,95,0.5)] transition-transform group-hover:scale-110" />
+              </div>
+
+              <div>
+                <h3 id="treeFinalTitle" class="text-xl font-display font-black text-white tracking-tight">
+                  Machete Lv.1
+                </h3>
+                <span id="treeFinalDamage" class="inline-block mt-1 font-mono text-xs font-bold text-lime bg-lime/10 border border-lime/30 px-3 py-1 rounded-full">
+                  ความแรง: 18 ดาเมจ (สูงสุด)
+                </span>
+                <p id="treeFinalDesc" class="mt-2 text-xs text-textSoft leading-relaxed font-sans line-clamp-3">
+                  อาวุธประชิดที่รุนแรงที่สุดในแพตช์ 1.3.0 โจมตี 6-7 ครั้งสามารถน็อกผู้เล่นเลือด 100 ได้ทันที
+                </p>
+              </div>
+
+              <div class="border-t border-lineSubtle pt-3 space-y-1.5 font-mono text-xs">
+                <div class="flex justify-between text-textMuted">
+                  <span>โอกาสสำเร็จ:</span>
+                  <span class="text-emerald-400 font-bold">100% การันตี</span>
+                </div>
+                <div class="flex justify-between text-textMuted">
+                  <span>ค่าธรรมเนียมโต๊ะ:</span>
+                  <span id="treeTableFee" class="text-amber-300 font-bold">$250,000 RD</span>
+                </div>
+                <div class="flex justify-between text-textMuted">
+                  <span>จุดคราฟต์:</span>
+                  <span class="text-slate-200">โต๊ะคราฟต์ลับ</span>
+                </div>
+              </div>
+
+              <a
+                href="/guides/crafting/weapons"
+                class="w-full py-2.5 rounded-xl bg-lime text-slate-950 font-bold text-xs hover:bg-lime/90 transition-colors block font-mono"
+              >
+                ดูคู่มือ & พิกัดโต๊ะคราฟต์ ➔
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom Grand Total Summary Bar -->
+    <div class="mt-8 p-4 sm:p-5 rounded-2xl border border-line bg-paper/90 backdrop-blur-md flex flex-col lg:flex-row lg:items-center justify-between gap-4 font-mono text-xs">
+      <div class="space-y-1.5">
+        <span class="text-textMuted uppercase tracking-wider block text-[11px]">
+          สรุปทรัพยากรสุทธิที่ต้องเตรียมทั้งหมด (จาก 0 จนได้อาวุธ):
+        </span>
+        <div class="flex flex-wrap items-center gap-3 sm:gap-4 font-bold text-white">
+          <span class="flex items-center gap-1.5 text-amber-300">
+            <span>💵 รวมเงินสด:</span>
+            <strong id="treeSummaryTotalFee" class="text-sm font-extrabold text-amber-400">$1,250,000 RD</strong>
+          </span>
+          <span class="text-slate-600">|</span>
+          <span class="text-textSoft">
+            ⚙️ เหล็กแท่ง: <strong id="treeSummarySteel" class="text-white">2,000</strong>
+          </span>
+          <span class="text-textSoft">
+            🪵 ลังไม้: <strong id="treeSummaryWood" class="text-white">1,000</strong>
+          </span>
+          <span class="text-textSoft">
+            🥇 ทองแท่ง: <strong id="treeSummaryGold" class="text-white">500</strong>
+          </span>
+          <span class="text-textSoft">
+            🧱 ปูน: <strong id="treeSummaryCement" class="text-white">200</strong>
+          </span>
+          <span class="text-textSoft">
+            💎 คริสตัล: <strong id="treeSummaryCrystal" class="text-white">100</strong>
+          </span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 shrink-0">
+        <a
+          href="/map"
+          class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-line bg-card hover:border-mint text-textSoft hover:text-white transition-colors"
+        >
+          <CyberIcon name="map-pin" class="size-3.5 text-mint" />
+          <span>เปิดแผนที่จุดฟาร์ม ➔</span>
+        </a>
+      </div>
+    </div>
+
   </div>
 </section>
 
 <script>
-  const targetBtns = document.querySelectorAll('.craft-target-btn');
-  const nodes = document.querySelectorAll('.craft-node');
-  const titleEl = document.getElementById('craftActiveTitle');
-  const stationEl = document.getElementById('craftActiveStation');
-  const minsEl = document.getElementById('craftActiveMins');
+  // Weapons Data Dictionary
+  const weaponsData: Record<string, any> = {
+    machete: {
+      id: 'machete',
+      name: 'Machete Lv.1',
+      damage: 18,
+      type: 'edge',
+      typeLabel: 'สายคม (Edge Core)',
+      icon: '/items/icons/transparent/machete_lv1.png',
+      blueprintIcon: '/items/icons/transparent/blueprint_machete_lv1.png',
+      blueprintName: 'Blueprint: Machete LV1',
+      baseWeapon: 'Bottle (ขวดแตก) x1',
+      baseWeaponIcon: '/items/icons/transparent/bottle.png',
+      hasBase: true,
+      coreName: 'Edge Core',
+      coreType: 'การันตีสายคม / มีด',
+      coreIcon: '/items/icons/transparent/edge_core.png',
+      coreQty: 'x100',
+      coreBorder: 'border-rose-500/50 bg-rose-500/10 shadow-[0_0_20px_-5px_rgba(255,77,109,0.35)]',
+      coreText: 'text-rose-400',
+      badge: 'DMG 18 · สูงสุดในเซิร์ฟ',
+      badgeClass: 'bg-rose-500/10 border border-rose-500/30 text-rose-400',
+      desc: 'อาวุธประชิดที่รุนแรงที่สุดในแพตช์ 1.3.0 โจมตี 6-7 ครั้งสามารถน็อกผู้เล่นเลือด 100 ได้ทันที',
+      boxQty: 'x100',
+      boxFee: '$1,000,000',
+      tableFee: '$250,000 RD',
+      totalFee: '$1,250,000 RD',
+      materials: {
+        cement: 'x200',
+        wood: 'x1,000',
+        steel: 'x2,000',
+        gold: 'x500',
+        crystal: 'x100',
+      },
+    },
+    knife: {
+      id: 'knife',
+      name: 'Knife Lv.1',
+      damage: 16,
+      type: 'edge',
+      typeLabel: 'สายคม (Edge Core)',
+      icon: '/items/icons/transparent/knife_lv1.png',
+      blueprintIcon: '/items/icons/transparent/blueprint_knife_lv1.png',
+      blueprintName: 'Blueprint: Knife LV1',
+      baseWeapon: 'Bottle (ขวดแตก) x1',
+      baseWeaponIcon: '/items/icons/transparent/bottle.png',
+      hasBase: true,
+      coreName: 'Edge Core',
+      coreType: 'การันตีสายคม / มีด',
+      coreIcon: '/items/icons/transparent/edge_core.png',
+      coreQty: 'x100',
+      coreBorder: 'border-rose-500/50 bg-rose-500/10 shadow-[0_0_20px_-5px_rgba(255,77,109,0.35)]',
+      coreText: 'text-rose-400',
+      badge: 'DMG 16 · มีดพกสมดุล',
+      badgeClass: 'bg-rose-500/10 border border-rose-500/30 text-rose-400',
+      desc: 'มีดสั้นมาตรฐานของสายไฟต์ มีความคล่องตัวสูง ดาเมจ 16 หน่วยต่อการฟัน 1 ครั้ง',
+      boxQty: 'x100',
+      boxFee: '$1,000,000',
+      tableFee: '$350,000 RD',
+      totalFee: '$1,350,000 RD',
+      materials: {
+        cement: 'x200',
+        wood: 'x1,000',
+        steel: 'x2,000',
+        gold: 'x500',
+        crystal: 'x100',
+      },
+    },
+    dagger: {
+      id: 'dagger',
+      name: 'Dagger Lv.1',
+      damage: 16,
+      type: 'impact',
+      typeLabel: 'สายแทง (Impact Core)',
+      icon: '/items/icons/transparent/dagger_lv1.png',
+      blueprintIcon: '/items/icons/transparent/blueprint_knife_lv1.png',
+      blueprintName: 'Blueprint: Knife LV1',
+      baseWeapon: 'Bottle (ขวดแตก) x1',
+      baseWeaponIcon: '/items/icons/transparent/bottle.png',
+      hasBase: true,
+      coreName: 'Impact Core',
+      coreType: 'การันตีสายแทง / ทะลวง',
+      coreIcon: '/items/icons/transparent/impact_core.png',
+      coreQty: 'x100',
+      coreBorder: 'border-mint/50 bg-mint/10 shadow-[0_0_20px_-5px_rgba(69,242,180,0.35)]',
+      coreText: 'text-mint',
+      badge: 'DMG 16 · มีดสั้นกระแทก',
+      badgeClass: 'bg-mint/10 border border-mint/30 text-mint',
+      desc: 'แดกเกอร์ที่ใช้ Impact Core แกนกระแทกในการหลอม ดาเมจ 16 รวดเร็วและชะงักสูง',
+      boxQty: 'x100',
+      boxFee: '$1,000,000',
+      tableFee: '$350,000 RD',
+      totalFee: '$1,350,000 RD',
+      materials: {
+        cement: 'x200',
+        wood: 'x1,000',
+        steel: 'x2,000',
+        gold: 'x500',
+        crystal: 'x100',
+      },
+    },
+    knuckle: {
+      id: 'knuckle',
+      name: 'Knuckle Lv.1',
+      damage: 14,
+      type: 'impact',
+      typeLabel: 'สายหมัด (Impact Core)',
+      icon: '/items/icons/transparent/knuckle_lv1.png',
+      blueprintIcon: '/items/icons/transparent/blueprint_knuckle_lv1.png',
+      blueprintName: 'Blueprint: Knuckle LV1',
+      baseWeapon: 'ไม่ต้องใช้เบสอาวุธ',
+      baseWeaponIcon: '',
+      hasBase: false,
+      coreName: 'Impact Core',
+      coreType: 'การันตีสายทุบ / สนับมือ',
+      coreIcon: '/items/icons/transparent/impact_core.png',
+      coreQty: 'x75',
+      coreBorder: 'border-amber-400/50 bg-amber-400/10 shadow-[0_0_20px_-5px_rgba(251,191,36,0.35)]',
+      coreText: 'text-amber-300',
+      badge: 'DMG 14 · ไม่ต้องมีอาวุธตั้งต้น',
+      badgeClass: 'bg-amber-400/10 border border-amber-400/30 text-amber-300',
+      desc: 'จุดเด่นที่สุดคือ ไม่ต้องใช้เบสอาวุธตั้งต้น คราฟต์ขึ้นตรงได้ทันทีและใช้คอร์เพียง 75 ชิ้น',
+      boxQty: 'x75',
+      boxFee: '$750,000',
+      tableFee: '$250,000 RD',
+      totalFee: '$1,000,000 RD',
+      materials: {
+        cement: 'x150',
+        wood: 'x750',
+        steel: 'x1,500',
+        gold: 'x375',
+        crystal: 'x100',
+      },
+    },
+    poolcue: {
+      id: 'poolcue',
+      name: 'Poolcue Lv.1',
+      damage: 12,
+      type: 'impact',
+      typeLabel: 'สายทุบ (Impact Core)',
+      icon: '/items/icons/transparent/poolcue_lv1.png',
+      blueprintIcon: '/items/icons/transparent/blueprint_poolcue_lv1.png',
+      blueprintName: 'Blueprint: Pool Cue LV1',
+      baseWeapon: 'Baseball Bat / Golf Club x1',
+      baseWeaponIcon: '/items/icons/transparent/bat.png',
+      hasBase: true,
+      coreName: 'Impact Core',
+      coreType: 'การันตีสายทุบ / ไม้พูล',
+      coreIcon: '/items/icons/transparent/impact_core.png',
+      coreQty: 'x150',
+      coreBorder: 'border-cyan-400/50 bg-cyan-400/10 shadow-[0_0_20px_-5px_rgba(56,189,248,0.35)]',
+      coreText: 'text-cyan-300',
+      badge: 'DMG 12 · ระยะฟาดกว้าง',
+      badgeClass: 'bg-cyan-400/10 border border-cyan-400/30 text-cyan-300',
+      desc: 'อาวุธประชิดสายทุบยาว เหมาะสำหรับไฟต์แบบรักษาระยะและมีอัตราชะงักศัตรูต่อเนื่อง',
+      boxQty: 'x150',
+      boxFee: '$1,500,000',
+      tableFee: '$350,000 RD',
+      totalFee: '$1,850,000 RD',
+      materials: {
+        cement: 'x300',
+        wood: 'x1,500',
+        steel: 'x3,000',
+        gold: 'x750',
+        crystal: 'x150',
+      },
+    },
+  };
 
-  function highlightRecipe(ingredientsStr: string) {
-    const list = ingredientsStr.split(',');
-    nodes.forEach(node => {
-      const id = node.getAttribute('data-item-id') || '';
-      if (list.includes(id)) {
-        node.classList.remove('border-line', 'bg-paper/80');
-        node.classList.add('border-lime/60', 'bg-lime/10', 'shadow-[0_0_15px_-4px_rgba(165,255,95,0.4)]');
+  const buttons = document.querySelectorAll('.craft-weapon-btn');
+
+  // DOM Elements
+  const activeName = document.getElementById('treeActiveName');
+  const activeBadge = document.getElementById('treeActiveBadge');
+  const qtyCement = document.getElementById('treeQtyCement');
+  const qtyWood = document.getElementById('treeQtyWood');
+  const qtySteel = document.getElementById('treeQtySteel');
+  const qtyGold = document.getElementById('treeQtyGold');
+  const qtyCrystal = document.getElementById('treeQtyCrystal');
+  const qtyBox = document.getElementById('treeQtyBox');
+  const boxFee = document.getElementById('treeBoxFee');
+
+  const coreCard = document.getElementById('treeCoreCard');
+  const coreIcon = document.getElementById('treeCoreIcon') as HTMLImageElement | null;
+  const coreTitle = document.getElementById('treeCoreTitle');
+  const coreType = document.getElementById('treeCoreType');
+  const coreQty = document.getElementById('treeCoreQty');
+
+  const bpIcon = document.getElementById('treeBpIcon') as HTMLImageElement | null;
+  const bpName = document.getElementById('treeBpName');
+  const baseRow = document.getElementById('treeBaseRow');
+  const baseIcon = document.getElementById('treeBaseIcon') as HTMLImageElement | null;
+  const baseName = document.getElementById('treeBaseName');
+
+  const finalIcon = document.getElementById('treeFinalIcon') as HTMLImageElement | null;
+  const finalTitle = document.getElementById('treeFinalTitle');
+  const finalDamage = document.getElementById('treeFinalDamage');
+  const finalDesc = document.getElementById('treeFinalDesc');
+  const tableFee = document.getElementById('treeTableFee');
+
+  const sumTotalFee = document.getElementById('treeSummaryTotalFee');
+  const sumSteel = document.getElementById('treeSummarySteel');
+  const sumWood = document.getElementById('treeSummaryWood');
+  const sumGold = document.getElementById('treeSummaryGold');
+  const sumCement = document.getElementById('treeSummaryCement');
+  const sumCrystal = document.getElementById('treeSummaryCrystal');
+
+  function renderTree(weaponId: string) {
+    const data = weaponsData[weaponId];
+    if (!data) return;
+
+    if (activeName) activeName.textContent = data.name;
+    if (activeBadge) {
+      activeBadge.textContent = data.badge;
+      activeBadge.className = `rounded px-2 py-0.5 text-[10px] font-bold ${data.badgeClass}`;
+    }
+
+    if (qtyCement) qtyCement.textContent = data.materials.cement;
+    if (qtyWood) qtyWood.textContent = data.materials.wood;
+    if (qtySteel) qtySteel.textContent = data.materials.steel;
+    if (qtyGold) qtyGold.textContent = data.materials.gold;
+    if (qtyCrystal) qtyCrystal.textContent = data.materials.crystal;
+
+    if (qtyBox) qtyBox.textContent = data.boxQty;
+    if (boxFee) boxFee.textContent = data.boxFee;
+
+    if (coreCard) coreCard.className = `tree-node p-4 rounded-2xl border ${data.coreBorder} relative`;
+    if (coreIcon) coreIcon.src = data.coreIcon;
+    if (coreTitle) coreTitle.textContent = data.coreName;
+    if (coreType) coreType.textContent = data.coreType;
+    if (coreQty) coreQty.textContent = data.coreQty;
+
+    if (bpIcon) bpIcon.src = data.blueprintIcon;
+    if (bpName) bpName.textContent = data.blueprintName;
+
+    if (baseRow) {
+      if (data.hasBase) {
+        baseRow.style.display = 'flex';
+        if (baseIcon) {
+          baseIcon.src = data.baseWeaponIcon;
+          baseIcon.style.display = 'inline-block';
+        }
+        if (baseName) baseName.textContent = data.baseWeapon;
       } else {
-        node.classList.remove('border-lime/60', 'bg-lime/10', 'shadow-[0_0_15px_-4px_rgba(165,255,95,0.4)]');
-        node.classList.add('border-line', 'bg-paper/80');
+        baseRow.style.display = 'flex';
+        if (baseIcon) baseIcon.style.display = 'none';
+        if (baseName) baseName.textContent = 'ไม่ต้องใช้เบสอาวุธ';
       }
-    });
+    }
+
+    if (finalIcon) finalIcon.src = data.icon;
+    if (finalTitle) finalTitle.textContent = data.name;
+    if (finalDamage) finalDamage.textContent = `ความแรง: ${data.damage} ดาเมจ`;
+    if (finalDesc) finalDesc.textContent = data.desc;
+    if (tableFee) tableFee.textContent = data.tableFee;
+
+    if (sumTotalFee) sumTotalFee.textContent = data.totalFee;
+    if (sumSteel) sumSteel.textContent = data.materials.steel.replace('x', '');
+    if (sumWood) sumWood.textContent = data.materials.wood.replace('x', '');
+    if (sumGold) sumGold.textContent = data.materials.gold.replace('x', '');
+    if (sumCement) sumCement.textContent = data.materials.cement.replace('x', '');
+    if (sumCrystal) sumCrystal.textContent = data.materials.crystal.replace('x', '');
   }
 
-  targetBtns.forEach(btn => {
+  buttons.forEach(btn => {
     btn.addEventListener('click', () => {
-      targetBtns.forEach(b => {
-        b.classList.remove('border-lime', 'bg-lime/10', 'shadow-[0_0_20px_-5px_rgba(165,255,95,0.4)]', 'active');
-        b.classList.add('border-line', 'bg-paper/80');
+      buttons.forEach(b => {
+        b.classList.remove('border-lime', 'bg-lime/10', 'shadow-[0_0_20px_-5px_rgba(165,255,95,0.4)]', 'active', 'ring-1', 'ring-lime');
+        b.classList.add('border-line', 'bg-card/70');
       });
-      btn.classList.remove('border-line', 'bg-paper/80');
-      btn.classList.add('border-lime', 'bg-lime/10', 'shadow-[0_0_20px_-5px_rgba(165,255,95,0.4)]', 'active');
+      btn.classList.remove('border-line', 'bg-card/70');
+      btn.classList.add('border-lime', 'bg-lime/10', 'shadow-[0_0_20px_-5px_rgba(165,255,95,0.4)]', 'active', 'ring-1', 'ring-lime');
 
-      const ing = btn.getAttribute('data-ingredients') || '';
-      const station = btn.getAttribute('data-station') || '';
-      const mins = btn.getAttribute('data-mins') || '';
-      const title = btn.getAttribute('data-title') || '';
-
-      if (titleEl) titleEl.textContent = title;
-      if (stationEl) stationEl.textContent = station;
-      if (minsEl) minsEl.textContent = mins;
-
-      highlightRecipe(ing);
+      const wid = btn.getAttribute('data-weapon-id') || 'machete';
+      renderTree(wid);
     });
   });
-
-  // Init first highlight
-  if (targetBtns.length > 0) {
-    highlightRecipe(targetBtns[0].getAttribute('data-ingredients') || '');
-  }
 </script>
