@@ -20,10 +20,16 @@
   --font-sans: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-display: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', 'Prompt', monospace;
+
+  /* Apple & Emil Kowalski Fluid Motion Curves */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.15);
+  --ease-smooth: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 7rem;
   background-color: var(--bg-base);
   color: #ffffff;
   font-family: var(--font-sans);
@@ -477,6 +483,134 @@ body {
 }
 .telemetry-dot-3 {
   animation: telemetryDot 1.4s ease-in-out 0.5s infinite;
+}
+
+/* ==========================================================================
+   Smooth Component Motion & Micro-Interactions (Apple & Emil Kowalski)
+   ========================================================================== */
+
+/* 1. Global Tactile Buttons & Interactive Elements */
+button:not(:disabled),
+.btn,
+a[role="button"],
+.job-tab-btn,
+.stepper-step-btn,
+.stepper-job-tab,
+.category-accordion-btn {
+  transition: transform 0.2s var(--ease-out-expo),
+              box-shadow 0.2s var(--ease-out-expo),
+              background-color 0.2s ease,
+              border-color 0.2s ease,
+              color 0.15s ease;
+  user-select: none;
+}
+
+button:not(:disabled):active,
+.btn:active,
+a[role="button"]:active,
+.job-tab-btn:active,
+.stepper-step-btn:active {
+  transform: scale(0.975);
+}
+
+/* 2. Smooth Interactive Cards & Elevations */
+.cyber-tilt-card,
+.bento-card,
+.category-stagger-card {
+  transition: border-color 0.25s ease,
+              box-shadow 0.28s var(--ease-out-expo),
+              background-color 0.25s ease,
+              transform 0.28s var(--ease-out-expo);
+}
+
+/* 3. Smooth Form Controls (Inputs, Selects, Checkboxes) */
+input[type="text"],
+input[type="number"],
+input[type="search"],
+select,
+textarea {
+  transition: border-color 0.2s var(--ease-out-expo),
+              box-shadow 0.2s var(--ease-out-expo),
+              background-color 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+select:focus,
+textarea:focus {
+  box-shadow: 0 0 16px rgba(69, 242, 180, 0.25);
+}
+
+/* 4. Smooth Accordion Expansion (GPU CSS Grid) */
+.category-accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.28s var(--ease-out-expo),
+              opacity 0.22s ease;
+}
+
+.category-accordion-panel.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.category-accordion-panel > ul {
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* 5. Smooth Tab Panel Entrance */
+.job-tab-panel {
+  animation: smoothTabEntrance 0.28s var(--ease-out-expo) forwards;
+}
+
+@keyframes smoothTabEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 6. Smooth Popover Dropdown Menus */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(69, 242, 180, 0.3) transparent;
+}
+
+/* 7. Fluid View Transitions (Page-to-page navigation) */
+::view-transition-old(root) {
+  animation: spaPageFadeOut 0.2s var(--ease-out-expo) forwards;
+}
+::view-transition-new(root) {
+  animation: spaPageFadeIn 0.26s var(--ease-out-expo) forwards;
+}
+
+@keyframes spaPageFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes spaPageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 

@@ -135,11 +135,11 @@ const activeCategory = allGuides.find((g) => g.slug === currentSlug)?.data.categ
             <!-- Collapsible Content List -->
             <div 
               id={`cat-panel-${catKey}`}
-              class={`category-accordion-panel transition-all duration-200 ${
-                isCatActive ? 'py-1' : 'hidden py-0'
+              class={`category-accordion-panel ${
+                isCatActive ? 'is-open' : ''
               }`}
             >
-              <ul class="space-y-1 ml-2 pl-2 mr-2 border-l border-line/40 my-1">
+              <ul class="space-y-1 ml-2 pl-2 mr-2 border-l border-line/40 my-1 py-1">
                 {guides.map((guide) => {
                   const isActive = guide.slug === currentSlug;
                   return (
@@ -210,7 +210,7 @@ const activeCategory = allGuides.find((g) => g.slug === currentSlug)?.data.categ
 
     if (open) {
       btn.setAttribute('aria-expanded', 'true');
-      panel.classList.remove('hidden');
+      panel.classList.add('is-open');
       if (chevron) {
         chevron.classList.add('rotate-180');
         chevron.classList.remove('text-textMuted');
@@ -228,7 +228,7 @@ const activeCategory = allGuides.find((g) => g.slug === currentSlug)?.data.categ
       }
     } else {
       btn.setAttribute('aria-expanded', 'false');
-      panel.classList.add('hidden');
+      panel.classList.remove('is-open');
       if (chevron) {
         chevron.classList.remove('rotate-180', 'text-mint', 'text-amber-300');
         chevron.classList.add('text-textMuted');
@@ -262,7 +262,7 @@ const activeCategory = allGuides.find((g) => g.slug === currentSlug)?.data.categ
         if (targetId) {
           const panel = document.getElementById(targetId);
           if (panel) {
-            const isCurrentlyOpen = btn.getAttribute('aria-expanded') === 'true' && !panel.classList.contains('hidden');
+            const isCurrentlyOpen = btn.getAttribute('aria-expanded') === 'true' && panel.classList.contains('is-open');
             setAccordion(btn, panel, !isCurrentlyOpen);
           }
         }

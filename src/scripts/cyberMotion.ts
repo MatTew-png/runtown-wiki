@@ -52,9 +52,10 @@ export function initCyberAnimations() {
         rotateX,
         rotateY,
         transformPerspective: 1000,
-        scale: 1.015,
-        duration: 0.2,
-        ease: 'power1.out',
+        scale: 1.012,
+        duration: 0.28,
+        ease: 'power2.out',
+        overwrite: 'auto',
       });
     });
 
@@ -66,8 +67,9 @@ export function initCyberAnimations() {
         rotateX: 0,
         rotateY: 0,
         scale: 1,
-        duration: 0.45,
-        ease: 'power2.out',
+        duration: 0.5,
+        ease: 'power3.out',
+        overwrite: 'auto',
       });
     });
   });

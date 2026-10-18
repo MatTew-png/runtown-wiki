@@ -923,8 +923,16 @@ const initialStep = currentJobData.steps[0];
     document.querySelectorAll('.stepper-step-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
         const idx = parseInt(btn.getAttribute('data-step-index') || '0', 10);
-        currentStep = idx;
-        renderStage();
+        if (idx !== currentStep) {
+          currentStep = idx;
+          const stageCanvas = document.getElementById('stepperStageCanvas');
+          if (stageCanvas) {
+            stageCanvas.classList.remove('stage-transition-in');
+            void stageCanvas.offsetWidth;
+            stageCanvas.classList.add('stage-transition-in');
+          }
+          renderStage();
+        }
       });
     });
 
@@ -961,3 +969,23 @@ const initialStep = currentJobData.steps[0];
   initJobStepper();
   document.addEventListener('astro:page-load', initJobStepper);
 </script>
+
+<style>
+  .stage-transition-in {
+    animation: stepperStageFade 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes stepperStageFade {
+    0% {
+      opacity: 0.65;
+      transform: translateY(4px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #stageImage {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+  }
+</style>
