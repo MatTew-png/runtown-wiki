@@ -93,23 +93,29 @@ const activeCategory = allGuides.find((g) => g.slug === currentSlug)?.data.categ
         const isCatActive = catKey === activeCategory;
 
         return (
-          <div class="guide-category-group rounded-xl border border-lineSubtle/40 bg-card/40 overflow-hidden transition-all" data-category={catKey}>
+          <div 
+            class={`guide-category-group rounded-xl border transition-all duration-200 ${
+              isCatActive ? (catKey === 'gang' ? 'border-amber-400/40 bg-card/60' : 'border-mint/30 bg-card/60') : 'border-lineSubtle/40 bg-card/40'
+            }`} 
+            data-category={catKey}
+          >
             <!-- Accordion Header Button -->
             <button
               type="button"
               class={`category-accordion-btn w-full flex items-center justify-between px-3 py-2 text-[11px] font-mono font-bold uppercase tracking-wider transition-all cursor-pointer group select-none ${
                 isCatActive
-                  ? (catKey === 'gang' ? 'bg-amber-400/15 text-amber-300 border-b border-amber-400/30' : 'bg-mint/10 text-mint border-b border-mint/20')
+                  ? (catKey === 'gang' ? 'text-amber-300 border-b border-amber-400/30' : 'text-mint border-b border-mint/20')
                   : 'text-textMuted hover:text-white hover:bg-cardHover'
               }`}
               data-target={`cat-panel-${catKey}`}
+              data-is-gang={catKey === 'gang' ? 'true' : 'false'}
               aria-expanded={isCatActive ? "true" : "false"}
             >
               <div class="flex items-center gap-2 min-w-0">
                 {catKey === 'gang' ? (
                   <img src="/items/icons/transparent/hq_coin.png" class="size-3.5 object-contain shrink-0" alt="HQ Coin" />
                 ) : (
-                  <CyberIcon name={catInfo.icon} class={`size-3.5 shrink-0 ${isCatActive ? 'text-mint' : 'text-textMuted group-hover:text-white'}`} />
+                  <CyberIcon name={catInfo.icon} class={`size-3.5 shrink-0 category-icon transition-colors ${isCatActive ? 'text-mint' : 'text-textMuted group-hover:text-white'}`} />
                 )}
                 <span class="truncate">{catInfo.label}</span>
                 {catKey === 'gang' && (
@@ -121,7 +127,7 @@ const activeCategory = allGuides.find((g) => g.slug === currentSlug)?.data.categ
                 <span class="text-[10px] text-textMuted font-mono group-hover:text-slate-300">({guides.length})</span>
                 <CyberIcon 
                   name="chevron-down" 
-                  class={`size-3 text-textMuted group-hover:text-mint transition-transform duration-200 accordion-chevron ${isCatActive ? 'rotate-180' : ''}`} 
+                  class={`size-3 transition-transform duration-200 accordion-chevron ${isCatActive ? (catKey === 'gang' ? 'rotate-180 text-amber-300' : 'rotate-180 text-mint') : 'text-textMuted group-hover:text-mint'}`} 
                 />
               </div>
             </button>
@@ -197,15 +203,46 @@ const activeCategory = allGuides.find((g) => g.slug === currentSlug)?.data.categ
 
 <script>
   function setAccordion(btn: HTMLElement, panel: HTMLElement, open: boolean) {
+    const group = btn.closest('.guide-category-group');
     const chevron = btn.querySelector('.accordion-chevron');
+    const icon = btn.querySelector('.category-icon');
+    const isGang = btn.getAttribute('data-is-gang') === 'true';
+
     if (open) {
       btn.setAttribute('aria-expanded', 'true');
       panel.classList.remove('hidden');
-      if (chevron) chevron.classList.add('rotate-180');
+      if (chevron) {
+        chevron.classList.add('rotate-180');
+        chevron.classList.remove('text-textMuted');
+        chevron.classList.add(isGang ? 'text-amber-300' : 'text-mint');
+      }
+      if (icon) {
+        icon.classList.remove('text-textMuted');
+        icon.classList.add(isGang ? 'text-amber-300' : 'text-mint');
+      }
+      btn.classList.remove('text-textMuted', 'hover:text-white', 'hover:bg-cardHover');
+      btn.classList.add(isGang ? 'text-amber-300' : 'text-mint', 'border-b', isGang ? 'border-amber-400/30' : 'border-mint/20');
+      if (group) {
+        group.classList.remove('border-lineSubtle/40', 'bg-card/40');
+        group.classList.add(isGang ? 'border-amber-400/40' : 'border-mint/30', 'bg-card/60');
+      }
     } else {
       btn.setAttribute('aria-expanded', 'false');
       panel.classList.add('hidden');
-      if (chevron) chevron.classList.remove('rotate-180');
+      if (chevron) {
+        chevron.classList.remove('rotate-180', 'text-mint', 'text-amber-300');
+        chevron.classList.add('text-textMuted');
+      }
+      if (icon) {
+        icon.classList.remove('text-mint', 'text-amber-300');
+        icon.classList.add('text-textMuted');
+      }
+      btn.classList.remove('text-mint', 'text-amber-300', 'border-b', 'border-amber-400/30', 'border-mint/20');
+      btn.classList.add('text-textMuted', 'hover:text-white', 'hover:bg-cardHover');
+      if (group) {
+        group.classList.remove('border-amber-400/40', 'border-mint/30', 'bg-card/60');
+        group.classList.add('border-lineSubtle/40', 'bg-card/40');
+      }
     }
   }
 
