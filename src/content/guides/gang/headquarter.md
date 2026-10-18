@@ -19,7 +19,7 @@ risk: "ระบบแก๊งทางการ"
       <div class="size-28 sm:size-32 rounded-2xl bg-amber-500/10 border-2 border-amber-400/50 p-2 flex items-center justify-center shadow-[0_0_25px_rgba(245,158,11,0.3)]">
         <img src="/items/icons/transparent/hq_coin.png" alt="Headquarter Coin" class="w-full h-full object-contain filter drop-shadow-[0_0_12px_rgba(245,158,11,0.6)]" />
       </div>
-      <span class="absolute -bottom-2 -right-2 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-400 text-black border border-white/20">
+      <span class="absolute -bottom-2 -right-2 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-400 text-slate-950 border border-white/20">
         +500 EXP
       </span>
     </div>

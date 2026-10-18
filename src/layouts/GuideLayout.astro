@@ -265,12 +265,12 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
               <button
                 type="button"
                 id="btnTabSteps"
-                class="job-tab-btn flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer bg-mint text-black shadow-[0_0_15px_rgba(69,242,180,0.35)]"
+                class="job-tab-btn active flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer border border-mint/80 bg-mint/15 text-mint shadow-[0_0_15px_rgba(69,242,180,0.25)]"
                 data-tab="steps"
               >
-                <CyberIcon name="file-text" class="size-4 shrink-0" />
+                <CyberIcon name="file-text" class="size-4 shrink-0 text-mint" />
                 <span>📋 ขั้นตอนการทำงาน</span>
-                <span class="text-[9px] px-1.5 py-0.5 rounded bg-black/20 text-black uppercase font-bold tracking-wider hidden md:inline">
+                <span id="badgeTabSteps" class="text-[9px] px-2 py-0.5 rounded uppercase font-bold tracking-wider hidden md:inline border border-mint/40 bg-mint/20 text-mint">
                   WORKFLOW
                 </span>
               </button>
@@ -279,12 +279,12 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
               <button
                 type="button"
                 id="btnTabCalc"
-                class="job-tab-btn flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer text-textMuted hover:text-white hover:bg-white/5 border border-transparent"
+                class="job-tab-btn flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer border border-line bg-card/40 text-textMuted hover:text-white hover:bg-white/5"
                 data-tab="calc"
               >
                 <CyberIcon name="scale" class="size-4 shrink-0 text-amber-400" />
                 <span>💰 คำนวณรายได้ & ค่าเที่ยว</span>
-                <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-400/15 text-amber-300 border border-amber-400/30 uppercase font-bold tracking-wider hidden md:inline">
+                <span id="badgeTabCalc" class="text-[9px] px-2 py-0.5 rounded uppercase font-bold tracking-wider hidden md:inline border border-lineSubtle bg-white/5 text-textMuted">
                   CALCULATOR & ROI
                 </span>
               </button>
@@ -394,7 +394,7 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
     <button
       type="button"
       id="btnFloatingBackToTop"
-      class="px-3 py-2 rounded-xl bg-mint/15 text-mint border border-mint/40 hover:bg-mint hover:text-black font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+      class="px-3 py-2 rounded-xl bg-mint/15 text-mint border border-mint/40 hover:bg-mint hover:text-slate-950 font-bold flex items-center gap-1.5 transition-all cursor-pointer"
       title="เลื่อนกลับขึ้นบนสุด"
     >
       <CyberIcon name="chevron-up" class="size-3.5" />
@@ -431,6 +431,8 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
     const panelCalc = document.getElementById('panelCalc');
     const statusText = document.getElementById('tabModeStatusText');
     const pulseDot = document.getElementById('tabModePulseDot');
+    const badgeSteps = document.getElementById('badgeTabSteps');
+    const badgeCalc = document.getElementById('badgeTabCalc');
 
     if (!rawSlot || !stepsSlot || !calcSlot || !btnSteps || !btnCalc || !panelSteps || !panelCalc) {
       return;
@@ -460,8 +462,15 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
         panelSteps.classList.add('hidden');
         panelCalc.classList.remove('hidden');
 
-        btnSteps.className = 'job-tab-btn flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer text-textMuted hover:text-white hover:bg-white/5 border border-transparent';
-        btnCalc.className = 'job-tab-btn active flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer bg-gradient-to-r from-amber-400 to-amber-500 text-black shadow-[0_0_15px_rgba(251,191,36,0.35)]';
+        btnSteps.className = 'job-tab-btn flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer border border-line bg-card/40 text-textMuted hover:text-white hover:bg-white/5';
+        if (badgeSteps) {
+          badgeSteps.className = 'text-[9px] px-2 py-0.5 rounded uppercase font-bold tracking-wider hidden md:inline border border-lineSubtle bg-white/5 text-textMuted';
+        }
+
+        btnCalc.className = 'job-tab-btn active flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer border border-amber-400/80 bg-amber-400/20 text-amber-300 shadow-[0_0_18px_rgba(251,191,36,0.3)]';
+        if (badgeCalc) {
+          badgeCalc.className = 'text-[9px] px-2 py-0.5 rounded uppercase font-bold tracking-wider hidden md:inline border border-amber-400/50 bg-amber-400/25 text-amber-200';
+        }
 
         if (statusText) {
           statusText.textContent = 'คำนวณรายได้ & ค่าเที่ยว (Economics)';
@@ -474,8 +483,15 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
         panelCalc.classList.add('hidden');
         panelSteps.classList.remove('hidden');
 
-        btnCalc.className = 'job-tab-btn flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer text-textMuted hover:text-white hover:bg-white/5 border border-transparent';
-        btnSteps.className = 'job-tab-btn active flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer bg-mint text-black shadow-[0_0_15px_rgba(69,242,180,0.35)]';
+        btnCalc.className = 'job-tab-btn flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer border border-line bg-card/40 text-textMuted hover:text-white hover:bg-white/5';
+        if (badgeCalc) {
+          badgeCalc.className = 'text-[9px] px-2 py-0.5 rounded uppercase font-bold tracking-wider hidden md:inline border border-lineSubtle bg-white/5 text-textMuted';
+        }
+
+        btnSteps.className = 'job-tab-btn active flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer border border-mint/80 bg-mint/20 text-mint shadow-[0_0_18px_rgba(69,242,180,0.3)]';
+        if (badgeSteps) {
+          badgeSteps.className = 'text-[9px] px-2 py-0.5 rounded uppercase font-bold tracking-wider hidden md:inline border border-mint/50 bg-mint/25 text-mint';
+        }
 
         if (statusText) {
           statusText.textContent = 'ขั้นตอนการทำงาน (Step-by-Step)';

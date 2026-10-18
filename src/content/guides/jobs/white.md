@@ -85,7 +85,7 @@ updatedAt: "09 ตุลาคม 2026"
     </div>
     <div class="pt-4 mt-3 border-t border-slate-800/80 flex items-center justify-between">
       <span class="text-[11px] text-slate-400 font-mono">ลูป: Paleto ➔ Sawmill ➔ Docks ➔ El Burro</span>
-      <a href="/guides/jobs/woodcutting" class="px-3 py-1.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/40 hover:bg-amber-400 hover:text-black font-bold text-xs font-mono transition-all flex items-center gap-1.5">
+      <a href="/guides/jobs/woodcutting" class="px-3 py-1.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/40 hover:bg-amber-400 hover:text-slate-950 font-bold text-xs font-mono transition-all flex items-center gap-1.5">
         <span>คู่มือเต็ม & แผนที่</span>
         <span>➔</span>
       </a>
@@ -128,7 +128,7 @@ updatedAt: "09 ตุลาคม 2026"
     </div>
     <div class="pt-4 mt-3 border-t border-slate-800/80 flex items-center justify-between">
       <span class="text-[11px] text-slate-400 font-mono">ลูป: Davis Quartz ➔ ปากเหมือง ➔ Cypress</span>
-      <a href="/guides/jobs/mining" class="px-3 py-1.5 rounded-lg bg-blue-500/15 text-blue-300 border border-blue-500/40 hover:bg-blue-400 hover:text-black font-bold text-xs font-mono transition-all flex items-center gap-1.5">
+      <a href="/guides/jobs/mining" class="px-3 py-1.5 rounded-lg bg-blue-500/15 text-blue-300 border border-blue-500/40 hover:bg-blue-400 hover:text-slate-950 font-bold text-xs font-mono transition-all flex items-center gap-1.5">
         <span>คู่มือเต็ม & แผนที่</span>
         <span>➔</span>
       </a>
@@ -171,7 +171,7 @@ updatedAt: "09 ตุลาคม 2026"
     </div>
     <div class="pt-4 mt-3 border-t border-slate-800/80 flex items-center justify-between">
       <span class="text-[11px] text-slate-400 font-mono">ลูป: Grapeseed ➔ โรงสี ➔ ท่าเรือ ➔ Morningwood</span>
-      <a href="/guides/jobs/wheat" class="px-3 py-1.5 rounded-lg bg-yellow-500/15 text-yellow-300 border border-yellow-500/40 hover:bg-yellow-400 hover:text-black font-bold text-xs font-mono transition-all flex items-center gap-1.5">
+      <a href="/guides/jobs/wheat" class="px-3 py-1.5 rounded-lg bg-yellow-500/15 text-yellow-300 border border-yellow-500/40 hover:bg-yellow-400 hover:text-slate-950 font-bold text-xs font-mono transition-all flex items-center gap-1.5">
         <span>คู่มือเต็ม & แผนที่</span>
         <span>➔</span>
       </a>
@@ -214,7 +214,7 @@ updatedAt: "09 ตุลาคม 2026"
     </div>
     <div class="pt-4 mt-3 border-t border-slate-800/80 flex items-center justify-between">
       <span class="text-[11px] text-slate-400 font-mono">ลูป: La Puerta / ทะเลทราย ➔ Cypress Flats</span>
-      <a href="/guides/jobs/smelting" class="px-3 py-1.5 rounded-lg bg-slate-500/20 text-slate-200 border border-slate-500/40 hover:bg-slate-300 hover:text-black font-bold text-xs font-mono transition-all flex items-center gap-1.5">
+      <a href="/guides/jobs/smelting" class="px-3 py-1.5 rounded-lg bg-slate-500/20 text-slate-200 border border-slate-500/40 hover:bg-slate-300 hover:text-slate-950 font-bold text-xs font-mono transition-all flex items-center gap-1.5">
         <span>คู่มือเต็ม & แผนที่</span>
         <span>➔</span>
       </a>
@@ -257,7 +257,7 @@ updatedAt: "09 ตุลาคม 2026"
     </div>
     <div class="pt-4 mt-3 border-t border-slate-800/80 flex items-center justify-between">
       <span class="text-[11px] text-slate-400 font-mono">ลูป: Grand Senora ➔ Cypress ➔ Docks ➔ Little Seoul</span>
-      <a href="/guides/jobs/pig" class="px-3 py-1.5 rounded-lg bg-pink-500/15 text-pink-300 border border-pink-500/40 hover:bg-pink-400 hover:text-black font-bold text-xs font-mono transition-all flex items-center gap-1.5">
+      <a href="/guides/jobs/pig" class="px-3 py-1.5 rounded-lg bg-pink-500/15 text-pink-300 border border-pink-500/40 hover:bg-pink-400 hover:text-slate-950 font-bold text-xs font-mono transition-all flex items-center gap-1.5">
         <span>คู่มือเต็ม & แผนที่</span>
         <span>➔</span>
       </a>
@@ -300,7 +300,7 @@ updatedAt: "09 ตุลาคม 2026"
     </div>
     <div class="pt-4 mt-3 border-t border-slate-800/80 flex items-center justify-between">
       <span class="text-[11px] text-slate-400 font-mono">ลูป: Mount Gordo ➔ ทะเลทราย ➔ Docks ➔ Del Perro</span>
-      <a href="/guides/jobs/flowers" class="px-3 py-1.5 rounded-lg bg-rose-500/15 text-rose-300 border border-rose-500/40 hover:bg-rose-400 hover:text-black font-bold text-xs font-mono transition-all flex items-center gap-1.5">
+      <a href="/guides/jobs/flowers" class="px-3 py-1.5 rounded-lg bg-rose-500/15 text-rose-300 border border-rose-500/40 hover:bg-rose-400 hover:text-slate-950 font-bold text-xs font-mono transition-all flex items-center gap-1.5">
         <span>คู่มือเต็ม & แผนที่</span>
         <span>➔</span>
       </a>
@@ -343,7 +343,7 @@ updatedAt: "09 ตุลาคม 2026"
     </div>
     <div class="pt-4 mt-3 border-t border-slate-800/80 flex items-center justify-between">
       <span class="text-[11px] text-slate-400 font-mono">ลูป: Zancudo River ➔ Elysian Docks</span>
-      <a href="/guides/jobs/crystal" class="px-3 py-1.5 rounded-lg bg-cyan-500/15 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-400 hover:text-black font-bold text-xs font-mono transition-all flex items-center gap-1.5">
+      <a href="/guides/jobs/crystal" class="px-3 py-1.5 rounded-lg bg-cyan-500/15 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-400 hover:text-slate-950 font-bold text-xs font-mono transition-all flex items-center gap-1.5">
         <span>คู่มือเต็ม & แผนที่</span>
         <span>➔</span>
       </a>
@@ -386,7 +386,7 @@ updatedAt: "09 ตุลาคม 2026"
     </div>
     <div class="pt-4 mt-3 border-t border-slate-800/80 flex items-center justify-between">
       <span class="text-[11px] text-slate-400 font-mono">สาขา: Vespucci / Legion / Mirror Park / Paleto</span>
-      <a href="/guides/jobs/kitchen" class="px-3 py-1.5 rounded-lg bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-400 hover:text-black font-bold text-xs font-mono transition-all flex items-center gap-1.5">
+      <a href="/guides/jobs/kitchen" class="px-3 py-1.5 rounded-lg bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-400 hover:text-slate-950 font-bold text-xs font-mono transition-all flex items-center gap-1.5">
         <span>คู่มือเต็ม & แผนที่</span>
         <span>➔</span>
       </a>

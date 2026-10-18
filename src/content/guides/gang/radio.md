@@ -19,7 +19,7 @@ risk: "ระบบสื่อสารเฉพาะกลุ่ม"
       <div class="size-28 sm:size-32 rounded-2xl bg-cyan-500/10 border-2 border-cyan-400/50 p-2 flex items-center justify-center shadow-[0_0_25px_rgba(6,182,212,0.3)]">
         <img src="/items/icons/transparent/radio.png" alt="Radio" class="w-full h-full object-contain filter drop-shadow-[0_0_12px_rgba(6,182,212,0.6)]" />
       </div>
-      <span class="absolute -bottom-2 -right-2 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-cyan-400 text-black border border-white/20">
+      <span class="absolute -bottom-2 -right-2 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-cyan-400 text-slate-950 border border-white/20">
         HOTKEY [O]
       </span>
     </div>
