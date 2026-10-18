@@ -129,8 +129,8 @@ const activeCategory = allGuides.find((g) => g.slug === currentSlug)?.data.categ
             <!-- Collapsible Content List -->
             <div 
               id={`cat-panel-${catKey}`}
-              class={`category-accordion-panel overflow-hidden transition-all duration-200 ${
-                isCatActive ? 'max-h-[1000px] opacity-100 py-1' : 'max-h-0 opacity-0 py-0 pointer-events-none'
+              class={`category-accordion-panel transition-all duration-200 ${
+                isCatActive ? 'py-1' : 'hidden py-0'
               }`}
             >
               <ul class="space-y-1 ml-2 pl-2 mr-2 border-l border-line/40 my-1">
@@ -196,102 +196,113 @@ const activeCategory = allGuides.find((g) => g.slug === currentSlug)?.data.categ
 </aside>
 
 <script>
-  function initSidebarAccordion() {
-    const accordions = document.querySelectorAll('.category-accordion-btn');
-    const filterInput = document.getElementById('sidebarLiveFilter') as HTMLInputElement | null;
-    const clearBtn = document.getElementById('sidebarClearFilter');
-    const btnExpandAll = document.getElementById('btnExpandAllCat');
-    const btnCollapseAll = document.getElementById('btnCollapseAllCat');
-
-    function toggleAccordion(btn: HTMLElement, forceOpen?: boolean) {
-      const targetId = btn.getAttribute('data-target');
-      if (!targetId) return;
-      const panel = document.getElementById(targetId);
-      const chevron = btn.querySelector('.accordion-chevron');
-      if (!panel) return;
-
-      const isOpen = forceOpen !== undefined ? !forceOpen : btn.getAttribute('aria-expanded') === 'true';
-
-      if (!isOpen) {
-        // Expand
-        btn.setAttribute('aria-expanded', 'true');
-        panel.classList.remove('max-h-0', 'opacity-0', 'py-0', 'pointer-events-none');
-        panel.classList.add('max-h-[1000px]', 'opacity-100', 'py-1');
-        if (chevron) chevron.classList.add('rotate-180');
-      } else {
-        // Collapse
-        btn.setAttribute('aria-expanded', 'false');
-        panel.classList.remove('max-h-[1000px]', 'opacity-100', 'py-1');
-        panel.classList.add('max-h-0', 'opacity-0', 'py-0', 'pointer-events-none');
-        if (chevron) chevron.classList.remove('rotate-180');
-      }
-    }
-
-    accordions.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        toggleAccordion(btn as HTMLElement);
-      });
-    });
-
-    if (btnExpandAll) {
-      btnExpandAll.addEventListener('click', () => {
-        accordions.forEach((btn) => toggleAccordion(btn as HTMLElement, true));
-      });
-    }
-
-    if (btnCollapseAll) {
-      btnCollapseAll.addEventListener('click', () => {
-        accordions.forEach((btn) => toggleAccordion(btn as HTMLElement, false));
-      });
-    }
-
-    // Live Filter
-    if (filterInput) {
-      filterInput.addEventListener('input', (e) => {
-        const q = (e.target as HTMLInputElement).value.toLowerCase().trim();
-        if (clearBtn) {
-          clearBtn.style.display = q ? 'block' : 'none';
-        }
-
-        const groups = document.querySelectorAll('.guide-category-group');
-
-        groups.forEach((group) => {
-          const items = group.querySelectorAll('.guide-item');
-          const btn = group.querySelector('.category-accordion-btn') as HTMLElement;
-          let matchCount = 0;
-
-          items.forEach((item) => {
-            const title = item.getAttribute('data-title') || item.textContent?.toLowerCase() || '';
-            if (!q || title.includes(q)) {
-              (item as HTMLElement).style.display = '';
-              matchCount++;
-            } else {
-              (item as HTMLElement).style.display = 'none';
-            }
-          });
-
-          if (!q) {
-            // Restore group visibility
-            (group as HTMLElement).style.display = '';
-          } else if (matchCount > 0) {
-            (group as HTMLElement).style.display = '';
-            // Auto expand when there are search matches
-            if (btn) toggleAccordion(btn, true);
-          } else {
-            (group as HTMLElement).style.display = 'none';
-          }
-        });
-      });
-    }
-
-    if (clearBtn && filterInput) {
-      clearBtn.addEventListener('click', () => {
-        filterInput.value = '';
-        filterInput.dispatchEvent(new Event('input'));
-      });
+  function setAccordion(btn: HTMLElement, panel: HTMLElement, open: boolean) {
+    const chevron = btn.querySelector('.accordion-chevron');
+    if (open) {
+      btn.setAttribute('aria-expanded', 'true');
+      panel.classList.remove('hidden');
+      if (chevron) chevron.classList.add('rotate-180');
+    } else {
+      btn.setAttribute('aria-expanded', 'false');
+      panel.classList.add('hidden');
+      if (chevron) chevron.classList.remove('rotate-180');
     }
   }
 
-  initSidebarAccordion();
-  document.addEventListener('astro:page-load', initSidebarAccordion);
+  // Idempotent event delegation: attaches only once even across Astro page navigations
+  if (!(window as any).__sidebarDelegated) {
+    (window as any).__sidebarDelegated = true;
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as Element | null;
+      if (!target) return;
+
+      // 1. Accordion Toggle Button clicked
+      const btn = target.closest('.category-accordion-btn') as HTMLElement | null;
+      if (btn) {
+        e.preventDefault();
+        const targetId = btn.getAttribute('data-target');
+        if (targetId) {
+          const panel = document.getElementById(targetId);
+          if (panel) {
+            const isCurrentlyOpen = btn.getAttribute('aria-expanded') === 'true' && !panel.classList.contains('hidden');
+            setAccordion(btn, panel, !isCurrentlyOpen);
+          }
+        }
+        return;
+      }
+
+      // 2. Expand All
+      if (target.closest('#btnExpandAllCat')) {
+        e.preventDefault();
+        document.querySelectorAll('.category-accordion-btn').forEach((b) => {
+          const targetId = b.getAttribute('data-target');
+          const panel = targetId ? document.getElementById(targetId) : null;
+          if (panel) setAccordion(b as HTMLElement, panel, true);
+        });
+        return;
+      }
+
+      // 3. Collapse All
+      if (target.closest('#btnCollapseAllCat')) {
+        e.preventDefault();
+        document.querySelectorAll('.category-accordion-btn').forEach((b) => {
+          const targetId = b.getAttribute('data-target');
+          const panel = targetId ? document.getElementById(targetId) : null;
+          if (panel) setAccordion(b as HTMLElement, panel, false);
+        });
+        return;
+      }
+
+      // 4. Clear search
+      if (target.closest('#sidebarClearFilter')) {
+        e.preventDefault();
+        const filterInput = document.getElementById('sidebarLiveFilter') as HTMLInputElement | null;
+        if (filterInput) {
+          filterInput.value = '';
+          filterInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      }
+    });
+
+    // Delegated input listener for live search
+    document.addEventListener('input', (e) => {
+      const target = e.target as HTMLInputElement | null;
+      if (!target || target.id !== 'sidebarLiveFilter') return;
+
+      const q = target.value.toLowerCase().trim();
+      const clearBtn = document.getElementById('sidebarClearFilter');
+      if (clearBtn) {
+        clearBtn.style.display = q ? 'block' : 'none';
+      }
+
+      const groups = document.querySelectorAll('.guide-category-group');
+      groups.forEach((group) => {
+        const items = group.querySelectorAll('.guide-item');
+        const btn = group.querySelector('.category-accordion-btn') as HTMLElement | null;
+        const targetId = btn?.getAttribute('data-target');
+        const panel = targetId ? document.getElementById(targetId) : null;
+        let matchCount = 0;
+
+        items.forEach((item) => {
+          const title = item.getAttribute('data-title') || item.textContent?.toLowerCase() || '';
+          if (!q || title.includes(q)) {
+            (item as HTMLElement).style.display = '';
+            matchCount++;
+          } else {
+            (item as HTMLElement).style.display = 'none';
+          }
+        });
+
+        if (!q) {
+          (group as HTMLElement).style.display = '';
+        } else if (matchCount > 0) {
+          (group as HTMLElement).style.display = '';
+          if (btn && panel) setAccordion(btn, panel, true);
+        } else {
+          (group as HTMLElement).style.display = 'none';
+        }
+      });
+    });
+  }
 </script>
