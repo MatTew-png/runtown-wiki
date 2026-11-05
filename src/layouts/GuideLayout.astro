@@ -11,6 +11,7 @@ import ImageLightboxModal from '../components/ImageLightboxModal.astro';
 import GuideIcon from '../components/GuideIcon.astro';
 import CyberIcon from '../components/CyberIcon.astro';
 import HqCalculator from '../components/HqCalculator.astro';
+import SportTuningCalculator from '../components/SportTuningCalculator.astro';
 import { getCleanTitle } from '../utils/guideHelpers';
 
 interface Props {
@@ -355,6 +356,10 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
             <HqCalculator />
           )}
 
+          {category === 'vehicles' && slug === 'logistics/sport-tuning' && (
+            <SportTuningCalculator />
+          )}
+
           <div class="prose-runtown">
             <slot />
           </div>
@@ -622,10 +627,6 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
     initFloatingDock();
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initGuidePage);
-  } else {
-    initGuidePage();
-  }
+  initGuidePage();
   document.addEventListener('astro:page-load', initGuidePage);
 </script>

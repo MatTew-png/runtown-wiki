@@ -279,162 +279,169 @@ const capacities = [
   let curCap = 120;
   let curRuns = 3;
 
-  const jobBtns = document.querySelectorAll('.calc-job-btn');
-  const capBtns = document.querySelectorAll('.calc-cap-btn');
-  const customCapInput = document.getElementById('calcCustomCapInput') as HTMLInputElement | null;
-  const currentCapDisplay = document.getElementById('calcCurrentCapDisplay');
-  const runsSlider = document.getElementById('calcRunsSlider') as HTMLInputElement | null;
-  const runsDisplay = document.getElementById('calcRunsDisplay');
-  const runsMinus = document.getElementById('calcRunsMinus');
-  const runsPlus = document.getElementById('calcRunsPlus');
+  function initProfitCalculator() {
+    const jobBtns = document.querySelectorAll('.calc-job-btn');
+    const capBtns = document.querySelectorAll('.calc-cap-btn');
+    const customCapInput = document.getElementById('calcCustomCapInput') as HTMLInputElement | null;
+    const currentCapDisplay = document.getElementById('calcCurrentCapDisplay');
+    const runsSlider = document.getElementById('calcRunsSlider') as HTMLInputElement | null;
+    const runsDisplay = document.getElementById('calcRunsDisplay');
+    const runsMinus = document.getElementById('calcRunsMinus');
+    const runsPlus = document.getElementById('calcRunsPlus');
 
-  const outNet = document.getElementById('calcNetProfit');
-  const outGross = document.getElementById('calcGross');
-  const outCost = document.getElementById('calcCost');
-  const outUnits = document.getElementById('calcUnits');
-  const outDuration = document.getElementById('calcDuration');
-  const outBrainVal = document.getElementById('calcBrainVal');
-  const outBrainBar = document.getElementById('calcBrainBar');
-  const outBrainTip = document.getElementById('calcBrainTip');
-  const copyBtn = document.getElementById('calcCopyBtn');
-  const copyText = document.getElementById('calcCopyText');
+    const outNet = document.getElementById('calcNetProfit');
+    const outGross = document.getElementById('calcGross');
+    const outCost = document.getElementById('calcCost');
+    const outUnits = document.getElementById('calcUnits');
+    const outDuration = document.getElementById('calcDuration');
+    const outBrainVal = document.getElementById('calcBrainVal');
+    const outBrainBar = document.getElementById('calcBrainBar');
+    const outBrainTip = document.getElementById('calcBrainTip');
+    const copyBtn = document.getElementById('calcCopyBtn');
+    const copyText = document.getElementById('calcCopyText');
 
-  function calculate() {
-    const job = (jobsData as any)[curJobId] || jobsData.pork;
-    const unitsPerRun = job.unitKg > 0 ? Math.floor(curCap / job.unitKg) : 0;
-    const gross = unitsPerRun * job.unitPrice * curRuns;
-    const cost = gross * 0.05;
-    const net = gross - cost;
-    const totalMinutes = job.minsPerRun * curRuns;
-    const brain = job.brainPerRun * curRuns;
+    if (!jobBtns.length) return;
 
-    if (outNet) outNet.textContent = `${Math.round(net).toLocaleString('en-US')} RD`;
-    if (outGross) outGross.textContent = `${Math.round(gross).toLocaleString('en-US')} RD`;
-    if (outCost) outCost.textContent = `-${Math.round(cost).toLocaleString('en-US')} RD`;
-    if (outUnits) outUnits.textContent = `${unitsPerRun} ${job.unitLabel} / รอบ`;
+    function calculate() {
+      const job = (jobsData as any)[curJobId] || jobsData.pork;
+      const unitsPerRun = job.unitKg > 0 ? Math.floor(curCap / job.unitKg) : 0;
+      const gross = unitsPerRun * job.unitPrice * curRuns;
+      const cost = gross * 0.05;
+      const net = gross - cost;
+      const totalMinutes = job.minsPerRun * curRuns;
+      const brain = job.brainPerRun * curRuns;
 
-    const h = Math.floor(totalMinutes / 60);
-    const m = totalMinutes % 60;
-    if (outDuration) outDuration.textContent = h > 0 ? `${h} ชม. ${m} นาที` : `${m} นาที`;
+      if (outNet) outNet.textContent = `${Math.round(net).toLocaleString('en-US')} RD`;
+      if (outGross) outGross.textContent = `${Math.round(gross).toLocaleString('en-US')} RD`;
+      if (outCost) outCost.textContent = `-${Math.round(cost).toLocaleString('en-US')} RD`;
+      if (outUnits) outUnits.textContent = `${unitsPerRun} ${job.unitLabel} / รอบ`;
 
-    if (outBrainVal) outBrainVal.textContent = `${brain}%`;
-    if (outBrainBar) {
-      outBrainBar.style.width = `${Math.min(100, brain)}%`;
-      if (brain >= 100) {
-        outBrainBar.className = 'h-full bg-rose-500 rounded-full transition-all duration-300 shadow-[0_0_10px_#ff4d6d]';
-        if (outBrainTip) outBrainTip.textContent = 'วิกฤต: สมองแตะ 100% ตัวละครจะสลบหรือเสียชีวิตทันที! ต้องรอคนชุบ เรียกหมอ หรือเกิด รพ. (รีเซ็ตได้ที่สถานที่รีหัว หรือใช้ไอเทมช่วยรี)';
-      } else if (brain >= 70) {
-        outBrainBar.className = 'h-full bg-amber-400 rounded-full transition-all duration-300';
-        if (outBrainTip) outBrainTip.textContent = 'สมองสะสมสูง แนะนำแวะสถานที่รีหัว (บาร์เขียว/อู่ช่าง) หรือใช้ไอเทมช่วยรีหัวกลับเป็น 0%';
-      } else {
-        outBrainBar.className = 'h-full bg-mint rounded-full transition-all duration-300';
-        if (outBrainTip) outBrainTip.textContent = 'ระดับสมองปลอดภัย ทำงานต่อเนื่องได้ตามปกติ';
+      const h = Math.floor(totalMinutes / 60);
+      const m = totalMinutes % 60;
+      if (outDuration) outDuration.textContent = h > 0 ? `${h} ชม. ${m} นาที` : `${m} นาที`;
+
+      if (outBrainVal) outBrainVal.textContent = `${brain}%`;
+      if (outBrainBar) {
+        outBrainBar.style.width = `${Math.min(100, brain)}%`;
+        if (brain >= 100) {
+          outBrainBar.className = 'h-full bg-rose-500 rounded-full transition-all duration-300 shadow-[0_0_10px_#ff4d6d]';
+          if (outBrainTip) outBrainTip.textContent = 'วิกฤต: สมองแตะ 100% ตัวละครจะสลบหรือเสียชีวิตทันที! ต้องรอคนชุบ เรียกหมอ หรือเกิด รพ. (รีเซ็ตได้ที่สถานที่รีหัว หรือใช้ไอเทมช่วยรี)';
+        } else if (brain >= 70) {
+          outBrainBar.className = 'h-full bg-amber-400 rounded-full transition-all duration-300';
+          if (outBrainTip) outBrainTip.textContent = 'สมองสะสมสูง แนะนำแวะสถานที่รีหัว (บาร์เขียว/อู่ช่าง) หรือใช้ไอเทมช่วยรีหัวกลับเป็น 0%';
+        } else {
+          outBrainBar.className = 'h-full bg-mint rounded-full transition-all duration-300';
+          if (outBrainTip) outBrainTip.textContent = 'ระดับสมองปลอดภัย ทำงานต่อเนื่องได้ตามปกติ';
+        }
       }
     }
-  }
 
-  function setCapacity(cap: number, updateInput = true) {
-    curCap = Math.max(0, cap);
-    if (currentCapDisplay) currentCapDisplay.textContent = String(curCap);
-    if (updateInput && customCapInput) customCapInput.value = String(curCap);
+    function setCapacity(cap: number, updateInput = true) {
+      curCap = Math.max(0, cap);
+      if (currentCapDisplay) currentCapDisplay.textContent = String(curCap);
+      if (updateInput && customCapInput) customCapInput.value = String(curCap);
 
-    capBtns.forEach(b => {
-      const btnCap = parseFloat(b.getAttribute('data-capacity') || '0');
-      if (btnCap === curCap) {
-        b.classList.remove('border-line', 'bg-paper/60', 'text-textSoft', 'font-medium');
-        b.classList.add('border-mint', 'bg-mint/10', 'text-mint', 'font-bold', 'shadow-[0_0_15px_rgba(69,242,180,0.2)]', 'active');
-      } else {
-        b.classList.remove('border-mint', 'bg-mint/10', 'text-mint', 'font-bold', 'shadow-[0_0_15px_rgba(69,242,180,0.2)]', 'active');
-        b.classList.add('border-line', 'bg-paper/60', 'text-textSoft', 'font-medium');
-      }
+      capBtns.forEach(b => {
+        const btnCap = parseFloat(b.getAttribute('data-capacity') || '0');
+        if (btnCap === curCap) {
+          b.classList.remove('border-line', 'bg-paper/60', 'text-textSoft', 'font-medium');
+          b.classList.add('border-mint', 'bg-mint/10', 'text-mint', 'font-bold', 'shadow-[0_0_15px_rgba(69,242,180,0.2)]', 'active');
+        } else {
+          b.classList.remove('border-mint', 'bg-mint/10', 'text-mint', 'font-bold', 'shadow-[0_0_15px_rgba(69,242,180,0.2)]', 'active');
+          b.classList.add('border-line', 'bg-paper/60', 'text-textSoft', 'font-medium');
+        }
+      });
+
+      calculate();
+    }
+
+    jobBtns.forEach(btn => {
+      (btn as HTMLElement).onclick = () => {
+        jobBtns.forEach(b => {
+          b.classList.remove('border-mint', 'bg-mint/10', 'shadow-[0_0_24px_-8px_rgba(69,242,180,0.5)]', 'active');
+          b.classList.add('border-line', 'bg-paper/60', 'text-textSoft');
+        });
+        btn.classList.remove('border-line', 'bg-paper/60', 'text-textSoft');
+        btn.classList.add('border-mint', 'bg-mint/10', 'shadow-[0_0_24px_-8px_rgba(69,242,180,0.5)]', 'active');
+        curJobId = btn.getAttribute('data-job-id') || 'pork';
+        calculate();
+      };
     });
+
+    capBtns.forEach(btn => {
+      (btn as HTMLElement).onclick = () => {
+        const cap = parseFloat(btn.getAttribute('data-capacity') || '120');
+        setCapacity(cap, true);
+      };
+    });
+
+    if (customCapInput) {
+      customCapInput.oninput = () => {
+        const val = parseFloat(customCapInput.value);
+        setCapacity(isNaN(val) ? 0 : val, false);
+      };
+    }
+
+    if (runsSlider) {
+      runsSlider.oninput = () => {
+        curRuns = parseInt(runsSlider.value, 10);
+        if (runsDisplay) runsDisplay.textContent = String(curRuns);
+        calculate();
+      };
+    }
+
+    if (runsMinus) {
+      runsMinus.onclick = () => {
+        if (curRuns > 1) {
+          curRuns--;
+          if (runsSlider) runsSlider.value = String(curRuns);
+          if (runsDisplay) runsDisplay.textContent = String(curRuns);
+          calculate();
+        }
+      };
+    }
+
+    if (runsPlus) {
+      runsPlus.onclick = () => {
+        if (curRuns < 10) {
+          curRuns++;
+          if (runsSlider) runsSlider.value = String(curRuns);
+          if (runsDisplay) runsDisplay.textContent = String(curRuns);
+          calculate();
+        }
+      };
+    }
+
+    if (copyBtn) {
+      copyBtn.onclick = async () => {
+        const job = (jobsData as any)[curJobId] || jobsData.pork;
+        const unitsPerRun = Math.floor(curCap / job.unitKg);
+        const gross = unitsPerRun * job.unitPrice * curRuns;
+        const cost = gross * 0.05;
+        const net = gross - cost;
+
+        const summary = [
+          'RUN TOWN · สรุปการคำนวณกำไร',
+          `งาน: ${job.name} (${job.en})`,
+          `ความจุ: ${curCap} กก. · ${unitsPerRun} ${job.unitLabel}/รอบ · ${curRuns} รอบ`,
+          `รายได้รวม: ${Math.round(gross).toLocaleString('en-US')} RD`,
+          `ค่าน้ำมัน/ซ่อม (~5%): ${Math.round(cost).toLocaleString('en-US')} RD`,
+          `กำไรสุทธิ: ${Math.round(net).toLocaleString('en-US')} RD`,
+        ].join('\n');
+
+        try {
+          await navigator.clipboard.writeText(summary);
+          if (copyText) copyText.textContent = 'คัดลอกสำเร็จ!';
+          setTimeout(() => {
+            if (copyText) copyText.textContent = 'คัดลอกสรุป';
+          }, 2000);
+        } catch (e) {}
+      };
+    }
 
     calculate();
   }
 
-  jobBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      jobBtns.forEach(b => {
-        b.classList.remove('border-mint', 'bg-mint/10', 'shadow-[0_0_24px_-8px_rgba(69,242,180,0.5)]', 'active');
-        b.classList.add('border-line', 'bg-paper/60', 'text-textSoft');
-      });
-      btn.classList.remove('border-line', 'bg-paper/60', 'text-textSoft');
-      btn.classList.add('border-mint', 'bg-mint/10', 'shadow-[0_0_24px_-8px_rgba(69,242,180,0.5)]', 'active');
-      curJobId = btn.getAttribute('data-job-id') || 'pork';
-      calculate();
-    });
-  });
-
-  capBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const cap = parseFloat(btn.getAttribute('data-capacity') || '120');
-      setCapacity(cap, true);
-    });
-  });
-
-  if (customCapInput) {
-    customCapInput.addEventListener('input', () => {
-      const val = parseFloat(customCapInput.value);
-      setCapacity(isNaN(val) ? 0 : val, false);
-    });
-  }
-
-  if (runsSlider) {
-    runsSlider.addEventListener('input', () => {
-      curRuns = parseInt(runsSlider.value, 10);
-      if (runsDisplay) runsDisplay.textContent = String(curRuns);
-      calculate();
-    });
-  }
-
-  if (runsMinus) {
-    runsMinus.addEventListener('click', () => {
-      if (curRuns > 1) {
-        curRuns--;
-        if (runsSlider) runsSlider.value = String(curRuns);
-        if (runsDisplay) runsDisplay.textContent = String(curRuns);
-        calculate();
-      }
-    });
-  }
-
-  if (runsPlus) {
-    runsPlus.addEventListener('click', () => {
-      if (curRuns < 10) {
-        curRuns++;
-        if (runsSlider) runsSlider.value = String(curRuns);
-        if (runsDisplay) runsDisplay.textContent = String(curRuns);
-        calculate();
-      }
-    });
-  }
-
-  if (copyBtn) {
-    copyBtn.addEventListener('click', async () => {
-      const job = (jobsData as any)[curJobId] || jobsData.pork;
-      const unitsPerRun = Math.floor(curCap / job.unitKg);
-      const gross = unitsPerRun * job.unitPrice * curRuns;
-      const cost = gross * 0.05;
-      const net = gross - cost;
-
-      const summary = [
-        'RUN TOWN · สรุปการคำนวณกำไร',
-        `งาน: ${job.name} (${job.en})`,
-        `ความจุ: ${curCap} กก. · ${unitsPerRun} ${job.unitLabel}/รอบ · ${curRuns} รอบ`,
-        `รายได้รวม: ${Math.round(gross).toLocaleString('en-US')} RD`,
-        `ค่าน้ำมัน/ซ่อม (~5%): ${Math.round(cost).toLocaleString('en-US')} RD`,
-        `กำไรสุทธิ: ${Math.round(net).toLocaleString('en-US')} RD`,
-      ].join('\\n');
-
-      try {
-        await navigator.clipboard.writeText(summary);
-        if (copyText) copyText.textContent = 'คัดลอกสำเร็จ!';
-        setTimeout(() => {
-          if (copyText) copyText.textContent = 'คัดลอกสรุป';
-        }, 2000);
-      } catch (e) {}
-    });
-  }
-
-  calculate();
+  initProfitCalculator();
+  document.addEventListener('astro:page-load', initProfitCalculator);
 </script>

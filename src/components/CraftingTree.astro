@@ -791,112 +791,118 @@ const weapons = [
     },
   };
 
-  const buttons = document.querySelectorAll('.craft-weapon-btn');
+  function initCraftingTree() {
+    const buttons = document.querySelectorAll('.craft-weapon-btn');
+    if (!buttons.length) return;
 
-  // DOM Elements
-  const activeName = document.getElementById('treeActiveName');
-  const activeBadge = document.getElementById('treeActiveBadge');
-  const qtyCement = document.getElementById('treeQtyCement');
-  const qtyWood = document.getElementById('treeQtyWood');
-  const qtySteel = document.getElementById('treeQtySteel');
-  const qtyGold = document.getElementById('treeQtyGold');
-  const qtyCrystal = document.getElementById('treeQtyCrystal');
-  const qtyBox = document.getElementById('treeQtyBox');
-  const boxFee = document.getElementById('treeBoxFee');
+    // DOM Elements
+    const activeName = document.getElementById('treeActiveName');
+    const activeBadge = document.getElementById('treeActiveBadge');
+    const qtyCement = document.getElementById('treeQtyCement');
+    const qtyWood = document.getElementById('treeQtyWood');
+    const qtySteel = document.getElementById('treeQtySteel');
+    const qtyGold = document.getElementById('treeQtyGold');
+    const qtyCrystal = document.getElementById('treeQtyCrystal');
+    const qtyBox = document.getElementById('treeQtyBox');
+    const boxFee = document.getElementById('treeBoxFee');
 
-  const coreCard = document.getElementById('treeCoreCard');
-  const coreIcon = document.getElementById('treeCoreIcon') as HTMLImageElement | null;
-  const coreTitle = document.getElementById('treeCoreTitle');
-  const coreType = document.getElementById('treeCoreType');
-  const coreQty = document.getElementById('treeCoreQty');
+    const coreCard = document.getElementById('treeCoreCard');
+    const coreIcon = document.getElementById('treeCoreIcon') as HTMLImageElement | null;
+    const coreTitle = document.getElementById('treeCoreTitle');
+    const coreType = document.getElementById('treeCoreType');
+    const coreQty = document.getElementById('treeCoreQty');
 
-  const bpIcon = document.getElementById('treeBpIcon') as HTMLImageElement | null;
-  const bpName = document.getElementById('treeBpName');
-  const baseRow = document.getElementById('treeBaseRow');
-  const baseIcon = document.getElementById('treeBaseIcon') as HTMLImageElement | null;
-  const baseName = document.getElementById('treeBaseName');
+    const bpIcon = document.getElementById('treeBpIcon') as HTMLImageElement | null;
+    const bpName = document.getElementById('treeBpName');
+    const baseRow = document.getElementById('treeBaseRow');
+    const baseIcon = document.getElementById('treeBaseIcon') as HTMLImageElement | null;
+    const baseName = document.getElementById('treeBaseName');
 
-  const finalIcon = document.getElementById('treeFinalIcon') as HTMLImageElement | null;
-  const finalTitle = document.getElementById('treeFinalTitle');
-  const finalDamage = document.getElementById('treeFinalDamage');
-  const finalDesc = document.getElementById('treeFinalDesc');
-  const tableFee = document.getElementById('treeTableFee');
+    const finalIcon = document.getElementById('treeFinalIcon') as HTMLImageElement | null;
+    const finalTitle = document.getElementById('treeFinalTitle');
+    const finalDamage = document.getElementById('treeFinalDamage');
+    const finalDesc = document.getElementById('treeFinalDesc');
+    const tableFee = document.getElementById('treeTableFee');
 
-  const sumTotalFee = document.getElementById('treeSummaryTotalFee');
-  const sumSteel = document.getElementById('treeSummarySteel');
-  const sumWood = document.getElementById('treeSummaryWood');
-  const sumGold = document.getElementById('treeSummaryGold');
-  const sumCement = document.getElementById('treeSummaryCement');
-  const sumCrystal = document.getElementById('treeSummaryCrystal');
+    const sumTotalFee = document.getElementById('treeSummaryTotalFee');
+    const sumSteel = document.getElementById('treeSummarySteel');
+    const sumWood = document.getElementById('treeSummaryWood');
+    const sumGold = document.getElementById('treeSummaryGold');
+    const sumCement = document.getElementById('treeSummaryCement');
+    const sumCrystal = document.getElementById('treeSummaryCrystal');
 
-  function renderTree(weaponId: string) {
-    const data = weaponsData[weaponId];
-    if (!data) return;
+    function renderTree(weaponId: string) {
+      const data = weaponsData[weaponId];
+      if (!data) return;
 
-    if (activeName) activeName.textContent = data.name;
-    if (activeBadge) {
-      activeBadge.textContent = data.badge;
-      activeBadge.className = `rounded px-2 py-0.5 text-[10px] font-bold ${data.badgeClass}`;
-    }
-
-    if (qtyCement) qtyCement.textContent = data.materials.cement;
-    if (qtyWood) qtyWood.textContent = data.materials.wood;
-    if (qtySteel) qtySteel.textContent = data.materials.steel;
-    if (qtyGold) qtyGold.textContent = data.materials.gold;
-    if (qtyCrystal) qtyCrystal.textContent = data.materials.crystal;
-
-    if (qtyBox) qtyBox.textContent = data.boxQty;
-    if (boxFee) boxFee.textContent = data.boxFee;
-
-    if (coreCard) coreCard.className = `tree-node p-4 rounded-2xl border ${data.coreBorder} relative`;
-    if (coreIcon) coreIcon.src = data.coreIcon;
-    if (coreTitle) coreTitle.textContent = data.coreName;
-    if (coreType) coreType.textContent = data.coreType;
-    if (coreQty) coreQty.textContent = data.coreQty;
-
-    if (bpIcon) bpIcon.src = data.blueprintIcon;
-    if (bpName) bpName.textContent = data.blueprintName;
-
-    if (baseRow) {
-      if (data.hasBase) {
-        baseRow.style.display = 'flex';
-        if (baseIcon) {
-          baseIcon.src = data.baseWeaponIcon;
-          baseIcon.style.display = 'inline-block';
-        }
-        if (baseName) baseName.textContent = data.baseWeapon;
-      } else {
-        baseRow.style.display = 'flex';
-        if (baseIcon) baseIcon.style.display = 'none';
-        if (baseName) baseName.textContent = 'ไม่ต้องใช้เบสอาวุธ';
+      if (activeName) activeName.textContent = data.name;
+      if (activeBadge) {
+        activeBadge.textContent = data.badge;
+        activeBadge.className = `rounded px-2 py-0.5 text-[10px] font-bold ${data.badgeClass}`;
       }
+
+      if (qtyCement) qtyCement.textContent = data.materials.cement;
+      if (qtyWood) qtyWood.textContent = data.materials.wood;
+      if (qtySteel) qtySteel.textContent = data.materials.steel;
+      if (qtyGold) qtyGold.textContent = data.materials.gold;
+      if (qtyCrystal) qtyCrystal.textContent = data.materials.crystal;
+
+      if (qtyBox) qtyBox.textContent = data.boxQty;
+      if (boxFee) boxFee.textContent = data.boxFee;
+
+      if (coreCard) coreCard.className = `tree-node p-4 rounded-2xl border ${data.coreBorder} relative`;
+      if (coreIcon) coreIcon.src = data.coreIcon;
+      if (coreTitle) coreTitle.textContent = data.coreName;
+      if (coreType) coreType.textContent = data.coreType;
+      if (coreQty) coreQty.textContent = data.coreQty;
+
+      if (bpIcon) bpIcon.src = data.blueprintIcon;
+      if (bpName) bpName.textContent = data.blueprintName;
+
+      if (baseRow) {
+        if (data.hasBase) {
+          baseRow.style.display = 'flex';
+          if (baseIcon) {
+            baseIcon.src = data.baseWeaponIcon;
+            baseIcon.style.display = 'inline-block';
+          }
+          if (baseName) baseName.textContent = data.baseWeapon;
+        } else {
+          baseRow.style.display = 'flex';
+          if (baseIcon) baseIcon.style.display = 'none';
+          if (baseName) baseName.textContent = 'ไม่ต้องใช้เบสอาวุธ';
+        }
+      }
+
+      if (finalIcon) finalIcon.src = data.icon;
+      if (finalTitle) finalTitle.textContent = data.name;
+      if (finalDamage) finalDamage.textContent = `ความแรง: ${data.damage} ดาเมจ`;
+      if (finalDesc) finalDesc.textContent = data.desc;
+      if (tableFee) tableFee.textContent = data.tableFee;
+
+      if (sumTotalFee) sumTotalFee.textContent = data.totalFee;
+      if (sumSteel) sumSteel.textContent = data.materials.steel.replace('x', '');
+      if (sumWood) sumWood.textContent = data.materials.wood.replace('x', '');
+      if (sumGold) sumGold.textContent = data.materials.gold.replace('x', '');
+      if (sumCement) sumCement.textContent = data.materials.cement.replace('x', '');
+      if (sumCrystal) sumCrystal.textContent = data.materials.crystal.replace('x', '');
     }
 
-    if (finalIcon) finalIcon.src = data.icon;
-    if (finalTitle) finalTitle.textContent = data.name;
-    if (finalDamage) finalDamage.textContent = `ความแรง: ${data.damage} ดาเมจ`;
-    if (finalDesc) finalDesc.textContent = data.desc;
-    if (tableFee) tableFee.textContent = data.tableFee;
+    buttons.forEach(btn => {
+      (btn as HTMLElement).onclick = () => {
+        buttons.forEach(b => {
+          b.classList.remove('border-lime', 'bg-lime/10', 'shadow-[0_0_20px_-5px_rgba(165,255,95,0.4)]', 'active', 'ring-1', 'ring-lime');
+          b.classList.add('border-line', 'bg-card/70');
+        });
+        btn.classList.remove('border-line', 'bg-card/70');
+        btn.classList.add('border-lime', 'bg-lime/10', 'shadow-[0_0_20px_-5px_rgba(165,255,95,0.4)]', 'active', 'ring-1', 'ring-lime');
 
-    if (sumTotalFee) sumTotalFee.textContent = data.totalFee;
-    if (sumSteel) sumSteel.textContent = data.materials.steel.replace('x', '');
-    if (sumWood) sumWood.textContent = data.materials.wood.replace('x', '');
-    if (sumGold) sumGold.textContent = data.materials.gold.replace('x', '');
-    if (sumCement) sumCement.textContent = data.materials.cement.replace('x', '');
-    if (sumCrystal) sumCrystal.textContent = data.materials.crystal.replace('x', '');
+        const wid = btn.getAttribute('data-weapon-id') || 'machete';
+        renderTree(wid);
+      };
+    });
   }
 
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      buttons.forEach(b => {
-        b.classList.remove('border-lime', 'bg-lime/10', 'shadow-[0_0_20px_-5px_rgba(165,255,95,0.4)]', 'active', 'ring-1', 'ring-lime');
-        b.classList.add('border-line', 'bg-card/70');
-      });
-      btn.classList.remove('border-line', 'bg-card/70');
-      btn.classList.add('border-lime', 'bg-lime/10', 'shadow-[0_0_20px_-5px_rgba(165,255,95,0.4)]', 'active', 'ring-1', 'ring-lime');
-
-      const wid = btn.getAttribute('data-weapon-id') || 'machete';
-      renderTree(wid);
-    });
-  });
+  initCraftingTree();
+  document.addEventListener('astro:page-load', initCraftingTree);
 </script>

@@ -751,11 +751,7 @@ const items: ItemCard[] = [
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initGalleryFilters);
-  } else {
-    initGalleryFilters();
-  }
+  initGalleryFilters();
   document.addEventListener('astro:page-load', initGalleryFilters);
 </script>
 

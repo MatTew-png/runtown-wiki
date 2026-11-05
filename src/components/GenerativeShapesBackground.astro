@@ -34,6 +34,7 @@
   let currentPatternIndex = 0;
   let isPaused = false;
   let seedOffset = Math.random() * 1000;
+  let globalAnimationFrameId: number | null = null;
 
   // Node Garden state
   interface NodeParticle {
@@ -47,6 +48,11 @@
   let nodes: NodeParticle[] = [];
 
   function initGenerativeShapes() {
+    if (globalAnimationFrameId !== null) {
+      cancelAnimationFrame(globalAnimationFrameId);
+      globalAnimationFrameId = null;
+    }
+
     const canvas = document.getElementById('generative-shapes-canvas') as HTMLCanvasElement | null;
     if (!canvas) return;
 
@@ -120,7 +126,6 @@
       mouse.targetY = height * 0.5;
     });
 
-    let animationFrameId: number;
     let time = 0;
 
     // Pattern 1: Deformed Grid Mesh & Interference Moiré (Signature Book of Shapes)
@@ -361,7 +366,7 @@
     function render(timestamp: number) {
       if (!ctx || !canvas) return;
 
-      if (!isPaused) {
+      if (!isPaused && !document.hidden) {
         time = timestamp;
         // Smooth cursor lerping
         mouse.x += (mouse.targetX - mouse.x) * 0.06;
@@ -381,10 +386,10 @@
         }
       }
 
-      animationFrameId = requestAnimationFrame(render);
+      globalAnimationFrameId = requestAnimationFrame(render);
     }
 
-    animationFrameId = requestAnimationFrame(render);
+    globalAnimationFrameId = requestAnimationFrame(render);
 
     // Update UI HUD Text
     function updateHUD() {
@@ -422,12 +427,14 @@
 
     // Cleanup on page swap (Astro View Transitions)
     document.addEventListener('astro:before-swap', () => {
-      cancelAnimationFrame(animationFrameId);
+      if (globalAnimationFrameId !== null) {
+        cancelAnimationFrame(globalAnimationFrameId);
+        globalAnimationFrameId = null;
+      }
       window.removeEventListener('resize', resize);
     }, { once: true });
   }
 
-  // Initialize on direct load & client router page load
   initGenerativeShapes();
   document.addEventListener('astro:page-load', () => {
     initGenerativeShapes();

@@ -234,7 +234,6 @@ const allGuides = await getCollection('guides');
     });
   }
 
-  // Run on initial load and after view transitions
   setupCommandPalette();
   document.addEventListener('astro:page-load', setupCommandPalette);
 </script>

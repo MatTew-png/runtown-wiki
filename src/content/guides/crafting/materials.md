@@ -254,3 +254,17 @@ graph TD
 | <img src="/items/icons/transparent/crystal_ingot.png" width="48" height="48" style="border-radius: 8px;" /> | **Crystal Ingot** | **x25** | แร่คริสตัลแท่งจากจุดฟาร์มลึก |
 | <img src="/items/icons/transparent/black_money.png" width="48" height="48" style="border-radius: 8px;" /> | **Black Money (เงินดำ)** | **$20,000** | ค่าธรรมเนียมเงินดำใต้ดิน |
 
+
+
+---
+
+## 📻 อุปกรณ์ยุทธวิธีแก๊ง (Gang Tactical Equipment)
+
+### 📻 Radio (วิทยุสื่อสารแก๊ง & หน่วยงาน)
+* **หมวดหมู่คราฟต์:** `GANG`
+* **โอกาสสำเร็จ:** **100%** (การันตีสำเร็จแน่นอน ไม่มีความเสี่ยงแตกหัก)
+* **วัตถุดิบที่ใช้:**
+  * ⛓️ **Steel Ingot:** x20 แท่ง (จากงานจี่เหล็ก)
+  * 💎 **Crystal Ingot:** x10 แท่ง (จากงานร่อนคริสตัล)
+  * 💵 **Money:** $20,000 RD (เงินสดค่าธรรมเนียม)
+* 📖 **[เปิดดูคู่มือการใช้วิทยุสื่อสาร & การเซ็ตคลื่นความถี่ (Radio Guide) ➔](/guides/gang/radio)**

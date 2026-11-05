@@ -63,90 +63,128 @@ const crimes = [
 
 <section id="crimes" class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24 border-t border-line">
   <div class="space-y-3">
-    <p class="font-mono text-xs font-semibold tracking-[0.2em] text-rose uppercase">// UNDERWORLD DIRECTORY</p>
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <p class="font-mono text-xs font-semibold tracking-[0.2em] text-rose uppercase">// UNDERWORLD DIRECTORY</p>
+      <span class="inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 font-mono text-xs font-bold text-amber-300">
+        <CyberIcon name="lock" class="size-3.5 text-amber-400" />
+        <span>ปิดปรับปรุงชั่วคราว · รออัปเดตข้อมูล</span>
+      </span>
+    </div>
     <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
       สารบัญงานดำ & ระดับความเสี่ยงตำรวจ
     </h2>
     <p class="text-sm text-textSoft max-w-2xl leading-relaxed">
-      ประเมินความคุ้มค่าก่อนลงมือ: ตรวจสอบจำนวนตำรวจขั้นต่ำที่ต้องออนไลน์ โทษจำคุก อุปกรณ์ที่ต้องมี และเส้นทางหลบหนี
+      ประเมินความคุ้มค่าก่อนลงมือ: ตรวจสอบจำนวนตำรวจขั้นต่ำที่ต้องออนไลน์ โทษจำคุก อุปกรณ์ที่ต้องมี และเส้นทางหลบหนี (ปิดปรับปรุงระบบชั่วคราวเพื่อรออัปเดตกฎหมายและระบบงานดำตามประกาศของเมือง)
     </p>
   </div>
 
-  <div class="mt-10 grid gap-5 md:grid-cols-2">
-    {crimes.map((c) => (
-      <div class="rounded-2xl border border-line bg-card/70 p-6 backdrop-blur-md shadow-neon-card space-y-4 hover:border-rose/40 transition-all flex flex-col justify-between">
-        <div class="space-y-3">
-          <div class="flex items-center justify-between">
-            <span class={`font-mono text-[10px] font-bold px-2.5 py-1 rounded-full border ${c.riskColor}`}>
-              RISK: {c.risk}
-            </span>
-            <span class="text-xs font-mono text-textMuted flex items-center gap-1.5">
-              <CyberIcon name="siren" class="size-3.5 text-rose" />
-              <span>ตำรวจต้องออนไลน์: <strong class="text-white">{c.police} นาย</strong></span>
-            </span>
-          </div>
+  <!-- Content Container with Visual Lock Overlay: ปิดแบบมองเห็นได้ (Disabled & Maintenance Overlay) -->
+  <div class="relative mt-10">
+    <!-- Dimmed / Disabled Underlying Content (ยังมองเห็นโครงสร้างงานดำได้ทั้งหมด) -->
+    <div class="opacity-30 grayscale-[50%] pointer-events-none select-none filter blur-[0.5px]">
+      <div class="grid gap-5 md:grid-cols-2">
+        {crimes.map((c) => (
+          <div class="rounded-2xl border border-line bg-card/70 p-6 backdrop-blur-md shadow-neon-card space-y-4 hover:border-rose/40 transition-all flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class={`font-mono text-[10px] font-bold px-2.5 py-1 rounded-full border ${c.riskColor}`}>
+                  RISK: {c.risk}
+                </span>
+                <span class="text-xs font-mono text-textMuted flex items-center gap-1.5">
+                  <CyberIcon name="siren" class="size-3.5 text-rose" />
+                  <span>ตำรวจต้องออนไลน์: <strong class="text-white">{c.police} นาย</strong></span>
+                </span>
+              </div>
 
-          <div class="flex items-center gap-3 pt-1">
-            <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-paper border border-line text-rose">
-              <CyberIcon name={c.icon} class="size-5" />
-            </span>
-            <div>
-              <h3 class="text-lg font-display font-bold text-white">{c.name}</h3>
-              <span class="font-mono text-xs text-textMuted">{c.en}</span>
+              <div class="flex items-center gap-3 pt-1">
+                <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-paper border border-line text-rose">
+                  <CyberIcon name={c.icon} class="size-5" />
+                </span>
+                <div>
+                  <h3 class="text-lg font-display font-bold text-white">{c.name}</h3>
+                  <span class="font-mono text-xs text-textMuted">{c.en}</span>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-paper/80 border border-lineSubtle flex items-center justify-between font-mono text-xs">
+                <span class="text-textMuted">ผลตอบแทนเฉลี่ย:</span>
+                <strong class="text-mint font-bold text-sm">{c.reward}</strong>
+              </div>
+
+              <dl class="space-y-2 text-xs font-mono border-t border-lineSubtle pt-3">
+                <div>
+                  <dt class="text-rose-400 font-semibold mb-0.5 flex items-center gap-1.5">
+                    <CyberIcon name="alert-triangle" class="size-3.5 text-rose-400 shrink-0" />
+                    <span>โทษหากถูกจับ:</span>
+                  </dt>
+                  <dd class="text-textSoft text-[11px]">{c.penalty}</dd>
+                </div>
+
+                <div>
+                  <dt class="text-slate-300 font-semibold mb-0.5 flex items-center gap-1.5">
+                    <CyberIcon name="package" class="size-3.5 text-slate-400 shrink-0" />
+                    <span>อุปกรณ์ที่จำเป็น:</span>
+                  </dt>
+                  <dd class="text-textMuted text-[11px] list-disc list-inside">
+                    {c.equipment.join(' · ')}
+                  </dd>
+                </div>
+
+                <div>
+                  <dt class="text-slate-300 font-semibold mb-0.5 flex items-center gap-1.5">
+                    <CyberIcon name="map" class="size-3.5 text-slate-400 shrink-0" />
+                    <span>เส้นทางหลบหนีแนะนำ:</span>
+                  </dt>
+                  <dd class="text-textMuted text-[11px]">
+                    {c.routes.join(' · ')}
+                  </dd>
+                </div>
+
+                <div class="pt-1">
+                  <dt class="text-textMuted text-[10px] flex items-center gap-1">
+                    <CyberIcon name="clock" class="size-3 text-slate-400 shrink-0" />
+                    <span>กฎคูลดาวน์:</span>
+                  </dt>
+                  <dd class="text-amber-300/90 text-[10px]">{c.cooldown}</dd>
+                </div>
+              </dl>
+            </div>
+
+            <div class="pt-4 border-t border-lineSubtle">
+              <a href="/guides/jobs/black" class="text-xs font-mono font-bold text-rose hover:text-rose-300 flex items-center justify-between">
+                <span>อ่านคู่มือเจาะลึกงานดำ</span>
+                <span>➔</span>
+              </a>
             </div>
           </div>
+        ))}
+      </div>
+    </div>
 
-          <div class="p-3 rounded-xl bg-paper/80 border border-lineSubtle flex items-center justify-between font-mono text-xs">
-            <span class="text-textMuted">ผลตอบแทนเฉลี่ย:</span>
-            <strong class="text-mint font-bold text-sm">{c.reward}</strong>
-          </div>
-
-          <dl class="space-y-2 text-xs font-mono border-t border-lineSubtle pt-3">
-            <div>
-              <dt class="text-rose-400 font-semibold mb-0.5 flex items-center gap-1.5">
-                <CyberIcon name="alert-triangle" class="size-3.5 text-rose-400 shrink-0" />
-                <span>โทษหากถูกจับ:</span>
-              </dt>
-              <dd class="text-textSoft text-[11px]">{c.penalty}</dd>
-            </div>
-
-            <div>
-              <dt class="text-slate-300 font-semibold mb-0.5 flex items-center gap-1.5">
-                <CyberIcon name="package" class="size-3.5 text-slate-400 shrink-0" />
-                <span>อุปกรณ์ที่จำเป็น:</span>
-              </dt>
-              <dd class="text-textMuted text-[11px] list-disc list-inside">
-                {c.equipment.join(' · ')}
-              </dd>
-            </div>
-
-            <div>
-              <dt class="text-slate-300 font-semibold mb-0.5 flex items-center gap-1.5">
-                <CyberIcon name="map" class="size-3.5 text-slate-400 shrink-0" />
-                <span>เส้นทางหลบหนีแนะนำ:</span>
-              </dt>
-              <dd class="text-textMuted text-[11px]">
-                {c.routes.join(' · ')}
-              </dd>
-            </div>
-
-            <div class="pt-1">
-              <dt class="text-textMuted text-[10px] flex items-center gap-1">
-                <CyberIcon name="clock" class="size-3 text-slate-400 shrink-0" />
-                <span>กฎคูลดาวน์:</span>
-              </dt>
-              <dd class="text-amber-300/90 text-[10px]">{c.cooldown}</dd>
-            </div>
-          </dl>
+    <!-- Centered Cyberpunk Maintenance Banner Overlay -->
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+      <div class="max-w-md rounded-2xl border border-amber-400/40 bg-slate-950/90 p-6 sm:p-8 backdrop-blur-xl shadow-[0_0_50px_rgba(251,191,36,0.18)] text-center space-y-4">
+        <div class="mx-auto grid size-14 place-items-center rounded-2xl border border-amber-400/40 bg-amber-400/10 text-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.2)]">
+          <CyberIcon name="lock" class="size-7" />
         </div>
-
-        <div class="pt-4 border-t border-lineSubtle">
-          <a href="/guides/jobs/black" class="text-xs font-mono font-bold text-rose hover:text-rose-300 flex items-center justify-between">
-            <span>อ่านคู่มือเจาะลึกงานดำ</span>
-            <span>➔</span>
-          </a>
+        <div class="space-y-2">
+          <span class="inline-block font-mono text-[11px] font-bold uppercase tracking-widest text-amber-400 bg-amber-400/10 border border-amber-400/30 px-3 py-1 rounded-full">
+            UNDER MAINTENANCE · ปิดปรับปรุงชั่วคราว
+          </span>
+          <h3 class="text-xl sm:text-2xl font-display font-bold text-white tracking-tight">
+            สารบัญงานดำ & ระดับความเสี่ยงตำรวจ
+          </h3>
+          <p class="text-xs sm:text-sm text-textSoft leading-relaxed font-sans">
+            ระบบสารบัญงานดำปิดปรับปรุงชั่วคราว เพื่อรออัปเดตกฎหมาย โทษจำคุก จำนวนตำรวจขั้นต่ำ และจุดส่งของที่แน่นอนตามประกาศของเมือง
+          </p>
+        </div>
+        <div class="pt-2">
+          <div class="inline-flex items-center gap-2 rounded-lg border border-line bg-paper/90 px-3.5 py-1.5 font-mono text-[11px] text-textMuted">
+            <span class="size-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <span>สถานะ: ปิดการใช้งานชั่วคราว (แสดงตัวอย่างโครงสร้าง)</span>
+          </div>
         </div>
       </div>
-    ))}
+    </div>
   </div>
 </section>

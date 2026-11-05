@@ -1,0 +1,443 @@
+---
+// Interactive Sport Vehicle Tuning & Upgrade Calculator (RUN TOWN FiveM)
+import CyberIcon from './CyberIcon.astro';
+---
+
+<div class="my-8 p-5 sm:p-7 rounded-2xl border border-mint/40 bg-card/95 shadow-[0_0_35px_rgba(69,242,180,0.08)] space-y-6 not-prose" id="sportTuningApp">
+  
+  <!-- Header with Quick Badges -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-lineSubtle">
+    <div class="flex items-center gap-3">
+      <div class="size-10 rounded-xl bg-mint/15 border border-mint/40 flex items-center justify-center shrink-0 text-mint">
+        <CyberIcon name="gauge" class="size-5" />
+      </div>
+      <div>
+        <h3 class="text-base sm:text-lg font-display font-extrabold text-white flex items-center gap-2">
+          <span>เครื่องคิดเลขแต่งรถประเภท SPORT</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-mint/20 text-mint border border-mint/30 uppercase font-bold">
+            SPORT TIER
+          </span>
+        </h3>
+        <p class="text-xs text-textSoft">คำนวณราคาอัพเกรดสะสม (Cumulative) 7 หมวด พร้อมระบบประเมินความคุ้มค่ารถมือสอง</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2 font-mono text-xs">
+      <span class="text-textMuted">ฟูลสเตจ 100%:</span>
+      <span class="px-2.5 py-1 rounded bg-amber-400/15 text-amber-300 border border-amber-400/30 font-bold">$2,767,500</span>
+    </div>
+  </div>
+
+  <!-- Quick Presets -->
+  <div class="space-y-2">
+    <span class="text-[11px] font-mono uppercase tracking-wider text-textMuted font-semibold flex items-center gap-1.5">
+      <CyberIcon name="zap" class="size-3.5 text-amber-400" />
+      <span>สูตรสำเร็จด่วน (Quick Presets):</span>
+    </span>
+    <div class="flex flex-wrap gap-2">
+      <button
+        type="button"
+        class="preset-btn px-3 py-1.5 rounded-lg border border-mint/40 bg-mint/10 text-mint text-xs font-mono font-bold hover:bg-mint hover:text-slate-950 transition-all flex items-center gap-1.5"
+        data-preset="full"
+      >
+        <span>⚡ ฟูลสเปก 100% ($2.76M)</span>
+      </button>
+      <button
+        type="button"
+        class="preset-btn px-3 py-1.5 rounded-lg border border-amber-400/40 bg-amber-400/10 text-amber-300 text-xs font-mono font-bold hover:bg-amber-400 hover:text-slate-950 transition-all flex items-center gap-1.5"
+        data-preset="racing"
+      >
+        <span>🏎️ สายซิ่งงบประหยัด ($1.08M)</span>
+      </button>
+      <button
+        type="button"
+        class="preset-btn px-3 py-1.5 rounded-lg border border-cyan-400/40 bg-cyan-400/10 text-cyan-300 text-xs font-mono font-bold hover:bg-cyan-400 hover:text-slate-950 transition-all flex items-center gap-1.5"
+        data-preset="market_deal"
+      >
+        <span>🤝 มือสองตามตลาด ($1.20M)</span>
+      </button>
+      <button
+        type="button"
+        class="preset-btn px-3 py-1.5 rounded-lg border border-line bg-paper text-textSoft text-xs font-mono hover:text-rose hover:border-rose/50 transition-all flex items-center gap-1.5 ml-auto"
+        data-preset="reset"
+      >
+        <CyberIcon name="refresh" class="size-3" />
+        <span>รีเซ็ตเดิมๆ</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Interactive Parts Config Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    
+    <!-- 1. Engine -->
+    <div class="p-4 rounded-xl border border-line bg-paper/80 space-y-3">
+      <div class="flex items-center justify-between">
+        <label for="selEngine" class="text-xs font-mono font-bold text-white flex items-center gap-1.5">
+          <span class="text-base">🏎️</span>
+          <span>Engine (เครื่องยนต์)</span>
+        </label>
+        <span class="font-mono text-xs text-mint font-bold" id="costEngine">$0</span>
+      </div>
+      <select id="selEngine" class="tune-select w-full px-3 py-2 rounded-lg bg-card border border-line text-xs font-mono text-white focus:border-mint focus:outline-none cursor-pointer">
+        <option value="0" data-cost="0">Stock (เดิมๆ) - $0</option>
+        <option value="1" data-cost="40500">Stage 1 - $40,500</option>
+        <option value="2" data-cost="121500">Stage 2 - $121,500 (สะสม)</option>
+        <option value="3" data-cost="243000">Stage 3 - $243,000 (สะสม)</option>
+        <option value="4" data-cost="405000">Stage 4 (MAX) - $405,000</option>
+      </select>
+      <p class="text-[11px] text-textMuted font-mono">เพิ่ม Top Speed และแรงบิดเครื่อง</p>
+    </div>
+
+    <!-- 2. Brakes -->
+    <div class="p-4 rounded-xl border border-line bg-paper/80 space-y-3">
+      <div class="flex items-center justify-between">
+        <label for="selBrakes" class="text-xs font-mono font-bold text-white flex items-center gap-1.5">
+          <span class="text-base">🛑</span>
+          <span>Brakes (ระบบเบรก)</span>
+        </label>
+        <span class="font-mono text-xs text-mint font-bold" id="costBrakes">$0</span>
+      </div>
+      <select id="selBrakes" class="tune-select w-full px-3 py-2 rounded-lg bg-card border border-line text-xs font-mono text-white focus:border-mint focus:outline-none cursor-pointer">
+        <option value="0" data-cost="0">Stock (เดิมๆ) - $0</option>
+        <option value="1" data-cost="40500">Stage 1 (Street) - $40,500</option>
+        <option value="2" data-cost="121500">Stage 2 (Sport) - $121,500</option>
+        <option value="3" data-cost="243000">Stage 3 (Race MAX) - $243,000</option>
+      </select>
+      <p class="text-[11px] text-textMuted font-mono">ลดระยะเบรก เข้าโค้งมั่นใจ</p>
+    </div>
+
+    <!-- 3. Transmission -->
+    <div class="p-4 rounded-xl border border-line bg-paper/80 space-y-3">
+      <div class="flex items-center justify-between">
+        <label for="selTrans" class="text-xs font-mono font-bold text-white flex items-center gap-1.5">
+          <span class="text-base">⚙️</span>
+          <span>Transmission (เกียร์)</span>
+        </label>
+        <span class="font-mono text-xs text-mint font-bold" id="costTrans">$0</span>
+      </div>
+      <select id="selTrans" class="tune-select w-full px-3 py-2 rounded-lg bg-card border border-line text-xs font-mono text-white focus:border-mint focus:outline-none cursor-pointer">
+        <option value="0" data-cost="0">Stock (เดิมๆ) - $0</option>
+        <option value="1" data-cost="27000">Stage 1 (Street) - $27,000</option>
+        <option value="2" data-cost="81000">Stage 2 (Sport) - $81,000</option>
+        <option value="3" data-cost="162000">Stage 3 (Race MAX) - $162,000</option>
+      </select>
+      <p class="text-[11px] text-textMuted font-mono">สับเกียร์ไวขึ้น รอบไม่ตก</p>
+    </div>
+
+    <!-- 4. Suspension -->
+    <div class="p-4 rounded-xl border border-line bg-paper/80 space-y-3">
+      <div class="flex items-center justify-between">
+        <label for="selSusp" class="text-xs font-mono font-bold text-white flex items-center gap-1.5">
+          <span class="text-base">🛞</span>
+          <span>Suspension (ช่วงล่าง)</span>
+        </label>
+        <span class="font-mono text-xs text-mint font-bold" id="costSusp">$0</span>
+      </div>
+      <select id="selSusp" class="tune-select w-full px-3 py-2 rounded-lg bg-card border border-line text-xs font-mono text-white focus:border-mint focus:outline-none cursor-pointer">
+        <option value="0" data-cost="0">Stock (เดิมๆ) - $0</option>
+        <option value="1" data-cost="27000">Stage 1 (Lowered) - $27,000</option>
+        <option value="2" data-cost="81000">Stage 2 (Street) - $81,000</option>
+        <option value="3" data-cost="162000">Stage 3 (Sport) - $162,000</option>
+        <option value="4" data-cost="270000">Stage 4 (Comp MAX) - $270,000</option>
+      </select>
+      <p class="text-[11px] text-textMuted font-mono">โหลดเตี้ย ทรงตัวคม เกาะถนน</p>
+    </div>
+
+    <!-- 5. Armour -->
+    <div class="p-4 rounded-xl border border-line bg-paper/80 space-y-3">
+      <div class="flex items-center justify-between">
+        <label for="selArmour" class="text-xs font-mono font-bold text-white flex items-center gap-1.5">
+          <span class="text-base">🛡️</span>
+          <span>Armour (เกราะรถ)</span>
+        </label>
+        <span class="font-mono text-xs text-mint font-bold" id="costArmour">$0</span>
+      </div>
+      <select id="selArmour" class="tune-select w-full px-3 py-2 rounded-lg bg-card border border-line text-xs font-mono text-white focus:border-mint focus:outline-none cursor-pointer">
+        <option value="0" data-cost="0">Stock (เดิมๆ) - $0</option>
+        <option value="1" data-cost="40500">Stage 1 (20%) - $40,500</option>
+        <option value="2" data-cost="121500">Stage 2 (40%) - $121,500</option>
+        <option value="3" data-cost="243000">Stage 3 (60%) - $243,000</option>
+        <option value="4" data-cost="405000">Stage 4 (80%) - $405,000</option>
+        <option value="5" data-cost="607500">Stage 5 (100% MAX) - $607,500</option>
+      </select>
+      <p class="text-[11px] text-textMuted font-mono">ทนการชน ชะลอความเสียหายตัวถัง</p>
+    </div>
+
+    <!-- 6 & 7. Turbo & ECU Remap (Dual Toggle Card) -->
+    <div class="p-4 rounded-xl border border-line bg-paper/80 space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-mono font-bold text-white flex items-center gap-1.5">
+          <span class="text-base">🌀</span>
+          <span>Turbo & ECU Remap</span>
+        </span>
+        <span class="font-mono text-xs text-mint font-bold" id="costTurboEcu">$0</span>
+      </div>
+
+      <div class="space-y-2 pt-1">
+        <!-- Turbo Switch -->
+        <label class="flex items-center justify-between p-2 rounded-lg bg-card border border-lineSubtle cursor-pointer hover:border-mint/50 transition-colors">
+          <div class="flex items-center gap-2">
+            <input type="checkbox" id="chkTurbo" class="tune-checkbox accent-mint size-4 rounded" data-cost="270000" />
+            <span class="text-xs font-mono text-slate-200">Turbo Tuning</span>
+          </div>
+          <span class="text-[11px] font-mono text-amber-300 font-bold">+$270,000</span>
+        </label>
+
+        <!-- ECU Switch -->
+        <label class="flex items-center justify-between p-2 rounded-lg bg-card border border-lineSubtle cursor-pointer hover:border-mint/50 transition-colors">
+          <div class="flex items-center gap-2">
+            <input type="checkbox" id="chkEcu" class="tune-checkbox accent-mint size-4 rounded" data-cost="810000" />
+            <span class="text-xs font-mono text-slate-200">ECU Remap</span>
+          </div>
+          <span class="text-[11px] font-mono text-rose font-bold">+$810,000</span>
+        </label>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Realtime Cost Summary Card & Progress Bar -->
+  <div class="p-5 rounded-xl border border-line bg-paper/90 space-y-4">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div>
+        <span class="text-[10px] font-mono uppercase tracking-widest text-textMuted font-bold">// TOTAL SPORT UPGRADE COST</span>
+        <div class="flex items-baseline gap-2">
+          <span class="text-3xl sm:text-4xl font-display font-extrabold text-mint tracking-tight" id="lblTotalCost">$0</span>
+          <span class="text-xs font-mono text-textMuted" id="lblProgressPct">(0% ของฟูลสเปก)</span>
+        </div>
+      </div>
+
+      <div class="text-right sm:text-right font-mono text-xs">
+        <span class="text-textMuted">งบที่เหลือในการทำฟูลสเปก:</span>
+        <p class="text-amber-300 font-bold text-sm" id="lblRemainingToFull">$2,767,500</p>
+      </div>
+    </div>
+
+    <!-- Progress Meter -->
+    <div class="space-y-1">
+      <div class="h-2 w-full rounded-full bg-slate-900 border border-lineSubtle overflow-hidden">
+        <div id="costProgressBar" class="h-full bg-gradient-to-r from-mint via-cyan-400 to-amber-400 transition-all duration-300" style="width: 0%"></div>
+      </div>
+      <div class="flex justify-between text-[10px] font-mono text-textMuted">
+        <span>เดิมๆ ($0)</span>
+        <span>สตรีทเรซซิ่ง ($1.08M)</span>
+        <span>ฟูลสเตจ ($2.76M)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Second-Hand Market Deal Evaluator (เครื่องมือเช็กความคุ้มค่ารถมือสอง) -->
+  <div class="p-5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 space-y-4">
+    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-cyan-500/20 pb-3">
+      <div class="flex items-center gap-2">
+        <CyberIcon name="scale" class="size-4 text-cyan-400" />
+        <h4 class="text-xs sm:text-sm font-mono font-bold text-cyan-200 uppercase tracking-wider">
+          ระบบประเมินความคุ้มค้ารถมือสอง (Second-Hand Deal Evaluator)
+        </h4>
+      </div>
+      <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-400/10 text-cyan-300 border border-cyan-400/30">
+        MARKET VALUE CHECKER
+      </span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+      <div class="sm:col-span-5 space-y-1">
+        <label for="dealPriceInput" class="block text-xs font-mono text-textSoft">
+          ราคาที่คนขายเสนอในตลาด (บาท):
+        </label>
+        <div class="relative">
+          <span class="absolute left-3 top-2.5 text-xs font-mono text-textMuted">$</span>
+          <input 
+            type="number" 
+            id="dealPriceInput" 
+            value="1000000" 
+            step="10000"
+            class="w-full pl-7 pr-3 py-2 rounded-lg bg-paper border border-line text-xs sm:text-sm font-mono text-white focus:border-cyan-400 focus:outline-none"
+          />
+        </div>
+      </div>
+
+      <div class="sm:col-span-7 p-3 rounded-lg bg-card/80 border border-lineSubtle flex flex-col justify-center">
+        <div class="flex items-center justify-between text-xs font-mono">
+          <span class="text-textMuted">ผลการประเมิน:</span>
+          <span id="dealVerdictBadge" class="px-2 py-0.5 rounded font-bold uppercase text-[11px] bg-mint/20 text-mint border border-mint/40">
+            คุ้มค่ามาก (ได้กำไรค่าแต่ง)
+          </span>
+        </div>
+        <div class="mt-2 flex items-baseline justify-between font-mono">
+          <span class="text-[11px] text-textSoft">ส่วนต่างเปรียบเทียบกับของแต่ง:</span>
+          <span id="dealDiffValue" class="text-base font-bold text-mint">+$201,500</span>
+        </div>
+        <p class="text-[10px] text-textMuted mt-1" id="dealNote">
+          *มูลค่าเฉพาะของแต่งบนรถ $1,201,500 - ราคาขาย $1,000,000 (ได้ตัวรถฟรีและประหยัดค่าแต่งทันที)
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function initSportCalculator() {
+    const app = document.getElementById('sportTuningApp');
+    if (!app) return;
+
+    const selEngine = document.getElementById('selEngine') as HTMLSelectElement;
+    const selBrakes = document.getElementById('selBrakes') as HTMLSelectElement;
+    const selTrans = document.getElementById('selTrans') as HTMLSelectElement;
+    const selSusp = document.getElementById('selSusp') as HTMLSelectElement;
+    const selArmour = document.getElementById('selArmour') as HTMLSelectElement;
+    const chkTurbo = document.getElementById('chkTurbo') as HTMLInputElement;
+    const chkEcu = document.getElementById('chkEcu') as HTMLInputElement;
+
+    const costEngine = document.getElementById('costEngine');
+    const costBrakes = document.getElementById('costBrakes');
+    const costTrans = document.getElementById('costTrans');
+    const costSusp = document.getElementById('costSusp');
+    const costArmour = document.getElementById('costArmour');
+    const costTurboEcu = document.getElementById('costTurboEcu');
+
+    const lblTotalCost = document.getElementById('lblTotalCost');
+    const lblProgressPct = document.getElementById('lblProgressPct');
+    const lblRemainingToFull = document.getElementById('lblRemainingToFull');
+    const costProgressBar = document.getElementById('costProgressBar');
+
+    const dealPriceInput = document.getElementById('dealPriceInput') as HTMLInputElement;
+    const dealVerdictBadge = document.getElementById('dealVerdictBadge');
+    const dealDiffValue = document.getElementById('dealDiffValue');
+    const dealNote = document.getElementById('dealNote');
+
+    const FULL_SPEC_TOTAL = 2767500;
+
+    function formatNumber(num: number): string {
+      return '$' + num.toLocaleString('en-US');
+    }
+
+    function calculate() {
+      const engVal = parseInt(selEngine?.selectedOptions[0]?.dataset.cost || '0', 10);
+      const brakeVal = parseInt(selBrakes?.selectedOptions[0]?.dataset.cost || '0', 10);
+      const transVal = parseInt(selTrans?.selectedOptions[0]?.dataset.cost || '0', 10);
+      const suspVal = parseInt(selSusp?.selectedOptions[0]?.dataset.cost || '0', 10);
+      const armourVal = parseInt(selArmour?.selectedOptions[0]?.dataset.cost || '0', 10);
+      const turboVal = chkTurbo?.checked ? parseInt(chkTurbo.dataset.cost || '0', 10) : 0;
+      const ecuVal = chkEcu?.checked ? parseInt(chkEcu.dataset.cost || '0', 10) : 0;
+
+      // Update Individual Label Subtotals
+      if (costEngine) costEngine.textContent = formatNumber(engVal);
+      if (costBrakes) costBrakes.textContent = formatNumber(brakeVal);
+      if (costTrans) costTrans.textContent = formatNumber(transVal);
+      if (costSusp) costSusp.textContent = formatNumber(suspVal);
+      if (costArmour) costArmour.textContent = formatNumber(armourVal);
+      if (costTurboEcu) costTurboEcu.textContent = formatNumber(turboVal + ecuVal);
+
+      // Total
+      const total = engVal + brakeVal + transVal + suspVal + armourVal + turboVal + ecuVal;
+      const pct = Math.min(100, Math.round((total / FULL_SPEC_TOTAL) * 100));
+      const remaining = Math.max(0, FULL_SPEC_TOTAL - total);
+
+      if (lblTotalCost) lblTotalCost.textContent = formatNumber(total);
+      if (lblProgressPct) lblProgressPct.textContent = `(${pct}% ของฟูลสเปก)`;
+      if (lblRemainingToFull) lblRemainingToFull.textContent = formatNumber(remaining);
+      if (costProgressBar) costProgressBar.style.width = `${pct}%`;
+
+      // Second-hand deal analysis
+      const askingPrice = parseFloat(dealPriceInput?.value || '0') || 0;
+      const diff = total - askingPrice;
+
+      if (dealDiffValue) {
+        if (diff > 0) {
+          dealDiffValue.textContent = `+${formatNumber(diff)}`;
+          dealDiffValue.className = 'text-base font-bold text-mint';
+        } else if (diff === 0) {
+          dealDiffValue.textContent = '$0 (เท่าทุนค่าแต่ง)';
+          dealDiffValue.className = 'text-base font-bold text-slate-300';
+        } else {
+          dealDiffValue.textContent = `-${formatNumber(Math.abs(diff))}`;
+          dealDiffValue.className = 'text-base font-bold text-rose';
+        }
+      }
+
+      if (dealVerdictBadge) {
+        if (diff > 0) {
+          dealVerdictBadge.textContent = 'กำไรค่าแต่งทันที (คุ้มมาก)';
+          dealVerdictBadge.className = 'px-2 py-0.5 rounded font-bold uppercase text-[11px] bg-mint/20 text-mint border border-mint/40';
+        } else if (diff === 0) {
+          dealVerdictBadge.textContent = 'ราคากลางพอดีตัว';
+          dealVerdictBadge.className = 'px-2 py-0.5 rounded font-bold uppercase text-[11px] bg-amber-400/20 text-amber-300 border border-amber-400/40';
+        } else {
+          dealVerdictBadge.textContent = 'ราคาสูงกว่าของแต่ง';
+          dealVerdictBadge.className = 'px-2 py-0.5 rounded font-bold uppercase text-[11px] bg-rose/20 text-rose border border-rose/40';
+        }
+      }
+
+      if (dealNote) {
+        if (diff > 0) {
+          dealNote.textContent = `*มูลค่าของแต่งบนรถ ${formatNumber(total)} - ราคาขาย ${formatNumber(askingPrice)} = ได้ตัวรถเปล่าฟรีและประหยัดไปอีก ${formatNumber(diff)}`;
+        } else if (diff === 0) {
+          dealNote.textContent = `*ราคาขายเท่ากับค่าแต่งของรถพอดีเป๊ะ ถือว่าได้ตัวรถเปล่ามาฟรี`;
+        } else {
+          dealNote.textContent = `*ราคาขายสูงกว่าค่าแต่ง ${formatNumber(Math.abs(diff))} (คิดเป็นราคาตัวรถหรือค่าเสียเวลาทำ)`;
+        }
+      }
+    }
+
+    // Attach listeners
+    app.querySelectorAll('.tune-select, .tune-checkbox').forEach((el) => {
+      el.addEventListener('change', calculate);
+    });
+    dealPriceInput?.addEventListener('input', calculate);
+
+    // Presets
+    app.querySelectorAll('.preset-btn').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        const preset = target.dataset.preset;
+
+        if (preset === 'full') {
+          selEngine.value = '4';
+          selBrakes.value = '3';
+          selTrans.value = '3';
+          selSusp.value = '4';
+          selArmour.value = '5';
+          chkTurbo.checked = true;
+          chkEcu.checked = true;
+        } else if (preset === 'racing') {
+          selEngine.value = '4';
+          selBrakes.value = '3';
+          selTrans.value = '3';
+          selSusp.value = '0';
+          selArmour.value = '0';
+          chkTurbo.checked = true;
+          chkEcu.checked = false;
+        } else if (preset === 'market_deal') {
+          selEngine.value = '4';
+          selBrakes.value = '3';
+          selTrans.value = '3';
+          selSusp.value = '0';
+          selArmour.value = '2';
+          chkTurbo.checked = true;
+          chkEcu.checked = false;
+          dealPriceInput.value = '1000000';
+        } else if (preset === 'reset') {
+          selEngine.value = '0';
+          selBrakes.value = '0';
+          selTrans.value = '0';
+          selSusp.value = '0';
+          selArmour.value = '0';
+          chkTurbo.checked = false;
+          chkEcu.checked = false;
+        }
+
+        calculate();
+      });
+    });
+
+    // Run initial calc
+    calculate();
+  }
+
+  // Initialize on load and on Astro view transitions
+  initSportCalculator();
+  document.addEventListener('astro:page-load', initSportCalculator);
+</script>

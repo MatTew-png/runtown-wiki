@@ -19,9 +19,12 @@ export function initCyberAnimations() {
     );
   }
 
-  // 2. Interactive 3D Holographic Card Tilt with Neon Cursor Spotlight
+  // 2. Interactive 3D Holographic Card Tilt with Neon Cursor Spotlight (Optimized)
   const tiltCards = document.querySelectorAll<HTMLElement>('.bento-card, .cyber-tilt-card');
   tiltCards.forEach((card) => {
+    if (card.dataset.tiltInitialized === 'true') return;
+    card.dataset.tiltInitialized = 'true';
+
     // Add shine spotlight layer if not present
     if (!card.querySelector('.card-spotlight-layer')) {
       const shine = document.createElement('div');
@@ -31,35 +34,52 @@ export function initCyberAnimations() {
       card.appendChild(shine);
     }
 
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
+    let rect: DOMRect | null = null;
+    let ticking = false;
 
-      // Subtle tilt angles (+/- 4 to 5 degrees)
-      const rotateX = ((y - centerY) / centerY) * -5;
-      const rotateY = ((x - centerX) / centerX) * 5;
-
-      card.style.setProperty('--mouse-x', `${x}px`);
-      card.style.setProperty('--mouse-y', `${y}px`);
-
+    card.addEventListener('mouseenter', () => {
+      rect = card.getBoundingClientRect();
       const shine = card.querySelector<HTMLElement>('.card-spotlight-layer');
       if (shine) shine.style.opacity = '1';
+    });
 
-      gsap.to(card, {
-        rotateX,
-        rotateY,
-        transformPerspective: 1000,
-        scale: 1.012,
-        duration: 0.28,
-        ease: 'power2.out',
-        overwrite: 'auto',
+    card.addEventListener('mousemove', (e) => {
+      if (!rect) rect = card.getBoundingClientRect();
+      if (ticking) return;
+      ticking = true;
+
+      const clientX = e.clientX;
+      const clientY = e.clientY;
+
+      requestAnimationFrame(() => {
+        if (!rect) { ticking = false; return; }
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        // Subtle tilt angles (+/- 4 degrees)
+        const rotateX = ((y - centerY) / centerY) * -4;
+        const rotateY = ((x - centerX) / centerX) * 4;
+
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+
+        gsap.to(card, {
+          rotateX,
+          rotateY,
+          transformPerspective: 1000,
+          scale: 1.01,
+          duration: 0.25,
+          ease: 'power2.out',
+          overwrite: 'auto',
+        });
+        ticking = false;
       });
     });
 
     card.addEventListener('mouseleave', () => {
+      rect = null;
       const shine = card.querySelector<HTMLElement>('.card-spotlight-layer');
       if (shine) shine.style.opacity = '0';
 
@@ -67,7 +87,7 @@ export function initCyberAnimations() {
         rotateX: 0,
         rotateY: 0,
         scale: 1,
-        duration: 0.5,
+        duration: 0.4,
         ease: 'power3.out',
         overwrite: 'auto',
       });

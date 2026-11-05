@@ -75,9 +75,39 @@ const {
     <!-- Global Interactive Command Palette (Ctrl+K) -->
     <CommandPalette />
 
-    <!-- GSAP Cyber Motion Animation Engine -->
+    <!-- Instant Navigation Loading Bar (0ms Visual Feedback) -->
+    <div id="page-nav-bar" class="fixed top-0 left-0 h-[2px] bg-mint shadow-[0_0_12px_rgba(69,242,180,0.8)] z-[9999] transition-all duration-200 w-0 opacity-0 pointer-events-none"></div>
+
+    <!-- GSAP Cyber Motion Animation Engine & Instant Nav Bar -->
     <script>
       import { initCyberAnimations } from '../scripts/cyberMotion';
+
+      function getBar() {
+        return document.getElementById('page-nav-bar');
+      }
+
+      document.addEventListener('astro:before-preparation', () => {
+        const bar = getBar();
+        if (bar) {
+          bar.style.transition = 'width 250ms ease-out, opacity 100ms ease';
+          bar.style.opacity = '1';
+          bar.style.width = '70%';
+        }
+      });
+
+      document.addEventListener('astro:after-swap', () => {
+        const bar = getBar();
+        if (bar) {
+          bar.style.width = '100%';
+          setTimeout(() => {
+            bar.style.opacity = '0';
+            setTimeout(() => {
+              bar.style.width = '0%';
+            }, 200);
+          }, 150);
+        }
+      });
+
       initCyberAnimations();
       document.addEventListener('astro:page-load', () => {
         initCyberAnimations();
