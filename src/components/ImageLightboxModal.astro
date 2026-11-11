@@ -24,7 +24,7 @@ import CyberIcon from './CyberIcon.astro';
       <button 
         type="button" 
         id="lightboxCloseBtn" 
-        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-line bg-paper hover:border-rose hover:text-rose text-slate-400 text-xs font-mono transition-colors shrink-0"
+        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-line bg-paper hover:border-danger hover:text-danger text-slate-400 text-xs font-mono transition-colors shrink-0"
         title="กด ESC เพื่อปิด"
       >
         <span>ปิด (ESC)</span>
@@ -74,12 +74,18 @@ import CyberIcon from './CyberIcon.astro';
 </div>
 
 <script>
+  let lightboxAbort: AbortController | null = null;
+
   function initLightbox() {
+    if (lightboxAbort) lightboxAbort.abort();
+    lightboxAbort = new AbortController();
+    const { signal } = lightboxAbort;
+
     const modal = document.getElementById('cyberLightboxModal');
-    const img = document.getElementById('lightboxImg') as HTMLImageElement;
+    const img = document.getElementById('lightboxImg') as HTMLImageElement | null;
     const caption = document.getElementById('lightboxCaption');
     const coords = document.getElementById('lightboxCoords');
-    const liveMapLink = document.getElementById('lightboxLiveMapLink') as HTMLAnchorElement;
+    const liveMapLink = document.getElementById('lightboxLiveMapLink') as HTMLAnchorElement | null;
     const copyGpsBtn = document.getElementById('lightboxCopyGpsBtn');
     const copyText = document.getElementById('lightboxCopyText');
     const closeBtn = document.getElementById('lightboxCloseBtn');
@@ -111,7 +117,6 @@ import CyberIcon from './CyberIcon.astro';
       if (copyText) copyText.textContent = 'คัดลอกชื่อโซน';
     }
 
-    // Attach to triggers
     document.querySelectorAll('[data-lightbox-trigger]').forEach((el) => {
       el.addEventListener('click', (e) => {
         e.preventDefault();
@@ -120,38 +125,32 @@ import CyberIcon from './CyberIcon.astro';
         const coordsStr = el.getAttribute('data-lightbox-coords') || '';
         const spot = el.getAttribute('data-lightbox-spot') || '';
         if (src) openLightbox(src, title, coordsStr, spot);
-      });
+      }, { signal });
     });
 
-    // Also attach to all full content images in prose-runtown
     document.querySelectorAll('.prose-runtown img').forEach((imgEl) => {
-      const img = imgEl as HTMLImageElement;
-      // Skip tiny inline tool icons
-      if (img.classList.contains('w-5') || img.classList.contains('w-4')) return;
-      img.classList.add('cursor-zoom-in', 'transition-transform', 'hover:opacity-95');
-      img.title = 'คลิกเพื่อขยายดูรูปใหญ่';
-      img.addEventListener('click', () => {
-        const src = img.currentSrc || img.src;
-        const alt = img.alt || 'ภาพประกอบคู่มือ';
+      const targetImg = imgEl as HTMLImageElement;
+      if (targetImg.classList.contains('w-5') || targetImg.classList.contains('w-4')) return;
+      targetImg.classList.add('cursor-zoom-in', 'transition-transform', 'hover:opacity-95');
+      targetImg.title = 'คลิกเพื่อขยายดูรูปใหญ่';
+      targetImg.addEventListener('click', () => {
+        const src = targetImg.currentSrc || targetImg.src;
+        const alt = targetImg.alt || 'ภาพประกอบคู่มือ';
         openLightbox(src, alt, 'RUN TOWN FiveM');
-      });
+      }, { signal });
     });
 
-    if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+    if (closeBtn) closeBtn.addEventListener('click', closeLightbox, { signal });
 
     modal.addEventListener('click', (e) => {
       if (e.target === modal) closeLightbox();
-    });
+    }, { signal });
 
-    if (!(window as any).__lightboxKeyBound) {
-      (window as any).__lightboxKeyBound = true;
-      window.addEventListener('keydown', (e) => {
-        const m = document.getElementById('imageLightboxModal');
-        if (e.key === 'Escape' && m && !m.classList.contains('hidden')) {
-          closeLightbox();
-        }
-      });
-    }
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeLightbox();
+      }
+    }, { signal });
 
     if (copyGpsBtn) {
       copyGpsBtn.addEventListener('click', () => {
@@ -162,10 +161,16 @@ import CyberIcon from './CyberIcon.astro';
             if (copyText) copyText.textContent = 'คัดลอกชื่อโซน';
           }, 2000);
         });
-      });
+      }, { signal });
     }
   }
 
-  initLightbox();
   document.addEventListener('astro:page-load', initLightbox);
+  document.addEventListener('astro:before-swap', () => {
+    document.body.style.overflow = '';
+    if (lightboxAbort) {
+      lightboxAbort.abort();
+      lightboxAbort = null;
+    }
+  });
 </script>

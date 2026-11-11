@@ -17,7 +17,7 @@ risk: "ระบบแก๊งทางการ"
   <div class="flex flex-col md:flex-row items-center gap-6">
     <div class="relative shrink-0">
       <div class="size-28 sm:size-32 rounded-2xl bg-amber-500/10 border-2 border-amber-400/50 p-2 flex items-center justify-center shadow-[0_0_25px_rgba(245,158,11,0.3)]">
-        <img src="/items/icons/transparent/hq_coin.png" alt="Headquarter Coin" class="w-full h-full object-contain filter drop-shadow-[0_0_12px_rgba(245,158,11,0.6)]" />
+        <img src="/items/icons/transparent/hq_coin.png" alt="Headquarter Coin" class="w-full h-full object-contain filter drop-shadow-[0_0_12px_rgba(245,158,11,0.6)]" decoding="async" />
       </div>
       <span class="absolute -bottom-2 -right-2 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-400 text-slate-950 border border-white/20">
         +500 EXP
@@ -40,26 +40,26 @@ risk: "ระบบแก๊งทางการ"
 
 ---
 
-## <img src="/items/icons/transparent/hq_coin.png" width="28" height="28" class="inline-block object-contain mr-1.5 align-middle" alt="HQ Coin" /> สูตรคราฟต์เหรียญ HQ Coin ในโรงงาน (100% Success)
+## <img src="/items/icons/transparent/hq_coin.png" width="28" height="28" class="inline-block object-contain mr-1.5 align-middle" alt="HQ Coin" decoding="async" /> สูตรคราฟต์เหรียญ HQ Coin ในโรงงาน (100% Success)
 
 การคราฟต์เหรียญ **HQ Coin** สามารถดำเนินการได้ที่โต๊ะคราฟต์แก๊ง โดยมีอัตราความสำเร็จ **100%**:
 
 <div class="my-6 rounded-2xl overflow-hidden border border-line bg-card">
-  <img src="/items/hq_coin_crafting.png" alt="HQ Coin Crafting Recipe In-game" class="w-full object-cover" />
+  <img src="/items/hq_coin_crafting.png" alt="HQ Coin Crafting Recipe In-game" class="w-full object-cover" decoding="async" />
 </div>
 
 ### 📋 วัตถุดิบต่อการคราฟต์ 1 เหรียญ:
 | ไอคอน | วัตถุดิบ (Material) | จำนวนที่ใช้ต่อ 1 เหรียญ | คุณสมบัติ & แหล่งที่มา |
 | :---: | :--- | :---: | :--- |
-| <img src="/items/icons/transparent/cut_diamond.png" width="40" height="40" class="object-contain inline-block" alt="Cut Diamond" /> | **Cut Diamond (เพชรเจียรไน)** | **3 ชิ้น** | เพชรเจียรไนผ่านการแปรรูปจากแร่ดิบ |
-| <img src="/items/icons/transparent/gold_ingot.png" width="40" height="40" class="object-contain inline-block" alt="Gold Ingot" /> | **Gold Ingot (ทองคำแท่ง)** | **10 ชิ้น** | ทองคำแท่งหลอมบริสุทธิ์จากโรงหลอม |
-| <img src="/items/icons/transparent/steel_ingot.png" width="40" height="40" class="object-contain inline-block" alt="Steel Ingot" /> | **Steel Ingot (เหล็กกล้าแท่ง)** | **20 ชิ้น** | เหล็กกล้าหลอมสำหรับงานช่าง |
-| <img src="/items/icons/transparent/crystal_ingot.png" width="40" height="40" class="object-contain inline-block" alt="Crystal Ingot" /> | **Crystal Ingot (คริสตัลแท่ง)** | **5 ชิ้น** | คริสตัลแท่งเกรดบริสุทธิ์สูง |
-| <img src="/items/icons/transparent/black_money.png" width="40" height="40" class="object-contain inline-block" alt="Black Money" /> | **Black Money (เงินแดง)** | **10,000 บาท** | เงินนอกกฎหมายที่ได้จากกิจกรรมใต้ดิน/งานดำ |
+| <img src="/items/icons/transparent/cut_diamond.png" width="40" height="40" class="object-contain inline-block" alt="Cut Diamond" decoding="async" /> | **Cut Diamond (เพชรเจียรไน)** | **3 ชิ้น** | เพชรเจียรไนผ่านการแปรรูปจากแร่ดิบ |
+| <img src="/items/icons/transparent/gold_ingot.png" width="40" height="40" class="object-contain inline-block" alt="Gold Ingot" decoding="async" /> | **Gold Ingot (ทองคำแท่ง)** | **10 ชิ้น** | ทองคำแท่งหลอมบริสุทธิ์จากโรงหลอม |
+| <img src="/items/icons/transparent/steel_ingot.png" width="40" height="40" class="object-contain inline-block" alt="Steel Ingot" decoding="async" /> | **Steel Ingot (เหล็กกล้าแท่ง)** | **20 ชิ้น** | เหล็กกล้าหลอมสำหรับงานช่าง |
+| <img src="/items/icons/transparent/crystal_ingot.png" width="40" height="40" class="object-contain inline-block" alt="Crystal Ingot" decoding="async" /> | **Crystal Ingot (คริสตัลแท่ง)** | **5 ชิ้น** | คริสตัลแท่งเกรดบริสุทธิ์สูง |
+| <img src="/items/icons/transparent/black_money.png" width="40" height="40" class="object-contain inline-block" alt="Black Money" decoding="async" /> | **Black Money (เงินแดง)** | **10,000 บาท** | เงินนอกกฎหมายที่ได้จากกิจกรรมใต้ดิน/งานดำ |
 
 ---
 
-## <img src="/items/icons/transparent/hq_coin.png" width="28" height="28" class="inline-block object-contain mr-1.5 align-middle" alt="HQ Coin" /> ตารางโครงสร้างเลเวลและจำนวนเหรียญที่ต้องใช้
+## <img src="/items/icons/transparent/hq_coin.png" width="28" height="28" class="inline-block object-contain mr-1.5 align-middle" alt="HQ Coin" decoding="async" /> ตารางโครงสร้างเลเวลและจำนวนเหรียญที่ต้องใช้
 
 การเปิด Slot สมาชิกและอัพเกรดระดับเลเวลของแก๊งแบ่งออกเป็น 4 ระดับ โดยมีเงื่อนไขดังนี้:
 
@@ -76,15 +76,15 @@ risk: "ระบบแก๊งทางการ"
 
 ---
 
-## <img src="/items/icons/transparent/hq_coin.png" width="28" height="28" class="inline-block object-contain mr-1.5 align-middle" alt="HQ Coin" /> ตารางสรุปวัตถุดิบทั้งหมดเพื่ออัพจนเต็ม Max Level (45 เหรียญ)
+## <img src="/items/icons/transparent/hq_coin.png" width="28" height="28" class="inline-block object-contain mr-1.5 align-middle" alt="HQ Coin" decoding="async" /> ตารางสรุปวัตถุดิบทั้งหมดเพื่ออัพจนเต็ม Max Level (45 เหรียญ)
 
 | ไอคอน | รายการวัตถุดิบ | ต่อ 1 เหรียญ | LV.1 (10 เหรียญ) | LV.2 (10 เหรียญ) | LV.3 (10 เหรียญ) | LV.4 (15 เหรียญ) | **ยอดรวมทั้งหมด (ตัน Max)** |
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| <img src="/items/icons/transparent/cut_diamond.png" width="36" height="36" class="object-contain inline-block" alt="Cut Diamond" /> | **Cut Diamond (เพชรเจียรไน)** | 3 | 30 | 30 | 30 | 45 | **135 ชิ้น** |
-| <img src="/items/icons/transparent/gold_ingot.png" width="36" height="36" class="object-contain inline-block" alt="Gold Ingot" /> | **Gold Ingot (ทองคำแท่ง)** | 10 | 100 | 100 | 100 | 150 | **450 ชิ้น** |
-| <img src="/items/icons/transparent/steel_ingot.png" width="36" height="36" class="object-contain inline-block" alt="Steel Ingot" /> | **Steel Ingot (เหล็กกล้าแท่ง)** | 20 | 200 | 200 | 200 | 300 | **900 ชิ้น** |
-| <img src="/items/icons/transparent/crystal_ingot.png" width="36" height="36" class="object-contain inline-block" alt="Crystal Ingot" /> | **Crystal Ingot (คริสตัลแท่ง)** | 5 | 50 | 50 | 50 | 75 | **225 ชิ้น** |
-| <img src="/items/icons/transparent/black_money.png" width="36" height="36" class="object-contain inline-block" alt="Black Money" /> | **Black Money (เงินแดง)** | 10,000 | 100,000 | 100,000 | 100,000 | 150,000 | **450,000 บาท** |
+| <img src="/items/icons/transparent/cut_diamond.png" width="36" height="36" class="object-contain inline-block" alt="Cut Diamond" decoding="async" /> | **Cut Diamond (เพชรเจียรไน)** | 3 | 30 | 30 | 30 | 45 | **135 ชิ้น** |
+| <img src="/items/icons/transparent/gold_ingot.png" width="36" height="36" class="object-contain inline-block" alt="Gold Ingot" decoding="async" /> | **Gold Ingot (ทองคำแท่ง)** | 10 | 100 | 100 | 100 | 150 | **450 ชิ้น** |
+| <img src="/items/icons/transparent/steel_ingot.png" width="36" height="36" class="object-contain inline-block" alt="Steel Ingot" decoding="async" /> | **Steel Ingot (เหล็กกล้าแท่ง)** | 20 | 200 | 200 | 200 | 300 | **900 ชิ้น** |
+| <img src="/items/icons/transparent/crystal_ingot.png" width="36" height="36" class="object-contain inline-block" alt="Crystal Ingot" decoding="async" /> | **Crystal Ingot (คริสตัลแท่ง)** | 5 | 50 | 50 | 50 | 75 | **225 ชิ้น** |
+| <img src="/items/icons/transparent/black_money.png" width="36" height="36" class="object-contain inline-block" alt="Black Money" decoding="async" /> | **Black Money (เงินแดง)** | 10,000 | 100,000 | 100,000 | 100,000 | 150,000 | **450,000 บาท** |
 
 ---
 

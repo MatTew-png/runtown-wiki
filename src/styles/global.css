@@ -83,7 +83,6 @@ body {
   display: flex;
   width: max-content;
   animation: marquee 240s linear infinite;
-  will-change: transform;
   backface-visibility: hidden;
 }
 .marquee-track:hover {
@@ -114,7 +113,7 @@ body {
 
 .prose-runtown h1 {
   color: #ffffff;
-  font-family: 'Space Grotesk', 'Kanit', sans-serif;
+  font-family: var(--font-display);
   font-weight: 800;
   font-size: 2.25rem;
   margin-top: 1.75rem;
@@ -126,7 +125,7 @@ body {
 
 .prose-runtown h2 {
   color: #45f2b4;
-  font-family: 'Space Grotesk', 'Kanit', sans-serif;
+  font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.6rem;
   margin-top: 2.25rem;
@@ -365,11 +364,14 @@ body {
 .bento-card {
   transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
   transform-style: preserve-3d;
-  will-change: transform;
 }
 
 .cyber-tilt-card {
   transform-style: preserve-3d;
+}
+
+.bento-card:hover,
+.cyber-tilt-card:hover {
   will-change: transform;
 }
 
@@ -519,7 +521,6 @@ a[role="button"]:active {
   transition: border-color 0.22s ease,
               box-shadow 0.25s var(--ease-out-expo),
               background-color 0.22s ease;
-  will-change: transform;
 }
 
 /* 3. Smooth Form Controls (Inputs, Selects, Checkboxes) */
@@ -607,6 +608,38 @@ textarea:focus {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* 8. Respect Reduced Motion Preferences (WCAG 2.2.2 / A11y) */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .marquee-track,
+  .neon-pulse,
+  .job-tab-panel {
+    animation: none !important;
+  }
+
+  .hero-stagger-item,
+  .category-stagger-card {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 

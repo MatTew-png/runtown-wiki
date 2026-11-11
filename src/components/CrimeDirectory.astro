@@ -37,7 +37,7 @@ const crimes = [
     police: 3,
     reward: '25,000 - 40,000 RD',
     risk: 'HIGH',
-    riskColor: 'text-rose bg-rose/10 border-rose/40',
+    riskColor: 'text-danger bg-danger/10 border-danger/40',
     penalty: 'จำคุก 25 นาที + ยึดยานพาหนะเข้าคลังหลวง',
     equipment: ['มอเตอร์ไซค์วิบากความเร็วสูง', 'วิทยุสื่อสารเข้ารหัส', 'กระเป๋าเก็บกลิ่น'],
     routes: ['เส้นเลียบชายหาด Chumash เลี่ยงด่านตรวจ', 'ท่อระบายน้ำคอนกรีต Los Santos River'],
@@ -64,7 +64,7 @@ const crimes = [
 <section id="crimes" class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24 border-t border-line">
   <div class="space-y-3">
     <div class="flex flex-wrap items-center justify-between gap-3">
-      <p class="font-mono text-xs font-semibold tracking-[0.2em] text-rose uppercase">// UNDERWORLD DIRECTORY</p>
+      <p class="font-mono text-xs font-semibold tracking-[0.2em] text-danger uppercase">// UNDERWORLD DIRECTORY</p>
       <span class="inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 font-mono text-xs font-bold text-amber-300">
         <CyberIcon name="lock" class="size-3.5 text-amber-400" />
         <span>ปิดปรับปรุงชั่วคราว · รออัปเดตข้อมูล</span>
@@ -81,23 +81,23 @@ const crimes = [
   <!-- Content Container with Visual Lock Overlay: ปิดแบบมองเห็นได้ (Disabled & Maintenance Overlay) -->
   <div class="relative mt-10">
     <!-- Dimmed / Disabled Underlying Content (ยังมองเห็นโครงสร้างงานดำได้ทั้งหมด) -->
-    <div class="opacity-30 grayscale-[50%] pointer-events-none select-none filter blur-[0.5px]">
+    <div inert aria-hidden="true" class="opacity-30 grayscale-[50%] pointer-events-none select-none filter blur-[0.5px]">
       <div class="grid gap-5 md:grid-cols-2">
         {crimes.map((c) => (
-          <div class="rounded-2xl border border-line bg-card/70 p-6 backdrop-blur-md shadow-neon-card space-y-4 hover:border-rose/40 transition-all flex flex-col justify-between">
+          <div class="rounded-2xl border border-line bg-card/70 p-6 backdrop-blur-md shadow-neon-card space-y-4 hover:border-danger/40 transition-all flex flex-col justify-between">
             <div class="space-y-3">
               <div class="flex items-center justify-between">
                 <span class={`font-mono text-[10px] font-bold px-2.5 py-1 rounded-full border ${c.riskColor}`}>
                   RISK: {c.risk}
                 </span>
                 <span class="text-xs font-mono text-textMuted flex items-center gap-1.5">
-                  <CyberIcon name="siren" class="size-3.5 text-rose" />
+                  <CyberIcon name="siren" class="size-3.5 text-danger" />
                   <span>ตำรวจต้องออนไลน์: <strong class="text-white">{c.police} นาย</strong></span>
                 </span>
               </div>
 
               <div class="flex items-center gap-3 pt-1">
-                <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-paper border border-line text-rose">
+                <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-paper border border-line text-danger">
                   <CyberIcon name={c.icon} class="size-5" />
                 </span>
                 <div>
@@ -151,7 +151,7 @@ const crimes = [
             </div>
 
             <div class="pt-4 border-t border-lineSubtle">
-              <a href="/guides/jobs/black" class="text-xs font-mono font-bold text-rose hover:text-rose-300 flex items-center justify-between">
+              <a href="/guides/jobs/black" tabindex="-1" class="text-xs font-mono font-bold text-danger hover:text-rose-300 flex items-center justify-between">
                 <span>อ่านคู่มือเจาะลึกงานดำ</span>
                 <span>➔</span>
               </a>

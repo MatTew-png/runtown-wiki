@@ -23,7 +23,7 @@ const tabs = [
 const fuelColor: Record<string, string> = {
   A: 'text-mint',
   B: 'text-[#facc15]',
-  C: 'text-rose',
+  C: 'text-danger',
 };
 ---
 
@@ -58,7 +58,7 @@ const fuelColor: Record<string, string> = {
   <!-- Content Container with Visual Lock Overlay: ปิดแบบมองเห็นได้ (Disabled & Maintenance Overlay) -->
   <div class="relative mt-8">
     <!-- Dimmed / Disabled Underlying Content (ยังมองเห็นโครงสร้างรถและสเปกได้ทั้งหมด) -->
-    <div class="opacity-30 grayscale-[50%] pointer-events-none select-none filter blur-[0.5px]">
+    <div inert aria-hidden="true" class="opacity-30 grayscale-[50%] pointer-events-none select-none filter blur-[0.5px]">
       <!-- Filter Tabs -->
       <div class="flex gap-2 overflow-x-auto pb-2" id="vehTabs">
         {tabs.map((t, idx) => (
@@ -185,7 +185,7 @@ const fuelColor: Record<string, string> = {
         <button
           type="button"
           id="vehClearCompare"
-          class="inline-flex items-center gap-1 text-xs font-mono text-textMuted hover:text-rose transition-colors"
+          class="inline-flex items-center gap-1 text-xs font-mono text-textMuted hover:text-danger transition-colors"
         >
           <CyberIcon name="x" class="size-3.5" />
           <span>ล้างทั้งหมด</span>
@@ -202,7 +202,17 @@ const fuelColor: Record<string, string> = {
 </section>
 
 <script>
-  const vehiclesData: Record<string, any> = {
+  interface VehicleSpec {
+    id: string;
+    name: string;
+    capacity: number;
+    speed: number;
+    fuel: string;
+    price: string;
+    jobs: string[];
+  }
+
+  const vehiclesData: Record<string, VehicleSpec> = {
     bati: { id: 'bati', name: 'Pegassi Bati 801', capacity: 40, speed: 215, fuel: 'B', price: '15,000 RD', jobs: ['ดอกไม้', 'จี่เหล็ก'] },
     sanchez: { id: 'sanchez', name: 'Maibatsu Sanchez', capacity: 40, speed: 160, fuel: 'A', price: '350 RD/วัน', jobs: ['ดอกไม้'] },
     sultan: { id: 'sultan', name: 'Karin Sultan', capacity: 60, speed: 192, fuel: 'B', price: '35,000 RD', jobs: ['จี่เหล็ก', 'หมู'] },
@@ -213,133 +223,165 @@ const fuelColor: Record<string, string> = {
     speedo: { id: 'speedo', name: 'Vapid Speedo', capacity: 150, speed: 135, fuel: 'B', price: '900 RD/วัน', jobs: ['ไม้', 'หมู'] },
   };
 
-  let selectedVehs: string[] = [];
+  let vehAbort: AbortController | null = null;
 
-  // Tab Filtering
-  const tabBtns = document.querySelectorAll('.veh-tab-btn');
-  const cards = document.querySelectorAll('.veh-card');
+  function setupVehicleShowroom() {
+    if (vehAbort) vehAbort.abort();
+    vehAbort = new AbortController();
+    const { signal } = vehAbort;
 
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      tabBtns.forEach(b => {
-        b.classList.remove('border-mint', 'bg-mint', 'text-slate-950', 'font-bold', 'active');
-        b.classList.add('border-line', 'bg-card', 'text-textSoft');
-      });
-      btn.classList.remove('border-line', 'bg-card', 'text-textSoft');
-      btn.classList.add('border-mint', 'bg-mint', 'text-slate-950', 'font-bold', 'active');
+    let selectedVehs: string[] = [];
+    const tabBtns = document.querySelectorAll('.veh-tab-btn');
+    const cards = document.querySelectorAll('.veh-card');
+    const compareBtns = document.querySelectorAll('.veh-compare-btn');
+    const drawer = document.getElementById('vehCompareDrawer');
+    const compareCount = document.getElementById('vehCompareCount');
+    const compareContent = document.getElementById('vehCompareContent');
+    const clearBtn = document.getElementById('vehClearCompare');
 
-      const cat = parseInt(btn.getAttribute('data-filter') || '0', 10);
-      cards.forEach(card => {
-        const cCat = parseInt(card.getAttribute('data-cat') || '0', 10);
-        if (cat === 0 || cCat === cat) {
-          (card as HTMLElement).style.display = 'flex';
+    if (!tabBtns.length && !compareBtns.length) return;
+
+    tabBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach((b) => {
+          b.classList.remove('border-mint', 'bg-mint', 'text-slate-950', 'font-bold', 'active');
+          b.classList.add('border-line', 'bg-card', 'text-textSoft');
+        });
+        btn.classList.remove('border-line', 'bg-card', 'text-textSoft');
+        btn.classList.add('border-mint', 'bg-mint', 'text-slate-950', 'font-bold', 'active');
+
+        const cat = parseInt(btn.getAttribute('data-filter') || '0', 10);
+        cards.forEach((card) => {
+          const cCat = parseInt(card.getAttribute('data-cat') || '0', 10);
+          (card as HTMLElement).style.display = cat === 0 || cCat === cat ? 'flex' : 'none';
+        });
+      }, { signal });
+    });
+
+    function makeCell(text: string, cls: string): HTMLTableCellElement {
+      const td = document.createElement('td');
+      td.className = cls;
+      td.textContent = text;
+      return td;
+    }
+
+    function updateCompareUI() {
+      if (compareCount) compareCount.textContent = String(selectedVehs.length);
+
+      compareBtns.forEach((btn) => {
+        const id = btn.getAttribute('data-id') || '';
+        const isSel = selectedVehs.includes(id);
+        const label = document.createElement('span');
+        if (isSel) {
+          btn.className = 'veh-compare-btn mt-5 inline-flex items-center justify-center gap-1.5 rounded-xl border border-amber-400 bg-amber-400 text-slate-950 px-4 py-2 text-xs font-mono font-bold transition-all';
+          label.textContent = '✓ เลือกแล้ว';
         } else {
-          (card as HTMLElement).style.display = 'none';
+          btn.className = 'veh-compare-btn mt-5 inline-flex items-center justify-center gap-1.5 rounded-xl border border-line bg-paper/60 px-4 py-2 text-xs font-mono font-semibold text-white transition-all hover:border-mint hover:text-mint';
+          label.textContent = '+ เพิ่มเพื่อเปรียบเทียบ';
         }
+        btn.replaceChildren(label);
       });
-    });
-  });
 
-  // Compare Logic
-  const compareBtns = document.querySelectorAll('.veh-compare-btn');
-  const drawer = document.getElementById('vehCompareDrawer');
-  const compareCount = document.getElementById('vehCompareCount');
-  const compareContent = document.getElementById('vehCompareContent');
-  const clearBtn = document.getElementById('vehClearCompare');
-
-  function updateCompareUI() {
-    if (compareCount) compareCount.textContent = String(selectedVehs.length);
-
-    compareBtns.forEach(btn => {
-      const id = btn.getAttribute('data-id') || '';
-      const isSel = selectedVehs.includes(id);
-      if (isSel) {
-        btn.className = 'veh-compare-btn mt-5 inline-flex items-center justify-center gap-1.5 rounded-xl border border-amber-400 bg-amber-400 text-slate-950 px-4 py-2 text-xs font-mono font-bold transition-all';
-        btn.innerHTML = '<span>✓ เลือกแล้ว</span>';
-      } else {
-        btn.className = 'veh-compare-btn mt-5 inline-flex items-center justify-center gap-1.5 rounded-xl border border-line bg-paper/60 px-4 py-2 text-xs font-mono font-semibold text-white transition-all hover:border-mint hover:text-mint';
-        btn.innerHTML = '<span>+ เพิ่มเพื่อเปรียบเทียบ</span>';
+      if (!drawer || !compareContent) return;
+      if (selectedVehs.length === 0) {
+        drawer.classList.add('hidden');
+        compareContent.replaceChildren();
+        return;
       }
-    });
 
-    if (selectedVehs.length === 0) {
-      if (drawer) drawer.classList.add('hidden');
-    } else {
-      if (drawer) drawer.classList.remove('hidden');
+      drawer.classList.remove('hidden');
       if (selectedVehs.length === 1) {
         const v = vehiclesData[selectedVehs[0]];
-        if (compareContent) {
-          compareContent.innerHTML = `<p class="text-xs text-textSoft font-mono py-2">เลือกแล้ว <strong class="text-white">${v?.name || ''}</strong> · โปรดเลือกอีก 1 คันเพื่อเปรียบเทียบสเปกคู่</p>`;
-        }
-      } else if (selectedVehs.length === 2) {
-        const a = vehiclesData[selectedVehs[0]];
-        const b = vehiclesData[selectedVehs[1]];
-        if (a && b && compareContent) {
-          compareContent.innerHTML = `
-            <div class="overflow-x-auto">
-              <table class="w-full text-xs font-mono">
-                <thead>
-                  <tr class="text-left text-textMuted border-b border-lineSubtle">
-                    <th class="py-1.5">คุณสมบัติ</th>
-                    <th class="py-1.5 text-white font-bold">${a.name}</th>
-                    <th class="py-1.5 text-white font-bold">${b.name}</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-lineSubtle">
-                  <tr>
-                    <td class="py-1.5 text-textMuted">ความจุท้ายรถ</td>
-                    <td class="py-1.5 ${a.capacity >= b.capacity ? 'text-mint font-bold' : 'text-slate-300'}">${a.capacity} kg</td>
-                    <td class="py-1.5 ${b.capacity >= a.capacity ? 'text-mint font-bold' : 'text-slate-300'}">${b.capacity} kg</td>
-                  </tr>
-                  <tr>
-                    <td class="py-1.5 text-textMuted">ความเร็วสูงสุด</td>
-                    <td class="py-1.5 ${a.speed >= b.speed ? 'text-mint font-bold' : 'text-slate-300'}">${a.speed} km/h</td>
-                    <td class="py-1.5 ${b.speed >= a.speed ? 'text-mint font-bold' : 'text-slate-300'}">${b.speed} km/h</td>
-                  </tr>
-                  <tr>
-                    <td class="py-1.5 text-textMuted">เกรดน้ำมัน</td>
-                    <td class="py-1.5 text-slate-300">เกรด ${a.fuel}</td>
-                    <td class="py-1.5 text-slate-300">เกรด ${b.fuel}</td>
-                  </tr>
-                  <tr>
-                    <td class="py-1.5 text-textMuted">ราคา</td>
-                    <td class="py-1.5 text-amber-300 font-bold">${a.price}</td>
-                    <td class="py-1.5 text-amber-300 font-bold">${b.price}</td>
-                  </tr>
-                  <tr>
-                    <td class="py-1.5 text-textMuted">งานที่แนะนำ</td>
-                    <td class="py-1.5 text-slate-300">${a.jobs.join(', ')}</td>
-                    <td class="py-1.5 text-slate-300">${b.jobs.join(', ')}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          `;
-        }
+        const p = document.createElement('p');
+        p.className = 'text-xs text-textSoft font-mono py-2';
+        const strong = document.createElement('strong');
+        strong.className = 'text-white';
+        strong.textContent = v?.name || '';
+        p.append('เลือกแล้ว ', strong, ' · โปรดเลือกอีก 1 คันเพื่อเปรียบเทียบสเปกคู่');
+        compareContent.replaceChildren(p);
+        return;
       }
+
+      const a = vehiclesData[selectedVehs[0]];
+      const b = vehiclesData[selectedVehs[1]];
+      if (!a || !b) return;
+
+      const wrap = document.createElement('div');
+      wrap.className = 'overflow-x-auto';
+      const table = document.createElement('table');
+      table.className = 'w-full text-xs font-mono';
+
+      const thead = document.createElement('thead');
+      const headRow = document.createElement('tr');
+      headRow.className = 'text-left text-textMuted border-b border-lineSubtle';
+      ['คุณสมบัติ', a.name, b.name].forEach((txt, idx) => {
+        const th = document.createElement('th');
+        th.className = idx === 0 ? 'py-1.5' : 'py-1.5 text-white font-bold';
+        th.textContent = txt;
+        headRow.appendChild(th);
+      });
+      thead.appendChild(headRow);
+
+      const tbody = document.createElement('tbody');
+      tbody.className = 'divide-y divide-lineSubtle';
+      const rows: Array<[string, string, string, string, string]> = [
+        [
+          'ความจุท้ายรถ',
+          `${a.capacity} kg`,
+          a.capacity >= b.capacity ? 'py-1.5 text-mint font-bold' : 'py-1.5 text-slate-300',
+          `${b.capacity} kg`,
+          b.capacity >= a.capacity ? 'py-1.5 text-mint font-bold' : 'py-1.5 text-slate-300',
+        ],
+        [
+          'ความเร็วสูงสุด',
+          `${a.speed} km/h`,
+          a.speed >= b.speed ? 'py-1.5 text-mint font-bold' : 'py-1.5 text-slate-300',
+          `${b.speed} km/h`,
+          b.speed >= a.speed ? 'py-1.5 text-mint font-bold' : 'py-1.5 text-slate-300',
+        ],
+        ['เกรดน้ำมัน', `เกรด ${a.fuel}`, 'py-1.5 text-slate-300', `เกรด ${b.fuel}`, 'py-1.5 text-slate-300'],
+        ['ราคา', a.price, 'py-1.5 text-amber-300 font-bold', b.price, 'py-1.5 text-amber-300 font-bold'],
+        ['งานที่แนะนำ', a.jobs.join(', '), 'py-1.5 text-slate-300', b.jobs.join(', '), 'py-1.5 text-slate-300'],
+      ];
+
+      for (const [label, aVal, aCls, bVal, bCls] of rows) {
+        const tr = document.createElement('tr');
+        tr.appendChild(makeCell(label, 'py-1.5 text-textMuted'));
+        tr.appendChild(makeCell(aVal, aCls));
+        tr.appendChild(makeCell(bVal, bCls));
+        tbody.appendChild(tr);
+      }
+
+      table.append(thead, tbody);
+      wrap.appendChild(table);
+      compareContent.replaceChildren(wrap);
+    }
+
+    compareBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id') || '';
+        if (selectedVehs.includes(id)) {
+          selectedVehs = selectedVehs.filter((x) => x !== id);
+        } else {
+          selectedVehs = selectedVehs.length >= 2 ? [selectedVehs[1], id] : [...selectedVehs, id];
+        }
+        updateCompareUI();
+      }, { signal });
+    });
+
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        selectedVehs = [];
+        updateCompareUI();
+      }, { signal });
     }
   }
 
-  compareBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.getAttribute('data-id') || '';
-      if (selectedVehs.includes(id)) {
-        selectedVehs = selectedVehs.filter(x => x !== id);
-      } else {
-        if (selectedVehs.length >= 2) {
-          selectedVehs = [selectedVehs[1], id];
-        } else {
-          selectedVehs.push(id);
-        }
-      }
-      updateCompareUI();
-    });
+  document.addEventListener('astro:page-load', setupVehicleShowroom);
+  document.addEventListener('astro:before-swap', () => {
+    if (vehAbort) {
+      vehAbort.abort();
+      vehAbort = null;
+    }
   });
-
-  if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
-      selectedVehs = [];
-      updateCompareUI();
-    });
-  }
 </script>

@@ -1,0 +1,143 @@
+{
+  "nodes": [
+    {
+      "id": "group_executive",
+      "type": "group",
+      "label": "📑 1. Executive Hub & Status",
+      "x": -50,
+      "y": -60,
+      "width": 780,
+      "height": 380,
+      "color": "6"
+    },
+    {
+      "id": "node_welcome",
+      "type": "text",
+      "text": "# 🌐 RUN TOWN Master Wiki\nExecutive overview & high-performance economy hub for FiveM Roleplay.\n\n- **Astro SSG 5.18.2** (29 Pre-rendered pages)\n- **26 Verified Guides**\n- **Pre-computed GPS routes** (400 KB road network)",
+      "x": -20,
+      "y": 0,
+      "width": 350,
+      "height": 280,
+      "color": "6"
+    },
+    {
+      "id": "node_master_index",
+      "type": "file",
+      "file": "00_Index/00_Master_Index.md",
+      "x": 360,
+      "y": 0,
+      "width": 340,
+      "height": 280
+    },
+    {
+      "id": "group_features",
+      "type": "group",
+      "label": "🌾 2. Career Economics & Logistics Features",
+      "x": -50,
+      "y": 360,
+      "width": 780,
+      "height": 420,
+      "color": "4"
+    },
+    {
+      "id": "node_pork",
+      "type": "file",
+      "file": "01_Features/FEAT_01_Pork_Farming.md",
+      "x": -20,
+      "y": 420,
+      "width": 350,
+      "height": 320,
+      "color": "4"
+    },
+    {
+      "id": "node_flower",
+      "type": "file",
+      "file": "01_Features/FEAT_02_Flower_Farming.md",
+      "x": 360,
+      "y": 420,
+      "width": 340,
+      "height": 320,
+      "color": "4"
+    },
+    {
+      "id": "group_arch",
+      "type": "group",
+      "label": "🏛️ 3. Architecture & Task Roadmaps",
+      "x": 780,
+      "y": -60,
+      "width": 780,
+      "height": 840,
+      "color": "5"
+    },
+    {
+      "id": "node_audit",
+      "type": "file",
+      "file": "02_Architecture/ARCH_01_Architecture_Audit.md",
+      "x": 810,
+      "y": 0,
+      "width": 340,
+      "height": 340,
+      "color": "5"
+    },
+    {
+      "id": "node_roadmap",
+      "type": "file",
+      "file": "02_Architecture/ARCH_02_Refactoring_Roadmap.md",
+      "x": 1180,
+      "y": 0,
+      "width": 350,
+      "height": 340,
+      "color": "2"
+    },
+    {
+      "id": "node_kanban",
+      "type": "file",
+      "file": "02_Architecture/KANBAN_Board.md",
+      "x": 810,
+      "y": 400,
+      "width": 340,
+      "height": 340,
+      "color": "3"
+    },
+    {
+      "id": "node_design",
+      "type": "file",
+      "file": "02_Architecture/ARCH_04_Runtown_Design_System.md",
+      "x": 1180,
+      "y": 400,
+      "width": 350,
+      "height": 340,
+      "color": "1"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_index_to_features",
+      "fromNode": "node_master_index",
+      "fromSide": "bottom",
+      "toNode": "node_pork",
+      "toSide": "top"
+    },
+    {
+      "id": "edge_index_to_arch",
+      "fromNode": "node_master_index",
+      "fromSide": "right",
+      "toNode": "node_audit",
+      "toSide": "left"
+    },
+    {
+      "id": "edge_audit_to_roadmap",
+      "fromNode": "node_audit",
+      "fromSide": "right",
+      "toNode": "node_roadmap",
+      "toSide": "left"
+    },
+    {
+      "id": "edge_roadmap_to_kanban",
+      "fromNode": "node_roadmap",
+      "fromSide": "bottom",
+      "toNode": "node_kanban",
+      "toSide": "top"
+    }
+  ]
+}

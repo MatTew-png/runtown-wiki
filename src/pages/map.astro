@@ -44,7 +44,7 @@ import CyberIcon from '../components/CyberIcon.astro';
       gap: 4px;
       padding: 3px 8px;
       border-radius: 9999px;
-      font-family: 'Kanit', sans-serif;
+      font-family: 'Prompt', sans-serif;
       font-size: 11px;
       font-weight: 700;
       white-space: nowrap;
@@ -75,6 +75,10 @@ import CyberIcon from '../components/CyberIcon.astro';
       0% { transform: scale(0.9); opacity: 0.9; }
       70% { transform: scale(2.2); opacity: 0; }
       100% { transform: scale(2.4); opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pulse-ring { animation: none; opacity: 0.35; }
+      .gta-marker-container { transition: none; }
     }
   </style>
 
@@ -173,7 +177,7 @@ import CyberIcon from '../components/CyberIcon.astro';
         <div class="space-y-1">
           <h3 id="mapPoiTitle" class="text-lg font-display font-bold text-white">🌐 ภาพรวมจุดทำงานทั่วเกาะ (All Zones)</h3>
           <p id="mapPoiDesc" class="text-xs text-textSoft leading-relaxed">
-            ศูนย์รวมพิกัดและจุดทำงานครบทุกประเภทบนเกาะ RUN TOWN — มีจุดฟาร์มวัตถุดิบ 7 สาย, ครัวเคบับ 4 จุด, ร้านค้า 12 สาขา, จุดรีหัว 0% และเขตเซฟโซน
+            ศูนย์รวมพิกัดและจุดทำงานครบทุกประเภทบนเกาะ RUN TOWN — มีจุดฟาร์มวัตถุดิบ 8 สาย, ครัวเคบับ 4 จุด, ร้านค้า 12 สาขา, จุดรีหัว 0% และเขตเซฟโซน
           </p>
         </div>
 
@@ -266,8 +270,8 @@ import CyberIcon from '../components/CyberIcon.astro';
 <script>
   import L from 'leaflet';
   import jobGpsRoadRoutes from '../data/jobGpsRoadRoutes.json';
+  import { SPOTS, resolveSpot, getSpotExtraInfo, type SpotData } from '../data/mapSpots';
 
-  // GTA V Map Constants (Matching GTALens standard)
   const GTA5_MAP_SIZE = { width: 16384, height: 24576 };
   const GTA5_BOUNDS = { minX: -4140, maxX: 4860, minY: -5100, maxY: 8400 };
   const MAP_BOUNDS = L.latLngBounds([-192, 0], [0, 128]);
@@ -279,1495 +283,32 @@ import CyberIcon from '../components/CyberIcon.astro';
     return L.latLng(-py / 128, px / 128);
   }
 
-  // Layer Configs
+  function escapeHtml(value: string): string {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   const TILE_LAYERS = {
     game: {
       url: 'https://s.rsg.sc/sc/images/games/GTAV/map/game/{z}/{x}/{y}.jpg',
       bgColor: '#151e25',
-      className: 'game-radar-tiles'
+      className: 'game-radar-tiles',
     },
     satellite: {
       url: 'https://s.rsg.sc/sc/images/games/GTAV/map/render/{z}/{x}/{y}.jpg',
       bgColor: '#0d2b4f',
-      className: 'satellite-tiles'
+      className: 'satellite-tiles',
     },
     print: {
       url: 'https://s.rsg.sc/sc/images/games/GTAV/map/print/{z}/{x}/{y}.jpg',
       bgColor: '#4eb1d0',
-      className: 'print-tiles'
-    }
-  };
-
-  // Spot Database (Clean: Zero cement spots by default!)
-  const spotsData: Record<string, any> = {
-    // === 🪓 งานไม้ (Woodcutting) ===
-    'wood-farm': {
-      id: 'wood-farm',
-      surgeId: 'spot-1791595290477',
-      title: '🪓 ฟามไม้ (Paleto Forest)',
-      desc: 'จุดตัดไม้ดิบ (Raw Wood 0.5 kg) ป่าสนเขา Paleto Forest ทางเหนือ ตัด 10 วิ/ชิ้น (ขวานราคา 200 RD / โอกาสพัง 2% ต่อชิ้น)',
-      coords: 'X: 94.1, Y: 6938.8, Z: 30.0',
-      zone: 'PALETO FOREST · สุจริต 100%',
-      x: 94.1, y: 6938.8,
-      status: 'WOOD FARM 🟢',
-      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
-      group: 'wood',
-      color: '#f59e0b',
-      icon: '🪓',
-      label: 'ฟามไม้',
-      cdMinutes: 10
+      className: 'print-tiles',
     },
-    'spot-1791595290477': {
-      id: 'wood-farm',
-      surgeId: 'spot-1791595290477',
-      title: '🪓 ฟามไม้ (Paleto Forest)',
-      desc: 'จุดตัดไม้ดิบ (Raw Wood 0.5 kg) ป่าสนเขา Paleto Forest ทางเหนือ ตัด 10 วิ/ชิ้น (ขวานราคา 200 RD / โอกาสพัง 2% ต่อชิ้น)',
-      coords: 'X: 94.1, Y: 6938.8, Z: 30.0',
-      zone: 'PALETO FOREST · สุจริต 100%',
-      x: 94.1, y: 6938.8,
-      status: 'WOOD FARM 🟢',
-      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
-      group: 'wood',
-      color: '#f59e0b',
-      icon: '🪓',
-      label: 'ฟามไม้',
-      cdMinutes: 10
-    },
-    'wood-pro': {
-      id: 'wood-pro',
-      surgeId: 'spot-1791601120287',
-      title: '🪵 โพลไม้ (Paleto Sawmill)',
-      desc: 'โรงเลื่อยแปรรูปไม้ริมทางรถไฟ Paleto Bay แปรรูปไม้ดิบเป็นไม้แปร 5 วิ/ชิ้น (อัตรา 1:1)',
-      coords: 'X: -559.6, Y: 5321.3, Z: 30.0',
-      zone: 'PALETO BAY / SAWMILL · สุจริต 100%',
-      x: -559.6, y: 5321.3,
-      status: 'PROCESSING 🟢',
-      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
-      group: 'wood',
-      color: '#f59e0b',
-      icon: '🪵',
-      label: 'โพลไม้',
-      cdMinutes: 10
-    },
-    'spot-1791601120287': {
-      id: 'wood-pro',
-      surgeId: 'spot-1791601120287',
-      title: '🪵 โพลไม้ (Paleto Sawmill)',
-      desc: 'โรงเลื่อยแปรรูปไม้ริมทางรถไฟ Paleto Bay แปรรูปไม้ดิบเป็นไม้แปร 5 วิ/ชิ้น (อัตรา 1:1)',
-      coords: 'X: -559.6, Y: 5321.3, Z: 30.0',
-      zone: 'PALETO BAY / SAWMILL · สุจริต 100%',
-      x: -559.6, y: 5321.3,
-      status: 'PROCESSING 🟢',
-      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
-      group: 'wood',
-      color: '#f59e0b',
-      icon: '🪵',
-      label: 'โพลไม้',
-      cdMinutes: 10
-    },
-    'wood-pack': {
-      id: 'wood-pack',
-      surgeId: 'spot-1789097494502',
-      title: '📦 แพ็คไม้ (Industrial Docks)',
-      desc: 'โกดังรวมสินค้าท่าเรือใต้ แพ็คไม้แปร 2 ชิ้น เป็นกล่องไม้ 1 ลัง (น้ำหนัก 1.0 kg) 5 วิ/ลัง',
-      coords: 'X: -567.8, Y: -2156.2, Z: 30.0',
-      zone: 'PORT OF LS · สุจริต 100%',
-      x: -567.8, y: -2156.2,
-      status: 'PACKING 🟢',
-      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
-      group: 'wood',
-      color: '#f59e0b',
-      icon: '📦',
-      label: 'แพ็คไม้',
-      cdMinutes: 10
-    },
-    'spot-1789097494502': {
-      id: 'wood-pack',
-      surgeId: 'spot-1789097494502',
-      title: '📦 แพ็คไม้ (Industrial Docks)',
-      desc: 'โกดังรวมสินค้าท่าเรือใต้ แพ็คไม้แปร 2 ชิ้น เป็นกล่องไม้ 1 ลัง (น้ำหนัก 1.0 kg) 5 วิ/ลัง',
-      coords: 'X: -567.8, Y: -2156.2, Z: 30.0',
-      zone: 'PORT OF LS · สุจริต 100%',
-      x: -567.8, y: -2156.2,
-      status: 'PACKING 🟢',
-      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
-      group: 'wood',
-      color: '#f59e0b',
-      icon: '📦',
-      label: 'แพ็คไม้',
-      cdMinutes: 10
-    },
-    'wood-sell': {
-      id: 'wood-sell',
-      surgeId: 'spot-1789097335503',
-      title: '💵 ขายไม้ (El Burro / Murrieta)',
-      desc: 'จุดรับซื้อไม้กล่องพรีเมียม 479 RD/ลัง หรือส่งขายให้ผู้เล่นคนอื่นได้ 500 - 600 RD (ใช้คราฟต์ไม้เบสบอล Bat)',
-      coords: 'X: 1202.7, Y: -1271.3, Z: 30.0',
-      zone: 'EL BURRO HEIGHTS · EXPORT POINT · รับซื้อ 479 RD (ผู้เล่น 500-600 RD)',
-      x: 1202.7, y: -1271.3,
-      status: 'EXPORT POINT 🟢',
-      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
-      group: 'wood',
-      color: '#f59e0b',
-      icon: '💵',
-      label: 'ขายไม้ (479 RD)',
-      cdMinutes: 0
-    },
-    'spot-1789097335503': {
-      id: 'wood-sell',
-      surgeId: 'spot-1789097335503',
-      title: '💵 ขายไม้ (El Burro / Murrieta)',
-      desc: 'จุดรับซื้อไม้กล่องพรีเมียม 479 RD/ลัง หรือส่งขายให้ผู้เล่นคนอื่นได้ 500 - 600 RD (ใช้คราฟต์ไม้เบสบอล Bat)',
-      coords: 'X: 1202.7, Y: -1271.3, Z: 30.0',
-      zone: 'EL BURRO HEIGHTS · EXPORT POINT · รับซื้อ 479 RD (ผู้เล่น 500-600 RD)',
-      x: 1202.7, y: -1271.3,
-      status: 'EXPORT POINT 🟢',
-      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
-      group: 'wood',
-      color: '#f59e0b',
-      icon: '💵',
-      label: 'ขายไม้ (479 RD)',
-      cdMinutes: 0
-    },
-
-    // === 🍸 จุดรีหัว (บาร์เขียว & อู่ช่าง เท่านั้น!) ===
-    'bar-green': {
-      id: 'bar-green',
-      surgeId: 'spot-1791604241115',
-      title: '🍸 บาร์รีหัว (Del Perro)',
-      desc: 'จุดฟื้นฟูและรีเซ็ตค่าความเหนื่อยล้าของสมอง (Mental Fatigue) กลับสู่ 0% ตามกฎหมายเมือง RUN TOWN (บาร์ทั่วไปรีไม่ได้)',
-      coords: 'X: -1824.1, Y: -1211.9, Z: 30.0',
-      zone: 'DEL PERRO / WEST LS · รีหัว 0% · กฎหมาย RUN TOWN',
-      x: -1824.1,
-      y: -1211.9,
-      status: 'HEAD RESET 🍸',
-      statusClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
-      group: 'head_reset',
-      color: '#22c55e',
-      icon: '🍸',
-      label: 'บาร์รีหัว (0%)',
-      cdMinutes: 10
-    },
-    'spot-1791604241115': {
-      id: 'bar-green',
-      surgeId: 'spot-1791604241115',
-      title: '🍸 บาร์รีหัว (Del Perro)',
-      desc: 'จุดฟื้นฟูและรีเซ็ตค่าความเหนื่อยล้าของสมอง (Mental Fatigue) กลับสู่ 0% ตามกฎหมายเมือง RUN TOWN (บาร์ทั่วไปรีไม่ได้)',
-      coords: 'X: -1824.1, Y: -1211.9, Z: 30.0',
-      zone: 'DEL PERRO / WEST LS · รีหัว 0% · กฎหมาย RUN TOWN',
-      x: -1824.1,
-      y: -1211.9,
-      status: 'HEAD RESET 🍸',
-      statusClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
-      group: 'head_reset',
-      color: '#22c55e',
-      icon: '🍸',
-      label: 'บาร์รีหัว (0%)',
-      cdMinutes: 10
-    },
-    'garage-reset': {
-      id: 'garage-reset',
-      surgeId: 'spot-1788676937650',
-      title: '🔧 อู่ (Chumash / Pacific Blvd)',
-      desc: 'จุดพักผ่อนและอู่ซ่อมรถ ช่างบริการสามารถรีเซ็ตค่าสมองกลับสู่ 0% ได้อย่างปลอดภัยตลอด 24 ชม.',
-      coords: 'X: -3065.5, Y: 419.5, Z: 30.0',
-      zone: 'CHUMASH / PACIFIC BLVD · อู่ช่าง · รีหัว 0%',
-      x: -3065.5,
-      y: 419.5,
-      status: 'HEAD RESET 🔧',
-      statusClass: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
-      group: 'head_reset',
-      color: '#ef4444',
-      icon: '🔧',
-      label: 'อู่ (รีหัว 0%)',
-      cdMinutes: 10
-    },
-    'spot-1788676937650': {
-      id: 'garage-reset',
-      surgeId: 'spot-1788676937650',
-      title: '🔧 อู่ (Chumash / Pacific Blvd)',
-      desc: 'จุดพักผ่อนและอู่ซ่อมรถ ช่างบริการสามารถรีเซ็ตค่าสมองกลับสู่ 0% ได้อย่างปลอดภัยตลอด 24 ชม.',
-      coords: 'X: -3065.5, Y: 419.5, Z: 30.0',
-      zone: 'CHUMASH / PACIFIC BLVD · อู่ช่าง · รีหัว 0%',
-      x: -3065.5,
-      y: 419.5,
-      status: 'HEAD RESET 🔧',
-      statusClass: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
-      group: 'head_reset',
-      color: '#ef4444',
-      icon: '🔧',
-      label: 'อู่ (รีหัว 0%)',
-      cdMinutes: 10
-    },
-
-    // === 🐷 ฟาร์มหมู (Pork Farming) ===
-    'pork-farm': {
-      id: 'pork-farm',
-      title: '🐷 ฟามหมู (Grapeseed / Alamo Sea)',
-      desc: 'จุดเริ่มต้นวงจรการผลิตฟาร์มหมู มีคอกหมูและจุดให้อาหารข้าว ตั้งอยู่ทางตอนเหนือของ Alamo Sea',
-      coords: 'X: 1454.2, Y: 1067.7, Z: 30.0',
-      zone: 'GRAPESEED / ALAMO SEA · สุจริต 100%',
-      x: 1454.2, y: 1067.7,
-      status: 'PORK FARM 🟢',
-      statusClass: 'bg-pink-500/15 text-pink-300 border-pink-500/30',
-      group: 'pork',
-      color: '#ec4899',
-      icon: '🐷',
-      label: 'ฟามหมู',
-      cdMinutes: 10
-    },
-    'pork-pro': {
-      id: 'pork-pro',
-      title: '🥩 โพลหมู (South Los Santos)',
-      desc: 'โรงงานแปรรูปหมูดิบให้กลายเป็นหมูโพร อัตราส่วน 1:1 ค่าสมองเพิ่มขึ้นช้าๆ',
-      coords: 'X: 956.8, Y: -2127.2, Z: 30.0',
-      zone: 'SOUTH LOS SANTOS · สุจริต 100%',
-      x: 956.8, y: -2127.2,
-      status: 'PROCESSING 🟢',
-      statusClass: 'bg-pink-500/15 text-pink-300 border-pink-500/30',
-      group: 'pork',
-      color: '#ec4899',
-      icon: '🥩',
-      label: 'โพลหมู',
-      cdMinutes: 10
-    },
-    'pork-pack': {
-      id: 'pork-pack',
-      title: '📦 แพ็คหมู (Port of LS)',
-      desc: 'จุดบรรจุหมูโพรเป็นหมูแพ็คเกจพรีเมียม 2:1 เพื่อเตรียมโหลดขึ้นรถส่งออก',
-      coords: 'X: -609.0, Y: -2159.5, Z: 30.0',
-      zone: 'PORT OF LS · สุจริต 100%',
-      x: -609.0, y: -2159.5,
-      status: 'PACKING 🟢',
-      statusClass: 'bg-pink-500/15 text-pink-300 border-pink-500/30',
-      group: 'pork',
-      color: '#ec4899',
-      icon: '📦',
-      label: 'แพ็คหมู',
-      cdMinutes: 10
-    },
-    'pork-sell': {
-      id: 'pork-sell',
-      surgeId: 'spot-1789097291487',
-      title: '💵 ขายหมู (Strawberry / Little Seoul)',
-      desc: 'จุดรับซื้อเนื้อหมูแพ็ค 380 RD ต่อกล่อง หรือส่งขายตรงให้ผู้เล่นร้านอาหาร (130 - 150 RD)',
-      coords: 'X: -638.1, Y: -1213.0, Z: 30.0',
-      zone: 'STRAWBERRY / LITTLE SEOUL · รับซื้อ 380 RD · สุจริต 100%',
-      x: -638.1,
-      y: -1213.0,
-      status: 'EXPORT POINT 🟢',
-      statusClass: 'bg-pink-500/15 text-pink-300 border-pink-500/30',
-      group: 'pork',
-      color: '#ec4899',
-      icon: '💵',
-      label: 'ขายหมู (380 RD)',
-      cdMinutes: 10
-    },
-    'spot-1789097291487': {
-      id: 'pork-sell',
-      surgeId: 'spot-1789097291487',
-      title: '💵 ขายหมู (Strawberry / Little Seoul)',
-      desc: 'จุดรับซื้อเนื้อหมูแพ็ค 380 RD ต่อกล่อง หรือส่งขายตรงให้ผู้เล่นร้านอาหาร (130 - 150 RD)',
-      coords: 'X: -638.1, Y: -1213.0, Z: 30.0',
-      zone: 'STRAWBERRY / LITTLE SEOUL · รับซื้อ 380 RD · สุจริต 100%',
-      x: -638.1,
-      y: -1213.0,
-      status: 'EXPORT POINT 🟢',
-      statusClass: 'bg-pink-500/15 text-pink-300 border-pink-500/30',
-      group: 'pork',
-      color: '#ec4899',
-      icon: '💵',
-      label: 'ขายหมู (380 RD)',
-      cdMinutes: 10
-    },
-    'vespucci': {
-      id: 'pork-sell',
-      surgeId: 'spot-1789097291487',
-      title: '💵 ขายหมู (Strawberry / Little Seoul)',
-      desc: 'จุดรับซื้อเนื้อหมูแพ็ค 380 RD ต่อกล่อง หรือส่งขายตรงให้ผู้เล่นร้านอาหาร (130 - 150 RD)',
-      coords: 'X: -638.1, Y: -1213.0, Z: 30.0',
-      zone: 'STRAWBERRY / LITTLE SEOUL · รับซื้อ 380 RD · สุจริต 100%',
-      x: -638.1,
-      y: -1213.0,
-      status: 'EXPORT POINT 🟢',
-      statusClass: 'bg-pink-500/15 text-pink-300 border-pink-500/30',
-      group: 'pork',
-      color: '#ec4899',
-      icon: '💵',
-      label: 'ขายหมู (380 RD)',
-      cdMinutes: 10
-    },
-
-    // === 🛡️ เซฟโซน & คลัง REBEL ===
-    'hospital': {
-      id: 'hospital',
-      surgeId: 'spot-1789096362145',
-      title: '🏥 โรงพยาบาล Pillbox Hill',
-      desc: 'ศูนย์การแพทย์ใจกลางเมือง Los Santos เขตปลอดภัยสูงสุด (Safe Zone 100%) และจุดรับซื้อดอกไม้ดิบของหมอเพื่อปรุงยา (120 RD/ต้น)',
-      coords: 'X: -780.1, Y: 287.1, Z: 30.0',
-      zone: 'PILLBOX HILL · SAFE ZONE · จุดขายดอกไม้ดิบให้หมอ (120 RD)',
-      x: -780.1, y: 287.1,
-      status: 'SAFE ZONE 🟢',
-      statusClass: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-      group: 'safe',
-      color: '#10b981',
-      icon: '🏥',
-      label: 'รพ. เซฟโซน (ส่ง รพ. 120 RD)',
-      cdMinutes: 0
-    },
-    'spot-1789096362145': {
-      id: 'hospital',
-      surgeId: 'spot-1789096362145',
-      title: '🏥 โรงพยาบาล Pillbox Hill',
-      desc: 'ศูนย์การแพทย์ใจกลางเมือง Los Santos เขตปลอดภัยสูงสุด (Safe Zone 100%) และจุดรับซื้อดอกไม้ดิบของหมอเพื่อปรุงยา (120 RD/ต้น)',
-      coords: 'X: -780.1, Y: 287.1, Z: 30.0',
-      zone: 'PILLBOX HILL · SAFE ZONE · จุดขายดอกไม้ดิบให้หมอ (120 RD)',
-      x: -780.1, y: 287.1,
-      status: 'SAFE ZONE 🟢',
-      statusClass: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
-      group: 'safe',
-      color: '#10b981',
-      icon: '🏥',
-      label: 'รพ. เซฟโซน (ส่ง รพ. 120 RD)',
-      cdMinutes: 0
-    },
-    'police': {
-      id: 'police',
-      title: '👮 สถานีตำรวจ Mission Row (LSPD)',
-      desc: 'กองบัญชาการตำรวจนครบาล LSPD เขตความปลอดภัยระดับสูง',
-      coords: 'X: 417.1, Y: -982.3, Z: 30.0',
-      x: 417.1, y: -982.3,
-      status: 'SAFE ZONE 🟢',
-      statusClass: 'bg-blue-500/15 text-blue-400 border-blue-500/30',
-      group: 'safe',
-      color: '#3b82f6',
-      icon: '👮',
-      label: 'ตำรวจ',
-      cdMinutes: 0
-    },
-    'rebel-south': {
-      id: 'rebel-south',
-      surgeId: 'spot-1791478456825',
-      title: '🗄️ ตู้เรเบลล่าง (Elysian Island)',
-      desc: 'ตู้คลาวด์เซฟเรเบลท่าเรือใต้ จุดสต็อกสินค้าและถ่ายเทน้ำหนักก่อนหรือหลังโพล/แพ็ค',
-      coords: 'X: 1168.6, Y: -3175.2, Z: 30.0',
-      zone: 'ELYSIAN ISLAND / SOUTH PORT · คลัง CLOUD STASH',
-      x: 1168.6, y: -3175.2,
-      status: 'CLOUD STASH 🗄️',
-      statusClass: 'bg-red-500/20 text-red-300 border-red-500/40',
-      group: 'safe',
-      color: '#ef4444',
-      icon: '🗄️',
-      label: 'เรเบลล่าง',
-      cdMinutes: 10
-    },
-    'spot-1791478456825': {
-      id: 'rebel-south',
-      surgeId: 'spot-1791478456825',
-      title: '🗄️ ตู้เรเบลล่าง (Elysian Island)',
-      desc: 'ตู้คลาวด์เซฟเรเบลท่าเรือใต้ จุดสต็อกสินค้าและถ่ายเทน้ำหนักก่อนหรือหลังโพล/แพ็ค',
-      coords: 'X: 1168.6, Y: -3175.2, Z: 30.0',
-      zone: 'ELYSIAN ISLAND / SOUTH PORT · คลัง CLOUD STASH',
-      x: 1168.6, y: -3175.2,
-      status: 'CLOUD STASH 🗄️',
-      statusClass: 'bg-red-500/20 text-red-300 border-red-500/40',
-      group: 'safe',
-      color: '#ef4444',
-      icon: '🗄️',
-      label: 'เรเบลล่าง',
-      cdMinutes: 10
-    },
-    'rebel-desert': {
-      id: 'rebel-desert',
-      surgeId: 'spot-1791478402050',
-      title: '🗄️ ตู้เรเบลทะเลทราย (Grand Senora)',
-      desc: 'ตู้คลาวด์เซฟเรเบลทะเลทราย จุดสต็อกข้าวดิบสำหรับนำไปเลี้ยงหมู หรือพักวัตถุดิบโซนเหนือ',
-      coords: 'X: 1137.8, Y: 3054.1, Z: 30.0',
-      zone: 'GRAND SENORA DESERT · คลัง CLOUD STASH',
-      x: 1137.8, y: 3054.1,
-      status: 'CLOUD STASH 🗄️',
-      statusClass: 'bg-red-500/20 text-red-300 border-red-500/40',
-      group: 'safe',
-      color: '#ef4444',
-      icon: '🗄️',
-      label: 'เรเบลทะเลทราย',
-      cdMinutes: 10
-    },
-    'spot-1791478402050': {
-      id: 'rebel-desert',
-      surgeId: 'spot-1791478402050',
-      title: '🗄️ ตู้เรเบลทะเลทราย (Grand Senora)',
-      desc: 'ตู้คลาวด์เซฟเรเบลทะเลทราย จุดสต็อกข้าวดิบสำหรับนำไปเลี้ยงหมู หรือพักวัตถุดิบโซนเหนือ',
-      coords: 'X: 1137.8, Y: 3054.1, Z: 30.0',
-      zone: 'GRAND SENORA DESERT · คลัง CLOUD STASH',
-      x: 1137.8, y: 3054.1,
-      status: 'CLOUD STASH 🗄️',
-      statusClass: 'bg-red-500/20 text-red-300 border-red-500/40',
-      group: 'safe',
-      color: '#ef4444',
-      icon: '🗄️',
-      label: 'เรเบลทะเลทราย',
-      cdMinutes: 10
-    },
-
-    // === 🌾 เกษตร: ฟาร์มข้าว (Wheat Farming) ===
-    'wheat-farm': {
-      id: 'wheat-farm',
-      surgeId: 'spot-1791601204634',
-      title: '🌾 ฟามข้าว (Grapeseed)',
-      desc: 'ทุ่งข้าวสาลี Grapeseed เกี่ยวรวงข้าวดิบ (Raw Rice 0.5 kg) นำไปแปรรูปเป็นข้าวแปร หรือส่งคลังเรเบลเลี้ยงหมู',
-      coords: 'X: 2855.0, Y: 4609.2, Z: 30.0',
-      zone: 'GRAPESEED · สุจริต 100%',
-      x: 2855.0, y: 4609.2,
-      status: 'WHEAT FARM 🟢',
-      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
-      group: 'wheat',
-      color: '#eab308',
-      icon: '🌾',
-      label: 'ฟามข้าว',
-      cdMinutes: 10
-    },
-    'spot-1791601204634': {
-      id: 'wheat-farm',
-      surgeId: 'spot-1791601204634',
-      title: '🌾 ฟามข้าว (Grapeseed)',
-      desc: 'ทุ่งข้าวสาลี Grapeseed เกี่ยวรวงข้าวดิบ (Raw Rice 0.5 kg) นำไปแปรรูปเป็นข้าวแปร หรือส่งคลังเรเบลเลี้ยงหมู',
-      coords: 'X: 2855.0, Y: 4609.2, Z: 30.0',
-      zone: 'GRAPESEED · สุจริต 100%',
-      x: 2855.0, y: 4609.2,
-      status: 'WHEAT FARM 🟢',
-      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
-      group: 'wheat',
-      color: '#eab308',
-      icon: '🌾',
-      label: 'ฟามข้าว',
-      cdMinutes: 10
-    },
-    'wheat-pro': {
-      id: 'wheat-pro',
-      surgeId: 'spot-1791601186905',
-      title: '🏭 โพลข้าว (Grapeseed Mill)',
-      desc: 'โรงสียุ้งฉางข้าว Grapeseed แปรรูปข้าวดิบเป็นข้าวแปร (5 วิ/ชิ้น อัตรา 1:1)',
-      coords: 'X: 1932.9, Y: 4633.7, Z: 30.0',
-      zone: 'GRAPESEED MILL · สุจริต 100%',
-      x: 1932.9, y: 4633.7,
-      status: 'PROCESSING 🟢',
-      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
-      group: 'wheat',
-      color: '#eab308',
-      icon: '🌾',
-      label: 'โพลข้าว',
-      cdMinutes: 10
-    },
-    'spot-1791601186905': {
-      id: 'wheat-pro',
-      surgeId: 'spot-1791601186905',
-      title: '🏭 โพลข้าว (Grapeseed Mill)',
-      desc: 'โรงสียุ้งฉางข้าว Grapeseed แปรรูปข้าวดิบเป็นข้าวแปร (5 วิ/ชิ้น อัตรา 1:1)',
-      coords: 'X: 1932.9, Y: 4633.7, Z: 30.0',
-      zone: 'GRAPESEED MILL · สุจริต 100%',
-      x: 1932.9, y: 4633.7,
-      status: 'PROCESSING 🟢',
-      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
-      group: 'wheat',
-      color: '#eab308',
-      icon: '🌾',
-      label: 'โพลข้าว',
-      cdMinutes: 10
-    },
-    'wheat-pack': {
-      id: 'wheat-pack',
-      surgeId: 'spot-1789097486335',
-      title: '📦 แพ็คข้าว (Industrial Docks)',
-      desc: 'โกดังรวมสินค้าท่าเรือใต้ แพ็คข้าวแปร 2 ชิ้น เป็นข้าวแพ็ค 1 กล่อง (น้ำหนัก 1.0 kg) 5 วิ/ลัง',
-      coords: 'X: -591.4, Y: -2130.9, Z: 30.0',
-      zone: 'PORT OF LS · สุจริต 100%',
-      x: -591.4, y: -2130.9,
-      status: 'PACKING 🟢',
-      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
-      group: 'wheat',
-      color: '#f59e0b',
-      icon: '📦',
-      label: 'แพ็คข้าว',
-      cdMinutes: 10
-    },
-    'spot-1789097486335': {
-      id: 'wheat-pack',
-      surgeId: 'spot-1789097486335',
-      title: '📦 แพ็คข้าว (Industrial Docks)',
-      desc: 'โกดังรวมสินค้าท่าเรือใต้ แพ็คข้าวแปร 2 ชิ้น เป็นข้าวแพ็ค 1 กล่อง (น้ำหนัก 1.0 kg) 5 วิ/ลัง',
-      coords: 'X: -591.4, Y: -2130.9, Z: 30.0',
-      zone: 'PORT OF LS · สุจริต 100%',
-      x: -591.4, y: -2130.9,
-      status: 'PACKING 🟢',
-      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
-      group: 'wheat',
-      color: '#f59e0b',
-      icon: '📦',
-      label: 'แพ็คข้าว',
-      cdMinutes: 10
-    },
-    'wheat-sell': {
-      id: 'wheat-sell',
-      surgeId: 'spot-1789096762757',
-      title: '💵 ขายข้าว (Morningwood)',
-      desc: 'จุดรับซื้อข้าวกล่อง 368 RD ต่อกล่อง โซน Morningwood ถนน Boulevard ฝั่งตะวันตก',
-      coords: 'X: -1448.0, Y: -363.5, Z: 30.0',
-      zone: 'MORNINGWOOD / WEST LS · รับซื้อ 368 RD · สุจริต 100%',
-      x: -1448.0, y: -363.5,
-      status: 'EXPORT POINT 🟢',
-      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
-      group: 'wheat',
-      color: '#eab308',
-      icon: '💵',
-      label: 'ขายข้าว (368 RD)',
-      cdMinutes: 10
-    },
-    'spot-1789096762757': {
-      id: 'wheat-sell',
-      surgeId: 'spot-1789096762757',
-      title: '💵 ขายข้าว (Morningwood)',
-      desc: 'จุดรับซื้อข้าวกล่อง 368 RD ต่อกล่อง โซน Morningwood ถนน Boulevard ฝั่งตะวันตก',
-      coords: 'X: -1448.0, Y: -363.5, Z: 30.0',
-      zone: 'MORNINGWOOD / WEST LS · รับซื้อ 368 RD · สุจริต 100%',
-      x: -1448.0, y: -363.5,
-      status: 'EXPORT POINT 🟢',
-      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
-      group: 'wheat',
-      color: '#eab308',
-      icon: '💵',
-      label: 'ขายข้าว (368 RD)',
-      cdMinutes: 10
-    },
-    // === 🌸 เกษตร: เก็บดอกไม้ (Flower Gathering) ===
-    'flower-farm': {
-      id: 'flower-farm',
-      surgeId: 'spot-1791764193302',
-      title: '🌸 ฟามดอกไม้ (Mount Gordo / Grapeseed)',
-      desc: 'ทุ่งดอกไม้สดแถบภูเขา Mount Gordo เก็บดอกไม้สด 8 วิ/ชิ้น (Raw Flower 0.5 kg) สปีดไวที่สุดในงานขาว',
-      coords: 'X: 2519.9, Y: 4350.4, Z: 30.0',
-      zone: 'MOUNT GORDO / GRAPESEED · สุจริต 100%',
-      x: 2519.9, y: 4350.4,
-      status: 'FLOWER FARM 🟢',
-      statusClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
-      group: 'flower',
-      color: '#f43f5e',
-      icon: '🌸',
-      label: 'ฟามดอกไม้',
-      cdMinutes: 10
-    },
-    'spot-1791764193302': {
-      id: 'flower-farm',
-      surgeId: 'spot-1791764193302',
-      title: '🌸 ฟามดอกไม้ (Mount Gordo / Grapeseed)',
-      desc: 'ทุ่งดอกไม้สดแถบภูเขา Mount Gordo เก็บดอกไม้สด 8 วิ/ชิ้น (Raw Flower 0.5 kg) สปีดไวที่สุดในงานขาว',
-      coords: 'X: 2519.9, Y: 4350.4, Z: 30.0',
-      zone: 'MOUNT GORDO / GRAPESEED · สุจริต 100%',
-      x: 2519.9, y: 4350.4,
-      status: 'FLOWER FARM 🟢',
-      statusClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
-      group: 'flower',
-      color: '#f43f5e',
-      icon: '🌸',
-      label: 'ฟามดอกไม้',
-      cdMinutes: 10
-    },
-    'spot-1791478323809': {
-      id: 'flower-farm',
-      surgeId: 'spot-1791764193302',
-      title: '🌸 ฟามดอกไม้ (Mount Gordo / Grapeseed)',
-      desc: 'ทุ่งดอกไม้สดแถบภูเขา Mount Gordo เก็บดอกไม้สด 8 วิ/ชิ้น (Raw Flower 0.5 kg) สปีดไวที่สุดในงานขาว',
-      coords: 'X: 2519.9, Y: 4350.4, Z: 30.0',
-      zone: 'MOUNT GORDO / GRAPESEED · สุจริต 100%',
-      x: 2519.9, y: 4350.4,
-      status: 'FLOWER FARM 🟢',
-      statusClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
-      group: 'flower',
-      color: '#f43f5e',
-      icon: '🌸',
-      label: 'ฟามดอกไม้',
-      cdMinutes: 10
-    },
-    'flower-pro': {
-      id: 'flower-pro',
-      surgeId: 'spot-1791478349008',
-      title: '🧪 โพลดอกไม้ (Grand Senora)',
-      desc: 'โรงสกัดพฤกษศาสตร์และน้ำมันหอมระเหย แปรรูปดอกไม้ดิบเป็นดอกไม้แปร (5 วิ/ชิ้น อัตรา 1:1)',
-      coords: 'X: 837.9, Y: 2157.6, Z: 30.0',
-      zone: 'GRAND SENORA DESERT · สุจริต 100%',
-      x: 837.9, y: 2157.6,
-      status: 'PROCESSING 🟢',
-      statusClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
-      group: 'flower',
-      color: '#f43f5e',
-      icon: '🧪',
-      label: 'โพลดอกไม้',
-      cdMinutes: 10
-    },
-    'spot-1791478349008': {
-      id: 'flower-pro',
-      surgeId: 'spot-1791478349008',
-      title: '🧪 โพลดอกไม้ (Grand Senora)',
-      desc: 'โรงสกัดพฤกษศาสตร์และน้ำมันหอมระเหย แปรรูปดอกไม้ดิบเป็นดอกไม้แปร (5 วิ/ชิ้น อัตรา 1:1)',
-      coords: 'X: 837.9, Y: 2157.6, Z: 30.0',
-      zone: 'GRAND SENORA DESERT · สุจริต 100%',
-      x: 837.9, y: 2157.6,
-      status: 'PROCESSING 🟢',
-      statusClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
-      group: 'flower',
-      color: '#f43f5e',
-      icon: '🧪',
-      label: 'โพลดอกไม้',
-      cdMinutes: 10
-    },
-    'flower-pack': {
-      id: 'flower-pack',
-      surgeId: 'spot-1789097510537',
-      title: '📦 แพ็คดอกไม้ (Industrial Docks)',
-      desc: 'โกดังรวมสินค้าท่าเรือใต้ แพ็คดอกไม้แปร 2 ชิ้น เป็นช่อดอกไม้แพ็ค 1 กล่อง (น้ำหนัก 1.0 kg) 5 วิ/ลัง',
-      coords: 'X: -585.4, Y: -2178.7, Z: 30.0',
-      zone: 'PORT OF LS · สุจริต 100%',
-      x: -585.4, y: -2178.7,
-      status: 'PACKING 🟢',
-      statusClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
-      group: 'flower',
-      color: '#f43f5e',
-      icon: '📦',
-      label: 'แพ็คดอกไม้',
-      cdMinutes: 10
-    },
-    'spot-1789097510537': {
-      id: 'flower-pack',
-      surgeId: 'spot-1789097510537',
-      title: '📦 แพ็คดอกไม้ (Industrial Docks)',
-      desc: 'โกดังรวมสินค้าท่าเรือใต้ แพ็คดอกไม้แปร 2 ชิ้น เป็นช่อดอกไม้แพ็ค 1 กล่อง (น้ำหนัก 1.0 kg) 5 วิ/ลัง',
-      coords: 'X: -585.4, Y: -2178.7, Z: 30.0',
-      zone: 'PORT OF LS · สุจริต 100%',
-      x: -585.4, y: -2178.7,
-      status: 'PACKING 🟢',
-      statusClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
-      group: 'flower',
-      color: '#f43f5e',
-      icon: '📦',
-      label: 'แพ็คดอกไม้',
-      cdMinutes: 10
-    },
-    'flower-sell': {
-      id: 'flower-sell',
-      surgeId: 'spot-1789096720791',
-      title: '💵 ขายดอกไม้ (Del Perro)',
-      desc: 'จุดรับซื้อดอกไม้แพ็ค 424 RD ต่อกล่อง โซน Del Perro ริมถนนชายหาด หรือส่งขายตรงให้หมอ (120 RD)',
-      coords: 'X: -1391.2, Y: -171.8, Z: 30.0',
-      zone: 'DEL PERRO BEACH · รับซื้อ 424 RD · สุจริต 100%',
-      x: -1391.2, y: -171.8,
-      status: 'EXPORT POINT 🟢',
-      statusClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
-      group: 'flower',
-      color: '#f43f5e',
-      icon: '💵',
-      label: 'ขายดอกไม้ (424 RD)',
-      cdMinutes: 10
-    },
-    'spot-1789096720791': {
-      id: 'flower-sell',
-      surgeId: 'spot-1789096720791',
-      title: '💵 ขายดอกไม้ (Del Perro)',
-      desc: 'จุดรับซื้อดอกไม้แพ็ค 424 RD ต่อกล่อง โซน Del Perro ริมถนนชายหาด หรือส่งขายตรงให้หมอ (120 RD)',
-      coords: 'X: -1391.2, Y: -171.8, Z: 30.0',
-      zone: 'DEL PERRO BEACH · รับซื้อ 424 RD · สุจริต 100%',
-      x: -1391.2, y: -171.8,
-      status: 'EXPORT POINT 🟢',
-      statusClass: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
-      group: 'flower',
-      color: '#f43f5e',
-      icon: '💵',
-      label: 'ขายดอกไม้ (424 RD)',
-      cdMinutes: 10
-    },
-
-    // === ⛏️ เหมือง & แร่ ===
-    'mine-pit': {
-      id: 'mine-pit',
-      surgeId: 'spot-1791604548177',
-      title: '⛏️ เหมืองขุดแร่ (Davis Quartz)',
-      desc: 'เหมืองหินเปิด Davis Quartz จุดขุดหินดิบ (Raw Stone 0.5 kg) เพื่อนำไปโม่สุ่มลุ้นสายแร่ทองคำ/ทองแดง/เพชร',
-      coords: 'X: 2949.8, Y: 2776.4, Z: 30.0',
-      zone: 'DAVIS QUARRY · สุจริต 100%',
-      x: 2949.8, y: 2776.4,
-      status: 'MINE PIT 🟢',
-      statusClass: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
-      group: 'mine',
-      color: '#f97316',
-      icon: '⛏️',
-      label: 'เหมืองแร่',
-      cdMinutes: 10
-    },
-    'spot-1791604548177': {
-      id: 'mine-pit',
-      surgeId: 'spot-1791604548177',
-      title: '⛏️ เหมืองขุดแร่ (Davis Quartz)',
-      desc: 'เหมืองหินเปิด Davis Quartz จุดขุดหินดิบ (Raw Stone 0.5 kg) เพื่อนำไปโม่สุ่มลุ้นสายแร่ทองคำ/ทองแดง/เพชร',
-      coords: 'X: 2949.8, Y: 2776.4, Z: 30.0',
-      zone: 'DAVIS QUARRY · สุจริต 100%',
-      x: 2949.8, y: 2776.4,
-      status: 'MINE PIT 🟢',
-      statusClass: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
-      group: 'mine',
-      color: '#f97316',
-      icon: '⛏️',
-      label: 'เหมืองแร่',
-      cdMinutes: 10
-    },
-    'stone-pro': {
-      id: 'stone-pro',
-      surgeId: 'spot-1791604573509',
-      title: '🪨 โพลหิน (Quarry Processor)',
-      desc: 'โรงโม่หิน แปรรูปหินก้อนดิบ 5 วิ/ชิ้น สุ่มลุ้นแร่: คอปเปอร์ดิบ 60%, ทองดิบ 40%, เพชร 1%',
-      coords: 'X: 2648.8, Y: 2805.6, Z: 30.0',
-      zone: 'DAVIS QUARRY · สุจริต 100%',
-      x: 2648.8, y: 2805.6,
-      status: 'PROCESSING 🟢',
-      statusClass: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
-      group: 'mine',
-      color: '#f97316',
-      icon: '🪨',
-      label: 'โพลหิน',
-      cdMinutes: 10
-    },
-    'spot-1791604573509': {
-      id: 'stone-pro',
-      surgeId: 'spot-1791604573509',
-      title: '🪨 โพลหิน (Quarry Processor)',
-      desc: 'โรงโม่หิน แปรรูปหินก้อนดิบ 5 วิ/ชิ้น สุ่มลุ้นแร่: คอปเปอร์ดิบ 60%, ทองดิบ 40%, เพชร 1%',
-      coords: 'X: 2648.8, Y: 2805.6, Z: 30.0',
-      zone: 'DAVIS QUARRY · สุจริต 100%',
-      x: 2648.8, y: 2805.6,
-      status: 'PROCESSING 🟢',
-      statusClass: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
-      group: 'mine',
-      color: '#f97316',
-      icon: '🪨',
-      label: 'โพลหิน',
-      cdMinutes: 10
-    },
-    'copper-smelt': {
-      id: 'copper-smelt',
-      surgeId: 'spot-1789097421919',
-      title: '🥉 โพลคอปเปอร์ (หลอมทองแดง)',
-      desc: 'เตาหลอมโลหะทองแดงใต้เมือง แปรรูป Raw Copper เป็น Copper Ingot (มูลค่า 400 RD)',
-      coords: 'X: 1110.4, Y: -2001.8, Z: 30.0',
-      zone: 'CYPRESS FLATS / SOUTH LS · หลอมทองแดง 400 RD',
-      x: 1110.4, y: -2001.8,
-      status: 'SMELTING 🟢',
-      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
-      group: 'mine',
-      color: '#f59e0b',
-      icon: '🥉',
-      label: 'โพลคอปเปอร์ (400 RD)',
-      cdMinutes: 10
-    },
-    'spot-1789097421919': {
-      id: 'copper-smelt',
-      surgeId: 'spot-1789097421919',
-      title: '🥉 โพลคอปเปอร์ (หลอมทองแดง)',
-      desc: 'เตาหลอมโลหะทองแดงใต้เมือง แปรรูป Raw Copper เป็น Copper Ingot (มูลค่า 400 RD)',
-      coords: 'X: 1110.4, Y: -2001.8, Z: 30.0',
-      zone: 'CYPRESS FLATS / SOUTH LS · หลอมทองแดง 400 RD',
-      x: 1110.4, y: -2001.8,
-      status: 'SMELTING 🟢',
-      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
-      group: 'mine',
-      color: '#f59e0b',
-      icon: '🥉',
-      label: 'โพลคอปเปอร์ (400 RD)',
-      cdMinutes: 10
-    },
-    'gold-smelt': {
-      id: 'gold-smelt',
-      surgeId: 'spot-1789097536201',
-      title: '🥇 โพลทอง (หลอมทองคำ)',
-      desc: 'เตาหลอมโลหะมีค่าโซนท่าเรือ แปรรูป Raw Gold เป็น Gold Ingot (มูลค่า 600 RD)',
-      coords: 'X: 1013.7, Y: -2534.7, Z: 30.0',
-      zone: 'PORT OF LS / SOUTH REFINER · หลอมทองคำ 600 RD',
-      x: 1013.7, y: -2534.7,
-      status: 'SMELTING 🟢',
-      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
-      group: 'mine',
-      color: '#eab308',
-      icon: '🥇',
-      label: 'โพลทอง (600 RD)',
-      cdMinutes: 10
-    },
-    'spot-1789097536201': {
-      id: 'gold-smelt',
-      surgeId: 'spot-1789097536201',
-      title: '🥇 โพลทอง (หลอมทองคำ)',
-      desc: 'เตาหลอมโลหะมีค่าโซนท่าเรือ แปรรูป Raw Gold เป็น Gold Ingot (มูลค่า 600 RD)',
-      coords: 'X: 1013.7, Y: -2534.7, Z: 30.0',
-      zone: 'PORT OF LS / SOUTH REFINER · หลอมทองคำ 600 RD',
-      x: 1013.7, y: -2534.7,
-      status: 'SMELTING 🟢',
-      statusClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
-      group: 'mine',
-      color: '#eab308',
-      icon: '🥇',
-      label: 'โพลทอง (600 RD)',
-      cdMinutes: 10
-    },
-
-    // === 💎 คริสตัล (Crystal Sifting & Processing) ===
-    'crystal-sift': {
-      id: 'crystal-sift',
-      surgeId: 'spot-1791604124222',
-      title: '💎 ร่อนคริสตัล (Zancudo River)',
-      desc: 'จุดร่อนเศษคริสตัลริมลำธาร Zancudo ร่อนหาเศษคริสตัลดิบ (Crystal Shard 0.5 kg)',
-      coords: 'X: -513.7, Y: 2945.0, Z: 30.0',
-      zone: 'ZANCUDO RIVER / ROUTE 68 · สุจริต 100%',
-      x: -513.7, y: 2945.0,
-      status: 'CRYSTAL SIFT 🟢',
-      statusClass: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
-      group: 'crystal',
-      color: '#06b6d4',
-      icon: '💎',
-      label: 'ร่อนคริสตัล',
-      cdMinutes: 10
-    },
-    'spot-1791604124222': {
-      id: 'crystal-sift',
-      surgeId: 'spot-1791604124222',
-      title: '💎 ร่อนคริสตัล (Zancudo River)',
-      desc: 'จุดร่อนเศษคริสตัลริมลำธาร Zancudo ร่อนหาเศษคริสตัลดิบ (Crystal Shard 0.5 kg)',
-      coords: 'X: -513.7, Y: 2945.0, Z: 30.0',
-      zone: 'ZANCUDO RIVER / ROUTE 68 · สุจริต 100%',
-      x: -513.7, y: 2945.0,
-      status: 'CRYSTAL SIFT 🟢',
-      statusClass: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
-      group: 'crystal',
-      color: '#06b6d4',
-      icon: '💎',
-      label: 'ร่อนคริสตัล',
-      cdMinutes: 10
-    },
-    'crystal-pro': {
-      id: 'crystal-pro',
-      surgeId: 'spot-1791604164437',
-      title: '🔮 โพลคริสตัล (Port of LS)',
-      desc: 'แท่นประกอบคริสตัล สูตร: เศษคริสตัล 5 ชิ้น + ทองแดงแท่ง 3 ชิ้น ➔ คริสตัลสำเร็จ 1 ชิ้น',
-      coords: 'X: -110.0, Y: -2228.0, Z: 30.0',
-      zone: 'PORT OF LS / SOUTH DOCKS · สูตร: เศษคริสตัล 5 + ทองแดงแท่ง 3',
-      x: -110.0, y: -2228.0,
-      status: 'CRYSTAL PRO 🟢',
-      statusClass: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
-      group: 'crystal',
-      color: '#06b6d4',
-      icon: '🔮',
-      label: 'โพลคริสตัล',
-      cdMinutes: 10
-    },
-    'spot-1791604164437': {
-      id: 'crystal-pro',
-      surgeId: 'spot-1791604164437',
-      title: '🔮 โพลคริสตัล (Port of LS)',
-      desc: 'แท่นประกอบคริสตัล สูตร: เศษคริสตัล 5 ชิ้น + ทองแดงแท่ง 3 ชิ้น ➔ คริสตัลสำเร็จ 1 ชิ้น',
-      coords: 'X: -110.0, Y: -2228.0, Z: 30.0',
-      zone: 'PORT OF LS / SOUTH DOCKS · สูตร: เศษคริสตัล 5 + ทองแดงแท่ง 3',
-      x: -110.0, y: -2228.0,
-      status: 'CRYSTAL PRO 🟢',
-      statusClass: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
-      group: 'crystal',
-      color: '#06b6d4',
-      icon: '🔮',
-      label: 'โพลคริสตัล',
-      cdMinutes: 10
-    },
-
-    // === ⚙️ เหล็ก (Scrap Metal & Steel Smelting) ===
-    'scrap-farm-1': {
-      id: 'scrap-farm-1',
-      title: '⚙️ ฟาร์มเหล็ก 1 (South LS Scrap)',
-      desc: 'จุดเก็บเศษเหล็กในเมือง โซน Cypress Flats / Strawberry (10 วิ/รอบ ได้ 2 ชิ้น ชิ้นละ 0.25 kg)',
-      coords: 'X: 245.7, Y: -1807.9, Z: 30.0',
-      zone: 'SOUTH LS / CYPRESS SCRAP · สุจริต 100%',
-      x: 245.7, y: -1807.9,
-      status: 'SCRAP FARM 🟢',
-      statusClass: 'bg-slate-500/15 text-slate-300 border-slate-500/30',
-      group: 'steel',
-      color: '#64748b',
-      icon: '⚙️',
-      label: 'ฟาร์มเหล็ก 1',
-      cdMinutes: 10
-    },
-    'scrap-farm-2': {
-      id: 'scrap-farm-2',
-      title: '⚙️ ฟาร์มเหล็ก 2 (Grand Senora Desert)',
-      desc: 'จุดเก็บเศษเหล็กทะเลทราย กองเศษเหล็ก Senora Desert (10 วิ/รอบ ได้ 2 ชิ้น ชิ้นละ 0.25 kg)',
-      coords: 'X: 2401.3, Y: 3110.5, Z: 30.0',
-      zone: 'GRAND SENORA DESERT · สุจริต 100%',
-      x: 2401.3, y: 3110.5,
-      status: 'SCRAP FARM 🟢',
-      statusClass: 'bg-slate-500/15 text-slate-300 border-slate-500/30',
-      group: 'steel',
-      color: '#64748b',
-      icon: '⚙️',
-      label: 'ฟาร์มเหล็ก 2',
-      cdMinutes: 10
-    },
-    'steel-pro': {
-      id: 'steel-pro',
-      surgeId: 'spot-1789097391536',
-      title: '🏭 โพลเหล็ก (Cypress Flats Plant)',
-      desc: 'เตาหลอมโลหะอุตสาหกรรม หลอมเศษเหล็ก 2 ชิ้น เป็น Steel Ingot 1 แท่ง (5 วิ/แท่ง มูลค่า 233 RD)',
-      coords: 'X: 1481.4, Y: -1922.5, Z: 30.0',
-      zone: 'CYPRESS FLATS · เตาหลอมแท่งเหล็ก · มูลค่า 233 RD/แท่ง (ขายช่าง 233-240 RD)',
-      x: 1481.4, y: -1922.5,
-      status: 'SMELTING 🟢',
-      statusClass: 'bg-slate-500/15 text-slate-300 border-slate-500/30',
-      group: 'steel',
-      color: '#475569',
-      icon: '🏭',
-      label: 'โพลเหล็ก (233 RD)',
-      cdMinutes: 10
-    },
-    'spot-1789097391536': {
-      id: 'steel-pro',
-      surgeId: 'spot-1789097391536',
-      title: '🏭 โพลเหล็ก (Cypress Flats Plant)',
-      desc: 'เตาหลอมโลหะอุตสาหกรรม หลอมเศษเหล็ก 2 ชิ้น เป็น Steel Ingot 1 แท่ง (5 วิ/แท่ง มูลค่า 233 RD)',
-      coords: 'X: 1481.4, Y: -1922.5, Z: 30.0',
-      zone: 'CYPRESS FLATS · เตาหลอมแท่งเหล็ก · มูลค่า 233 RD/แท่ง (ขายช่าง 233-240 RD)',
-      x: 1481.4, y: -1922.5,
-      status: 'SMELTING 🟢',
-      statusClass: 'bg-slate-500/15 text-slate-300 border-slate-500/30',
-      group: 'steel',
-      color: '#475569',
-      icon: '🏭',
-      label: 'โพลเหล็ก (233 RD)',
-      cdMinutes: 10
-    },
-    // === 🛒 ร้านค้าอุปกรณ์ฟาร์มทุกอย่าง (12 จุดทั่วเกาะ) ===
-    'shop-north': {
-      id: 'shop-north',
-      surgeId: 'spot-1791853769352',
-      title: '🛒 ร้านค้าเมืองบน (Paleto Bay)',
-      desc: 'ร้านค้าซื้ออุปกรณ์ฟาร์มทำมาหากินเมืองบน ขายอุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, พลั่ว, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: 156.0, Y: 6637.1, Z: 30.0',
-      zone: 'PALETO BAY · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: 156.0, y: 6637.1,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
-      group: 'shop',
-      color: '#22c55e',
-      icon: '🛒',
-      label: 'ร้านค้าเมืองบน',
-      cdMinutes: 0
-    },
-    'spot-1791853769352': {
-      id: 'shop-north',
-      surgeId: 'spot-1791853769352',
-      title: '🛒 ร้านค้าเมืองบน (Paleto Bay)',
-      desc: 'ร้านค้าซื้ออุปกรณ์ฟาร์มทำมาหากินเมืองบน ขายอุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, พลั่ว, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: 156.0, Y: 6637.1, Z: 30.0',
-      zone: 'PALETO BAY · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: 156.0, y: 6637.1,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
-      group: 'shop',
-      color: '#22c55e',
-      icon: '🛒',
-      label: 'ร้านค้าเมืองบน',
-      cdMinutes: 0
-    },
-    'shop-desert': {
-      id: 'shop-desert',
-      surgeId: 'spot-1791854342552',
-      title: '🛒 ร้านค้าทะเลทราย (Sandy Shores)',
-      desc: 'ร้านค้าซื้ออุปกรณ์ฟาร์มทำมาหากินโซนทะเลทราย ขายอุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, พลั่ว, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: 1967.2, Y: 3736.6, Z: 30.0',
-      zone: 'SANDY SHORES · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: 1967.2, y: 3736.6,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
-      group: 'shop',
-      color: '#22c55e',
-      icon: '🛒',
-      label: 'ร้านค้าทะเลทราย',
-      cdMinutes: 0
-    },
-    'spot-1791854342552': {
-      id: 'shop-desert',
-      surgeId: 'spot-1791854342552',
-      title: '🛒 ร้านค้าทะเลทราย (Sandy Shores)',
-      desc: 'ร้านค้าซื้ออุปกรณ์ฟาร์มทำมาหากินโซนทะเลทราย ขายอุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, พลั่ว, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: 1967.2, Y: 3736.6, Z: 30.0',
-      zone: 'SANDY SHORES · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: 1967.2, y: 3736.6,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
-      group: 'shop',
-      color: '#22c55e',
-      icon: '🛒',
-      label: 'ร้านค้าทะเลทราย',
-      cdMinutes: 0
-    },
-    'shop-land-blue': {
-      id: 'shop-land-blue',
-      surgeId: 'spot-1789096326164',
-      title: '🛒 แลนน้ำเงิน (Tool Shop)',
-      desc: 'จุดแลนน้ำเงิน พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: -2320.5, Y: 309.1, Z: 30.0',
-      zone: 'LANDMARK BLUE · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: -2320.5, y: 309.1,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-blue-500/15 text-blue-300 border-blue-500/30',
-      group: 'shop',
-      color: '#3b82f6',
-      icon: '🛒',
-      label: 'แลนน้ำเงิน (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'spot-1789096326164': {
-      id: 'shop-land-blue',
-      surgeId: 'spot-1789096326164',
-      title: '🛒 แลนน้ำเงิน (Tool Shop)',
-      desc: 'จุดแลนน้ำเงิน พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: -2320.5, Y: 309.1, Z: 30.0',
-      zone: 'LANDMARK BLUE · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: -2320.5, y: 309.1,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-blue-500/15 text-blue-300 border-blue-500/30',
-      group: 'shop',
-      color: '#3b82f6',
-      icon: '🛒',
-      label: 'แลนน้ำเงิน (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'shop-land-cyan': {
-      id: 'shop-land-cyan',
-      surgeId: 'spot-1789096309666',
-      title: '🛒 แลนฟ้า (Tool Shop)',
-      desc: 'จุดแลนฟ้า พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: -2063.6, Y: -523.1, Z: 30.0',
-      zone: 'LANDMARK CYAN · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: -2063.6, y: -523.1,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
-      group: 'shop',
-      color: '#06b6d4',
-      icon: '🛒',
-      label: 'แลนฟ้า (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'spot-1789096309666': {
-      id: 'shop-land-cyan',
-      surgeId: 'spot-1789096309666',
-      title: '🛒 แลนฟ้า (Tool Shop)',
-      desc: 'จุดแลนฟ้า พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: -2063.6, Y: -523.1, Z: 30.0',
-      zone: 'LANDMARK CYAN · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: -2063.6, y: -523.1,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
-      group: 'shop',
-      color: '#06b6d4',
-      icon: '🛒',
-      label: 'แลนฟ้า (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'shop-land-mint': {
-      id: 'shop-land-mint',
-      surgeId: 'spot-1789096384446',
-      title: '🛒 แลนมิ้น (Tool Shop)',
-      desc: 'จุดแลนมิ้น พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: -193.7, Y: 288.8, Z: 30.0',
-      zone: 'LANDMARK MINT · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: -193.7, y: 288.8,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-teal-500/15 text-teal-300 border-teal-500/30',
-      group: 'shop',
-      color: '#2dd4bf',
-      icon: '🛒',
-      label: 'แลนมิ้น (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'spot-1789096384446': {
-      id: 'shop-land-mint',
-      surgeId: 'spot-1789096384446',
-      title: '🛒 แลนมิ้น (Tool Shop)',
-      desc: 'จุดแลนมิ้น พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: -193.7, Y: 288.8, Z: 30.0',
-      zone: 'LANDMARK MINT · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: -193.7, y: 288.8,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-teal-500/15 text-teal-300 border-teal-500/30',
-      group: 'shop',
-      color: '#2dd4bf',
-      icon: '🛒',
-      label: 'แลนมิ้น (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'shop-land-red': {
-      id: 'shop-land-red',
-      surgeId: 'spot-1789096643659',
-      title: '🛒 แลนแดง (Tool Shop)',
-      desc: 'จุดแลนแดง พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: -1110.0, Y: -308.9, Z: 30.0',
-      zone: 'LANDMARK RED · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: -1110.0, y: -308.9,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-red-500/15 text-red-300 border-red-500/30',
-      group: 'shop',
-      color: '#ef4444',
-      icon: '🛒',
-      label: 'แลนแดง (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'spot-1789096643659': {
-      id: 'shop-land-red',
-      surgeId: 'spot-1789096643659',
-      title: '🛒 แลนแดง (Tool Shop)',
-      desc: 'จุดแลนแดง พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: -1110.0, Y: -308.9, Z: 30.0',
-      zone: 'LANDMARK RED · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: -1110.0, y: -308.9,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-red-500/15 text-red-300 border-red-500/30',
-      group: 'shop',
-      color: '#ef4444',
-      icon: '🛒',
-      label: 'แลนแดง (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'shop-land-green': {
-      id: 'shop-land-green',
-      surgeId: 'spot-1789096402896',
-      title: '🛒 แลนเขียว (Tool Shop)',
-      desc: 'จุดแลนเขียว พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: 302.9, Y: -235.3, Z: 30.0',
-      zone: 'LANDMARK GREEN · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: 302.9, y: -235.3,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
-      group: 'shop',
-      color: '#22c55e',
-      icon: '🛒',
-      label: 'แลนเขียว (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'spot-1789096402896': {
-      id: 'shop-land-green',
-      surgeId: 'spot-1789096402896',
-      title: '🛒 แลนเขียว (Tool Shop)',
-      desc: 'จุดแลนเขียว พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: 302.9, Y: -235.3, Z: 30.0',
-      zone: 'LANDMARK GREEN · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: 302.9, y: -235.3,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
-      group: 'shop',
-      color: '#22c55e',
-      icon: '🛒',
-      label: 'แลนเขียว (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'shop-land-pink': {
-      id: 'shop-land-pink',
-      surgeId: 'spot-1789096538636',
-      title: '🛒 แลนชมพู (Tool Shop)',
-      desc: 'จุดแลนชมพู พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: 887.3, Y: -39.7, Z: 30.0',
-      zone: 'LANDMARK PINK · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: 887.3, y: -39.7,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-pink-500/15 text-pink-300 border-pink-500/30',
-      group: 'shop',
-      color: '#ec4899',
-      icon: '🛒',
-      label: 'แลนชมพู (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'spot-1789096538636': {
-      id: 'shop-land-pink',
-      surgeId: 'spot-1789096538636',
-      title: '🛒 แลนชมพู (Tool Shop)',
-      desc: 'จุดแลนชมพู พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: 887.3, Y: -39.7, Z: 30.0',
-      zone: 'LANDMARK PINK · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: 887.3, y: -39.7,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-pink-500/15 text-pink-300 border-pink-500/30',
-      group: 'shop',
-      color: '#ec4899',
-      icon: '🛒',
-      label: 'แลนชมพู (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'shop-land-yellow': {
-      id: 'shop-land-yellow',
-      surgeId: 'spot-1789096983908',
-      title: '🛒 แลนเหลือง (Tool Shop)',
-      desc: 'จุดแลนเหลือง พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: -327.7, Y: -920.8, Z: 30.0',
-      zone: 'LANDMARK YELLOW · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: -327.7, y: -920.8,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
-      group: 'shop',
-      color: '#eab308',
-      icon: '🛒',
-      label: 'แลนเหลือง (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'spot-1789096983908': {
-      id: 'shop-land-yellow',
-      surgeId: 'spot-1789096983908',
-      title: '🛒 แลนเหลือง (Tool Shop)',
-      desc: 'จุดแลนเหลือง พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: -327.7, Y: -920.8, Z: 30.0',
-      zone: 'LANDMARK YELLOW · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: -327.7, y: -920.8,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
-      group: 'shop',
-      color: '#eab308',
-      icon: '🛒',
-      label: 'แลนเหลือง (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'shop-land-purple': {
-      id: 'shop-land-purple',
-      surgeId: 'spot-1789097276171',
-      title: '🛒 แลนม่วง (Tool Shop)',
-      desc: 'จุดแลนม่วง พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: -804.6, Y: -1302.0, Z: 30.0',
-      zone: 'LANDMARK PURPLE · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: -804.6, y: -1302.0,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-purple-500/15 text-purple-300 border-purple-500/30',
-      group: 'shop',
-      color: '#a855f7',
-      icon: '🛒',
-      label: 'แลนม่วง (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'spot-1789097276171': {
-      id: 'shop-land-purple',
-      surgeId: 'spot-1789097276171',
-      title: '🛒 แลนม่วง (Tool Shop)',
-      desc: 'จุดแลนม่วง พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: -804.6, Y: -1302.0, Z: 30.0',
-      zone: 'LANDMARK PURPLE · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: -804.6, y: -1302.0,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-purple-500/15 text-purple-300 border-purple-500/30',
-      group: 'shop',
-      color: '#a855f7',
-      icon: '🛒',
-      label: 'แลนม่วง (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'shop-land-brown': {
-      id: 'shop-land-brown',
-      surgeId: 'spot-1789097466769',
-      title: '🛒 แลนน้ำตาล (Tool Shop)',
-      desc: 'จุดแลนน้ำตาล พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: -790.9, Y: -2408.7, Z: 30.0',
-      zone: 'LANDMARK BROWN · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: -790.9, y: -2408.7,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-amber-700/15 text-amber-200 border-amber-700/30',
-      group: 'shop',
-      color: '#b45309',
-      icon: '🛒',
-      label: 'แลนน้ำตาล (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'spot-1789097466769': {
-      id: 'shop-land-brown',
-      surgeId: 'spot-1789097466769',
-      title: '🛒 แลนน้ำตาล (Tool Shop)',
-      desc: 'จุดแลนน้ำตาล พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: -790.9, Y: -2408.7, Z: 30.0',
-      zone: 'LANDMARK BROWN · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: -790.9, y: -2408.7,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-amber-700/15 text-amber-200 border-amber-700/30',
-      group: 'shop',
-      color: '#b45309',
-      icon: '🛒',
-      label: 'แลนน้ำตาล (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'shop-land-orange': {
-      id: 'shop-land-orange',
-      surgeId: 'spot-1789097316804',
-      title: '🛒 แลนส้ม (Tool Shop)',
-      desc: 'จุดแลนส้ม พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: 1155.4, Y: -1503.1, Z: 30.0',
-      zone: 'LANDMARK ORANGE · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: 1155.4, y: -1503.1,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
-      group: 'shop',
-      color: '#f59e0b',
-      icon: '🛒',
-      label: 'แลนส้ม (ร้านค้า)',
-      cdMinutes: 0
-    },
-    'spot-1789097316804': {
-      id: 'shop-land-orange',
-      surgeId: 'spot-1789097316804',
-      title: '🛒 แลนส้ม (Tool Shop)',
-      desc: 'จุดแลนส้ม พร้อมร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด (ขวาน 200 RD, เคียว, เสียม, ถาดร่อนแร่ ฯลฯ)',
-      coords: 'X: 1155.4, Y: -1503.1, Z: 30.0',
-      zone: 'LANDMARK ORANGE · ร้านค้าซื้ออุปกรณ์ฟาร์มทุกชนิด',
-      x: 1155.4, y: -1503.1,
-      status: 'TOOL SHOP 🟢',
-      statusClass: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
-      group: 'shop',
-      color: '#f59e0b',
-      icon: '🛒',
-      label: 'แลนส้ม (ร้านค้า)',
-      cdMinutes: 0
-    },
-    // === 🥙 ร้านเคบับ / ครัว Run Kitchen (4 สาขาทั่วเกาะ) ===
-    'kitchen-vespucci': {
-      id: 'kitchen-vespucci',
-      surgeId: 'spot-1791857684353',
-      title: '🥙 ร้านเคบับ (Vespucci / SW-LS)',
-      desc: 'ร้านอาหาร Run Kitchen สาขา Vespucci / South-West LS ทำ Doner Kebab & Pita (ลดหิว 50% ลดเครียด -10) วิ่งส่งเดลิเวอรี่ 1,500 RD',
-      coords: 'X: -1267.9, Y: -1204.5, Z: 30.0',
-      zone: 'VESPUCCI · ครัวอาหาร & จุดส่งอาหาร RUNMAN',
-      x: -1267.9, y: -1204.5,
-      status: 'RESTAURANT 🟢',
-      statusClass: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
-      group: 'kitchen',
-      color: '#f97316',
-      icon: '🥙',
-      label: 'ร้านเคบับ (Vespucci)',
-      cdMinutes: 0
-    },
-    'spot-1791857684353': {
-      id: 'kitchen-vespucci',
-      surgeId: 'spot-1791857684353',
-      title: '🥙 ร้านเคบับ (Vespucci / SW-LS)',
-      desc: 'ร้านอาหาร Run Kitchen สาขา Vespucci / South-West LS ทำ Doner Kebab & Pita (ลดหิว 50% ลดเครียด -10) วิ่งส่งเดลิเวอรี่ 1,500 RD',
-      coords: 'X: -1267.9, Y: -1204.5, Z: 30.0',
-      zone: 'VESPUCCI · ครัวอาหาร & จุดส่งอาหาร RUNMAN',
-      x: -1267.9, y: -1204.5,
-      status: 'RESTAURANT 🟢',
-      statusClass: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
-      group: 'kitchen',
-      color: '#f97316',
-      icon: '🥙',
-      label: 'ร้านเคบับ (Vespucci)',
-      cdMinutes: 0
-    },
-    'kitchen-downtown': {
-      id: 'kitchen-downtown',
-      surgeId: 'spot-1791857709561',
-      title: '🥙 ร้านเคบับ (Downtown / Legion)',
-      desc: 'ร้านอาหาร Run Kitchen สาขา Downtown / Legion Square ใจกลางเมือง ทำ Doner Kebab & Pita (ลดหิว 50% ลดเครียด -10) วิ่งส่งเดลิเวอรี่ 1,500 RD',
-      coords: 'X: 307.8, Y: -719.8, Z: 30.0',
-      zone: 'DOWNTOWN LS · ครัวอาหาร & จุดส่งอาหาร RUNMAN',
-      x: 307.8, y: -719.8,
-      status: 'RESTAURANT 🟢',
-      statusClass: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
-      group: 'kitchen',
-      color: '#f97316',
-      icon: '🥙',
-      label: 'ร้านเคบับ (Downtown)',
-      cdMinutes: 0
-    },
-    'spot-1791857709561': {
-      id: 'kitchen-downtown',
-      surgeId: 'spot-1791857709561',
-      title: '🥙 ร้านเคบับ (Downtown / Legion)',
-      desc: 'ร้านอาหาร Run Kitchen สาขา Downtown / Legion Square ใจกลางเมือง ทำ Doner Kebab & Pita (ลดหิว 50% ลดเครียด -10) วิ่งส่งเดลิเวอรี่ 1,500 RD',
-      coords: 'X: 307.8, Y: -719.8, Z: 30.0',
-      zone: 'DOWNTOWN LS · ครัวอาหาร & จุดส่งอาหาร RUNMAN',
-      x: 307.8, y: -719.8,
-      status: 'RESTAURANT 🟢',
-      statusClass: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
-      group: 'kitchen',
-      color: '#f97316',
-      icon: '🥙',
-      label: 'ร้านเคบับ (Downtown)',
-      cdMinutes: 0
-    },
-    'kitchen-mirror': {
-      id: 'kitchen-mirror',
-      surgeId: 'spot-1791857735934',
-      title: '🥙 ร้านเคบับ (Mirror Park / East LS)',
-      desc: 'ร้านอาหาร Run Kitchen สาขา Mirror Park / East LS ฝั่งตะวันออก ทำ Doner Kebab & Pita (ลดหิว 50% ลดเครียด -10) วิ่งส่งเดลิเวอรี่ 1,500 RD',
-      coords: 'X: 1141.4, Y: -460.7, Z: 30.0',
-      zone: 'MIRROR PARK · ครัวอาหาร & จุดส่งอาหาร RUNMAN',
-      x: 1141.4, y: -460.7,
-      status: 'RESTAURANT 🟢',
-      statusClass: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
-      group: 'kitchen',
-      color: '#f97316',
-      icon: '🥙',
-      label: 'ร้านเคบับ (Mirror Park)',
-      cdMinutes: 0
-    },
-    'spot-1791857735934': {
-      id: 'kitchen-mirror',
-      surgeId: 'spot-1791857735934',
-      title: '🥙 ร้านเคบับ (Mirror Park / East LS)',
-      desc: 'ร้านอาหาร Run Kitchen สาขา Mirror Park / East LS ฝั่งตะวันออก ทำ Doner Kebab & Pita (ลดหิว 50% ลดเครียด -10) วิ่งส่งเดลิเวอรี่ 1,500 RD',
-      coords: 'X: 1141.4, Y: -460.7, Z: 30.0',
-      zone: 'MIRROR PARK · ครัวอาหาร & จุดส่งอาหาร RUNMAN',
-      x: 1141.4, y: -460.7,
-      status: 'RESTAURANT 🟢',
-      statusClass: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
-      group: 'kitchen',
-      color: '#f97316',
-      icon: '🥙',
-      label: 'ร้านเคบับ (Mirror Park)',
-      cdMinutes: 0
-    },
-    'kitchen-paleto': {
-      id: 'kitchen-paleto',
-      surgeId: 'spot-1791857764051',
-      title: '🥙 ร้านเคบับ (Paleto Bay เมืองบน)',
-      desc: 'ร้านอาหาร Run Kitchen สาขา Paleto Bay โซนเหนือสุด ทำ Doner Kebab & Pita (ลดหิว 50% ลดเครียด -10) วิ่งส่งเดลิเวอรี่ 1,500 RD',
-      coords: 'X: -164.9, Y: 6334.6, Z: 30.0',
-      zone: 'PALETO BAY · ครัวอาหาร & จุดส่งอาหาร RUNMAN',
-      x: -164.9, y: 6334.6,
-      status: 'RESTAURANT 🟢',
-      statusClass: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
-      group: 'kitchen',
-      color: '#f97316',
-      icon: '🥙',
-      label: 'ร้านเคบับ (Paleto Bay)',
-      cdMinutes: 0
-    },
-    'spot-1791857764051': {
-      id: 'kitchen-paleto',
-      surgeId: 'spot-1791857764051',
-      title: '🥙 ร้านเคบับ (Paleto Bay เมืองบน)',
-      desc: 'ร้านอาหาร Run Kitchen สาขา Paleto Bay โซนเหนือสุด ทำ Doner Kebab & Pita (ลดหิว 50% ลดเครียด -10) วิ่งส่งเดลิเวอรี่ 1,500 RD',
-      coords: 'X: -164.9, Y: 6334.6, Z: 30.0',
-      zone: 'PALETO BAY · ครัวอาหาร & จุดส่งอาหาร RUNMAN',
-      x: -164.9, y: 6334.6,
-      status: 'RESTAURANT 🟢',
-      statusClass: 'bg-orange-500/15 text-orange-300 border-orange-500/30',
-      group: 'kitchen',
-      color: '#f97316',
-      icon: '🥙',
-      label: 'ร้านเคบับ (Paleto Bay)',
-      cdMinutes: 0
-    }
-  };
-
-  let mapInstance: L.Map;
-  let currentTileLayer: L.TileLayer;
-  let markersLayer: L.LayerGroup;
-  let routesLayer: L.LayerGroup;
-  let markerInstances: Record<string, L.Marker> = {};
-
-  let currentSelectedId = 'wood-farm';
-  let activeFilter = 'all';
+  } as const;
 
   const GROUP_SVGS: Record<string, string> = {
     wood: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2a1 1 0 0 1-.8-1.7L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z"/><path d="M12 22v-3"/></svg>',
@@ -1783,17 +324,48 @@ import CyberIcon from '../components/CyberIcon.astro';
     kitchen: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15.4 15.63a7.875 7.875 0 0 0 3.52-4.33 1.5 1.5 0 0 0-.46-1.55l-2.82-2.82a1.5 1.5 0 0 0-1.55-.46 7.875 7.875 0 0 0-4.33 3.52L6.1 13.65a2 2 0 0 0-.25 2.5l-.85.85a2.5 2.5 0 0 0-3.5 3.5 2.5 2.5 0 0 0 3.5-3.5l.85-.85a2.5 2.5 0 0 0 2.5-.25z"/></svg>',
   };
 
-  // Create Marker Icon with GTA V styled pin & glowing badge
-  function createCustomMarkerIcon(spot: any, isSelected: boolean) {
-    const borderColor = spot.color || '#f59e0b';
-    const svgIcon = GROUP_SVGS[spot.group] || GROUP_SVGS['pork'];
+  const ROUTE_COLORS: Record<string, string> = {
+    wood: '#f59e0b',
+    pork: '#ec4899',
+    wheat: '#eab308',
+    flower: '#f43f5e',
+    mine: '#f97316',
+    crystal: '#06b6d4',
+    steel: '#94a3b8',
+  };
+
+  let mapInstance: L.Map | null = null;
+  let currentTileLayer: L.TileLayer | null = null;
+  let markersLayer: L.LayerGroup | null = null;
+  let routesLayer: L.LayerGroup | null = null;
+  let mapAbort: AbortController | null = null;
+
+  let currentSelectedId = '';
+  let activeFilter = 'all';
+
+  function cleanupMap() {
+    mapAbort?.abort();
+    mapAbort = null;
+    if (mapInstance) {
+      mapInstance.remove();
+      mapInstance = null;
+    }
+    currentTileLayer = null;
+    markersLayer = null;
+    routesLayer = null;
+  }
+
+  function createCustomMarkerIcon(spot: SpotData, isSelected: boolean) {
+    const borderColor = /^#[0-9a-fA-F]{3,8}$/.test(spot.color || '') ? spot.color : '#f59e0b';
+    const svgIcon = GROUP_SVGS[spot.group] || GROUP_SVGS.pork;
+    const safeLabel = escapeHtml(spot.label);
     return L.divIcon({
       className: 'gta-custom-div-icon',
       html: `
         <div class="gta-marker-container ${isSelected ? 'scale-115' : ''}">
           <div class="gta-marker-badge" style="background: rgba(15, 23, 42, 0.95); border-color: ${borderColor}; color: #ffffff;">
             <span style="display: inline-flex; align-items: center; color: ${borderColor};">${svgIcon}</span>
-            <span style="color: #ffffff; font-weight: 600;">${spot.label}</span>
+            <span style="color: #ffffff; font-weight: 600;">${safeLabel}</span>
           </div>
           <div class="gta-marker-icon-box" style="background: #0f172a; border: 2px solid ${borderColor}; color: ${borderColor};">
             <div class="pulse-ring" style="border: 2px solid ${borderColor};"></div>
@@ -1802,615 +374,67 @@ import CyberIcon from '../components/CyberIcon.astro';
         </div>
       `,
       iconSize: [120, 60],
-      iconAnchor: [60, 52]
+      iconAnchor: [60, 52],
     });
   }
 
   function renderMarkers() {
-    if (!markersLayer) return;
+    if (!markersLayer || !routesLayer) return;
     markersLayer.clearLayers();
     routesLayer.clearLayers();
-    markerInstances = {};
 
-    // 1. Plot Spots Matching Active Filter (Deduplicated by spot.id)
-    const renderedIds = new Set<string>();
-    Object.values(spotsData).forEach(spot => {
-      if (renderedIds.has(spot.id)) return;
-      renderedIds.add(spot.id);
+    Object.values(SPOTS).forEach((spot) => {
       if (activeFilter !== 'all' && spot.group !== activeFilter) return;
-
       const latlng = gameCoordsToLatLng(spot.x, spot.y);
-      const isSelected = spot.id === currentSelectedId;
       const marker = L.marker(latlng, {
-        icon: createCustomMarkerIcon(spot, isSelected),
-        riseOnHover: true
+        icon: createCustomMarkerIcon(spot, spot.id === currentSelectedId),
+        riseOnHover: true,
+        title: spot.label,
       });
-
-      marker.on('click', () => {
-        selectSpot(spot.id, true);
-      });
-
-      marker.addTo(markersLayer);
-      markerInstances[spot.id] = marker;
+      marker.on('click', () => selectSpot(spot.id, true));
+      marker.addTo(markersLayer!);
     });
 
-    // 2. Draw Realistic GPS Transport Routes Following Actual Roads
-    const selectedGroup = currentSelectedId && spotsData[currentSelectedId] ? spotsData[currentSelectedId].group : '';
-    const shouldDraw = (group: string) => activeFilter === group || (activeFilter === 'all' && selectedGroup === group);
+    const selectedGroup = currentSelectedId ? resolveSpot(currentSelectedId)?.group || '' : '';
+    const routesMap = jobGpsRoadRoutes as Record<string, any>;
 
-    if (shouldDraw('wood')) {
-      const woodPoints = (jobGpsRoadRoutes.wood || []).map((pt: any) => gameCoordsToLatLng(pt.x, pt.y));
-      if (woodPoints.length > 0) {
-        L.polyline(woodPoints, {
+    for (const [group, routeColor] of Object.entries(ROUTE_COLORS)) {
+      const shouldDraw = activeFilter === group || (activeFilter === 'all' && selectedGroup === group);
+      if (!shouldDraw) continue;
+
+      const raw = group === 'wheat' ? routesMap.wheat || routesMap.agri || [] : routesMap[group] || [];
+      const legs: Array<Array<{ x: number; y: number }>> = Array.isArray(raw[0]) ? raw : [raw];
+
+      for (const leg of legs) {
+        const pts = (leg || []).map((pt) => gameCoordsToLatLng(pt.x, pt.y));
+        if (pts.length === 0) continue;
+        L.polyline(pts, {
           color: '#000000',
           weight: 6,
           opacity: 0.75,
           lineJoin: 'round',
-          lineCap: 'round'
+          lineCap: 'round',
         }).addTo(routesLayer);
-        L.polyline(woodPoints, {
-          color: '#f59e0b',
+        L.polyline(pts, {
+          color: routeColor,
           weight: 3.5,
           opacity: 0.95,
           dashArray: '8, 6',
           lineJoin: 'round',
-          lineCap: 'round'
+          lineCap: 'round',
         }).addTo(routesLayer);
       }
-    }
-
-    if (shouldDraw('pork')) {
-      const porkPoints = (jobGpsRoadRoutes.pork || []).map((pt: any) => gameCoordsToLatLng(pt.x, pt.y));
-      if (porkPoints.length > 0) {
-        L.polyline(porkPoints, {
-          color: '#000000',
-          weight: 6,
-          opacity: 0.75,
-          lineJoin: 'round',
-          lineCap: 'round'
-        }).addTo(routesLayer);
-        L.polyline(porkPoints, {
-          color: '#ec4899',
-          weight: 3.5,
-          opacity: 0.95,
-          dashArray: '8, 6',
-          lineJoin: 'round',
-          lineCap: 'round'
-        }).addTo(routesLayer);
-      }
-    }
-
-    if (shouldDraw('wheat')) {
-      const wheatPoints = (jobGpsRoadRoutes.wheat || jobGpsRoadRoutes.agri || []).map((pt: any) => gameCoordsToLatLng(pt.x, pt.y));
-      if (wheatPoints.length > 0) {
-        L.polyline(wheatPoints, {
-          color: '#000000',
-          weight: 6,
-          opacity: 0.75,
-          lineJoin: 'round',
-          lineCap: 'round'
-        }).addTo(routesLayer);
-        L.polyline(wheatPoints, {
-          color: '#eab308',
-          weight: 3.5,
-          opacity: 0.95,
-          dashArray: '8, 6',
-          lineJoin: 'round',
-          lineCap: 'round'
-        }).addTo(routesLayer);
-      }
-    }
-
-    if (shouldDraw('flower')) {
-      const flowerPoints = ((jobGpsRoadRoutes as any).flower || []).map((pt: any) => gameCoordsToLatLng(pt.x, pt.y));
-      if (flowerPoints.length > 0) {
-        L.polyline(flowerPoints, {
-          color: '#000000',
-          weight: 6,
-          opacity: 0.75,
-          lineJoin: 'round',
-          lineCap: 'round'
-        }).addTo(routesLayer);
-        L.polyline(flowerPoints, {
-          color: '#f43f5e',
-          weight: 3.5,
-          opacity: 0.95,
-          dashArray: '8, 6',
-          lineJoin: 'round',
-          lineCap: 'round'
-        }).addTo(routesLayer);
-      }
-    }
-
-    if (shouldDraw('mine')) {
-      const minePoints = (jobGpsRoadRoutes.mine || []).map((pt: any) => gameCoordsToLatLng(pt.x, pt.y));
-      if (minePoints.length > 0) {
-        L.polyline(minePoints, {
-          color: '#000000',
-          weight: 6,
-          opacity: 0.75,
-          lineJoin: 'round',
-          lineCap: 'round'
-        }).addTo(routesLayer);
-        L.polyline(minePoints, {
-          color: '#f97316',
-          weight: 3.5,
-          opacity: 0.95,
-          dashArray: '8, 6',
-          lineJoin: 'round',
-          lineCap: 'round'
-        }).addTo(routesLayer);
-      }
-    }
-
-    if (shouldDraw('crystal')) {
-      const crystalPoints = ((jobGpsRoadRoutes as any).crystal || []).map((pt: any) => gameCoordsToLatLng(pt.x, pt.y));
-      if (crystalPoints.length > 0) {
-        L.polyline(crystalPoints, {
-          color: '#000000',
-          weight: 6,
-          opacity: 0.75,
-          lineJoin: 'round',
-          lineCap: 'round'
-        }).addTo(routesLayer);
-        L.polyline(crystalPoints, {
-          color: '#06b6d4',
-          weight: 3.5,
-          opacity: 0.95,
-          dashArray: '8, 6',
-          lineJoin: 'round',
-          lineCap: 'round'
-        }).addTo(routesLayer);
-      }
-    }
-
-    if (shouldDraw('steel')) {
-      const rawSteel = (jobGpsRoadRoutes as any).steel || [];
-      const steelLegs = (Array.isArray(rawSteel[0]) ? rawSteel : [rawSteel]).map((leg: any[]) =>
-        leg.map((pt: any) => gameCoordsToLatLng(pt.x, pt.y))
-      );
-
-      steelLegs.forEach((steelPoints: L.LatLng[]) => {
-        if (steelPoints.length > 0) {
-          L.polyline(steelPoints, {
-            color: '#000000',
-            weight: 6,
-            opacity: 0.75,
-            lineJoin: 'round',
-            lineCap: 'round'
-          }).addTo(routesLayer);
-          L.polyline(steelPoints, {
-            color: '#94a3b8',
-            weight: 3.5,
-            opacity: 0.95,
-            dashArray: '8, 6',
-            lineJoin: 'round',
-            lineCap: 'round'
-          }).addTo(routesLayer);
-        }
-      });
     }
   }
 
-  const SPOT_EXTRA_INFO: Record<string, {
-    areaTag: string;
-    landmark: string;
-    security: string;
-    tool: string;
-    speed: string;
-    vehicle: string;
-    nextStep: string;
-    guideUrl: string;
-    guideText: string;
-  }> = {
-    // === งานไม้ ===
-    'wood-farm': {
-      areaTag: 'PALETO FOREST',
-      landmark: 'ป่าสนเขา Paleto Forest ทางเหนือ เลียบ Great Ocean Highway ใกล้เชิงเขา Chiliad',
-      security: 'จุดทำงานสุจริต (White Job 100%) · ปลอดอาวุธ',
-      tool: 'ขวานตัดไม้ (ซื้อร้านค้า 200 RD / โอกาสพัง 2%)',
-      speed: '10 วินาที / ชิ้น (ไม้ดิบ 0.5 kg)',
-      vehicle: 'รถกระบะ 60 / 120 / 150 kg',
-      nextStep: 'นำไม้ดิบไปโพรที่โรงเลื่อย Paleto Bay Sawmill',
-      guideUrl: '/guides/jobs/woodcutting',
-      guideText: 'ดูคู่มือฟาร์มไม้ฉบับเต็ม ➔'
-    },
-    'wood-pro': {
-      areaTag: 'PALETO BAY / SAWMILL',
-      landmark: 'โรงเลื่อยไม้ Paleto Bay Sawmill เลียบทางรถไฟใหญ่',
-      security: 'จุดแปรรูปสุจริต (White Job 100%)',
-      tool: 'ไม้ดิบ (Raw Wood) อัตรา 1:1',
-      speed: '5 วินาที / ชิ้น (ไม้แปร)',
-      vehicle: 'รถกระบะ 60 / 120 / 150 kg',
-      nextStep: 'นำไม้แปรไปแพ็คที่ท่าเรือ Port of LS หรือใช้คราฟต์อาวุธ',
-      guideUrl: '/guides/jobs/woodcutting',
-      guideText: 'ดูขั้นตอนแปรรูปไม้ ➔'
-    },
-    'wood-pack': {
-      areaTag: 'PORT OF SOUTH LS',
-      landmark: 'โกดังรวมสินค้าท่าเรือใต้ ท่าเรือ B Terminal',
-      security: 'จุดแพ็คสินค้าสุจริต 100%',
-      tool: 'ไม้แปร 2 ชิ้น ➔ กล่องไม้ 1 ลัง (1.0 kg)',
-      speed: '5 วินาที / ลัง',
-      vehicle: 'รถกระบะ 120 / 150 kg แนะนำ',
-      nextStep: 'นำกล่องไม้ไปขายที่จุดขาย El Burro Heights / ขายผู้เล่น',
-      guideUrl: '/guides/jobs/woodcutting',
-      guideText: 'ดูขั้นตอนแพ็คไม้ ➔'
-    },
-    'wood-sell': {
-      areaTag: 'EL BURRO HEIGHTS',
-      landmark: 'โกดัง El Burro Heights ใกล้โรงงานน้ำมัน Murrieta',
-      security: 'จุดขายโพรพรีเมียม (ระวังจุดเสี่ยงโจรปล้น)',
-      tool: 'ไม้กล่อง 1 ลัง',
-      speed: 'รับซื้อ 479 RD/ลัง (หรือขายผู้เล่น 500-600 RD)',
-      vehicle: 'รถกระบะ 120 / 150 kg',
-      nextStep: 'รับเงินสดเข้ากระเป๋า / นำฝากตู้ ATM ธนาคาร',
-      guideUrl: '/guides/jobs/woodcutting',
-      guideText: 'ดูราคาขาย & การคราฟต์ไม้เบสบอล ➔'
-    },
-
-    // === ข้าวสาลี ===
-    'wheat-farm': {
-      areaTag: 'GRAPESEED FARMS',
-      landmark: 'ไร่ข้าวสาลี Grapeseed ฝั่งตะวันออก ใกล้เชิงเขา Mount Chiliad',
-      security: 'จุดทำงานสุจริต (White Job 100%) · ปลอดอาวุธ',
-      tool: 'เคียวเกี่ยวข้าว (ซื้อร้านค้า 150 RD / พัง 2%)',
-      speed: '8 วินาที / ชิ้น (ข้าวสาลี 0.4 kg)',
-      vehicle: 'รถกระบะ 60 / 120 / 150 kg',
-      nextStep: 'นำรวงข้าวไปโพรที่โรงโม่แป้ง Grapeseed Mill',
-      guideUrl: '/guides/jobs/wheat',
-      guideText: 'ดูคู่มือทำไร่ข้าวฉบับเต็ม ➔'
-    },
-    'wheat-pro': {
-      areaTag: 'GRAPESEED MILL',
-      landmark: 'โรงโม่แป้งริมถนนสายหลัก Grapeseed',
-      security: 'จุดแปรรูปสุจริต (White Job 100%)',
-      tool: 'รวงข้าวสาลี ➔ แป้งสาลีโพร',
-      speed: '5 วินาที / ชิ้น',
-      vehicle: 'รถกระบะ 60 / 120 / 150 kg',
-      nextStep: 'นำแป้งสาลีไปแพ็ค หรือส่งครัวเคบับทำอาหาร',
-      guideUrl: '/guides/jobs/wheat',
-      guideText: 'ดูขั้นตอนโม่แป้งข้าว ➔'
-    },
-    'wheat-pack': {
-      areaTag: 'SENORA DESERT',
-      landmark: 'โกดังแพ็คสินค้าทะเลทราย Grand Senora Desert',
-      security: 'จุดแพ็คสินค้าสุจริต 100%',
-      tool: 'แป้งสาลี 2 ชิ้น ➔ กระสอบข้าว 1 ลัง',
-      speed: '5 วินาที / ลัง',
-      vehicle: 'รถกระบะ 120 / 150 kg',
-      nextStep: 'นำกระสอบข้าวไปส่งจุดขาย Cypress Flats',
-      guideUrl: '/guides/jobs/wheat',
-      guideText: 'ดูขั้นตอนแพ็คข้าว ➔'
-    },
-    'wheat-sell': {
-      areaTag: 'CYPRESS FLATS',
-      landmark: 'โกดังรับซื้อผลผลิต Cypress Flats ท้ายเมือง',
-      security: 'จุดขายโพรพรีเมียม (ระวังจุดเสี่ยงโจรปล้น)',
-      tool: 'กระสอบข้าว 1 ลัง',
-      speed: 'รับซื้อ 420 RD/ลัง (หรือส่งครัวทำ Kebab)',
-      vehicle: 'รถกระบะ 120 / 150 kg',
-      nextStep: 'รับเงินสดเข้ากระเป๋า / นำฝากตู้ ATM',
-      guideUrl: '/guides/jobs/wheat',
-      guideText: 'ดูราคาขายข้าว & สูตรเคบับ ➔'
-    },
-
-    // === ดอกไม้ ===
-    'flower-farm': {
-      areaTag: 'TONGVA HILLS',
-      landmark: 'หุบเขาไร่ไวน์ Tongva Hills ทางตะวันตกเฉียงเหนือ ทัศนียภาพเปิดโล่ง',
-      security: 'จุดทำงานสุจริต (White Job 100%) · ปลอดอาวุธ',
-      tool: 'กรรไกรตัดดอกไม้ (ซื้อร้านค้า 180 RD / พัง 2%)',
-      speed: '8 วินาที / ชิ้น (ดอกไม้สด 0.3 kg)',
-      vehicle: 'รถกระบะ 60 / 120 / 150 kg',
-      nextStep: 'นำดอกไม้สดไปกลั่นที่โรงกลั่นน้ำหอม Chumash',
-      guideUrl: '/guides/jobs/flowers',
-      guideText: 'ดูคู่มือเก็บดอกไม้ฉบับเต็ม ➔'
-    },
-    'flower-pro': {
-      areaTag: 'CHUMASH REFINERY',
-      landmark: 'โรงกลั่น Chumash ริมหาดตะวันตก Great Ocean Highway',
-      security: 'จุดแปรรูปสุจริต (White Job 100%)',
-      tool: 'ดอกไม้สด ➔ น้ำมันหอมระเหย',
-      speed: '5 วินาที / ชิ้น',
-      vehicle: 'รถกระบะ 60 / 120 / 150 kg',
-      nextStep: 'นำน้ำมันหอมไปแพ็คเป็นกล่องน้ำหอมส่งออก',
-      guideUrl: '/guides/jobs/flowers',
-      guideText: 'ดูขั้นตอนกลั่นน้ำมันหอม ➔'
-    },
-    'flower-pack': {
-      areaTag: 'PORT OF LS DOCKS',
-      landmark: 'โกดังแพ็คสินค้าท่าเรือใต้ ท่าเรือสินค้านำเข้า-ส่งออก',
-      security: 'จุดแพ็คสินค้าสุจริต 100%',
-      tool: 'น้ำมันหอม 2 ขวด ➔ ลังน้ำหอมพรีเมียม',
-      speed: '5 วินาที / ลัง',
-      vehicle: 'รถกระบะ 120 / 150 kg',
-      nextStep: 'นำลังน้ำหอมไปส่งขายที่จุดส่งออก Vinewood',
-      guideUrl: '/guides/jobs/flowers',
-      guideText: 'ดูขั้นตอนแพ็คน้ำหอม ➔'
-    },
-    'flower-sell': {
-      areaTag: 'VINEWOOD EXPORT',
-      landmark: 'จุดส่งออกบูทีคหรู Vinewood Boulevard',
-      security: 'จุดขายส่งออกพรีเมียม',
-      tool: 'ลังน้ำหอมพรีเมียม',
-      speed: 'รับซื้อ 450 RD/ลัง (หรือขายผู้เล่นทำเควส)',
-      vehicle: 'รถกระบะ 120 / 150 kg',
-      nextStep: 'รับเงินสดเข้ากระเป๋า / นำฝากตู้ ATM',
-      guideUrl: '/guides/jobs/flowers',
-      guideText: 'ดูราคาขายดอกไม้ & น้ำหอม ➔'
-    },
-
-    // === เหมืองแร่ & เหล็ก ===
-    'mine-farm': {
-      areaTag: 'DAVIS QUARTZ',
-      landmark: 'เหมืองหินบ่อลึก Davis Quartz กลางทะเลทราย Senora ทางหลวง Route 68',
-      security: 'จุดทำงานสุจริต (White Job 100%) · ปลอดอาวุธ',
-      tool: 'พลั่ว / สว่านขุดแร่ (ซื้อร้านค้า 250 RD / พัง 2%)',
-      speed: '12 วินาที / ชิ้น (ก้อนแร่ดิบ 0.8 kg)',
-      vehicle: 'รถกระบะ 120 / 150 kg แนะนำ (น้ำหนักแร่ค่อนข้างหนัก)',
-      nextStep: 'นำแร่ดิบไปหลอมที่โรงหลอมเหล็ก La Puerta Smelter',
-      guideUrl: '/guides/jobs/mining',
-      guideText: 'ดูคู่มือขุดเหมืองแร่ฉบับเต็ม ➔'
-    },
-    'steel-farm': {
-      areaTag: 'DAVIS QUARTZ (IRON VEIN)',
-      landmark: 'เหมืองแร่เหล็ก Davis Quartz โซนสายแร่โลหะหนัก',
-      security: 'จุดทำงานสุจริต (White Job 100%) · ปลอดอาวุธ',
-      tool: 'สว่านเจาะหิน (ซื้อร้านค้า 250 RD / พัง 2%)',
-      speed: '12 วินาที / ชิ้น (แร่เหล็กดิบ 0.8 kg)',
-      vehicle: 'รถกระบะ 120 / 150 kg แนะนำ',
-      nextStep: 'นำแร่เหล็กไปหลอมที่เตาหลอมเหล็ก La Puerta',
-      guideUrl: '/guides/jobs/smelting',
-      guideText: 'ดูคู่มือหลอมเหล็กฉบับเต็ม ➔'
-    },
-    'steel-pro': {
-      areaTag: 'LA PUERTA SMELTER',
-      landmark: 'โรงหลอมเหล็กอุตสาหกรรม La Puerta ใกล้ทางด่วนใต้',
-      security: 'จุดแปรรูปสุจริต 100%',
-      tool: 'แร่เหล็กดิบ ➔ แท่งเหล็กแปรรูป',
-      speed: '6 วินาที / ชิ้น (โพรเหล็กรับ 233 RD)',
-      vehicle: 'รถกระบะ 120 / 150 kg',
-      nextStep: 'นำแท่งเหล็กไปคราฟต์อาวุธ (ปืน/มีด/กระสุน) หรือแพ็คส่งออก',
-      guideUrl: '/guides/jobs/smelting',
-      guideText: 'ดูราคาโพรเหล็ก 233 RD ➔'
-    },
-
-    // === คริสตัล ===
-    'crystal-farm': {
-      areaTag: 'MOUNT CHILIAD',
-      landmark: 'แนวสันเขาสูงชัน Mount Chiliad ยอดเขาสูงสุดของเกาะ ทางคดเคี้ยว',
-      security: 'จุดทำงานสุจริต (ระวังทางลาดชันตกเขา)',
-      tool: 'ค้อนสกัดคริสตัล (ซื้อร้านค้า 300 RD / พัง 2%)',
-      speed: '15 วินาที / ชิ้น (คริสตัลดิบ 0.3 kg)',
-      vehicle: 'รถกระบะ 60 / 120 / 150 kg (แนะนำรถขับ 4WD ขึ้นเขา)',
-      nextStep: 'นำคริสตัลดิบไปเจียระไนที่ Sandy Shores',
-      guideUrl: '/guides/jobs/crystal',
-      guideText: 'ดูคู่มือฟาร์มคริสตัลฉบับเต็ม ➔'
-    },
-    'crystal-pro': {
-      areaTag: 'SANDY SHORES LAPIDARY',
-      landmark: 'โรงเจียระไนอัญมณี Sandy Shores ริมทะเลสาบ Alamo Sea',
-      security: 'จุดแปรรูปสุจริต 100%',
-      tool: 'คริสตัลดิบ ➔ อัญมณีเจียระไนพรีเมียม',
-      speed: '6 วินาที / ชิ้น',
-      vehicle: 'รถกระบะ 60 / 120 / 150 kg',
-      nextStep: 'นำอัญมณีไปคราฟต์ชิ้นส่วนอาวุธระดับสูง หรือขายพ่อค้าอัญมณี',
-      guideUrl: '/guides/jobs/crystal',
-      guideText: 'ดูขั้นตอนเจียระไนคริสตัล ➔'
-    },
-
-    // === ฟาร์มหมู ===
-    'pig-farm': {
-      areaTag: 'GRAPESEED LIVESTOCK',
-      landmark: 'ฟาร์มปศุสัตว์ Grapeseed ทุ่งเลี้ยงหมูริมทะเลสาบ Alamo Sea',
-      security: 'จุดทำงานสุจริต (White Job 100%) · ปลอดอาวุธ',
-      tool: 'มีดชำแหละ (ซื้อร้านค้า 200 RD / พัง 2%)',
-      speed: '10 วินาที / ชิ้น (เนื้อหมูดิบ 0.6 kg)',
-      vehicle: 'รถกระบะ 120 / 150 kg',
-      nextStep: 'นำเนื้อหมูดิบไปชำแหละที่โรงเชือด Paleto Slaughterhouse',
-      guideUrl: '/guides/jobs/pig',
-      guideText: 'ดูคู่มือฟาร์มหมูฉบับเต็ม ➔'
-    },
-    'pig-pro': {
-      areaTag: 'PALETO SLAUGHTERHOUSE',
-      landmark: 'โรงเชือดชำแหละเนื้อสัตว์ Paleto Bay ฝั่งตะวันตก',
-      security: 'จุดแปรรูปสุจริต 100%',
-      tool: 'เนื้อหมูดิบ ➔ เนื้อหมูสดสไลซ์',
-      speed: '5 วินาที / ชิ้น',
-      vehicle: 'รถกระบะ 120 / 150 kg',
-      nextStep: 'นำเนื้อหมูสดไปแพ็ค หรือส่งครัวเคบับ Mirror Park',
-      guideUrl: '/guides/jobs/pig',
-      guideText: 'ดูขั้นตอนชำแหละเนื้อหมู ➔'
-    },
-
-    // === ครัวเคบับ ===
-    'kitchen-mirror': {
-      areaTag: 'MIRROR PARK KITCHEN',
-      landmark: 'ครัวกลางเมืองสาขา Mirror Park ติดสวนสาธารณะและสระน้ำ',
-      security: 'ครัวกลางทำอาหารสุจริต',
-      tool: 'เตาย่างเคบับ + เนื้อหมูสด + แป้งข้าวสาลี',
-      speed: 'ทำอาหาร ➔ เปิดแอป รันแมน รับออเดอร์ 2-4 ชิ้น',
-      vehicle: 'รถกระบะ 60 / 120 kg (ขับคล่องตัวในเมือง)',
-      nextStep: 'บิดส่งมอบลูกค้า NPC รับเงินสด 1,500 RD/ชิ้น (3,000-6,000 RD/รอบ)',
-      guideUrl: '/guides/jobs/kitchen',
-      guideText: 'ดูคู่มือส่งอาหารแอป รันแมน ➔'
-    },
-    'kitchen-paleto': {
-      areaTag: 'PALETO BAY KITCHEN',
-      landmark: 'ครัวสาขาเหนือ Paleto Bay ใกล้สถานีตำรวจและซูเปอร์มาร์เก็ต',
-      security: 'ครัวกลางทำอาหารสุจริต',
-      tool: 'เตาย่างเคบับ + วัตถุดิบสด',
-      speed: 'รับออเดอร์แอป รันแมน โซนเหนือ',
-      vehicle: 'รถกระบะ 60 / 120 / 150 kg',
-      nextStep: 'ส่งมอบลูกค้า NPC โซนเหนือ รับเงินสดทันที',
-      guideUrl: '/guides/jobs/kitchen',
-      guideText: 'ดูคู่มือครัวเคบับ Paleto ➔'
-    }
-  };
-
-  function getSpotDetails(id: string, data: any) {
-    if (SPOT_EXTRA_INFO[id]) return SPOT_EXTRA_INFO[id];
-    
-    // Check by surgeId or normalized id
-    const baseId = (data.id || id).replace(/^spot-\d+$/, '');
-    if (baseId && SPOT_EXTRA_INFO[baseId]) return SPOT_EXTRA_INFO[baseId];
-
-    // Fallbacks by group
-    if (data.group === 'wood') {
-      return {
-        areaTag: 'PALETO & DOCKS',
-        landmark: 'พื้นที่สายงานไม้ ป่า Paleto ทางเหนือ และท่าเรือขนส่งทางใต้',
-        security: 'จุดทำงานสุจริต (White Job 100%)',
-        tool: 'ขวานตัดไม้ (ซื้อร้านค้า 200 RD)',
-        speed: '5 - 10 วินาที / รอบ',
-        vehicle: 'รถกระบะ 60 / 120 / 150 kg',
-        nextStep: 'เข้าสู่สายการผลิต แปรรูป ➔ แพ็ค ➔ ขายโพร',
-        guideUrl: '/guides/jobs/woodcutting',
-        guideText: 'ดูคู่มือฟาร์มไม้ ➔'
-      };
-    }
-    if (data.group === 'wheat') {
-      return {
-        areaTag: 'GRAPESEED & DESERT',
-        landmark: 'ทุ่งเกษตรกรรม Grapeseed และทะเลทราย Grand Senora',
-        security: 'จุดทำงานสุจริต (White Job 100%)',
-        tool: 'เคียวเกี่ยวข้าว (ซื้อร้านค้า 150 RD)',
-        speed: '5 - 8 วินาที / รอบ',
-        vehicle: 'รถกระบะ 60 / 120 / 150 kg',
-        nextStep: 'แปรรูปเป็นแป้งสาลี หรือส่งต่อให้ครัวเคบับ',
-        guideUrl: '/guides/jobs/wheat',
-        guideText: 'ดูคู่มือทำไร่ข้าว ➔'
-      };
-    }
-    if (data.group === 'flower') {
-      return {
-        areaTag: 'TONGVA HILLS & COAST',
-        landmark: 'หุบเขาไวน์และชายฝั่ง Chumash ตะวันตก',
-        security: 'จุดทำงานสุจริต (White Job 100%)',
-        tool: 'กรรไกรตัดดอกไม้ (ซื้อร้านค้า 180 RD)',
-        speed: '5 - 8 วินาที / รอบ',
-        vehicle: 'รถกระบะ 60 / 120 / 150 kg',
-        nextStep: 'สกัดน้ำมันหอมระเหย ➔ แพ็คส่งออก Vinewood',
-        guideUrl: '/guides/jobs/flowers',
-        guideText: 'ดูคู่มือเก็บดอกไม้ ➔'
-      };
-    }
-    if (data.group === 'mine' || data.group === 'steel') {
-      return {
-        areaTag: 'DAVIS QUARTZ & LA PUERTA',
-        landmark: 'เหมืองแร่ทะเลทราย Senora และโรงหลอมเหล็กใต้ La Puerta',
-        security: 'จุดทำงานสุจริต (White Job 100%)',
-        tool: 'พลั่ว / สว่านเจาะหิน (250 RD)',
-        speed: '6 - 12 วินาที / รอบ (โพรเหล็กรับ 233 RD)',
-        vehicle: 'รถกระบะ 120 / 150 kg แนะนำ (ของมีน้ำหนักมาก)',
-        nextStep: 'หลอมเป็นแท่งเหล็ก ➔ ส่งคราฟต์อาวุธหรือแพ็คขาย',
-        guideUrl: '/guides/jobs/smelting',
-        guideText: 'ดูคู่มือเหมือง & หลอมเหล็ก ➔'
-      };
-    }
-    if (data.group === 'crystal') {
-      return {
-        areaTag: 'MOUNT CHILIAD & SANDY',
-        landmark: 'ยอดเขาสูง Mount Chiliad และโรงเจียระไน Sandy Shores',
-        security: 'จุดทำงานสุจริต (ระวังทางลาดชัน)',
-        tool: 'ค้อนสกัดคริสตัล (300 RD)',
-        speed: '6 - 15 วินาที / รอบ',
-        vehicle: 'รถกระบะ 60 / 120 / 150 kg (แนะนำ 4WD)',
-        nextStep: 'เจียระไนอัญมณี ➔ คราฟต์ชิ้นส่วนอาวุธระดับสูง',
-        guideUrl: '/guides/jobs/crystal',
-        guideText: 'ดูคู่มือคริสตัล ➔'
-      };
-    }
-    if (data.group === 'pig') {
-      return {
-        areaTag: 'GRAPESEED & PALETO',
-        landmark: 'ฟาร์มปศุสัตว์ Grapeseed และโรงเชือด Paleto',
-        security: 'จุดทำงานสุจริต (White Job 100%)',
-        tool: 'มีดชำแหละ (200 RD)',
-        speed: '5 - 10 วินาที / รอบ',
-        vehicle: 'รถกระบะ 120 / 150 kg',
-        nextStep: 'ชำแหละเนื้อหมูสด ➔ ส่งครัวเคบับหรือแพ็คส่งออก',
-        guideUrl: '/guides/jobs/pig',
-        guideText: 'ดูคู่มือฟาร์มหมู ➔'
-      };
-    }
-    if (data.group === 'kitchen') {
-      return {
-        areaTag: 'LOS SANTOS & PALETO',
-        landmark: 'ครัวกลางทำอาหาร สาขา Mirror Park และ Paleto Bay',
-        security: 'ครัวทำอาหารสุจริต',
-        tool: 'เตาย่างเคบับ + วัตถุดิบสด + โทรศัพท์แอป รันแมน',
-        speed: 'ส่งลูกค้า NPC รับ 1,500 RD/ชิ้น (3,000-6,000 RD/รอบ)',
-        vehicle: 'รถกระบะ 60 / 120 kg (ส่งอาหารคล่องตัว)',
-        nextStep: 'รับเงินสดทันที ลุ้นโบนัส 10% รับงานต่อเนื่อง',
-        guideUrl: '/guides/jobs/kitchen',
-        guideText: 'ดูคู่มือครัวเคบับ ➔'
-      };
-    }
-    if (data.group === 'shop') {
-      return {
-        areaTag: 'CITY & SUBURBS 24/7',
-        landmark: 'ร้านสะดวกซื้อ 24/7 และร้านขายอุปกรณ์เครื่องมือฟาร์มทั่วเกาะ',
-        security: 'ร้านค้าบริการประชาชน (12 จุดทั่วเกาะ)',
-        tool: 'เงินสด RD ในตัว / บัตรประชาชน',
-        speed: 'ซื้อได้ทันที 24 ชม.',
-        vehicle: 'ยานพาหนะทุกประเภท',
-        nextStep: 'ซื้ออุปกรณ์ ขวาน เคียว พลั่ว อาหาร น้ำ แล้วไปจุดฟาร์ม',
-        guideUrl: '/guides/jobs/white',
-        guideText: 'ดูรายการสินค้าและราคา ➔'
-      };
-    }
-    if (data.group === 'head_reset') {
-      return {
-        areaTag: 'BARS & DINERS (0%)',
-        landmark: 'บาร์ Yellow Jack, Bahama Mamas, Tequi-la-la และร้านอาหารทั่วเมือง',
-        security: 'จุดพักผ่อน & บริการอาหารเครื่องดื่ม',
-        tool: 'อาหาร / เครื่องดื่มรีหัว',
-        speed: 'ทานทันทีเพื่อลดความหิว',
-        vehicle: 'ยานพาหนะทุกประเภท',
-        nextStep: 'รีสถานะหลอดอาหารไม่ให้แตะ 0% (หลีกเลี่ยงการสลบ)',
-        guideUrl: '/guides/food/nutrition',
-        guideText: 'ดูคู่มือระบบอาหาร & รีหัว ➔'
-      };
-    }
-    if (data.group === 'safe') {
-      return {
-        areaTag: 'SAFEZONE PROTECTED',
-        landmark: 'เขตปลอดภัยสำคัญ: รพ. Pillbox, สน. Mission Row, จัตุรัส Legion',
-        security: '🛡️ เซฟโซนสูงสุด (ห้ามใช้อาวุธ / ห้ามก่ออาชญากรรม 100%)',
-        tool: 'ไม่มี (เขตปลอดอาวุธ)',
-        speed: 'คุ้มครองความปลอดภัย 24 ชม.',
-        vehicle: 'จอดรถในจุดที่กำหนด (ห้ามขวางทางเข้าออก รพ.)',
-        nextStep: 'รักษาพยาบาล / แจ้งความ / พักผ่อนปลอดภัย',
-        guideUrl: '/guides/',
-        guideText: 'ดูสารบัญคู่มือระบบเมือง ➔'
-      };
-    }
-
-    // Generic fallback
-    return {
-      areaTag: (data.zone || 'LOS SANTOS').split('·')[0].trim(),
-      landmark: data.desc || 'จุดสำคัญบนแผนที่ GTA V',
-      security: 'จุดบริการประชาชนในเมือง RUN TOWN',
-      tool: 'ขึ้นอยู่กับประเภทงาน',
-      speed: 'ตามระบบงานกำหนด',
-      vehicle: 'รถกระบะ 60 / 120 / 150 kg',
-      nextStep: 'ตรวจสอบขั้นตอนในคู่มือเมือง',
-      guideUrl: '/guides/',
-      guideText: 'เปิดอ่านคู่มือเมือง ➔'
-    };
-  }
-
-  function selectSpot(id: string, flyTo: boolean = false) {
-    const data = spotsData[id];
+  function selectSpot(idOrAlias: string, flyTo: boolean = false) {
+    const data = resolveSpot(idOrAlias);
     if (!data) return;
-    currentSelectedId = id;
+    currentSelectedId = data.id;
 
     const titleEl = document.getElementById('mapPoiTitle');
     const descEl = document.getElementById('mapPoiDesc');
     const badgeEl = document.getElementById('mapStatusBadge');
-
     const areaTagEl = document.getElementById('mapPoiAreaTag');
     const landmarkEl = document.getElementById('mapPoiLandmark');
     const securityEl = document.getElementById('mapPoiSecurity');
@@ -2421,7 +445,7 @@ import CyberIcon from '../components/CyberIcon.astro';
     const guideLinkEl = document.getElementById('mapPoiGuideLink');
     const guideTextEl = document.getElementById('mapPoiGuideText');
 
-    const details = getSpotDetails(id, data);
+    const details = getSpotExtraInfo(data.id, data);
 
     if (titleEl) titleEl.textContent = data.title;
     if (descEl) descEl.textContent = data.desc;
@@ -2440,13 +464,12 @@ import CyberIcon from '../components/CyberIcon.astro';
     if (guideLinkEl) guideLinkEl.setAttribute('href', details.guideUrl);
     if (guideTextEl) guideTextEl.textContent = details.guideText;
 
-    // Refresh marker icons to reflect selection
     renderMarkers();
 
-    // Smooth flyTo in Leaflet
     if (flyTo && mapInstance) {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const targetLatLng = gameCoordsToLatLng(data.x, data.y);
-      mapInstance.flyTo(targetLatLng, 5, { duration: 1.2 });
+      mapInstance.flyTo(targetLatLng, 5, { duration: reduced ? 0 : 1.2 });
     }
   }
 
@@ -2456,7 +479,6 @@ import CyberIcon from '../components/CyberIcon.astro';
     const titleEl = document.getElementById('mapPoiTitle');
     const descEl = document.getElementById('mapPoiDesc');
     const badgeEl = document.getElementById('mapStatusBadge');
-
     const areaTagEl = document.getElementById('mapPoiAreaTag');
     const landmarkEl = document.getElementById('mapPoiLandmark');
     const securityEl = document.getElementById('mapPoiSecurity');
@@ -2468,9 +490,9 @@ import CyberIcon from '../components/CyberIcon.astro';
     const guideTextEl = document.getElementById('mapPoiGuideText');
 
     if (titleEl) titleEl.textContent = '🌐 ภาพรวมจุดทำงานทั่วเกาะ (All Zones)';
-    if (descEl) descEl.textContent = 'ศูนย์รวมพิกัดและจุดทำงานครบทุกประเภทบนเกาะ RUN TOWN — มีจุดฟาร์มวัตถุดิบ 7 สาย, ครัวเคบับ 4 จุด, ร้านค้า 12 สาขา, จุดรีหัว 0% และเขตเซฟโซน';
+    if (descEl) descEl.textContent = 'ศูนย์รวมพิกัดและจุดทำงานครบทุกประเภทบนเกาะ RUN TOWN — มีจุดฟาร์มวัตถุดิบ 8 สาย, ครัวเคบับ 4 จุด, ร้านค้า 12 สาขา, จุดรีหัว 0% และเขตเซฟโซน';
     if (badgeEl) {
-      badgeEl.textContent = 'ALL ZONES · 40+ SPOTS 🌐';
+      badgeEl.textContent = 'ALL ZONES · 47 SPOTS 🌐';
       badgeEl.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full border border-mint/40 bg-mint/15 text-mint';
     }
 
@@ -2487,12 +509,12 @@ import CyberIcon from '../components/CyberIcon.astro';
     renderMarkers();
 
     if (flyTo && mapInstance) {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const islandCenter = gameCoordsToLatLng(0, 1500);
-      mapInstance.flyTo(islandCenter, 3, { duration: 1.2 });
+      mapInstance.flyTo(islandCenter, 3, { duration: reduced ? 0 : 1.2 });
     }
   }
 
-  // Set Layer Tile
   function switchLayer(layerKey: keyof typeof TILE_LAYERS) {
     const config = TILE_LAYERS[layerKey];
     if (!config || !mapInstance) return;
@@ -2508,16 +530,22 @@ import CyberIcon from '../components/CyberIcon.astro';
       maxZoom: 10,
       maxNativeZoom: 7,
       bounds: MAP_BOUNDS,
-      className: config.className
+      className: config.className,
     });
     currentTileLayer.addTo(mapInstance);
   }
 
-  // Initialize Real Leaflet GTA V Map
-  const mapContainer = document.getElementById('leafletMap');
-  if (mapContainer) {
-    const initialCenter = gameCoordsToLatLng(0, 1500);
+  function initInteractiveMap() {
+    cleanupMap();
+    const mapContainer = document.getElementById('leafletMap');
+    if (!mapContainer) return;
 
+    mapAbort = new AbortController();
+    const { signal } = mapAbort;
+    activeFilter = 'all';
+    currentSelectedId = '';
+
+    const initialCenter = gameCoordsToLatLng(0, 1500);
     mapInstance = L.map(mapContainer, {
       crs: L.CRS.Simple,
       minZoom: 1,
@@ -2527,31 +555,24 @@ import CyberIcon from '../components/CyberIcon.astro';
       maxBounds: MAP_MAX_BOUNDS,
       maxBoundsViscosity: 0.8,
       attributionControl: false,
-      zoomControl: false
+      zoomControl: false,
     });
 
     L.control.zoom({ position: 'bottomright' }).addTo(mapInstance);
-
-    // Initial Layer: Game Radar (เรดาร์)
     switchLayer('game');
 
-    // Groups
     routesLayer = L.layerGroup().addTo(mapInstance);
     markersLayer = L.layerGroup().addTo(mapInstance);
 
-    // Initial Markers
-    renderMarkers();
-
-    // Auto-select from URL search parameters ?spot=...
     const urlParams = new URLSearchParams(window.location.search);
-    const targetSpot = urlParams.get('spot');
-    if (targetSpot && spotsData[targetSpot]) {
-      const spotGroup = spotsData[targetSpot].group;
-      activeFilter = spotGroup;
+    const targetSpotParam = urlParams.get('spot');
+    const resolvedTarget = targetSpotParam ? resolveSpot(targetSpotParam) : undefined;
 
-      document.querySelectorAll('.map-filter-btn').forEach(btn => {
+    if (resolvedTarget) {
+      activeFilter = resolvedTarget.group;
+      document.querySelectorAll('.map-filter-btn').forEach((btn) => {
         const filter = btn.getAttribute('data-filter');
-        if (filter === spotGroup) {
+        if (filter === resolvedTarget.group) {
           btn.classList.remove('border-line', 'bg-paper', 'text-textSoft');
           btn.classList.add('border-mint', 'bg-mint/20', 'text-mint', 'font-bold', 'active');
         } else {
@@ -2559,54 +580,60 @@ import CyberIcon from '../components/CyberIcon.astro';
           btn.classList.add('border-line', 'bg-paper', 'text-textSoft');
         }
       });
-
       renderMarkers();
-      selectSpot(targetSpot, true);
+      selectSpot(resolvedTarget.id, true);
     } else {
       showAllOverview(false);
     }
+
+    document.querySelectorAll('.layer-switch-btn').forEach((btn) => {
+      btn.addEventListener(
+        'click',
+        () => {
+          document.querySelectorAll('.layer-switch-btn').forEach((b) => {
+            b.classList.remove('text-mint', 'font-bold', 'bg-mint/15', 'active');
+            b.classList.add('text-textSoft');
+          });
+          btn.classList.remove('text-textSoft');
+          btn.classList.add('text-mint', 'font-bold', 'bg-mint/15', 'active');
+
+          const layer = btn.getAttribute('data-layer') as keyof typeof TILE_LAYERS | null;
+          if (layer) switchLayer(layer);
+        },
+        { signal }
+      );
+    });
+
+    document.querySelectorAll('.map-filter-btn').forEach((btn) => {
+      btn.addEventListener(
+        'click',
+        () => {
+          document.querySelectorAll('.map-filter-btn').forEach((b) => {
+            b.classList.remove('border-mint', 'bg-mint/20', 'text-mint', 'font-bold', 'active');
+            b.classList.add('border-line', 'bg-paper', 'text-textSoft');
+          });
+          btn.classList.remove('border-line', 'bg-paper', 'text-textSoft');
+          btn.classList.add('border-mint', 'bg-mint/20', 'text-mint', 'font-bold', 'active');
+
+          activeFilter = btn.getAttribute('data-filter') || 'all';
+          if (activeFilter === 'all') {
+            showAllOverview(true);
+          } else {
+            renderMarkers();
+            const firstMatching = Object.values(SPOTS).find((s) => s.group === activeFilter);
+            if (firstMatching) {
+              selectSpot(firstMatching.id, true);
+            }
+          }
+        },
+        { signal }
+      );
+    });
+
+    (window as any).selectSpot = selectSpot;
+    (window as any).showAllOverview = showAllOverview;
   }
 
-  // Layer buttons
-  document.querySelectorAll('.layer-switch-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.layer-switch-btn').forEach(b => {
-        b.classList.remove('text-mint', 'font-bold', 'bg-mint/15', 'active');
-        b.classList.add('text-textSoft');
-      });
-      btn.classList.remove('text-textSoft');
-      btn.classList.add('text-mint', 'font-bold', 'bg-mint/15', 'active');
-
-      const layer = btn.getAttribute('data-layer') as keyof typeof TILE_LAYERS;
-      if (layer) switchLayer(layer);
-    });
-  });
-
-  // Filter Buttons
-  document.querySelectorAll('.map-filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.map-filter-btn').forEach(b => {
-        b.classList.remove('border-mint', 'bg-mint/20', 'text-mint', 'font-bold', 'active');
-        b.classList.add('border-line', 'bg-paper', 'text-textSoft');
-      });
-      btn.classList.remove('border-line', 'bg-paper', 'text-textSoft');
-      btn.classList.add('border-mint', 'bg-mint/20', 'text-mint', 'font-bold', 'active');
-
-      activeFilter = btn.getAttribute('data-filter') || 'all';
-
-      if (activeFilter === 'all') {
-        showAllOverview(true);
-      } else {
-        renderMarkers();
-        // If active filter has spots, fly to first matching spot of that specific group
-        const firstMatching = Object.values(spotsData).find(s => s.group === activeFilter);
-        if (firstMatching) {
-          selectSpot(firstMatching.id, true);
-        }
-      }
-    });
-  });
-
-  (window as any).selectSpot = selectSpot;
-  (window as any).showAllOverview = showAllOverview;
+  document.addEventListener('astro:before-swap', cleanupMap);
+  document.addEventListener('astro:page-load', initInteractiveMap);
 </script>

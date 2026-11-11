@@ -19,11 +19,11 @@ updatedAt: "09 ตุลาคม 2026"
 
 | ไอคอน | อาวุธ (Weapon) | ดาเมจ | โอกาสสำเร็จ | วัตถุดิบหลักที่ต้องใช้ | ฐานอาวุธที่ต้องมี | ค่าธรรมเนียม |
 | :---: | :--- | :---: | :---: | :--- | :--- | :---: |
-| <img src="/items/icons/transparent/machete_lv1.png" width="44" height="44" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **🗡️ Machete Lv.1** | **18** | **100%** | Blueprint Machete Lv1 + Edge Core x100 + Crystal x100 | Bottle x1 | $250,000 |
-| <img src="/items/icons/transparent/knife_lv1.png" width="44" height="44" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **🔪 Knife Lv.1** | **16** | **100%** | Blueprint Knife Lv1 + Bottle x1 + Edge Core x100 + Crystal x100 | Bottle x1 | $350,000 |
-| <img src="/items/icons/transparent/dagger_lv1.png" width="44" height="44" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **🗡️ Dagger Lv.1** | **16** | **100%** | Blueprint Knife Lv1 + Bottle x1 + Impact Core x100 + Crystal x100 | Bottle x1 | $350,000 |
-| <img src="/items/icons/transparent/knuckle_lv1.png" width="44" height="44" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **🥊 Knuckle Lv.1** | **14** | **100%** | Blueprint Knuckle Lv1 + Impact Core x75 + Crystal x100 | *ไม่ต้องใช้* | $250,000 |
-| <img src="/items/icons/transparent/poolcue_lv1.png" width="44" height="44" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **🎱 Poolcue Lv.1** | **12** | **100%** | Blueprint Pool Cue Lv1 + Impact Core x150 + Crystal x150 | Bat หรือ Golfclub x1 | $350,000 |
+| <img src="/items/icons/transparent/machete_lv1.png" width="44" height="44" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **🗡️ Machete Lv.1** | **18** | **100%** | Blueprint Machete Lv1 + Edge Core x100 + Crystal x100 | Bottle x1 | $250,000 |
+| <img src="/items/icons/transparent/knife_lv1.png" width="44" height="44" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **🔪 Knife Lv.1** | **16** | **100%** | Blueprint Knife Lv1 + Bottle x1 + Edge Core x100 + Crystal x100 | Bottle x1 | $350,000 |
+| <img src="/items/icons/transparent/dagger_lv1.png" width="44" height="44" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **🗡️ Dagger Lv.1** | **16** | **100%** | Blueprint Knife Lv1 + Bottle x1 + Impact Core x100 + Crystal x100 | Bottle x1 | $350,000 |
+| <img src="/items/icons/transparent/knuckle_lv1.png" width="44" height="44" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **🥊 Knuckle Lv.1** | **14** | **100%** | Blueprint Knuckle Lv1 + Impact Core x75 + Crystal x100 | *ไม่ต้องใช้* | $250,000 |
+| <img src="/items/icons/transparent/poolcue_lv1.png" width="44" height="44" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **🎱 Poolcue Lv.1** | **12** | **100%** | Blueprint Pool Cue Lv1 + Impact Core x150 + Crystal x150 | Bat หรือ Golfclub x1 | $350,000 |
 
 ---
 
@@ -40,7 +40,7 @@ updatedAt: "09 ตุลาคม 2026"
   * 💵 ค่าเงิน: 250,000 RD
 
 <div style="display: flex; gap: 16px; align-items: center; justify-content: center; margin: 16px 0;">
-  <img src="/items/icons/transparent/machete_lv1.png" alt="Machete Lv.1 Transparent Cutout" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(255, 59, 92, 0.4);" />
+  <img src="/items/icons/transparent/machete_lv1.png" alt="Machete Lv.1 Transparent Cutout" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(255, 59, 92, 0.4);" decoding="async" />
 </div>
 
 ![Machete Lv.1 In-game](/items/19.png)
@@ -58,7 +58,7 @@ updatedAt: "09 ตุลาคม 2026"
   * 💵 ค่าเงิน: 350,000 RD
 
 <div style="display: flex; gap: 16px; align-items: center; justify-content: center; margin: 16px 0;">
-  <img src="/items/icons/transparent/knife_lv1.png" alt="Knife Lv.1 Transparent Cutout" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(0, 240, 168, 0.4);" />
+  <img src="/items/icons/transparent/knife_lv1.png" alt="Knife Lv.1 Transparent Cutout" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(0, 240, 168, 0.4);" decoding="async" />
 </div>
 
 ![Knife Lv.1 In-game](/items/15.png)
@@ -76,7 +76,7 @@ updatedAt: "09 ตุลาคม 2026"
   * 💵 ค่าเงิน: 350,000 RD
 
 <div style="display: flex; gap: 16px; align-items: center; justify-content: center; margin: 16px 0;">
-  <img src="/items/icons/transparent/dagger_lv1.png" alt="Dagger Lv.1 Transparent Cutout" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(0, 240, 168, 0.4);" />
+  <img src="/items/icons/transparent/dagger_lv1.png" alt="Dagger Lv.1 Transparent Cutout" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(0, 240, 168, 0.4);" decoding="async" />
 </div>
 
 ![Dagger Lv.1 In-game](/items/16.png)
@@ -93,7 +93,7 @@ updatedAt: "09 ตุลาคม 2026"
   * 💵 ค่าเงิน: 250,000 RD
 
 <div style="display: flex; gap: 16px; align-items: center; justify-content: center; margin: 16px 0;">
-  <img src="/items/icons/transparent/knuckle_lv1.png" alt="Knuckle Lv.1 Transparent Cutout" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(223, 255, 0, 0.4);" />
+  <img src="/items/icons/transparent/knuckle_lv1.png" alt="Knuckle Lv.1 Transparent Cutout" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(223, 255, 0, 0.4);" decoding="async" />
 </div>
 
 ![Knuckle Lv.1 In-game](/items/20.png)
@@ -111,7 +111,7 @@ updatedAt: "09 ตุลาคม 2026"
   * 💵 ค่าเงิน: 350,000 RD
 
 <div style="display: flex; gap: 16px; align-items: center; justify-content: center; margin: 16px 0;">
-  <img src="/items/icons/transparent/poolcue_lv1.png" alt="Pool Cue Lv.1 Transparent Cutout" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(255, 179, 0, 0.4);" />
+  <img src="/items/icons/transparent/poolcue_lv1.png" alt="Pool Cue Lv.1 Transparent Cutout" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(255, 179, 0, 0.4);" decoding="async" />
 </div>
 
 ![Pool Cue Lv.1 In-game](/items/17.png)
@@ -124,9 +124,9 @@ updatedAt: "09 ตุลาคม 2026"
 
 | ไอคอน | อาวุธเบส (Base Weapon) | อัตราสำเร็จ | วัตถุดิบที่ต้องใช้ | ของรางวัลชดเชยเมื่อไม่สำเร็จ |
 | :---: | :--- | :---: | :--- | :--- |
-| <img src="/items/icons/transparent/bat.png" width="44" height="44" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **🏏 Bat (ไม้เบสบอล)** | **5%** | 📜 Blueprint: Bat x1 + 📦 Weapon Box Set x1 | 💥 ได้รับ **Impact Core x1** ชดเชย |
-| <img src="/items/icons/transparent/golfclub.png" width="44" height="44" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **🏌️ Golfclub (ไม้กอล์ฟ)** | **5%** | 📜 Blueprint: Bat x1 + 📦 Weapon Box Set x1 | 💥 ได้รับ **Impact Core x1** ชดเชย |
-| <img src="/items/icons/transparent/bottle.png" width="44" height="44" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **🍾 Bottle (ขวดปากฉลาม)** | **5%** | 📜 Blueprint: Bottle x1 + 📦 Weapon Box Set x1 | 🩸 ได้รับ **Edge Core x1** ชดเชย |
+| <img src="/items/icons/transparent/bat.png" width="44" height="44" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **🏏 Bat (ไม้เบสบอล)** | **5%** | 📜 Blueprint: Bat x1 + 📦 Weapon Box Set x1 | 💥 ได้รับ **Impact Core x1** ชดเชย |
+| <img src="/items/icons/transparent/golfclub.png" width="44" height="44" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **🏌️ Golfclub (ไม้กอล์ฟ)** | **5%** | 📜 Blueprint: Bat x1 + 📦 Weapon Box Set x1 | 💥 ได้รับ **Impact Core x1** ชดเชย |
+| <img src="/items/icons/transparent/bottle.png" width="44" height="44" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **🍾 Bottle (ขวดปากฉลาม)** | **5%** | 📜 Blueprint: Bottle x1 + 📦 Weapon Box Set x1 | 🩸 ได้รับ **Edge Core x1** ชดเชย |
 
 ---
 
@@ -138,7 +138,7 @@ updatedAt: "09 ตุลาคม 2026"
   * 📦 Weapon Box Set x 1
 
 <div style="display: flex; gap: 16px; align-items: center; justify-content: center; margin: 16px 0;">
-  <img src="/items/icons/transparent/bat.png" alt="Bat Transparent Cutout" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(255, 179, 0, 0.4);" />
+  <img src="/items/icons/transparent/bat.png" alt="Bat Transparent Cutout" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(255, 179, 0, 0.4);" decoding="async" />
 </div>
 
 ![Bat In-game](/items/12.png)
@@ -153,7 +153,7 @@ updatedAt: "09 ตุลาคม 2026"
   * 📦 Weapon Box Set x 1
 
 <div style="display: flex; gap: 16px; align-items: center; justify-content: center; margin: 16px 0;">
-  <img src="/items/icons/transparent/golfclub.png" alt="Golfclub Transparent Cutout" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(255, 179, 0, 0.4);" />
+  <img src="/items/icons/transparent/golfclub.png" alt="Golfclub Transparent Cutout" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(255, 179, 0, 0.4);" decoding="async" />
 </div>
 
 ![Golfclub In-game](/items/13.png)
@@ -168,7 +168,7 @@ updatedAt: "09 ตุลาคม 2026"
   * 📦 Weapon Box Set x 1
 
 <div style="display: flex; gap: 16px; align-items: center; justify-content: center; margin: 16px 0;">
-  <img src="/items/icons/transparent/bottle.png" alt="Bottle Transparent Cutout" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(255, 59, 92, 0.4);" />
+  <img src="/items/icons/transparent/bottle.png" alt="Bottle Transparent Cutout" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(255, 59, 92, 0.4);" decoding="async" />
 </div>
 
 ![Bottle In-game](/items/14.png)

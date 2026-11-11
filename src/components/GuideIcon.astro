@@ -58,5 +58,5 @@ const cyberIconName = emojiMap[icon] || (icon.length <= 2 ? 'package' : icon);
     loading="lazy" 
   />
 ) : (
-  <CyberIcon name={cyberIconName} class="size-4 text-mint shrink-0 inline-block" />
+  <CyberIcon name={cyberIconName} class={`size-4 text-mint shrink-0 ${className}`} />
 )}

@@ -1,5 +1,23 @@
+---
+project: RUNTOWN
+category: feature-deep-dive
+feature_id: FEAT-01
+status: completed
+priority: critical
+last_audit: 2026-11-07
+tags:
+  - runtown
+  - farming
+  - pork
+  - white-jobs
+  - logistics
+---
+
 # 🐷 คู่มือคัมภีร์ฟาร์มหมูฉบับสมบูรณ์ (Pork Farming Master Guide)
 > รวมกลไกการผลิต, การคำนวณต้นทุน-กำไร, รูทโลจิสติกส์, จุดคุ้มทุน, การจัดประเภทรถ 60 / 120 / 150 กก., ตารางพกข้าว, และ 5 โมเดลกลยุทธ์เชิงลึก
+
+> [!WARNING] Historical Snapshot Notice (Pre-2026-11 Economy Patch)
+> ตัวเลขราคาขายและระยะทางในเอกสารวิจัยชุดนี้ (`$194` / `$422`, รูท 14 จุด) เป็นบันทึกจากแพตช์ก่อนหน้า สำหรับค่าปัจจุบันของเว็บโปรดอ้างอิง [[runtown-economy]] และ `src/data/economy.ts` (หมูดิบ `97 RD` / แปรรูป `149 RD` / แพ็ค `380 RD`, กฎเว้น Trading Buffer `10 กก.` = บรรทุกปลอดภัย `80 / 140 / 170 กก.`)
 
 ---
 

@@ -17,7 +17,7 @@ risk: "สงครามแยก World (5vs5)"
   <div class="flex flex-col md:flex-row items-center gap-6">
     <div class="relative shrink-0">
       <div class="size-28 sm:size-32 rounded-2xl bg-rose-500/10 border-2 border-rose-400/50 p-2 flex items-center justify-center shadow-[0_0_25px_rgba(244,63,94,0.3)]">
-        <img src="/items/icons/transparent/breaching_kit.png" alt="Breaching Kit" class="w-full h-full object-contain filter drop-shadow-[0_0_12px_rgba(244,63,94,0.6)]" />
+        <img src="/items/icons/transparent/breaching_kit.png" alt="Breaching Kit" class="w-full h-full object-contain filter drop-shadow-[0_0_12px_rgba(244,63,94,0.6)]" decoding="async" />
       </div>
       <span class="absolute -bottom-2 -right-2 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-rose-500 text-white border border-white/20">
         5vs5 GvG
@@ -184,16 +184,16 @@ risk: "สงครามแยก World (5vs5)"
 ไอเทมจำเป็นสำหรับการปลดล็อครางวัลของทีมชนะเลิศ สามารถคราฟต์ได้ที่โต๊ะช่าง:
 
 <div class="my-6 rounded-2xl overflow-hidden border border-line bg-card max-w-2xl mx-auto shadow-lg">
-  <img src="/items/breaching_kit_crafting.png" alt="Breaching Kit Crafting Recipe In-game" class="w-full object-cover" />
+  <img src="/items/breaching_kit_crafting.png" alt="Breaching Kit Crafting Recipe In-game" class="w-full object-cover" decoding="async" />
 </div>
 
 ### 📋 วัตถุดิบที่ใช้ในการผลิต Breaching Kit:
 
 | ไอคอน | ชื่อไอเทม / วัตถุดิบ | จำนวนที่ใช้ | ระดับ & คุณสมบัติ |
 | :---: | :--- | :---: | :--- |
-| <img src="/items/icons/transparent/breaching_kit.png" width="40" height="40" class="object-contain inline-block" alt="Breaching Kit" /> | **Breaching Kit** *(ผลลัพธ์)* | **1 ชิ้น** | **ระดับทั่วไป (General)** · อัตราสำเร็จ **100%** · เวลาคราฟต์ 10 วินาที |
-| <img src="/items/icons/transparent/black_money.png" width="40" height="40" class="object-contain inline-block" alt="Black Money" /> | **Black Money (เงินแดง)** | **1,500 บาท** | เงินนอกกฎหมายที่ได้จากการฟาร์มงานดำหรือกิจกรรมใต้ดิน |
-| <img src="/items/icons/transparent/copper_ingot.png" width="40" height="40" class="object-contain inline-block" alt="Copper Ingot" /> | **Copper Ingot (ทองแดงแท่ง)** | **10 ชิ้น** | แท่งทองแดงหลอมเกรดอุตสาหกรรมสำหรับทำหัวเจาะ |
+| <img src="/items/icons/transparent/breaching_kit.png" width="40" height="40" class="object-contain inline-block" alt="Breaching Kit" decoding="async" /> | **Breaching Kit** *(ผลลัพธ์)* | **1 ชิ้น** | **ระดับทั่วไป (General)** · อัตราสำเร็จ **100%** · เวลาคราฟต์ 10 วินาที |
+| <img src="/items/icons/transparent/black_money.png" width="40" height="40" class="object-contain inline-block" alt="Black Money" decoding="async" /> | **Black Money (เงินแดง)** | **1,500 บาท** | เงินนอกกฎหมายที่ได้จากการฟาร์มงานดำหรือกิจกรรมใต้ดิน |
+| <img src="/items/icons/transparent/copper_ingot.png" width="40" height="40" class="object-contain inline-block" alt="Copper Ingot" decoding="async" /> | **Copper Ingot (ทองแดงแท่ง)** | **10 ชิ้น** | แท่งทองแดงหลอมเกรดอุตสาหกรรมสำหรับทำหัวเจาะ |
 
 > [!TIP]
 > **ข้อแนะนำก่อนลงแข่ง:** ควรให้สมาชิกในทีมอย่างน้อย 2 คนพก **Breaching Kit** สำรองไว้ในกระเป๋า เพื่อป้องกันเหตุฉุกเฉินกรณีผู้ถือไอเทมหลุดหรือเกิดความผิดพลาดในการงัด
@@ -206,11 +206,11 @@ risk: "สงครามแยก World (5vs5)"
 
 | ไอคอนของรางวัล | ชื่อไอเทม | จำนวนที่ได้รับ | มูลค่า & การนำไปใช้งาน |
 | :---: | :--- | :---: | :--- |
-| <img src="/items/icons/transparent/diamond_ingot.png" width="40" height="40" class="object-contain inline-block" alt="Diamond Ingot" /> | **Diamond Ingot** | **2 - 3 ชิ้น** | แร่ระดับแรร์พิเศษ สำหรับคราฟต์อาวุธขั้นสูงและอุปกรณ์ระดับท็อป |
-| <img src="/items/icons/transparent/black_money.png" width="40" height="40" class="object-contain inline-block" alt="Dirty Money" /> | **Dirty Money (เงินแดง)** | **12,000 - 18,000 บาท** | เงินหมุนเวียนแก๊งสำหรับซื้อเสบียง อาวุธ และใช้คราฟต์ HQ Coin |
-| <img src="/items/icons/transparent/aed.png" width="40" height="40" class="object-contain inline-block" alt="AED" /> | **AED (เครื่องกระตุกหัวใจพกพา)** | **8 - 10 เครื่อง** | อุปกรณ์ชุบชีวิตเพื่อนร่วมทีมในสนามรบ ปัจจัยสำคัญสำหรับไฟต์ใหญ่ |
-| <img src="/items/icons/transparent/bandage.png" width="40" height="40" class="object-contain inline-block" alt="Bandage" /> | **Bandage (ผ้าพันแผล)** | **20 - 30 ชิ้น** | เวชภัณฑ์ฟื้นฟูเลือดพื้นฐาน เพิ่มความต่อเนื่องในการรบ |
-| <img src="/items/icons/transparent/lucky_box.png" width="40" height="40" class="object-contain inline-block" alt="Lucky Box" /> | **Lucky Box** | **1 กล่อง** | กล่องสุ่มรางวัลล้ำค่า ลุ้นรับพิมพ์เขียวอาวุธและไอเทมสุดพิเศษ |
+| <img src="/items/icons/transparent/diamond_ingot.png" width="40" height="40" class="object-contain inline-block" alt="Diamond Ingot" decoding="async" /> | **Diamond Ingot** | **2 - 3 ชิ้น** | แร่ระดับแรร์พิเศษ สำหรับคราฟต์อาวุธขั้นสูงและอุปกรณ์ระดับท็อป |
+| <img src="/items/icons/transparent/black_money.png" width="40" height="40" class="object-contain inline-block" alt="Dirty Money" decoding="async" /> | **Dirty Money (เงินแดง)** | **12,000 - 18,000 บาท** | เงินหมุนเวียนแก๊งสำหรับซื้อเสบียง อาวุธ และใช้คราฟต์ HQ Coin |
+| <img src="/items/icons/transparent/aed.png" width="40" height="40" class="object-contain inline-block" alt="AED" decoding="async" /> | **AED (เครื่องกระตุกหัวใจพกพา)** | **8 - 10 เครื่อง** | อุปกรณ์ชุบชีวิตเพื่อนร่วมทีมในสนามรบ ปัจจัยสำคัญสำหรับไฟต์ใหญ่ |
+| <img src="/items/icons/transparent/bandage.png" width="40" height="40" class="object-contain inline-block" alt="Bandage" decoding="async" /> | **Bandage (ผ้าพันแผล)** | **20 - 30 ชิ้น** | เวชภัณฑ์ฟื้นฟูเลือดพื้นฐาน เพิ่มความต่อเนื่องในการรบ |
+| <img src="/items/icons/transparent/lucky_box.png" width="40" height="40" class="object-contain inline-block" alt="Lucky Box" decoding="async" /> | **Lucky Box** | **1 กล่อง** | กล่องสุ่มรางวัลล้ำค่า ลุ้นรับพิมพ์เขียวอาวุธและไอเทมสุดพิเศษ |
 
 ---
 

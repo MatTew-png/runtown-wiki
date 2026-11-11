@@ -18,7 +18,7 @@ updatedAt: "09 ตุลาคม 2026"
 > ทุกงานขาวในเมืองนี้จะทำงานวนเป็นลูปง่ายๆ **4 ขั้นตอน**:
 > 1. **ไปเก็บของ (ฟาร์ม)**: ซื้ออุปกรณ์ (เช่น ขวาน, เคียว, อีเตอร์) ขับรถไปที่จุดทำงาน แล้วกดยืนเก็บของใส่กระเป๋าหรือท้ายรถ
 > 2. **เอาไปแปรรูป (ในเกมเรียกว่า 'โพล')**: ขับรถเอาของดิบที่เก็บได้ ไปเข้าเครื่องแปรรูป เปลี่ยนเป็นของสำเร็จ (เช่น ท่อนไม้ดิบ ➔ ไม้แปรรูป)
-> 3. **เอาไปแพ็คใส่กล่อง (งานแพ็ค)**: นำของแปรรูป 2 ชิ้น มาแพ็คลงกล่องลัง เพื่อเพิ่มราคาขายให้ได้เงินเยอะขึ้นเกือบ 3 เท่า! *(เช่น ไม้ดิบ 2 ชิ้นขายได้ 180 RD แต่ถ้าแปรรูปแล้วแพ็คกล่องขายระบบได้ถึง 479 RD หรือขายให้ผู้เล่นคนอื่นได้ถึง 500 - 600 RD)*
+> 3. **เอาไปแพ็คใส่กล่อง (งานแพ็ค)**: นำของแปรรูป 2 ชิ้น มาแพ็คลงกล่องลัง เพื่อเพิ่มราคาขายให้ได้เงินเยอะขึ้นเกือบ 3 เท่า! *(เช่น ไม้ดิบ 2 ชิ้นขายได้ 198 RD แต่ถ้าแปรรูปแล้วแพ็คกล่องขายระบบได้ถึง 479 RD หรือขายให้ผู้เล่นคนอื่นได้ถึง 500 - 600 RD)*
 > 4. **เอาไปขายรับเงินสด**: ขับไปที่จุดรับซื้อ กดขายรับเงินเข้ากระเป๋าตัวเองทันที!
 >
 > **คำศัพท์ในเกมที่คนมักพูดกัน (แปลไทยเข้าใจง่าย):**
@@ -33,13 +33,13 @@ updatedAt: "09 ตุลาคม 2026"
 
 | อาชีพงานขาว | อุปกรณ์ทำงาน (200 RD / พัง 2%) | เวลาเก็บของ | น้ำหนัก (ดิบ / กล่อง) | ราคาขายระบบ (ดิบ / แปรรูป / แพ็ค) | ราคาขายผู้เล่น (P2P) | คู่มือเจาะลึก |
 | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
-| **1. ตัดไม้** | <img src="/icons/tool_axe_2_1000.png" alt="ขวาน" class="w-5 h-5 inline-block mr-1" /> ขวานตัดไม้ (Axe) | 10 วิ/ชิ้น | 0.5 kg / 1.0 kg | **99 / 171 / 479 RD** | ขายผู้เล่น: **500 - 600 RD** | [เปิดดูคู่มือ ➔](/guides/jobs/woodcutting) |
-| **2. ขุดแร่** | <img src="/icons/tool_pickaxe_2_1000.png" alt="อีเตอร์" class="w-5 h-5 inline-block mr-1" /> อีเตอร์ (Pickaxe) | 10 วิ/ชิ้น | 0.5 kg | โพลหินลุ้นแร่มีค่า | Copper 400 / Gold 600 / Diamond 10,000 RD | [เปิดดูคู่มือ ➔](/guides/jobs/mining) |
-| **3. ฟาร์มข้าว** | <img src="/icons/tool_sickle_2_1000.png" alt="เคียว" class="w-5 h-5 inline-block mr-1" /> เคียวเกี่ยวข้าว (Sickle) | 10 วิ/ชิ้น | 0.5 kg / 1.0 kg | **77 / 134 / 368 RD** | ขายคนทำอาหาร (ข้าวดิบ): **100 RD** | [เปิดดูคู่มือ ➔](/guides/jobs/wheat) |
-| **4. จี่เหล็ก / เศษเหล็ก** | <img src="/items/icons/transparent/steel_ingot.png" alt="เหล็กแท่ง" class="w-5 h-5 inline-block mr-1" /> ถุงมือช่าง / ที่คีบ | 10 วิ (ได้ 2 ชิ้น) | 0.25 kg / 0.5 kg | เศษเหล็ก **83 RD** / แท่งเหล็ก **233 RD** | ขายช่างซ่อมรถ (แท่งเหล็ก): **233 - 240 RD** | [เปิดดูคู่มือ ➔](/guides/jobs/smelting) |
-| **5. เลี้ยงหมู** | <img src="/icons/tool_knife_2_1000.png" alt="มีด" class="w-5 h-5 inline-block mr-1" /> อาหารหมู / มีดชำแหละ | โต 15 นาที (60 ชิ้น) | 0.5 kg / 1.0 kg | **97 / 149 / 380 RD** | ขายคนทำอาหาร (หมูดิบ): **130 - 150 RD** | [เปิดดูคู่มือ ➔](/guides/jobs/pig) |
-| **6. เก็บดอกไม้** | <img src="/icons/tool_scissors_2_1000.png" alt="กรรไกร" class="w-5 h-5 inline-block mr-1" /> กรรไกร / ตะกร้า | **8 วิ/ชิ้น**  *(เร็วสุด)* | 0.5 kg / 1.0 kg | **88 / 155 / 424 RD** | ส่ง รพ. (ดอกสด): **120 RD** | [เปิดดูคู่มือ ➔](/guides/jobs/flowers) |
-| **7. คริสตัล** | <img src="/items/icons/transparent/crystal_ingot.png" alt="คริสตัล" class="w-5 h-5 inline-block mr-1" /> Panning Tray (ตั้งเสาแร่ 2 เสา) | ตามรอบเสาแร่ | 0.5 kg | Raw Crystal 5 + Copper 3 | ⚔️ **ใช้สำหรับอัปเกรดอาวุธขั้นถัดไป** | [เปิดดูคู่มือ ➔](/guides/jobs/crystal) |
+| **1. ตัดไม้** | <img src="/icons/tool_axe_2_1000.png" alt="ขวาน" class="w-5 h-5 inline-block mr-1" decoding="async" /> ขวานตัดไม้ (Axe) | 10 วิ/ชิ้น | 0.5 kg / 1.0 kg | **99 / 171 / 479 RD** | ขายผู้เล่น: **500 - 600 RD** | [เปิดดูคู่มือ ➔](/guides/jobs/woodcutting) |
+| **2. ขุดแร่** | <img src="/icons/tool_pickaxe_2_1000.png" alt="อีเตอร์" class="w-5 h-5 inline-block mr-1" decoding="async" /> อีเตอร์ (Pickaxe) | 10 วิ/ชิ้น | 0.5 kg | โพลหินลุ้นแร่มีค่า | Copper 400 / Gold 600 / Diamond 10,000 RD | [เปิดดูคู่มือ ➔](/guides/jobs/mining) |
+| **3. ฟาร์มข้าว** | <img src="/icons/tool_sickle_2_1000.png" alt="เคียว" class="w-5 h-5 inline-block mr-1" decoding="async" /> เคียวเกี่ยวข้าว (Sickle) | 10 วิ/ชิ้น | 0.5 kg / 1.0 kg | **77 / 134 / 368 RD** | ขายคนทำอาหาร (ข้าวดิบ): **100 RD** | [เปิดดูคู่มือ ➔](/guides/jobs/wheat) |
+| **4. จี่เหล็ก / เศษเหล็ก** | <img src="/items/icons/transparent/steel_ingot.png" alt="เหล็กแท่ง" class="w-5 h-5 inline-block mr-1" decoding="async" /> ถุงมือช่าง / ที่คีบ | 10 วิ (ได้ 2 ชิ้น) | 0.25 kg / 0.5 kg | เศษเหล็ก **83 RD** / แท่งเหล็ก **233 RD** | ขายช่างซ่อมรถ (แท่งเหล็ก): **233 - 240 RD** | [เปิดดูคู่มือ ➔](/guides/jobs/smelting) |
+| **5. เลี้ยงหมู** | <img src="/icons/tool_knife_2_1000.png" alt="มีด" class="w-5 h-5 inline-block mr-1" decoding="async" /> อาหารหมู / มีดชำแหละ | โต 15 นาที (60 ชิ้น) | 0.5 kg / 1.0 kg | **97 / 149 / 380 RD** | ขายคนทำอาหาร (หมูดิบ): **130 - 150 RD** | [เปิดดูคู่มือ ➔](/guides/jobs/pig) |
+| **6. เก็บดอกไม้** | <img src="/icons/tool_scissors_2_1000.png" alt="กรรไกร" class="w-5 h-5 inline-block mr-1" decoding="async" /> กรรไกร / ตะกร้า | **8 วิ/ชิ้น**  *(เร็วสุด)* | 0.5 kg / 1.0 kg | **88 / 155 / 424 RD** | ส่ง รพ. (ดอกสด): **120 RD** | [เปิดดูคู่มือ ➔](/guides/jobs/flowers) |
+| **7. คริสตัล** | <img src="/items/icons/transparent/crystal_ingot.png" alt="คริสตัล" class="w-5 h-5 inline-block mr-1" decoding="async" /> Panning Tray (ตั้งเสาแร่ 2 เสา) | ตามรอบเสาแร่ | 0.5 kg | Raw Crystal 5 + Copper 3 | ⚔️ **ใช้สำหรับอัปเกรดอาวุธขั้นถัดไป** | [เปิดดูคู่มือ ➔](/guides/jobs/crystal) |
 | **8. ครัว & ส่งอาหาร** | 🥙 เตา Doner & เครื่องปิ้งแป้ง | ย่างเนื้อ 3 นาที (ได้ 4 ชิ้น) | 0.5 kg | Rice Grain x2 + เนื้อ Doner | ส่ง รันแมน: **1,500 RD/ชิ้น** (กินลดหิว 50% เครียด -10) | [เปิดดูคู่มือ ➔](/guides/jobs/kitchen) |
 
 ---
@@ -54,7 +54,7 @@ updatedAt: "09 ตุลาคม 2026"
     <div class="space-y-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <img src="/icons/tool_axe_2_1000.png" alt="ขวาน" class="w-7 h-7 object-contain inline-block shrink-0" />
+          <img src="/icons/tool_axe_2_1000.png" alt="ขวาน" class="w-7 h-7 object-contain inline-block shrink-0" decoding="async" />
           <h3 class="text-base font-bold text-white group-hover:text-amber-300 transition-colors">1. งานตัดไม้ (Woodcutting)</h3>
         </div>
         <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 font-bold">
@@ -97,7 +97,7 @@ updatedAt: "09 ตุลาคม 2026"
     <div class="space-y-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <img src="/icons/tool_pickaxe_2_1000.png" alt="อีเตอร์" class="w-7 h-7 object-contain inline-block shrink-0" />
+          <img src="/icons/tool_pickaxe_2_1000.png" alt="อีเตอร์" class="w-7 h-7 object-contain inline-block shrink-0" decoding="async" />
           <h3 class="text-base font-bold text-white group-hover:text-blue-300 transition-colors">2. งานขุดแร่ (Mining)</h3>
         </div>
         <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-300 border border-blue-500/30 font-bold">
@@ -140,7 +140,7 @@ updatedAt: "09 ตุลาคม 2026"
     <div class="space-y-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <img src="/icons/tool_sickle_2_1000.png" alt="เคียว" class="w-7 h-7 object-contain inline-block shrink-0" />
+          <img src="/icons/tool_sickle_2_1000.png" alt="เคียว" class="w-7 h-7 object-contain inline-block shrink-0" decoding="async" />
           <h3 class="text-base font-bold text-white group-hover:text-yellow-300 transition-colors">3. งานฟาร์มข้าว (Wheat Farming)</h3>
         </div>
         <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 font-bold">
@@ -183,7 +183,7 @@ updatedAt: "09 ตุลาคม 2026"
     <div class="space-y-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <img src="/items/icons/transparent/steel_ingot.png" alt="เหล็ก" class="w-7 h-7 object-contain inline-block shrink-0" />
+          <img src="/items/icons/transparent/steel_ingot.png" alt="เหล็ก" class="w-7 h-7 object-contain inline-block shrink-0" decoding="async" />
           <h3 class="text-base font-bold text-white group-hover:text-slate-200 transition-colors">4. งานจี่เหล็ก & เศษเหล็ก (Smelting)</h3>
         </div>
         <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-500/20 text-slate-300 border border-slate-500/30 font-bold">
@@ -226,7 +226,7 @@ updatedAt: "09 ตุลาคม 2026"
     <div class="space-y-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <img src="/icons/tool_knife_2_1000.png" alt="มีด" class="w-7 h-7 object-contain inline-block shrink-0" />
+          <img src="/icons/tool_knife_2_1000.png" alt="มีด" class="w-7 h-7 object-contain inline-block shrink-0" decoding="async" />
           <h3 class="text-base font-bold text-white group-hover:text-pink-300 transition-colors">5. งานเลี้ยงหมู (Pig Livestock)</h3>
         </div>
         <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30 font-bold">
@@ -269,7 +269,7 @@ updatedAt: "09 ตุลาคม 2026"
     <div class="space-y-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <img src="/icons/tool_scissors_2_1000.png" alt="กรรไกร" class="w-7 h-7 object-contain inline-block shrink-0" />
+          <img src="/icons/tool_scissors_2_1000.png" alt="กรรไกร" class="w-7 h-7 object-contain inline-block shrink-0" decoding="async" />
           <h3 class="text-base font-bold text-white group-hover:text-rose-300 transition-colors">6. งานเก็บดอกไม้ (Flower Gathering)</h3>
         </div>
         <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-300 border border-rose-500/30 font-bold">
@@ -312,7 +312,7 @@ updatedAt: "09 ตุลาคม 2026"
     <div class="space-y-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <img src="/items/icons/transparent/crystal_ingot.png" alt="คริสตัล" class="w-7 h-7 object-contain inline-block shrink-0" />
+          <img src="/items/icons/transparent/crystal_ingot.png" alt="คริสตัล" class="w-7 h-7 object-contain inline-block shrink-0" decoding="async" />
           <h3 class="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">7. งานคริสตัล (Crystal Panning)</h3>
         </div>
         <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 font-bold">
@@ -417,7 +417,7 @@ updatedAt: "09 ตุลาคม 2026"
       <a href="/map?spot=bar-green" class="text-emerald-400 font-mono text-[11px]">เปิดเรดาร์ ➔</a>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/bar_green.png" alt="บาร์เขียว รีหัว 0%" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/bar_green.png" alt="บาร์เขียว รีหัว 0%" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
   </div>
   <div class="rounded-xl border border-rose-500/30 bg-slate-900/90 overflow-hidden shadow-lg group hover:border-rose-400 transition-all">
@@ -426,7 +426,7 @@ updatedAt: "09 ตุลาคม 2026"
       <a href="/map?spot=garage-reset" class="text-rose-400 font-mono text-[11px]">เปิดเรดาร์ ➔</a>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/garage_reset.png" alt="อู่ช่าง Chumash" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/garage_reset.png" alt="อู่ช่าง Chumash" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
   </div>
   <div class="rounded-xl border border-amber-500/30 bg-slate-900/90 overflow-hidden shadow-lg group hover:border-amber-400 transition-all">
@@ -435,7 +435,7 @@ updatedAt: "09 ตุลาคม 2026"
       <a href="/map?spot=rebel-desert" class="text-amber-400 font-mono text-[11px]">เปิดเรดาร์ ➔</a>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/rebel_desert.png" alt="ตู้เรเบลทะเลทราย" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/rebel_desert.png" alt="ตู้เรเบลทะเลทราย" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
   </div>
   <div class="rounded-xl border border-red-500/30 bg-slate-900/90 overflow-hidden shadow-lg group hover:border-red-400 transition-all">
@@ -444,7 +444,7 @@ updatedAt: "09 ตุลาคม 2026"
       <a href="/map?spot=rebel-south" class="text-red-400 font-mono text-[11px]">เปิดเรดาร์ ➔</a>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/rebel_south.png" alt="ตู้เรเบลล่าง" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/rebel_south.png" alt="ตู้เรเบลล่าง" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
   </div>
 </div>

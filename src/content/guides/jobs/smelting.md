@@ -71,7 +71,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-500/15 text-slate-300 border border-slate-500/30 font-medium">City Scrap</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/scrap_farm_1.png" alt="จุดฟาร์มเศษเหล็ก 1 ในเมือง แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/scrap_farm_1.png" alt="จุดฟาร์มเศษเหล็ก 1 ในเมือง แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>เลียบทางรถไฟ Cypress เก็บเศษเหล็ก 10 วิ/ชิ้น</span>
@@ -89,7 +89,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-500/15 text-slate-300 border border-slate-500/30 font-medium">Desert Scrap</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/scrap_farm_2.png" alt="จุดฟาร์มเศษเหล็ก 2 ทะเลทราย แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/scrap_farm_2.png" alt="จุดฟาร์มเศษเหล็ก 2 ทะเลทราย แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>ลานซากเครื่องจักร Grand Senora 10 วิ/ชิ้น</span>
@@ -107,7 +107,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-500/15 text-slate-300 border border-slate-500/30 font-medium">Steel Smelter</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/steel_pro.png" alt="จุดโพลเหล็ก แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/steel_pro.png" alt="จุดโพลเหล็ก แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>เตาหลอมความร้อนสูง หลอมเศษเหล็กเป็นเหล็กเส้น (233 RD)</span>
@@ -135,7 +135,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-red-500/15 text-red-300 border border-red-500/30 font-medium">South LS Cloud Stash</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/rebel_south.png" alt="ตู้เรเบลล่าง แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/rebel_south.png" alt="ตู้เรเบลล่าง แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>จุดพักแท่งเหล็กและถ่ายเทน้ำหนัก อยู่ใกล้เตาโพลเหล็กมาก</span>
@@ -153,7 +153,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 font-medium">Desert Cloud Stash</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/rebel_desert.png" alt="ตู้เรเบลทะเลทราย แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/rebel_desert.png" alt="ตู้เรเบลทะเลทราย แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>จุดพักเศษเหล็กจากการฟาร์มจุดที่ 2 (ทะเลทราย) ก่อนส่งลงใต้</span>
@@ -171,7 +171,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-medium">Del Perro / West LS</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/bar_green.png" alt="บาร์รีหัว บาร์เขียว แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/bar_green.png" alt="บาร์รีหัว บาร์เขียว แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>จุดรีเซ็ตค่าสมอง 0% ตามกฎหมายเมือง RUN TOWN</span>
@@ -189,7 +189,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-300 border border-rose-500/30 font-medium">Chumash / Pacific Hwy</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/garage_reset.png" alt="อู่ช่าง รีหัว แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/garage_reset.png" alt="อู่ช่าง รีหัว แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>อู่บริการซ่อมรถและจุดรีเซ็ตค่าสมอง 0% ตลอด 24 ชม.</span>
@@ -201,8 +201,8 @@ updatedAt: "OCTOBER 2026"
 ## 4. 💰 ตารางราคา & รายได้
 | ไอเทม | ไอคอน | น้ำหนัก | เวลาเก็บ/หลอม | อัตราผลผลิต | ราคาขาย Eco | ราคาขายช่าง (Mechanic) | ช่องทางจำหน่าย |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| **เศษเหล็ก (Scrap Metal)** | <img src="/items/icons/transparent/scrap_metal.png" alt="เศษเหล็ก" class="w-8 h-8 object-contain inline-block drop-shadow" style="image-rendering: -webkit-optimize-contrast;" /> | **0.25 กก.** | 10 วิ/รอบ | **2 ชิ้น/รอบ** ⚡ | **83 RD** | - | ไม่มีจุดขายโดยตรง ใช้หลอมเป็นเหล็ก |
-| **แท่งเหล็ก (Steel Ingot)** | <img src="/items/icons/transparent/steel_ingot.png" alt="แท่งเหล็ก" class="w-8 h-8 object-contain inline-block drop-shadow" style="image-rendering: -webkit-optimize-contrast;" /> | **0.50 กก.** | 5 วิ/รอบ | 2:1 (เศษเหล็ก 2 ➔ เหล็ก 1) | **233 RD** | **233 - 240 RD** | ส่งจุดขาย Eco หรือขายช่าง |
+| **เศษเหล็ก (Scrap Metal)** | <img src="/items/icons/transparent/scrap_metal.png" alt="เศษเหล็ก" class="w-8 h-8 object-contain inline-block drop-shadow" style="image-rendering: -webkit-optimize-contrast;" decoding="async" /> | **0.25 กก.** | 10 วิ/รอบ | **2 ชิ้น/รอบ** ⚡ | **83 RD** | - | ไม่มีจุดขายโดยตรง ใช้หลอมเป็นเหล็ก |
+| **แท่งเหล็ก (Steel Ingot)** | <img src="/items/icons/transparent/steel_ingot.png" alt="แท่งเหล็ก" class="w-8 h-8 object-contain inline-block drop-shadow" style="image-rendering: -webkit-optimize-contrast;" decoding="async" /> | **0.50 กก.** | 5 วิ/รอบ | 2:1 (เศษเหล็ก 2 ➔ เหล็ก 1) | **233 RD** | **233 - 240 RD** | ส่งจุดขาย Eco หรือขายช่าง |
 
 > [!TIP]
 > **การเปรียบเทียบผลผลิตและความคุ้มค่า:**

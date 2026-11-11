@@ -35,6 +35,7 @@
   let isPaused = false;
   let seedOffset = Math.random() * 1000;
   let globalAnimationFrameId: number | null = null;
+  let shapesAbortController: AbortController | null = null;
 
   // Node Garden state
   interface NodeParticle {
@@ -47,17 +48,29 @@
   }
   let nodes: NodeParticle[] = [];
 
-  function initGenerativeShapes() {
+  function cleanupGenerativeShapes() {
     if (globalAnimationFrameId !== null) {
       cancelAnimationFrame(globalAnimationFrameId);
       globalAnimationFrameId = null;
     }
+    if (shapesAbortController) {
+      shapesAbortController.abort();
+      shapesAbortController = null;
+    }
+  }
+
+  function initGenerativeShapes() {
+    cleanupGenerativeShapes();
 
     const canvas = document.getElementById('generative-shapes-canvas') as HTMLCanvasElement | null;
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+
+    shapesAbortController = new AbortController();
+    const { signal } = shapesAbortController;
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // Load saved pattern preference (Default is Node Garden)
     const saved = localStorage.getItem('run_town_bg_pattern');
@@ -102,7 +115,7 @@
       }
     }
 
-    window.addEventListener('resize', resize, { passive: true });
+    window.addEventListener('resize', resize, { passive: true, signal });
     resize();
 
     // Mouse Tracking with smooth lerp
@@ -114,17 +127,19 @@
       isHovered: false,
     };
 
-    window.addEventListener('mousemove', (e) => {
-      mouse.targetX = e.clientX;
-      mouse.targetY = e.clientY;
-      mouse.isHovered = true;
-    }, { passive: true });
+    if (!prefersReduced) {
+      window.addEventListener('mousemove', (e) => {
+        mouse.targetX = e.clientX;
+        mouse.targetY = e.clientY;
+        mouse.isHovered = true;
+      }, { passive: true, signal });
 
-    window.addEventListener('mouseleave', () => {
-      mouse.isHovered = false;
-      mouse.targetX = width * 0.5;
-      mouse.targetY = height * 0.5;
-    });
+      window.addEventListener('mouseleave', () => {
+        mouse.isHovered = false;
+        mouse.targetX = width * 0.5;
+        mouse.targetY = height * 0.5;
+      }, { signal });
+    }
 
     let time = 0;
 
@@ -238,7 +253,7 @@
     }
 
     // Pattern: Node Garden Constellation (Book of Shapes node_garden)
-    function drawNodeGarden(t: number) {
+    function drawNodeGarden() {
       if (!ctx) return;
       const maxDist = 160;
 
@@ -362,34 +377,40 @@
       }
     }
 
-    // Main 60fps render loop
+    function drawPatternOnce(t: number) {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, width, height);
+      const currentPattern = PATTERNS[currentPatternIndex].id;
+      if (currentPattern === 'deformed_mesh') {
+        drawDeformedMesh(t);
+      } else if (currentPattern === 'wave_field') {
+        drawWaveField(t);
+      } else if (currentPattern === 'node_garden') {
+        drawNodeGarden();
+      } else if (currentPattern === 'hex_strands') {
+        drawHexStrands(t);
+      }
+    }
+
+    // Main 60fps render loop (respects prefers-reduced-motion with static single render)
     function render(timestamp: number) {
       if (!ctx || !canvas) return;
 
       if (!isPaused && !document.hidden) {
         time = timestamp;
-        // Smooth cursor lerping
         mouse.x += (mouse.targetX - mouse.x) * 0.06;
         mouse.y += (mouse.targetY - mouse.y) * 0.06;
-
-        ctx.clearRect(0, 0, width, height);
-
-        const currentPattern = PATTERNS[currentPatternIndex].id;
-        if (currentPattern === 'deformed_mesh') {
-          drawDeformedMesh(time);
-        } else if (currentPattern === 'wave_field') {
-          drawWaveField(time);
-        } else if (currentPattern === 'node_garden') {
-          drawNodeGarden(time);
-        } else if (currentPattern === 'hex_strands') {
-          drawHexStrands(time);
-        }
+        drawPatternOnce(time);
       }
 
       globalAnimationFrameId = requestAnimationFrame(render);
     }
 
-    globalAnimationFrameId = requestAnimationFrame(render);
+    if (prefersReduced) {
+      drawPatternOnce(0);
+    } else {
+      globalAnimationFrameId = requestAnimationFrame(render);
+    }
 
     // Update UI HUD Text
     function updateHUD() {
@@ -406,14 +427,16 @@
       currentPatternIndex = (currentPatternIndex + 1) % PATTERNS.length;
       updateHUD();
       if (PATTERNS[currentPatternIndex].id === 'node_garden') initNodes();
-    });
+      if (prefersReduced) drawPatternOnce(0);
+    }, { signal });
 
     // Randomize seed button handler
     const randomBtn = document.getElementById('shapes-random-btn');
     randomBtn?.addEventListener('click', () => {
       seedOffset = Math.random() * 5000;
       initNodes();
-    });
+      if (prefersReduced) drawPatternOnce(0);
+    }, { signal });
 
     // Pause / Play button handler
     const toggleBtn = document.getElementById('shapes-toggle-btn');
@@ -421,22 +444,11 @@
     toggleBtn?.addEventListener('click', () => {
       isPaused = !isPaused;
       if (toggleIcon) toggleIcon.textContent = isPaused ? '▶️' : '⏸️';
-    });
+    }, { signal });
 
     updateHUD();
-
-    // Cleanup on page swap (Astro View Transitions)
-    document.addEventListener('astro:before-swap', () => {
-      if (globalAnimationFrameId !== null) {
-        cancelAnimationFrame(globalAnimationFrameId);
-        globalAnimationFrameId = null;
-      }
-      window.removeEventListener('resize', resize);
-    }, { once: true });
   }
 
-  initGenerativeShapes();
-  document.addEventListener('astro:page-load', () => {
-    initGenerativeShapes();
-  });
+  document.addEventListener('astro:page-load', initGenerativeShapes);
+  document.addEventListener('astro:before-swap', cleanupGenerativeShapes);
 </script>

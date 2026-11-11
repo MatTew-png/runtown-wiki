@@ -106,7 +106,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 font-medium">Shallow Water Blip</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/crystal_sift.png" alt="จุดร่อนคริสตัล แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/crystal_sift.png" alt="จุดร่อนคริสตัล แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>แอ่งน้ำตื้นแม่น้ำ Zancudo กด Panning Tray ตั้งได้ 2 เสาพร้อมกัน</span>
@@ -124,7 +124,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 font-medium">Crystal Assembly</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/crystal_pro.png" alt="จุดโพลคริสตัล แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/crystal_pro.png" alt="จุดโพลคริสตัล แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>โกดังท่าเรือใต้ ประกอบผลึกแท่ง (Raw Crystal 5 + Copper Ingot 3)</span>
@@ -152,7 +152,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 font-medium">Desert Cloud Stash</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/rebel_desert.png" alt="ตู้เรเบลทะเลทราย แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/rebel_desert.png" alt="ตู้เรเบลทะเลทราย แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>จุดเก็บสต็อก Raw Crystal หลังฟาร์มเสร็จ (ใกล้แม่น้ำ Zancudo)</span>
@@ -170,7 +170,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-red-500/15 text-red-300 border border-red-500/30 font-medium">South LS Cloud Stash</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/rebel_south.png" alt="ตู้เรเบลล่าง แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/rebel_south.png" alt="ตู้เรเบลล่าง แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>จุดเบิก Raw Crystal + Copper Ingot ออกมาเข้าแท่นโพลคริสตัล</span>
@@ -188,7 +188,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-medium">Del Perro / West LS</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/bar_green.png" alt="บาร์รีหัว บาร์เขียว แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/bar_green.png" alt="บาร์รีหัว บาร์เขียว แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>จุดรีเซ็ตค่าสมอง 0% ตามกฎหมายเมือง RUN TOWN</span>
@@ -206,7 +206,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-300 border border-rose-500/30 font-medium">Chumash / Pacific Hwy</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/garage_reset.png" alt="อู่ช่าง รีหัว แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/garage_reset.png" alt="อู่ช่าง รีหัว แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>อู่บริการซ่อมรถและจุดรีเซ็ตค่าสมอง 0% ตลอด 24 ชม.</span>
@@ -220,8 +220,8 @@ updatedAt: "OCTOBER 2026"
 ## 6. 📦 ตารางสูตรไอเทม & วัตถุดิบ
 | วัตถุดิบที่ใช้ | ไอคอน | จำนวนต่อรอบ | น้ำหนัก | ผลผลิตที่ได้รับ | ไอคอนผลผลิต | สัดส่วนผลผลิต | ประโยชน์หลัก / การนำไปใช้งาน |
 | :--- | :---: | :---: | :---: | :--- | :---: | :---: | :--- |
-| **Raw Crystal (คริสตัลดิบ)** | <img src="/items/icons/transparent/raw_crystal.png" alt="คริสตัลดิบ" class="w-8 h-8 object-contain inline-block drop-shadow" style="image-rendering: -webkit-optimize-contrast;" /> | **5 ชิ้น** | 0.50 กก. | **Crystal Ingot (แท่งคริสตัล)** | <img src="/items/icons/transparent/crystal_ingot.png" alt="แท่งคริสตัล" class="w-8 h-8 object-contain inline-block drop-shadow" style="image-rendering: -webkit-optimize-contrast;" /> | **1 แท่ง** | ⚔️ **วัตถุดิบหลักสำหรับอัปเกรดอาวุธขั้นถัดไป** |
-| **Copper Ingot (ทองแดงแท่ง)** | <img src="/items/icons/transparent/copper_ingot.png" alt="ทองแดงแท่ง" class="w-8 h-8 object-contain inline-block drop-shadow" style="image-rendering: -webkit-optimize-contrast;" /> | **3 แท่ง** | 0.50 กก. | *(ใช้ร่วมในปฏิกิริยาหลอม)* | - | - | ได้จากการหลอมในงานเหมือง (Mining) |
+| **Raw Crystal (คริสตัลดิบ)** | <img src="/items/icons/transparent/raw_crystal.png" alt="คริสตัลดิบ" class="w-8 h-8 object-contain inline-block drop-shadow" style="image-rendering: -webkit-optimize-contrast;" decoding="async" /> | **5 ชิ้น** | 0.50 กก. | **Crystal Ingot (แท่งคริสตัล)** | <img src="/items/icons/transparent/crystal_ingot.png" alt="แท่งคริสตัล" class="w-8 h-8 object-contain inline-block drop-shadow" style="image-rendering: -webkit-optimize-contrast;" decoding="async" /> | **1 แท่ง** | ⚔️ **วัตถุดิบหลักสำหรับอัปเกรดอาวุธขั้นถัดไป** |
+| **Copper Ingot (ทองแดงแท่ง)** | <img src="/items/icons/transparent/copper_ingot.png" alt="ทองแดงแท่ง" class="w-8 h-8 object-contain inline-block drop-shadow" style="image-rendering: -webkit-optimize-contrast;" decoding="async" /> | **3 แท่ง** | 0.50 กก. | *(ใช้ร่วมในปฏิกิริยาหลอม)* | - | - | ได้จากการหลอมในงานเหมือง (Mining) |
 
 > [!TIP]
 > **การคำนวณสัดส่วนการขนส่งที่คุ้มค่า (Optimal Batch Ratio):**

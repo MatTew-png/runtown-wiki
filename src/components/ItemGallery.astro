@@ -211,7 +211,7 @@ const items: ItemCard[] = [
     type: 'วัตถุดิบขึ้นรูป (Core Material)',
     badge: '100% + โบนัส 3%',
     badgeColor: 'bg-danger/20 text-danger border-danger/40',
-    image: '/items/4.png',
+    image: '/items/icons/hires_edge_core.png',
     icon: '/items/icons/transparent/edge_core.png',
     stats: 'สำเร็จ 100% | โอกาส 3% ได้รับเบิ้ล 2 ชิ้น',
     recipe: ['Weapon Box Set x1'],
@@ -237,7 +237,7 @@ const items: ItemCard[] = [
     type: 'วัตถุดิบแกนหลัก (Base Core)',
     badge: 'สำเร็จ 100%',
     badgeColor: 'bg-mint/20 text-mint border-mint/40',
-    image: '/items/4.png',
+    image: '/items/icons/hires_weapon_box_set.png',
     icon: '/items/icons/transparent/weapon_box_set.png',
     stats: 'ใช้แปลงเป็น Impact Core หรือ Edge Core',
     recipe: ['ปูน (Cement) x2', 'ไม้แพ็ค (Wood Crate) x10', 'ทอง (Gold) x5', 'เหล็ก (Steel) x20', 'เงินเขียว 10,000 RD'],
@@ -583,7 +583,7 @@ const items: ItemCard[] = [
     
     <!-- Filter Buttons -->
     <div class="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-paper border border-line" id="galleryFilterNav">
-      <button type="button" data-filter="all" class="gallery-tab active px-3 py-1.5 text-xs font-mono font-bold rounded-lg transition-colors bg-mint text-dark">
+      <button type="button" data-filter="all" class="gallery-tab active px-3 py-1.5 text-xs font-mono font-bold rounded-lg transition-colors bg-mint text-slate-950">
         ทั้งหมด ({items.length})
       </button>
       <button type="button" data-filter="weapons" class="gallery-tab px-3 py-1.5 text-xs font-mono font-medium rounded-lg transition-colors text-textSoft hover:text-white hover:bg-card">
@@ -612,8 +612,8 @@ const items: ItemCard[] = [
           <!-- Card Header with Transparent Icon Preview -->
           <div class="flex items-center gap-3 pb-2 border-b border-lineSubtle">
             <div class="relative w-12 h-12 rounded-xl bg-gradient-to-br from-white/5 to-white/10 border border-white/15 p-1.5 flex items-center justify-center shrink-0 shadow-inner group-hover:border-mint/50 transition-colors">
-              <img src={item.icon} alt={item.name} class="w-full h-full object-contain drop-shadow-md group-hover:scale-110 transition-transform" style="image-rendering: -webkit-optimize-contrast;" />
-              <span class="absolute -bottom-1 -right-1 px-1 text-[8px] font-mono font-bold bg-dark text-mint border border-mint/40 rounded">PNG</span>
+              <img src={item.icon} alt={item.name} width="40" height="40" decoding="async" class="w-full h-full object-contain drop-shadow-md group-hover:scale-110 transition-transform" />
+              <span class="absolute -bottom-1 -right-1 px-1 text-[8px] font-mono font-bold bg-base text-mint border border-mint/40 rounded">PNG</span>
             </div>
             <div class="min-w-0 flex-1">
               <h4 class="text-sm font-bold text-white break-words leading-tight group-hover:text-mint transition-colors">{item.name}</h4>
@@ -627,15 +627,21 @@ const items: ItemCard[] = [
           </div>
 
           <!-- Thumbnail with Zoom overlay -->
-          <div 
-            class="relative w-full aspect-[16/10] bg-black/60 rounded-xl overflow-hidden border border-white/10 group-hover:border-mint/50 transition-colors cursor-pointer" 
-            onclick={`openImgModal('${item.image}', '${item.name}')`}
+          <button
+            type="button"
+            data-gallery-zoom
+            data-src={item.image}
+            data-title={item.name}
+            aria-label={`ขยายภาพ ${item.name}`}
+            class="block text-left relative w-full aspect-[16/10] bg-black/60 rounded-xl overflow-hidden border border-white/10 group-hover:border-mint/50 transition-colors cursor-pointer"
           >
-            <img 
-              src={item.image} 
-              alt={item.name} 
+            <img
+              src={item.image}
+              alt={item.name}
+              width="400"
+              height="250"
+              decoding="async"
               class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
-              style="image-rendering: -webkit-optimize-contrast;"
               loading="lazy"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
@@ -645,7 +651,7 @@ const items: ItemCard[] = [
                 {item.category === 'materials' ? 'การ์ดไอเทม HD' : 'จอเกมจริง'}
               </span>
             </div>
-          </div>
+          </button>
 
           <!-- Stats & Recipe -->
           <div class="p-3 rounded-xl border border-lineSubtle bg-paper/90 space-y-2 text-xs font-mono">
@@ -673,7 +679,7 @@ const items: ItemCard[] = [
           <a 
             href={item.icon} 
             download={`${item.id}_512.png`}
-            class="px-2.5 py-1 rounded-lg bg-card hover:bg-mint hover:text-dark text-mint border border-mint/30 hover:border-mint transition-colors text-[10px] font-bold flex items-center gap-1 shadow-sm"
+            class="px-2.5 py-1 rounded-lg bg-card hover:bg-mint hover:text-slate-950 text-mint border border-mint/30 hover:border-mint transition-colors text-[10px] font-bold flex items-center gap-1 shadow-sm"
             title="ดาวน์โหลดภาพโปร่งใส 512x512"
           >
             <CyberIcon name="package" class="size-3 inline mr-1" /> โหลด PNG
@@ -685,11 +691,11 @@ const items: ItemCard[] = [
   </div>
 
   <!-- Image Modal Dialog -->
-  <div id="itemImgModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
+  <div id="itemImgModal" role="dialog" aria-modal="true" aria-labelledby="modalImgTitle" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
     <div class="relative max-w-4xl w-full bg-card border border-mint/50 rounded-2xl p-4 shadow-neon-card space-y-3">
       <div class="flex items-center justify-between pb-2 border-b border-line">
         <h4 id="modalImgTitle" class="text-base font-display font-bold text-white">รูปภาพสูตรคราฟต์</h4>
-        <button type="button" onclick="closeImgModal()" class="w-8 h-8 rounded-lg bg-paper border border-line text-white hover:text-danger font-bold text-sm">✕</button>
+        <button type="button" id="closeItemImgModalBtn" aria-label="ปิดหน้าต่างรูปภาพ" class="w-8 h-8 rounded-lg bg-paper border border-line text-white hover:text-danger font-bold text-sm">✕</button>
       </div>
       <div class="w-full max-h-[75vh] overflow-auto rounded-xl border border-white/10 bg-black flex items-center justify-center">
         <img id="modalImgTag" src="" alt="Craft Screenshot" class="max-w-full max-h-[72vh] object-contain mx-auto" />
@@ -699,59 +705,99 @@ const items: ItemCard[] = [
 
 </div>
 
-<script is:inline>
-  function openImgModal(src, title) {
+<script>
+  let galleryAbort: AbortController | null = null;
+
+  function initItemGallery() {
+    galleryAbort?.abort();
     const modal = document.getElementById('itemImgModal');
-    const img = document.getElementById('modalImgTag');
-    const titleEl = document.getElementById('modalImgTitle');
-    if (modal && img && titleEl) {
-      img.src = src;
-      titleEl.textContent = title;
+    const modalImg = document.getElementById('modalImgTag') as HTMLImageElement | null;
+    const modalTitle = document.getElementById('modalImgTitle');
+    const closeBtn = document.getElementById('closeItemImgModalBtn');
+    const filterButtons = document.querySelectorAll('#galleryFilterNav button');
+    const cards = document.querySelectorAll('.gallery-card');
+    if (!filterButtons.length && !modal) return;
+
+    galleryAbort = new AbortController();
+    const { signal } = galleryAbort;
+
+    function openImgModal(src: string, title: string) {
+      if (!modal || !modalImg || !modalTitle) return;
+      modalImg.src = src;
+      modalImg.alt = title;
+      modalTitle.textContent = title;
       modal.classList.remove('hidden');
       modal.classList.add('flex');
     }
-  }
 
-  function closeImgModal() {
-    const modal = document.getElementById('itemImgModal');
-    if (modal) {
+    function closeImgModal() {
+      if (!modal) return;
       modal.classList.add('hidden');
       modal.classList.remove('flex');
     }
-  }
 
-  // Filter tabs handling
-  function initGalleryFilters() {
-    const filterButtons = document.querySelectorAll('#galleryFilterNav button');
-    const cards = document.querySelectorAll('.gallery-card');
+    document.querySelectorAll('[data-gallery-zoom]').forEach((trigger) => {
+      trigger.addEventListener(
+        'click',
+        () => {
+          const src = trigger.getAttribute('data-src');
+          const title = trigger.getAttribute('data-title') || 'รูปภาพสูตรคราฟต์';
+          if (src) openImgModal(src, title);
+        },
+        { signal }
+      );
+    });
 
-    filterButtons.forEach(btn => {
-      btn.onclick = () => {
-        if (btn.classList.contains('active')) return;
-        const target = btn.getAttribute('data-filter');
-        
-        // Update active button state
-        filterButtons.forEach(b => {
-          b.classList.remove('active', 'bg-mint', 'text-dark');
-          b.classList.add('text-textSoft');
-        });
-        btn.classList.add('active', 'bg-mint', 'text-dark');
-        btn.classList.remove('text-textSoft');
+    closeBtn?.addEventListener('click', closeImgModal, { signal });
+    modal?.addEventListener(
+      'click',
+      (e) => {
+        if (e.target === modal) closeImgModal();
+      },
+      { signal }
+    );
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+          closeImgModal();
+        }
+      },
+      { signal }
+    );
 
-        // Filter cards
-        cards.forEach(card => {
-          const category = card.getAttribute('data-category');
-          if (target === 'all' || category === target) {
-            card.classList.remove('hidden');
-          } else {
-            card.classList.add('hidden');
-          }
-        });
-      };
+    filterButtons.forEach((btn) => {
+      btn.addEventListener(
+        'click',
+        () => {
+          if (btn.classList.contains('active')) return;
+          const target = btn.getAttribute('data-filter');
+
+          filterButtons.forEach((b) => {
+            b.classList.remove('active', 'bg-mint', 'text-slate-950');
+            b.classList.add('text-textSoft');
+          });
+          btn.classList.add('active', 'bg-mint', 'text-slate-950');
+          btn.classList.remove('text-textSoft');
+
+          cards.forEach((card) => {
+            const category = card.getAttribute('data-category');
+            if (target === 'all' || category === target) {
+              card.classList.remove('hidden');
+            } else {
+              card.classList.add('hidden');
+            }
+          });
+        },
+        { signal }
+      );
     });
   }
 
-  initGalleryFilters();
-  document.addEventListener('astro:page-load', initGalleryFilters);
+  document.addEventListener('astro:before-swap', () => {
+    galleryAbort?.abort();
+    galleryAbort = null;
+  });
+  document.addEventListener('astro:page-load', initItemGallery);
 </script>
 

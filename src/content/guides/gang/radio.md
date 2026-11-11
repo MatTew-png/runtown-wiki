@@ -17,7 +17,7 @@ risk: "ระบบสื่อสารเฉพาะกลุ่ม"
   <div class="flex flex-col md:flex-row items-center gap-6">
     <div class="relative shrink-0">
       <div class="size-28 sm:size-32 rounded-2xl bg-cyan-500/10 border-2 border-cyan-400/50 p-2 flex items-center justify-center shadow-[0_0_25px_rgba(6,182,212,0.3)]">
-        <img src="/items/icons/transparent/radio.png" alt="Radio" class="w-full h-full object-contain filter drop-shadow-[0_0_12px_rgba(6,182,212,0.6)]" />
+        <img src="/items/icons/transparent/radio.png" alt="Radio" class="w-full h-full object-contain filter drop-shadow-[0_0_12px_rgba(6,182,212,0.6)]" decoding="async" />
       </div>
       <span class="absolute -bottom-2 -right-2 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-cyan-400 text-slate-950 border border-white/20">
         HOTKEY [O]
@@ -59,9 +59,9 @@ risk: "ระบบสื่อสารเฉพาะกลุ่ม"
 
 | ไอคอน | วัตถุดิบที่ต้องใช้ (Materials) | จำนวนที่ต้องการ | แหล่งวัตถุดิบ & การหามา |
 | :---: | :--- | :---: | :--- |
-| <img src="/items/icons/transparent/steel_ingot.png" width="42" height="42" class="object-contain inline-block rounded-lg bg-black/40 p-1 border border-line" alt="Steel Ingot" /> | **Steel Ingot (เหล็กกล้าแท่ง)** | **20 แท่ง** | ได้จาก [งานจี่เหล็ก (Smelting)](/guides/jobs/smelting) หรือรับซื้อจากตลาดผู้เล่น (~233–240 RD/แท่ง) |
-| <img src="/items/icons/transparent/crystal_ingot.png" width="42" height="42" class="object-contain inline-block rounded-lg bg-black/40 p-1 border border-line" alt="Crystal Ingot" /> | **Crystal Ingot (คริสตัลแท่ง)** | **10 แท่ง** | ได้จาก [งานร่อนคริสตัล (Crystal)](/guides/jobs/crystal) นำ Raw Crystal มาหลอมแท่ง |
-| <img src="/items/icons/transparent/money.png" width="42" height="42" class="object-contain inline-block rounded-lg bg-black/40 p-1 border border-line" alt="Money" /> | **Money (เงินสด)** | **$20,000 RD** | ค่าธรรมเนียมการประกอบที่โต๊ะคราฟต์แก๊ง |
+| <img src="/items/icons/transparent/steel_ingot.png" width="42" height="42" class="object-contain inline-block rounded-lg bg-black/40 p-1 border border-line" alt="Steel Ingot" decoding="async" /> | **Steel Ingot (เหล็กกล้าแท่ง)** | **20 แท่ง** | ได้จาก [งานจี่เหล็ก (Smelting)](/guides/jobs/smelting) หรือรับซื้อจากตลาดผู้เล่น (~233–240 RD/แท่ง) |
+| <img src="/items/icons/transparent/crystal_ingot.png" width="42" height="42" class="object-contain inline-block rounded-lg bg-black/40 p-1 border border-line" alt="Crystal Ingot" decoding="async" /> | **Crystal Ingot (คริสตัลแท่ง)** | **10 แท่ง** | ได้จาก [งานร่อนคริสตัล (Crystal)](/guides/jobs/crystal) นำ Raw Crystal มาหลอมแท่ง |
+| <img src="/items/icons/transparent/money.png" width="42" height="42" class="object-contain inline-block rounded-lg bg-black/40 p-1 border border-line" alt="Money" decoding="async" /> | **Money (เงินสด)** | **$20,000 RD** | ค่าธรรมเนียมการประกอบที่โต๊ะคราฟต์แก๊ง |
 
 * **หมวดหมู่การผลิต:** `GANG`
 * **โอกาสสำเร็จ (Success Rate):** `100%` (การันตีติดแน่นอน ไม่มีความเสี่ยงแตกหัก)
@@ -77,8 +77,7 @@ risk: "ระบบสื่อสารเฉพาะกลุ่ม"
     src="/images/crafting-radio.png" 
     alt="เมนูคราฟต์ Radio โต๊ะแก๊ง RUN TOWN FiveM" 
     class="w-full rounded-xl object-contain shadow-lg"
-    loading="lazy"
-  />
+    loading="lazy" decoding="async" />
   <p class="mt-2 text-center font-mono text-xs text-textMuted">
     // ภาพถ่ายจริงจากเมนูคราฟต์ GANG: Radio · Success: 100% · Steel Ingot x20, Crystal Ingot x10, Money $20,000
   </p>

@@ -41,7 +41,7 @@ allGuides.sort((a, b) => a.data.order - b.data.order);
           <CyberIcon name="skull" size={13} /> งานดำ
         </button>
         <button type="button" class="category-filter-btn px-3 py-1.5 rounded-lg border border-line bg-card text-textSoft hover:text-white inline-flex items-center gap-1.5" data-filter="gang">
-          <img src="/items/icons/transparent/hq_coin.png" class="size-3.5 object-contain shrink-0" alt="HQ Coin" /> แก๊ง & ครอบครัว
+          <img src="/items/icons/transparent/hq_coin.png" width="14" height="14" class="size-3.5 object-contain shrink-0" alt="HQ Coin" /> แก๊ง & ครอบครัว
         </button>
         <button type="button" class="category-filter-btn px-3 py-1.5 rounded-lg border border-line bg-card text-textSoft hover:text-white inline-flex items-center gap-1.5" data-filter="vehicles">
           <CyberIcon name="truck" size={13} /> ยานพาหนะ
@@ -113,45 +113,57 @@ allGuides.sort((a, b) => a.data.order - b.data.order);
 </BaseLayout>
 
 <script>
-  const filterBtns = document.querySelectorAll('.category-filter-btn');
-  const cards = document.querySelectorAll('.guide-card');
-  const searchInput = document.getElementById('catalogSearch') as HTMLInputElement;
+  let catalogAbort: AbortController | null = null;
 
-  let currentCategory = 'all';
-  let searchQuery = '';
+  function setupGuidesCatalog() {
+    if (catalogAbort) catalogAbort.abort();
+    catalogAbort = new AbortController();
+    const { signal } = catalogAbort;
 
-  function applyFilters() {
-    cards.forEach((card) => {
-      const el = card as HTMLElement;
-      const cat = el.getAttribute('data-category');
-      const text = el.textContent?.toLowerCase() || '';
+    const filterBtns = document.querySelectorAll('.category-filter-btn');
+    const cards = document.querySelectorAll('.guide-card');
+    const searchInput = document.getElementById('catalogSearch') as HTMLInputElement | null;
 
-      const matchCat = currentCategory === 'all' || cat === currentCategory;
-      const matchSearch = searchQuery === '' || text.includes(searchQuery);
+    let currentCategory = 'all';
+    let searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : '';
 
-      if (matchCat && matchSearch) {
-        el.style.display = 'flex';
-      } else {
-        el.style.display = 'none';
-      }
-    });
-  }
+    function applyFilters() {
+      cards.forEach((card) => {
+        const el = card as HTMLElement;
+        const cat = el.getAttribute('data-category');
+        const text = el.textContent?.toLowerCase() || '';
 
-  filterBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach((b) => {
-        b.className = 'category-filter-btn px-3 py-1.5 rounded-lg border border-line bg-card text-textSoft hover:text-white';
+        const matchCat = currentCategory === 'all' || cat === currentCategory;
+        const matchSearch = searchQuery === '' || text.includes(searchQuery);
+
+        el.style.display = matchCat && matchSearch ? 'flex' : 'none';
       });
-      btn.className = 'category-filter-btn px-3 py-1.5 rounded-lg border border-mint bg-mint/15 text-mint font-bold active';
-      currentCategory = btn.getAttribute('data-filter') || 'all';
-      applyFilters();
-    });
-  });
+    }
 
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      searchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
-      applyFilters();
+    filterBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach((b) => {
+          b.className = 'category-filter-btn px-3 py-1.5 rounded-lg border border-line bg-card text-textSoft hover:text-white inline-flex items-center gap-1.5';
+        });
+        btn.className = 'category-filter-btn px-3 py-1.5 rounded-lg border border-mint bg-mint/15 text-mint font-bold active inline-flex items-center gap-1.5';
+        currentCategory = btn.getAttribute('data-filter') || 'all';
+        applyFilters();
+      }, { signal });
     });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
+        applyFilters();
+      }, { signal });
+    }
   }
+
+  document.addEventListener('astro:page-load', setupGuidesCatalog);
+  document.addEventListener('astro:before-swap', () => {
+    if (catalogAbort) {
+      catalogAbort.abort();
+      catalogAbort = null;
+    }
+  });
 </script>

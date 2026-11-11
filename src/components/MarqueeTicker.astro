@@ -99,10 +99,10 @@ const tickers: TickerItem[] = [
     icon: 'gem',
     category: 'สินค้าพรีเมียม',
     categoryColor: 'text-purple-400 bg-purple-500/10 border-purple-500/30',
-    title: 'คริสตัลเจียระไน',
-    value: '550 RD / เม็ด',
+    title: 'แท่งคริสตัล (Crystal Ingot)',
+    value: 'Raw Crystal x5 + Copper x3',
     valueColor: 'text-purple-400',
-    hint: 'ผลผลิตแรร์ กำไรสูงสุด',
+    hint: 'ตั้ง Panning Tray สูงสุด 2 เสา (ใช้อัปเกรดอาวุธ)',
   },
   // 7. หลอดสมอง
   {
@@ -112,7 +112,7 @@ const tickers: TickerItem[] = [
     title: 'หลอดสมองแตะ 100%',
     value: 'สลบ / เสียชีวิตทันที!',
     valueColor: 'text-danger',
-    hint: 'รีหัวตามสถานที่ต่างๆ หรือใช้ไอเทมช่วยรี (2 วิธีเท่านั้น)',
+    hint: 'รีหัว 0% ที่บาร์เขียว/อู่ช่าง หรือใช้ไอเทมรีหัว (ไม่มีเตือนในเกม)',
   },
   // 8. หลอดอาหาร
   {
@@ -120,9 +120,9 @@ const tickers: TickerItem[] = [
     category: 'กฎชีวิต',
     categoryColor: 'text-amber-400 bg-amber-400/10 border-amber-400/30',
     title: 'หลอดอาหารลดเหลือ 0%',
-    value: 'สลบ / เสียชีวิตทันที!',
+    value: 'เลือดลด (-1 HP/วิ) ➔ สลบ!',
     valueColor: 'text-rose-400',
-    hint: 'ซื้อแซนวิชตามร้าน หรือไปที่รีหัวตามบาร์/อู่ช่าง',
+    hint: 'ลด ~0.72%/นาที กิน Kebab/Pita (-50% หิว -10 เครียด) ก่อนแดง ≤20%',
   },
   // 9. น้ำหนักตัวละคร
   {
@@ -232,12 +232,19 @@ const tickers: TickerItem[] = [
   .marquee-track {
     display: flex;
     width: max-content;
-    animation: marquee 240s linear infinite !important;
-    will-change: transform;
+    animation: marquee 240s linear infinite;
     backface-visibility: hidden;
   }
 
   .marquee-track:hover {
-    animation-play-state: running;
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none !important;
+      overflow-x: auto;
+      max-width: 100%;
+    }
   }
 </style>

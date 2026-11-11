@@ -132,8 +132,8 @@ import CyberIcon from './CyberIcon.astro';
       <!-- Quick Action Buttons -->
       <div class="flex flex-wrap items-center gap-2 pt-2 text-xs font-mono">
         <button type="button" id="drinkCoffeeBtn" class="flex-1 py-1.5 px-2 rounded-lg bg-card border border-line hover:border-mint text-textSoft hover:text-white transition-colors inline-flex items-center justify-center gap-1.5">
-          <CyberIcon name="coffee" size={13} class="text-amber-300 shrink-0" />
-          <span>ดื่มกาแฟ (-20% สมอง)</span>
+          <CyberIcon name="zap" size={13} class="text-amber-300 shrink-0" />
+          <span>ใช้ไอเทมรีหัว (จำลอง -20%)</span>
         </button>
         <button type="button" id="resetBrainRouteBtn" class="flex-1 py-1.5 px-2 rounded-lg bg-mint/15 border border-mint/40 text-mint font-bold hover:bg-mint/25 transition-colors inline-flex items-center justify-center gap-1.5">
           <CyberIcon name="martini" size={13} class="text-mint shrink-0" />
@@ -159,129 +159,155 @@ import CyberIcon from './CyberIcon.astro';
 </div>
 
 <script>
-  let brainPct = 15;
-  let hpVal = 100;
-  let waterVal = 85;
-  let foodVal = 90;
+  let vitalsAbort: AbortController | null = null;
 
-  const piecesSlider = document.getElementById('simPiecesSlider') as HTMLInputElement;
-  const piecesCount = document.getElementById('simPiecesCount');
-  const brainValEl = document.getElementById('simBrainVal');
-  const brainBarEl = document.getElementById('simBrainBar');
-  const brainStatusEl = document.getElementById('simBrainStatus');
-  const alertBox = document.getElementById('simAlertBox');
-  const alertTitle = document.getElementById('simAlertTitle');
-  const alertDesc = document.getElementById('simAlertDesc');
+  function initVitalsSimulator() {
+    if (vitalsAbort) vitalsAbort.abort();
+    vitalsAbort = new AbortController();
+    const { signal } = vitalsAbort;
 
-  function updateVitals() {
-    if (brainValEl) brainValEl.textContent = `${brainPct.toFixed(1)}%`;
-    if (brainBarEl) {
-      brainBarEl.style.width = `${Math.min(100, brainPct)}%`;
-      if (brainPct > 80) {
-        brainBarEl.className = 'h-full bg-danger transition-all duration-300 rounded-full shadow-[0_0_15px_#ff4d6d] animate-pulse';
-        if (brainStatusEl) {
-          brainStatusEl.textContent = 'วิกฤต: สมองใกล้ระเบิด (CRITICAL)';
-          brainStatusEl.className = 'text-danger font-bold';
-        }
-        if (alertBox && alertTitle && alertDesc) {
-          alertBox.className = 'p-3.5 rounded-xl border border-danger/50 bg-danger/10 flex items-start gap-3 text-xs';
-          alertTitle.textContent = 'แจ้งเตือนวิกฤต: ค่าสมองสะสมสูง เสี่ยง Overheat สลบ (100%)';
-          alertTitle.className = 'text-danger font-bold block';
-          alertDesc.textContent = 'ระวังสะสมถึง 100%! ให้รีบไปที่บาร์เขียว หรือ อู่ช่าง เพื่อรีหัว (หรือดื่มเครื่องดื่มลดค่าสมอง) มิฉะนั้นตัวละครจะสลบล้มพับ';
-        }
-      } else if (brainPct > 50) {
-        brainBarEl.className = 'h-full bg-amber-400 transition-all duration-300 rounded-full shadow-[0_0_10px_#fbbf24]';
-        if (brainStatusEl) {
-          brainStatusEl.textContent = 'เริ่มล้า: ควรพักหรือดื่มชูกำลัง (WARNING)';
-          brainStatusEl.className = 'text-amber-400 font-bold';
-        }
-        if (alertBox && alertTitle && alertDesc) {
-          alertBox.className = 'p-3.5 rounded-xl border border-amber-500/40 bg-amber-500/10 flex items-start gap-3 text-xs';
-          alertTitle.textContent = 'คำเตือน: สมองเริ่มล้าสะสม';
-          alertTitle.className = 'text-amber-400 font-bold block';
-          alertDesc.textContent = 'หากทำต่ออีก 1 รอบจะเข้าสู่โซนอันตราย แนะนำให้ดื่มเครื่องดื่มชูกำลัง หรือเตรียมแวะจุดพักผ่อน';
-        }
-      } else {
-        brainBarEl.className = 'h-full bg-mint transition-all duration-300 rounded-full shadow-[0_0_10px_#45f2b4]';
-        if (brainStatusEl) {
-          brainStatusEl.textContent = 'สถานะ: ปลอดภัย (NORMAL)';
-          brainStatusEl.className = 'text-mint font-semibold';
-        }
-        if (alertBox && alertTitle && alertDesc) {
-          alertBox.className = 'p-3.5 rounded-xl border border-mint/30 bg-mint/5 flex items-start gap-3 text-xs';
-          alertTitle.textContent = 'คำแนะนำ: สภาพร่างกายและสมองปกติ';
-          alertTitle.className = 'text-mint font-bold block';
-          alertDesc.textContent = 'สามารถทำงานและฟาร์มรอบใหม่ได้ทันที แนะนำให้แวะซื้อน้ำและอาหารพกใส่ท้ายรถอย่างน้อย 5 ชิ้นเสมอ';
+    let brainPct = 15;
+    let foodVal = 90;
+
+    const piecesSlider = document.getElementById('simPiecesSlider') as HTMLInputElement | null;
+    const piecesCount = document.getElementById('simPiecesCount');
+    const brainValEl = document.getElementById('simBrainVal');
+    const brainBarEl = document.getElementById('simBrainBar');
+    const brainStatusEl = document.getElementById('simBrainStatus');
+    const hpValEl = document.getElementById('simHpVal');
+    const hpBarEl = document.getElementById('simHpBar');
+    const waterValEl = document.getElementById('simWaterVal');
+    const waterBarEl = document.getElementById('simWaterBar');
+    const alertBox = document.getElementById('simAlertBox');
+    const alertTitle = document.getElementById('simAlertTitle');
+    const alertDesc = document.getElementById('simAlertDesc');
+    const carPresetBtns = document.querySelectorAll('.car-preset-btn');
+    const foodValEl = document.getElementById('simFoodVal');
+    const foodBarEl = document.getElementById('simFoodBar');
+
+    if (!piecesSlider && !brainBarEl) return;
+
+    function updateVitals() {
+      if (brainValEl) brainValEl.textContent = `${brainPct.toFixed(1)}%`;
+
+      const hpVal = brainPct >= 100 || foodVal <= 0 ? 0 : 100;
+      if (hpValEl) hpValEl.textContent = brainPct >= 100 ? '0 / 100 (สลบ)' : `${hpVal} / 100`;
+      if (hpBarEl) hpBarEl.style.width = `${hpVal}%`;
+
+      if (brainBarEl) {
+        brainBarEl.style.width = `${Math.min(100, brainPct)}%`;
+        if (brainPct >= 80) {
+          brainBarEl.className = 'h-full bg-danger transition-all duration-300 rounded-full shadow-[0_0_15px_#ff4d6d] animate-pulse';
+          if (brainStatusEl) {
+            brainStatusEl.textContent = brainPct >= 100 ? 'สลบทันที: สมองเต็ม 100%!' : 'โซนอันตราย: ไม่มีเตือนก่อนสลบที่ 100%';
+            brainStatusEl.className = 'text-danger font-bold';
+          }
+          if (alertBox && alertTitle && alertDesc) {
+            alertBox.className = 'p-3.5 rounded-xl border border-danger/50 bg-danger/10 flex items-start gap-3 text-xs';
+            alertTitle.textContent = 'คำแนะนำวิกฤต: ค่าสมองสะสมสูง เสี่ยงสลบทันทีที่ 100%';
+            alertTitle.className = 'text-danger font-bold block';
+            alertDesc.textContent = 'ในเกมไม่มีอาการเตือนช่วง 70-80%! แวะบาร์เขียว (Del Perro) / อู่ช่าง (Chumash) หรือใช้ไอเทมรีหัวกลับเป็น 0% ก่อนต่อรอบ';
+          }
+        } else if (brainPct >= 50) {
+          brainBarEl.className = 'h-full bg-amber-400 transition-all duration-300 rounded-full shadow-[0_0_10px_#fbbf24]';
+          if (brainStatusEl) {
+            brainStatusEl.textContent = 'เกณฑ์เฝ้าระวัง: เหลือพื้นที่ไม่พออีก 1 เที่ยวใหญ่';
+            brainStatusEl.className = 'text-amber-400 font-bold';
+          }
+          if (alertBox && alertTitle && alertDesc) {
+            alertBox.className = 'p-3.5 rounded-xl border border-amber-500/40 bg-amber-500/10 flex items-start gap-3 text-xs';
+            alertTitle.textContent = 'คำเตือน: สมองสะสมเกินครึ่งหลอด';
+            alertTitle.className = 'text-amber-400 font-bold block';
+            alertDesc.textContent = 'จบเที่ยวนี้ควรแวะบาร์เขียว / อู่ช่าง หรือใช้ไอเทมช่วยรีหัวก่อนลุยต่อ ป้องกันทะลุ 100% สลบกลางทาง';
+          }
+        } else {
+          brainBarEl.className = 'h-full bg-mint transition-all duration-300 rounded-full shadow-[0_0_10px_#45f2b4]';
+          if (brainStatusEl) {
+            brainStatusEl.textContent = 'สถานะ: ปลอดภัย (NORMAL)';
+            brainStatusEl.className = 'text-mint font-semibold';
+          }
+          if (alertBox && alertTitle && alertDesc) {
+            alertBox.className = 'p-3.5 rounded-xl border border-mint/30 bg-mint/5 flex items-start gap-3 text-xs';
+            alertTitle.textContent = 'คำแนะนำ: สภาพร่างกายและสมองปกติ';
+            alertTitle.className = 'text-mint font-bold block';
+            alertDesc.textContent = 'สามารถทำงานและฟาร์มรอบใหม่ได้ทันที แนะนำกินอิ่ม 100% และพก Kebab/Pita ติดรถไว้สำหรับรอบยาว';
+          }
         }
       }
     }
-  }
 
-  const carPresetBtns = document.querySelectorAll('.car-preset-btn');
-  const foodValEl = document.getElementById('simFoodVal');
-  const foodBarEl = document.getElementById('simFoodBar');
+    function calculateVitalsFromPieces(pieces: number) {
+      if (piecesCount) {
+        let carLabel = '';
+        if (pieces === 160) carLabel = ' (รถ 60 โล + ในตัว 20 กก.)';
+        else if (pieces === 280) carLabel = ' (รถ 120 โล + ในตัว 20 กก.)';
+        else if (pieces === 340) carLabel = ' (รถ 150 โล + ในตัว 20 กก.)';
+        piecesCount.textContent = `${pieces} ชิ้น${carLabel}`;
+      }
 
-  function calculateVitalsFromPieces(pieces: number) {
-    if (piecesCount) {
-      let carLabel = '';
-      if (pieces === 160) carLabel = ' (รถ 60 โล)';
-      else if (pieces === 280) carLabel = ' (รถ 120 โล)';
-      else if (pieces === 340) carLabel = ' (รถ 150 โล)';
-      piecesCount.textContent = `${pieces} ชิ้น${carLabel}`;
+      const procTimeMin = (pieces * 5.0) / 60.0;
+      const totalCycleMin = procTimeMin + 3.5;
+
+      brainPct = Math.min(100, (pieces * 0.25) + (procTimeMin * 0.42));
+
+      const foodDrop = totalCycleMin * 0.7246;
+      foodVal = Math.max(0, 100 - foodDrop);
+      const waterEst = Math.max(0, 100 - foodDrop * 0.85);
+
+      if (foodValEl) foodValEl.textContent = `${foodVal.toFixed(1)}% (-${foodDrop.toFixed(1)}%)`;
+      if (foodBarEl) foodBarEl.style.width = `${foodVal}%`;
+      if (waterValEl) waterValEl.textContent = `${waterEst.toFixed(0)}%`;
+      if (waterBarEl) waterBarEl.style.width = `${waterEst}%`;
+
+      updateVitals();
     }
 
-    // เวลาโพล: 5 วิ/ชิ้น
-    const procTimeMin = (pieces * 5.0) / 60.0;
-    const totalCycleMin = procTimeMin + 3.5; // รวมสลับของท้ายรถและขับรถ
+    if (piecesSlider) {
+      piecesSlider.addEventListener('input', (e) => {
+        const val = parseInt((e.target as HTMLInputElement).value, 10);
+        calculateVitalsFromPieces(val);
+      }, { signal });
+    }
 
-    // ค่าสมอง: +0.25% ต่อชิ้น + Passive 0.42%/นาที
-    brainPct = Math.min(100, (pieces * 0.25) + (procTimeMin * 0.42));
+    carPresetBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const p = parseInt(btn.getAttribute('data-pieces') || '160', 10);
+        if (piecesSlider) piecesSlider.value = p.toString();
+        calculateVitalsFromPieces(p);
+      }, { signal });
+    });
 
-    // หลอดอาหาร: ลดลง 0.72%/นาที
-    const foodDrop = totalCycleMin * 0.72;
-    foodVal = Math.max(0, 100 - foodDrop);
+    const itemResetBtn = document.getElementById('drinkCoffeeBtn');
+    if (itemResetBtn) {
+      itemResetBtn.addEventListener('click', () => {
+        brainPct = Math.max(0, brainPct - 20);
+        updateVitals();
+      }, { signal });
+    }
 
-    if (foodValEl) foodValEl.textContent = `${foodVal.toFixed(1)}% (-${foodDrop.toFixed(1)}%)`;
-    if (foodBarEl) foodBarEl.style.width = `${foodVal}%`;
+    const resetRouteBtn = document.getElementById('resetBrainRouteBtn');
+    if (resetRouteBtn) {
+      resetRouteBtn.addEventListener('click', () => {
+        brainPct = 0;
+        foodVal = 100;
+        if (piecesSlider) piecesSlider.value = '0';
+        if (piecesCount) piecesCount.textContent = '0 ชิ้น';
+        if (foodValEl) foodValEl.textContent = '100.0%';
+        if (foodBarEl) foodBarEl.style.width = '100%';
+        if (waterValEl) waterValEl.textContent = '100%';
+        if (waterBarEl) waterBarEl.style.width = '100%';
+        updateVitals();
+      }, { signal });
+    }
 
-    updateVitals();
+    calculateVitalsFromPieces(160);
   }
 
-  if (piecesSlider) {
-    piecesSlider.addEventListener('input', (e) => {
-      const val = parseInt((e.target as HTMLInputElement).value, 10);
-      calculateVitalsFromPieces(val);
-    });
-  }
-
-  carPresetBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const p = parseInt(btn.getAttribute('data-pieces') || '160', 10);
-      if (piecesSlider) piecesSlider.value = p.toString();
-      calculateVitalsFromPieces(p);
-    });
+  document.addEventListener('astro:page-load', initVitalsSimulator);
+  document.addEventListener('astro:before-swap', () => {
+    if (vitalsAbort) {
+      vitalsAbort.abort();
+      vitalsAbort = null;
+    }
   });
-
-  const coffeeBtn = document.getElementById('drinkCoffeeBtn');
-  if (coffeeBtn) {
-    coffeeBtn.addEventListener('click', () => {
-      brainPct = Math.max(0, brainPct - 20);
-      updateVitals();
-    });
-  }
-
-  const resetRouteBtn = document.getElementById('resetBrainRouteBtn');
-  if (resetRouteBtn) {
-    resetRouteBtn.addEventListener('click', () => {
-      brainPct = 0;
-      if (piecesSlider) piecesSlider.value = '0';
-      if (piecesCount) piecesCount.textContent = '0 ชิ้น';
-      if (foodValEl) foodValEl.textContent = '100%';
-      if (foodBarEl) foodBarEl.style.width = '100%';
-      updateVitals();
-    });
-  }
-
-  // Initial calculation
-  calculateVitalsFromPieces(160);
 </script>

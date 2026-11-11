@@ -1,3 +1,17 @@
+---
+project: RUNTOWN
+category: architecture
+status: completed
+priority: critical
+last_audit: 2026-11-07
+tags:
+  - architecture
+  - design-system
+  - tailwind
+  - oklch
+  - styling
+---
+
 # 🏎️ RUNTOWN & RUN-TOWN-RULES — Deep-Dive Tailwind CSS & Design System Architecture
 
 > เอกสารวิเคราะห์เจาะลึกโครงสร้างการออกแบบ, CSS Tokens, Tailwind Utilities, Animation Mechanics และระบบ Color Science ระหว่าง 2 เว็บไซต์ในเครือ **RUN TOWN**:

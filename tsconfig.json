@@ -5,5 +5,17 @@
     "paths": {
       "@/*": ["src/*"]
     }
-  }
+  },
+  "exclude": [
+    "dist",
+    "node_modules",
+    ".wrangler",
+    "scratch",
+    "scripts",
+    "analyze.js",
+    "deep_inspect.js",
+    "inspect_cards.js",
+    "inspect_components.js",
+    "server.js"
+  ]
 }

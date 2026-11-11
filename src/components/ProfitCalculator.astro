@@ -1,5 +1,11 @@
 ---
 import CyberIcon from './CyberIcon.astro';
+import {
+  WHITE_JOBS_COUNT,
+  SURVIVAL_RATES,
+  PLAYER_SAFE_CARRY_KG,
+  VEHICLE_TIERS,
+} from '../data/economy';
 
 const jobs = [
   {
@@ -7,56 +13,54 @@ const jobs = [
     name: 'งานหมู',
     en: 'PORK',
     icon: 'package',
-    spec: 'ลูป 7.18 กม. · ดิบ 130-150 RD · กล่อง 380 RD · ฟาร์ม 15 นาที',
+    spec: 'ลูปสั้นสุด 7.18 กม. · ดิบ 130–150 RD · กล่อง 380 RD · โต 15 นาที',
     unitLabel: 'กล่อง',
     unitKg: 1.0,
     unitPrice: 380,
-    minsPerRun: 23,
-    brainPerRun: 8,
+    minsPerPiece: 0.167,
+    brainPerPiece: SURVIVAL_RATES.BRAIN_PROCESS_ACTION_PCT * 2, // 2 raw pieces processed per 1kg box
   },
   {
     id: 'wood',
     name: 'งานไม้',
     en: 'WOOD',
     icon: 'tree',
-    spec: 'ลูป 14.0 กม. · กล่อง 479 RD · ขายผู้เล่น 500-600 RD',
+    spec: 'ลูป 14.0 กม. · กล่อง 479 RD · ขายผู้เล่น 500–600 RD',
     unitLabel: 'กล่อง',
     unitKg: 1.0,
     unitPrice: 479,
-    minsPerRun: 35,
-    brainPerRun: 12,
+    minsPerPiece: 0.25,
+    brainPerPiece: SURVIVAL_RATES.BRAIN_PROCESS_ACTION_PCT * 2,
   },
   {
     id: 'flowers',
-    name: 'งานดอกไม้',
+    name: 'งานดอกไม้ (ส่ง รพ.)',
     en: 'FLOWERS',
     icon: 'flower',
-    spec: '8 วิ/ดอก · ขาย รพ. 120 RD/ดอก · กล่อง 424 RD',
+    spec: 'เก็บไวสุด 8 วิ/ดอก · ส่ง รพ. 120 RD/ดอก · กล่อง Del Perro 424 RD',
     unitLabel: 'ดอก',
     unitKg: 0.5,
     unitPrice: 120,
-    minsPerRun: 14,
-    brainPerRun: 10,
+    minsPerPiece: 0.133,
+    brainPerPiece: SURVIVAL_RATES.BRAIN_GATHER_ACTION_PCT, // Gather only (direct hospital sale)
   },
   {
     id: 'smelting',
     name: 'งานจี่เหล็ก',
     en: 'SMELTING',
     icon: 'wrench',
-    spec: 'ลูป 1.2 กม. · แท่ง 233 RD · ขายอู่ช่าง 233-240 RD',
+    spec: '2 เศษ (0.25kg/ชิ้น) ➔ แท่ง 233 RD · ขายอู่ช่าง 233–240 RD',
     unitLabel: 'แท่ง',
     unitKg: 0.5,
     unitPrice: 233,
-    minsPerRun: 12,
-    brainPerRun: 6,
+    minsPerPiece: 0.083,
+    brainPerPiece: SURVIVAL_RATES.BRAIN_PROCESS_ACTION_PCT,
   },
 ];
 
 const capacities = [
-  { kg: 30, label: 'กระเป๋าตัว (30 kg)' },
-  { kg: 60, label: 'รถเล็ก (60 kg)' },
-  { kg: 120, label: 'รถกลาง (120 kg)' },
-  { kg: 150, label: 'รถใหญ่ (150 kg)' },
+  { kg: PLAYER_SAFE_CARRY_KG, label: `กระเป๋าปลอดภัย (${PLAYER_SAFE_CARRY_KG} kg)` },
+  ...VEHICLE_TIERS.map((v) => ({ kg: v.trunkKg, label: `${v.label}` })),
 ];
 ---
 
@@ -215,18 +219,18 @@ const capacities = [
       <div class="py-5 space-y-4">
         <div>
           <span class="text-xs font-mono text-textMuted block">กำไรสุทธิโดยประมาณ</span>
-          <strong id="calcNetProfit" class="font-mono text-4xl sm:text-5xl font-extrabold text-mint drop-shadow-[0_0_15px_rgba(69,242,180,0.35)] block mt-1">
+          <strong id="calcNetProfit" class="font-mono tabular-nums text-4xl sm:text-5xl font-extrabold text-mint drop-shadow-[0_0_15px_rgba(69,242,180,0.35)] block mt-1">
             129,960 RD
           </strong>
         </div>
 
-        <dl class="space-y-2.5 pt-2 border-t border-lineSubtle font-mono text-xs">
+        <dl class="space-y-2.5 pt-2 border-t border-lineSubtle font-mono tabular-nums text-xs">
           <div class="flex justify-between">
             <dt class="text-textMuted">รายได้รวม (Gross):</dt>
             <dd id="calcGross" class="text-white font-bold">136,800 RD</dd>
           </div>
           <div class="flex justify-between">
-            <dt class="text-textMuted">ค่าน้ำมัน & เสบียง (~5%):</dt>
+            <dt class="text-textMuted">เผื่อค่าใช้จ่าย/เครื่องมือ (~5% ประมาณการ):</dt>
             <dd id="calcCost" class="text-rose-400">-6,840 RD</dd>
           </div>
           <div class="flex justify-between">
@@ -235,31 +239,31 @@ const capacities = [
           </div>
           <div class="flex justify-between">
             <dt class="text-textMuted">เวลาโดยประมาณ:</dt>
-            <dd id="calcDuration" class="text-amber-300 font-bold">1 ชม. 9 นาที</dd>
+            <dd id="calcDuration" class="text-amber-300 font-bold">1 ชม. 0 นาที</dd>
           </div>
         </dl>
 
         <!-- Brain meter alert -->
         <div id="calcBrainBox" class="p-3.5 rounded-xl border border-line bg-card/60 space-y-2 text-xs">
-          <div class="flex items-center justify-between font-mono">
+          <div class="flex items-center justify-between font-mono tabular-nums">
             <span class="flex items-center gap-1.5 text-textSoft">
               <CyberIcon name="brain" class="size-3.5 text-purple-300" />
-              <span>ความล้าสมอง:</span>
+              <span>ความล้าสมองต่อการวิ่งทั้งหมด:</span>
             </span>
-            <span id="calcBrainVal" class="font-bold text-mint">24%</span>
+            <span id="calcBrainVal" class="font-bold text-mint">0%</span>
           </div>
           <div class="w-full h-1.5 rounded-full bg-slate-900 overflow-hidden">
             <div id="calcBrainBar" class="h-full bg-mint rounded-full transition-all duration-300" style="width: 24%"></div>
           </div>
           <p id="calcBrainTip" class="text-[11px] text-textMuted leading-relaxed">
-            ระดับสมองปลอดภัย ทำงานต่อเนื่องได้ตามปกติ
+            ระดับสมองปลอดภัย ทำงานต่อเนื่องได้ตามปกติ (ในเกมไม่มีเตือนช่วง 70-80% · แตะ 100% สลบทันที)
           </p>
         </div>
       </div>
 
       <div class="mt-auto pt-4 border-t border-lineSubtle text-center">
         <a href="/guides/jobs/white" class="inline-flex items-center gap-1.5 text-xs font-mono text-mint hover:underline font-bold">
-          <span>เจาะลึก 7 อาชีพงานขาว</span>
+          <span>เจาะลึก {WHITE_JOBS_COUNT} อาชีพงานขาว</span>
           <span>➔</span>
         </a>
       </div>
@@ -267,19 +271,30 @@ const capacities = [
   </div>
 </section>
 
-<script>
-  const jobsData = {
-    pork: { name: 'งานหมู', en: 'PORK', unitLabel: 'กล่อง', unitKg: 1.0, unitPrice: 380, minsPerRun: 23, brainPerRun: 8 },
-    wood: { name: 'งานไม้', en: 'WOOD', unitLabel: 'กล่อง', unitKg: 1.0, unitPrice: 479, minsPerRun: 35, brainPerRun: 12 },
-    flowers: { name: 'งานดอกไม้', en: 'FLOWERS', unitLabel: 'ดอก', unitKg: 0.5, unitPrice: 120, minsPerRun: 14, brainPerRun: 10 },
-    smelting: { name: 'งานจี่เหล็ก', en: 'SMELTING', unitLabel: 'แท่ง', unitKg: 0.5, unitPrice: 233, minsPerRun: 12, brainPerRun: 6 },
-  };
+<script id="profitCalcJobsPayload" type="application/json" set:html={JSON.stringify(jobs)}></script>
 
-  let curJobId = 'pork';
-  let curCap = 120;
-  let curRuns = 3;
+<script>
+  let profitCalcAbort: AbortController | null = null;
 
   function initProfitCalculator() {
+    if (profitCalcAbort) profitCalcAbort.abort();
+    profitCalcAbort = new AbortController();
+    const { signal } = profitCalcAbort;
+
+    const payloadEl = document.getElementById('profitCalcJobsPayload');
+    const parsedJobs: Array<{
+      id: string;
+      name: string;
+      en: string;
+      unitLabel: string;
+      unitKg: number;
+      unitPrice: number;
+      minsPerPiece: number;
+      brainPerPiece: number;
+    }> = payloadEl?.textContent ? JSON.parse(payloadEl.textContent) : [];
+
+    const jobsMap = Object.fromEntries(parsedJobs.map((j) => [j.id, j]));
+
     const jobBtns = document.querySelectorAll('.calc-job-btn');
     const capBtns = document.querySelectorAll('.calc-cap-btn');
     const customCapInput = document.getElementById('calcCustomCapInput') as HTMLInputElement | null;
@@ -302,14 +317,26 @@ const capacities = [
 
     if (!jobBtns.length) return;
 
-    function calculate() {
-      const job = (jobsData as any)[curJobId] || jobsData.pork;
-      const unitsPerRun = job.unitKg > 0 ? Math.floor(curCap / job.unitKg) : 0;
-      const gross = unitsPerRun * job.unitPrice * curRuns;
+    let curJobId = parsedJobs[0]?.id || 'pork';
+    let curCap = parseFloat(customCapInput?.value || '120') || 120;
+    let curRuns = parseInt(runsSlider?.value || '3', 10) || 3;
+
+    function computeStats() {
+      const job = jobsMap[curJobId] || parsedJobs[0];
+      const unitsPerRun = job && job.unitKg > 0 ? Math.floor(curCap / job.unitKg) : 0;
+      const totalUnits = unitsPerRun * curRuns;
+      const gross = totalUnits * (job?.unitPrice || 0);
       const cost = gross * 0.05;
       const net = gross - cost;
-      const totalMinutes = job.minsPerRun * curRuns;
-      const brain = job.brainPerRun * curRuns;
+      const totalMinutes = Math.round(totalUnits * (job?.minsPerPiece || 0.2));
+      const passiveBrain = totalMinutes * 0.42;
+      const brain = Math.round(totalUnits * (job?.brainPerPiece || 0.25) + passiveBrain);
+      return { job, unitsPerRun, gross, cost, net, totalMinutes, brain };
+    }
+
+    function calculate() {
+      const { job, unitsPerRun, gross, cost, net, totalMinutes, brain } = computeStats();
+      if (!job) return;
 
       if (outNet) outNet.textContent = `${Math.round(net).toLocaleString('en-US')} RD`;
       if (outGross) outGross.textContent = `${Math.round(gross).toLocaleString('en-US')} RD`;
@@ -320,18 +347,25 @@ const capacities = [
       const m = totalMinutes % 60;
       if (outDuration) outDuration.textContent = h > 0 ? `${h} ชม. ${m} นาที` : `${m} นาที`;
 
-      if (outBrainVal) outBrainVal.textContent = `${brain}%`;
+      if (outBrainVal) {
+        outBrainVal.textContent = `${brain}%`;
+        outBrainVal.className = brain >= 100
+          ? 'font-bold text-danger'
+          : brain >= 50
+            ? 'font-bold text-amber-300'
+            : 'font-bold text-mint';
+      }
       if (outBrainBar) {
         outBrainBar.style.width = `${Math.min(100, brain)}%`;
         if (brain >= 100) {
-          outBrainBar.className = 'h-full bg-rose-500 rounded-full transition-all duration-300 shadow-[0_0_10px_#ff4d6d]';
-          if (outBrainTip) outBrainTip.textContent = 'วิกฤต: สมองแตะ 100% ตัวละครจะสลบหรือเสียชีวิตทันที! ต้องรอคนชุบ เรียกหมอ หรือเกิด รพ. (รีเซ็ตได้ที่สถานที่รีหัว หรือใช้ไอเทมช่วยรี)';
-        } else if (brain >= 70) {
+          outBrainBar.className = 'h-full bg-danger rounded-full transition-all duration-300 shadow-[0_0_10px_#ff4d6d]';
+          if (outBrainTip) outBrainTip.textContent = 'วิกฤต: สมองสะสมแตะ 100%+ ระหว่างจำนวนรอบนี้! ตัวละครจะสลบทันทีที่ 100% ต้องแบ่งแวะรีหัวที่บาร์เขียวหรืออู่ช่างระหว่างรอบ';
+        } else if (brain >= 50) {
           outBrainBar.className = 'h-full bg-amber-400 rounded-full transition-all duration-300';
-          if (outBrainTip) outBrainTip.textContent = 'สมองสะสมสูง แนะนำแวะสถานที่รีหัว (บาร์เขียว/อู่ช่าง) หรือใช้ไอเทมช่วยรีหัวกลับเป็น 0%';
+          if (outBrainTip) outBrainTip.textContent = 'ควรแวะรีหัวที่บาร์เขียวหรืออู่ช่างให้เหลือ 0% ก่อนเริ่มวิ่งชุดถัดไป (ในเกมไม่มีอาการเตือนช่วง 70-80%)';
         } else {
           outBrainBar.className = 'h-full bg-mint rounded-full transition-all duration-300';
-          if (outBrainTip) outBrainTip.textContent = 'ระดับสมองปลอดภัย ทำงานต่อเนื่องได้ตามปกติ';
+          if (outBrainTip) outBrainTip.textContent = 'ระดับสมองปลอดภัย วิ่งต่อเนื่องได้ (ตัวละครจะสลบทันทีเมื่อแตะ 100% โดยไม่มีเตือนล่วงหน้า)';
         }
       }
     }
@@ -341,7 +375,7 @@ const capacities = [
       if (currentCapDisplay) currentCapDisplay.textContent = String(curCap);
       if (updateInput && customCapInput) customCapInput.value = String(curCap);
 
-      capBtns.forEach(b => {
+      capBtns.forEach((b) => {
         const btnCap = parseFloat(b.getAttribute('data-capacity') || '0');
         if (btnCap === curCap) {
           b.classList.remove('border-line', 'bg-paper/60', 'text-textSoft', 'font-medium');
@@ -355,9 +389,9 @@ const capacities = [
       calculate();
     }
 
-    jobBtns.forEach(btn => {
-      (btn as HTMLElement).onclick = () => {
-        jobBtns.forEach(b => {
+    jobBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        jobBtns.forEach((b) => {
           b.classList.remove('border-mint', 'bg-mint/10', 'shadow-[0_0_24px_-8px_rgba(69,242,180,0.5)]', 'active');
           b.classList.add('border-line', 'bg-paper/60', 'text-textSoft');
         });
@@ -365,68 +399,64 @@ const capacities = [
         btn.classList.add('border-mint', 'bg-mint/10', 'shadow-[0_0_24px_-8px_rgba(69,242,180,0.5)]', 'active');
         curJobId = btn.getAttribute('data-job-id') || 'pork';
         calculate();
-      };
+      }, { signal });
     });
 
-    capBtns.forEach(btn => {
-      (btn as HTMLElement).onclick = () => {
+    capBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
         const cap = parseFloat(btn.getAttribute('data-capacity') || '120');
         setCapacity(cap, true);
-      };
+      }, { signal });
     });
 
     if (customCapInput) {
-      customCapInput.oninput = () => {
+      customCapInput.addEventListener('input', () => {
         const val = parseFloat(customCapInput.value);
         setCapacity(isNaN(val) ? 0 : val, false);
-      };
+      }, { signal });
     }
 
     if (runsSlider) {
-      runsSlider.oninput = () => {
+      runsSlider.addEventListener('input', () => {
         curRuns = parseInt(runsSlider.value, 10);
         if (runsDisplay) runsDisplay.textContent = String(curRuns);
         calculate();
-      };
+      }, { signal });
     }
 
     if (runsMinus) {
-      runsMinus.onclick = () => {
+      runsMinus.addEventListener('click', () => {
         if (curRuns > 1) {
           curRuns--;
           if (runsSlider) runsSlider.value = String(curRuns);
           if (runsDisplay) runsDisplay.textContent = String(curRuns);
           calculate();
         }
-      };
+      }, { signal });
     }
 
     if (runsPlus) {
-      runsPlus.onclick = () => {
+      runsPlus.addEventListener('click', () => {
         if (curRuns < 10) {
           curRuns++;
           if (runsSlider) runsSlider.value = String(curRuns);
           if (runsDisplay) runsDisplay.textContent = String(curRuns);
           calculate();
         }
-      };
+      }, { signal });
     }
 
     if (copyBtn) {
-      copyBtn.onclick = async () => {
-        const job = (jobsData as any)[curJobId] || jobsData.pork;
-        const unitsPerRun = Math.floor(curCap / job.unitKg);
-        const gross = unitsPerRun * job.unitPrice * curRuns;
-        const cost = gross * 0.05;
-        const net = gross - cost;
-
+      copyBtn.addEventListener('click', async () => {
+        const { job, unitsPerRun, gross, cost, net } = computeStats();
+        if (!job) return;
         const summary = [
           'RUN TOWN · สรุปการคำนวณกำไร',
           `งาน: ${job.name} (${job.en})`,
           `ความจุ: ${curCap} กก. · ${unitsPerRun} ${job.unitLabel}/รอบ · ${curRuns} รอบ`,
           `รายได้รวม: ${Math.round(gross).toLocaleString('en-US')} RD`,
-          `ค่าน้ำมัน/ซ่อม (~5%): ${Math.round(cost).toLocaleString('en-US')} RD`,
-          `กำไรสุทธิ: ${Math.round(net).toLocaleString('en-US')} RD`,
+          `เผื่อค่าใช้จ่าย/เครื่องมือ (~5%): ${Math.round(cost).toLocaleString('en-US')} RD`,
+          `กำไรสุทธิโดยประมาณ: ${Math.round(net).toLocaleString('en-US')} RD`,
         ].join('\n');
 
         try {
@@ -435,13 +465,18 @@ const capacities = [
           setTimeout(() => {
             if (copyText) copyText.textContent = 'คัดลอกสรุป';
           }, 2000);
-        } catch (e) {}
-      };
+        } catch {}
+      }, { signal });
     }
 
     calculate();
   }
 
-  initProfitCalculator();
   document.addEventListener('astro:page-load', initProfitCalculator);
+  document.addEventListener('astro:before-swap', () => {
+    if (profitCalcAbort) {
+      profitCalcAbort.abort();
+      profitCalcAbort = null;
+    }
+  });
 </script>

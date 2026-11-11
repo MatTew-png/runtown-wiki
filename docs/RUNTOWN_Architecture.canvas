@@ -1,0 +1,154 @@
+{
+  "nodes": [
+    {
+      "id": "layer_client",
+      "type": "group",
+      "label": "🌐 1. Client Browser & Presentation Layer",
+      "x": 0,
+      "y": 0,
+      "width": 650,
+      "height": 300,
+      "color": "5"
+    },
+    {
+      "id": "node_baselayout",
+      "type": "text",
+      "text": "### BaseLayout.astro\n- Cyberpunk Theme Injection\n- GSAP 3 CyberMotion Physics\n- Preline UI Dynamic Modals",
+      "x": 30,
+      "y": 60,
+      "width": 260,
+      "height": 200,
+      "color": "5"
+    },
+    {
+      "id": "node_guidelayout",
+      "type": "text",
+      "text": "### GuideLayout.astro\n- Sticky Mobile HUD\n- Auto Table of Contents\n- Dynamic Breadcrumbs",
+      "x": 330,
+      "y": 60,
+      "width": 280,
+      "height": 200,
+      "color": "5"
+    },
+    {
+      "id": "layer_components",
+      "type": "group",
+      "label": "⚙️ 2. Interactive Interactive Calculators & Components",
+      "x": 720,
+      "y": 0,
+      "width": 650,
+      "height": 300,
+      "color": "4"
+    },
+    {
+      "id": "node_calcs",
+      "type": "text",
+      "text": "### Calculators\n- ProfitCalculator.astro\n- SportTuningCalculator.astro\n- CraftingTree.astro",
+      "x": 750,
+      "y": 60,
+      "width": 260,
+      "height": 200,
+      "color": "4"
+    },
+    {
+      "id": "node_meters",
+      "type": "text",
+      "text": "### Status & Radar\n- BrainFatigueMeter.astro\n- FoodHungerMeter.astro\n- BentoJobsGrid.astro",
+      "x": 1050,
+      "y": 60,
+      "width": 280,
+      "height": 200,
+      "color": "4"
+    },
+    {
+      "id": "layer_engine",
+      "type": "group",
+      "label": "🗺️ 3. Spatial Leaflet Radar & Route Solver",
+      "x": 0,
+      "y": 360,
+      "width": 650,
+      "height": 300,
+      "color": "6"
+    },
+    {
+      "id": "node_leaflet",
+      "type": "text",
+      "text": "### Leaflet 2D Engine\n- CRS.Simple Custom Projection\n- Spot Marker Clustering\n- Cooldown Countdown Timers",
+      "x": 30,
+      "y": 420,
+      "width": 260,
+      "height": 200,
+      "color": "6"
+    },
+    {
+      "id": "node_routes",
+      "type": "text",
+      "text": "### Precomputed GPS Graph\n- jobGpsRoadRoutes.json (400 KB)\n- Zero Runtime Dijkstra CPU Overhead\n- Instant Vector Path Rendering",
+      "x": 330,
+      "y": 420,
+      "width": 280,
+      "height": 200,
+      "color": "6"
+    },
+    {
+      "id": "layer_content",
+      "type": "group",
+      "label": "📚 4. Content Collections & Edge Build Engine",
+      "x": 720,
+      "y": 360,
+      "width": 650,
+      "height": 300,
+      "color": "2"
+    },
+    {
+      "id": "node_collections",
+      "type": "text",
+      "text": "### Astro Content Engine\n- Zod Schema Validation\n- 26 Validated Markdown Guides\n- Static Route [...slug].astro",
+      "x": 750,
+      "y": 420,
+      "width": 260,
+      "height": 200,
+      "color": "2"
+    },
+    {
+      "id": "node_dist",
+      "type": "text",
+      "text": "### Edge Production\n- 29 Static Pre-rendered Pages\n- Zero DB Latency\n- Deployed on Vercel / Cloudflare Edge",
+      "x": 1050,
+      "y": 420,
+      "width": 280,
+      "height": 200,
+      "color": "1"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_client_to_components",
+      "fromNode": "node_guidelayout",
+      "fromSide": "right",
+      "toNode": "node_calcs",
+      "toSide": "left"
+    },
+    {
+      "id": "edge_components_to_engine",
+      "fromNode": "node_meters",
+      "fromSide": "bottom",
+      "toNode": "node_routes",
+      "toSide": "top"
+    },
+    {
+      "id": "edge_engine_to_content",
+      "fromNode": "node_routes",
+      "fromSide": "right",
+      "toNode": "node_collections",
+      "toSide": "left"
+    },
+    {
+      "id": "edge_content_to_dist",
+      "fromNode": "node_collections",
+      "fromSide": "right",
+      "toNode": "node_dist",
+      "toSide": "left"
+    }
+  ]
+}

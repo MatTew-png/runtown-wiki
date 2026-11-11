@@ -58,7 +58,7 @@ import CyberIcon from './CyberIcon.astro';
       </button>
       <button
         type="button"
-        class="preset-btn px-3 py-1.5 rounded-lg border border-line bg-paper text-textSoft text-xs font-mono hover:text-rose hover:border-rose/50 transition-all flex items-center gap-1.5 ml-auto"
+        class="preset-btn px-3 py-1.5 rounded-lg border border-line bg-paper text-textSoft text-xs font-mono hover:text-danger hover:border-danger/50 transition-all flex items-center gap-1.5 ml-auto"
         data-preset="reset"
       >
         <CyberIcon name="refresh" class="size-3" />
@@ -190,7 +190,7 @@ import CyberIcon from './CyberIcon.astro';
             <input type="checkbox" id="chkEcu" class="tune-checkbox accent-mint size-4 rounded" data-cost="810000" />
             <span class="text-xs font-mono text-slate-200">ECU Remap</span>
           </div>
-          <span class="text-[11px] font-mono text-rose font-bold">+$810,000</span>
+          <span class="text-[11px] font-mono text-danger font-bold">+$810,000</span>
         </label>
       </div>
     </div>
@@ -279,9 +279,15 @@ import CyberIcon from './CyberIcon.astro';
 </div>
 
 <script>
+  let sportAbort: AbortController | null = null;
+
   function initSportCalculator() {
+    sportAbort?.abort();
     const app = document.getElementById('sportTuningApp');
     if (!app) return;
+
+    sportAbort = new AbortController();
+    const { signal } = sportAbort;
 
     const selEngine = document.getElementById('selEngine') as HTMLSelectElement;
     const selBrakes = document.getElementById('selBrakes') as HTMLSelectElement;
@@ -354,7 +360,7 @@ import CyberIcon from './CyberIcon.astro';
           dealDiffValue.className = 'text-base font-bold text-slate-300';
         } else {
           dealDiffValue.textContent = `-${formatNumber(Math.abs(diff))}`;
-          dealDiffValue.className = 'text-base font-bold text-rose';
+          dealDiffValue.className = 'text-base font-bold text-danger';
         }
       }
 
@@ -367,7 +373,7 @@ import CyberIcon from './CyberIcon.astro';
           dealVerdictBadge.className = 'px-2 py-0.5 rounded font-bold uppercase text-[11px] bg-amber-400/20 text-amber-300 border border-amber-400/40';
         } else {
           dealVerdictBadge.textContent = 'ราคาสูงกว่าของแต่ง';
-          dealVerdictBadge.className = 'px-2 py-0.5 rounded font-bold uppercase text-[11px] bg-rose/20 text-rose border border-rose/40';
+          dealVerdictBadge.className = 'px-2 py-0.5 rounded font-bold uppercase text-[11px] bg-danger/20 text-danger border border-danger/40';
         }
       }
 
@@ -384,60 +390,68 @@ import CyberIcon from './CyberIcon.astro';
 
     // Attach listeners
     app.querySelectorAll('.tune-select, .tune-checkbox').forEach((el) => {
-      el.addEventListener('change', calculate);
+      el.addEventListener('change', calculate, { signal });
     });
-    dealPriceInput?.addEventListener('input', calculate);
+    dealPriceInput?.addEventListener('input', calculate, { signal });
 
     // Presets
     app.querySelectorAll('.preset-btn').forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        const target = e.currentTarget as HTMLButtonElement;
-        const preset = target.dataset.preset;
+      btn.addEventListener(
+        'click',
+        (e) => {
+          const target = e.currentTarget as HTMLButtonElement;
+          const preset = target.dataset.preset;
 
-        if (preset === 'full') {
-          selEngine.value = '4';
-          selBrakes.value = '3';
-          selTrans.value = '3';
-          selSusp.value = '4';
-          selArmour.value = '5';
-          chkTurbo.checked = true;
-          chkEcu.checked = true;
-        } else if (preset === 'racing') {
-          selEngine.value = '4';
-          selBrakes.value = '3';
-          selTrans.value = '3';
-          selSusp.value = '0';
-          selArmour.value = '0';
-          chkTurbo.checked = true;
-          chkEcu.checked = false;
-        } else if (preset === 'market_deal') {
-          selEngine.value = '4';
-          selBrakes.value = '3';
-          selTrans.value = '3';
-          selSusp.value = '0';
-          selArmour.value = '2';
-          chkTurbo.checked = true;
-          chkEcu.checked = false;
-          dealPriceInput.value = '1000000';
-        } else if (preset === 'reset') {
-          selEngine.value = '0';
-          selBrakes.value = '0';
-          selTrans.value = '0';
-          selSusp.value = '0';
-          selArmour.value = '0';
-          chkTurbo.checked = false;
-          chkEcu.checked = false;
-        }
+          if (preset === 'full') {
+            selEngine.value = '4';
+            selBrakes.value = '3';
+            selTrans.value = '3';
+            selSusp.value = '4';
+            selArmour.value = '5';
+            chkTurbo.checked = true;
+            chkEcu.checked = true;
+          } else if (preset === 'racing') {
+            selEngine.value = '4';
+            selBrakes.value = '3';
+            selTrans.value = '3';
+            selSusp.value = '0';
+            selArmour.value = '0';
+            chkTurbo.checked = true;
+            chkEcu.checked = false;
+          } else if (preset === 'market_deal') {
+            selEngine.value = '4';
+            selBrakes.value = '3';
+            selTrans.value = '3';
+            selSusp.value = '0';
+            selArmour.value = '2';
+            chkTurbo.checked = true;
+            chkEcu.checked = false;
+            dealPriceInput.value = '1000000';
+          } else if (preset === 'reset') {
+            selEngine.value = '0';
+            selBrakes.value = '0';
+            selTrans.value = '0';
+            selSusp.value = '0';
+            selArmour.value = '0';
+            chkTurbo.checked = false;
+            chkEcu.checked = false;
+          }
 
-        calculate();
-      });
+          calculate();
+        },
+        { signal }
+      );
     });
 
     // Run initial calc
     calculate();
   }
 
-  // Initialize on load and on Astro view transitions
-  initSportCalculator();
+  document.addEventListener('astro:before-swap', () => {
+    sportAbort?.abort();
+    sportAbort = null;
+  });
+
+  // Initialize on Astro view transitions
   document.addEventListener('astro:page-load', initSportCalculator);
 </script>

@@ -172,7 +172,13 @@ import CyberIcon from './CyberIcon.astro';
 </div>
 
 <script>
+  let hqAbort: AbortController | null = null;
+
   function initHqCalculator() {
+    if (hqAbort) hqAbort.abort();
+    hqAbort = new AbortController();
+    const { signal } = hqAbort;
+
     const goalSelect = document.getElementById('hqGoalSelect') as HTMLSelectElement | null;
     const coinInput = document.getElementById('hqCoinInput') as HTMLInputElement | null;
     const btnMinus = document.getElementById('hqBtnMinus');
@@ -222,12 +228,12 @@ import CyberIcon from './CyberIcon.astro';
         coinInput.value = val;
       }
       calculate();
-    });
+    }, { signal });
 
     coinInput.addEventListener('input', () => {
       goalSelect.value = 'custom';
       calculate();
-    });
+    }, { signal });
 
     btnMinus?.addEventListener('click', () => {
       const current = Math.max(1, parseInt(coinInput.value, 10) || 1);
@@ -236,14 +242,14 @@ import CyberIcon from './CyberIcon.astro';
         goalSelect.value = 'custom';
         calculate();
       }
-    });
+    }, { signal });
 
     btnPlus?.addEventListener('click', () => {
       const current = Math.max(1, parseInt(coinInput.value, 10) || 1);
       coinInput.value = (current + 1).toString();
       goalSelect.value = 'custom';
       calculate();
-    });
+    }, { signal });
 
     quickBtns.forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -253,7 +259,7 @@ import CyberIcon from './CyberIcon.astro';
           goalSelect.value = c === '45' ? '45' : c === '10' ? '10' : 'custom';
           calculate();
         }
-      });
+      }, { signal });
     });
 
     copyDiscordBtn?.addEventListener('click', () => {
@@ -284,11 +290,16 @@ import CyberIcon from './CyberIcon.astro';
           }, 2500);
         }
       });
-    });
+    }, { signal });
 
     calculate();
   }
 
-  initHqCalculator();
   document.addEventListener('astro:page-load', initHqCalculator);
+  document.addEventListener('astro:before-swap', () => {
+    if (hqAbort) {
+      hqAbort.abort();
+      hqAbort = null;
+    }
+  });
 </script>

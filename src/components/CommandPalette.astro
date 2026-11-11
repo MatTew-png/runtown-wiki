@@ -21,6 +21,7 @@ const allGuides = await getCollection('guides');
   >
     <!-- Search Input Header -->
     <div class="p-3.5 border-b border-line flex items-center gap-3 bg-paper">
+      <h2 id="commandPaletteTitle" class="sr-only">ค้นหาคู่มือและระบบเมือง RUN TOWN</h2>
       <CyberIcon name="search" class="size-4 text-mint shrink-0" />
       <input 
         type="text" 
@@ -46,7 +47,7 @@ const allGuides = await getCollection('guides');
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 font-mono text-xs">
           <a href="/guides/jobs/white" class="palette-item flex items-center gap-2 p-2 rounded-xl bg-card hover:bg-mint/15 hover:border-mint/50 border border-line text-slate-200 hover:text-white transition-all">
             <CyberIcon name="briefcase" class="size-4 text-mint shrink-0" />
-            <span>งานขาว (7 งาน)</span>
+            <span>งานขาว (8 งาน)</span>
           </a>
           <a href="/guides/jobs/black" class="palette-item flex items-center gap-2 p-2 rounded-xl bg-card hover:bg-danger/15 hover:border-danger/50 border border-line text-slate-200 hover:text-white transition-all">
             <CyberIcon name="skull" class="size-4 text-danger shrink-0" />
@@ -65,11 +66,11 @@ const allGuides = await getCollection('guides');
             <span>ค่าสมอง & รีหัว (บาร์เขียว/อู่ช่าง)</span>
           </a>
           <a href="/guides/gang/headquarter" class="palette-item flex items-center gap-2 p-2 rounded-xl bg-card hover:bg-amber-400/15 hover:border-amber-400/50 border border-line text-slate-200 hover:text-white transition-all">
-            <img src="/items/icons/transparent/hq_coin.png" class="size-4 object-contain shrink-0" alt="HQ Coin" />
+            <img src="/items/icons/transparent/hq_coin.png" width="16" height="16" class="size-4 object-contain shrink-0" alt="HQ Coin" />
             <span>ระบบแก๊ง (Headquarter)</span>
           </a>
           <a href="/guides/gang/store-robbery" class="palette-item flex items-center gap-2 p-2 rounded-xl bg-card hover:bg-rose-500/15 hover:border-rose-500/50 border border-line text-slate-200 hover:text-white transition-all">
-            <img src="/items/icons/transparent/breaching_kit.png" class="size-4 object-contain shrink-0" alt="Breaching Kit" />
+            <img src="/items/icons/transparent/breaching_kit.png" width="16" height="16" class="size-4 object-contain shrink-0" alt="Breaching Kit" />
             <span>งัดร้านค้า (Store Robbery)</span>
           </a>
           <a href="/guides/food/nutrition" class="palette-item flex items-center gap-2 p-2 rounded-xl bg-card hover:bg-mint/15 hover:border-mint/50 border border-line text-slate-200 hover:text-white transition-all">
@@ -138,10 +139,16 @@ const allGuides = await getCollection('guides');
 </div>
 
 <script>
+  let paletteAbort: AbortController | null = null;
+
   function setupCommandPalette() {
+    if (paletteAbort) paletteAbort.abort();
+    paletteAbort = new AbortController();
+    const { signal } = paletteAbort;
+
     const modal = document.getElementById('commandPaletteModal');
     const panel = document.getElementById('commandPalettePanel');
-    const input = document.getElementById('commandSearchInput') as HTMLInputElement;
+    const input = document.getElementById('commandSearchInput') as HTMLInputElement | null;
     const entries = document.querySelectorAll('.palette-guide-entry');
     const emptyState = document.getElementById('paletteEmptyState');
     const resultsHeader = document.getElementById('resultsCountHeader');
@@ -187,53 +194,51 @@ const allGuides = await getCollection('guides');
         emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
       }
       if (resultsHeader) {
-        resultsHeader.textContent = q 
+        resultsHeader.textContent = q
           ? `// ผลการค้นหา (${visibleCount} บทความ)`
           : `// รายการคู่มือทั้งหมด (${entries.length} บทความ)`;
       }
     }
 
-    // Keyboard Shortcuts: Ctrl+K or Cmd+K (bind once globally)
-    if (!(window as any).__cmdPaletteKeyBound) {
-      (window as any).__cmdPaletteKeyBound = true;
-      window.addEventListener('keydown', (e) => {
-        const m = document.getElementById('commandPaletteModal');
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-          e.preventDefault();
-          if (m?.classList.contains('opacity-0')) {
-            openPalette();
-          } else {
-            closePalette();
-          }
-        } else if (e.key === 'Escape' && !m?.classList.contains('opacity-0')) {
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        if (modal?.classList.contains('opacity-0')) {
+          openPalette();
+        } else {
           closePalette();
         }
-      });
-    }
+      } else if (e.key === 'Escape' && modal && !modal.classList.contains('opacity-0')) {
+        closePalette();
+      }
+    }, { signal });
 
-    // Close on backdrop click
     if (modal) {
       modal.addEventListener('click', (e) => {
         if (e.target === modal) closePalette();
-      });
+      }, { signal });
     }
 
-    // Input filter event
     if (input) {
       input.addEventListener('input', (e) => {
         filterResults((e.target as HTMLInputElement).value);
-      });
+      }, { signal });
     }
 
-    // Connect any global trigger buttons
     document.querySelectorAll('.open-command-palette-btn').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         openPalette();
-      });
+      }, { signal });
     });
   }
 
-  setupCommandPalette();
   document.addEventListener('astro:page-load', setupCommandPalette);
+  document.addEventListener('astro:before-swap', () => {
+    document.body.style.overflow = '';
+    if (paletteAbort) {
+      paletteAbort.abort();
+      paletteAbort = null;
+    }
+  });
 </script>

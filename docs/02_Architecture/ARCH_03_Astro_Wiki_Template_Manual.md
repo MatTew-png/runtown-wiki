@@ -1,3 +1,16 @@
+---
+project: RUNTOWN
+category: architecture
+status: completed
+priority: high
+last_audit: 2026-11-07
+tags:
+  - architecture
+  - astro
+  - content-collections
+  - markdown-engine
+---
+
 # 📖 คู่มือการใช้งานระบบ Astro + Tailwind + Markdown/MDX Wiki Hub
 **RUN TOWN FiveM Thailand Master Guide Portal**
 

@@ -1,5 +1,23 @@
+---
+project: RUNTOWN
+category: feature-deep-dive
+feature_id: FEAT-04
+status: completed
+priority: high
+last_audit: 2026-11-07
+tags:
+  - runtown
+  - economy
+  - iron
+  - pork
+  - logistics
+---
+
 # 📊 คู่มือวิเคราะห์โมเดลเศรษฐกิจ & รูทฟาร์ม (เหล็ก vs หมู)
 > เอกสารสรุปการคำนวณต้นทุน, เวลา, รูทขนส่ง, ความจุกระเป๋ารถ, และการเปรียบเทียบกำไรสุทธิ 48 ชม.
+
+> [!WARNING] Historical Snapshot Notice (Pre-2026-11 Economy Patch)
+> ตัวเลขราคาและเวลาในเอกสารนี้ (`เหล็ก 195–200`, `หมู 120 / 170–200 / 420–480`, `20 นาที/รอบ`) เป็นบันทึกวิจัยเดิม สำหรับสูตรและราคาปัจจุบันของเว็บให้ยึด [[runtown-economy]] และ `src/data/economy.ts` (เหล็ก `233 RD` / อู่ช่าง `233–240 RD`, หมู `97 / 149 / 380 RD`, โต `15 นาที`)
 
 ---
 

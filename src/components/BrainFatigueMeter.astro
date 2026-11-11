@@ -141,18 +141,18 @@ import CyberIcon from './CyberIcon.astro';
       class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-mint"
     />
 
-    <!-- Quick Vehicle Buttons -->
+      <!-- Vehicle Presets (includes +20 kg safe carry after 10 kg Trading Buffer) -->
     <div class="grid grid-cols-4 gap-1.5 text-xs font-mono">
       <button type="button" class="brain-car-btn py-1.5 px-1.5 rounded-lg bg-paper border border-line hover:border-mint text-mint text-center transition-colors font-bold" data-pieces="0" data-label="0 ชิ้น">
         รีเซ็ต (0)
       </button>
-      <button type="button" class="brain-car-btn py-1.5 px-1.5 rounded-lg bg-paper border border-line hover:border-amber-400 text-slate-200 text-center transition-colors inline-flex items-center justify-center gap-1" data-pieces="120" data-label="120 ชิ้น (รถ 60 โล)">
+      <button type="button" class="brain-car-btn py-1.5 px-1.5 rounded-lg bg-paper border border-line hover:border-amber-400 text-slate-200 text-center transition-colors inline-flex items-center justify-center gap-1" data-pieces="160" data-label="160 ชิ้น (รถ 60 + ตัว 20 กก.)">
         <CyberIcon name="car" class="size-3 text-amber-400" /> รถ 60
       </button>
-      <button type="button" class="brain-car-btn py-1.5 px-1.5 rounded-lg bg-paper border border-line hover:border-amber-400 text-slate-200 text-center transition-colors inline-flex items-center justify-center gap-1" data-pieces="240" data-label="240 ชิ้น (รถ 120 โล)">
+      <button type="button" class="brain-car-btn py-1.5 px-1.5 rounded-lg bg-paper border border-line hover:border-amber-400 text-slate-200 text-center transition-colors inline-flex items-center justify-center gap-1" data-pieces="280" data-label="280 ชิ้น (รถ 120 + ตัว 20 กก.)">
         <CyberIcon name="car" class="size-3 text-amber-400" /> รถ 120
       </button>
-      <button type="button" class="brain-car-btn py-1.5 px-1.5 rounded-lg bg-paper border border-danger/40 hover:border-danger text-danger text-center transition-colors font-bold inline-flex items-center justify-center gap-1" data-pieces="300" data-label="300 ชิ้น (รถ 150 โล)">
+      <button type="button" class="brain-car-btn py-1.5 px-1.5 rounded-lg bg-paper border border-danger/40 hover:border-danger text-danger text-center transition-colors font-bold inline-flex items-center justify-center gap-1" data-pieces="340" data-label="340 ชิ้น (รถ 150 + ตัว 20 กก.)">
         <CyberIcon name="truck" class="size-3 text-danger" /> รถ 150
       </button>
     </div>
@@ -161,109 +161,121 @@ import CyberIcon from './CyberIcon.astro';
 </div>
 
 <script>
-  const circumference = 452.39; // 2 * PI * 72
-  let currentBrainPct = 0;
+  let brainAbort: AbortController | null = null;
 
-  const arcEl = document.getElementById('brainGaugeArc');
-  const brainPctNumEl = document.getElementById('brainPctNum');
-  const pctTextEl = document.getElementById('brainPctText');
-  const sliderEl = document.getElementById('brainSlider') as HTMLInputElement;
-  const piecesDispEl = document.getElementById('brainPiecesDisplay');
-  const carBtns = document.querySelectorAll('.brain-car-btn');
+  function initBrainMeter() {
+    if (brainAbort) brainAbort.abort();
+    brainAbort = new AbortController();
+    const { signal } = brainAbort;
 
-  // Summary elements
-  const piecesSummaryEl = document.getElementById('brainPiecesSummary');
-  const timeSummaryEl = document.getElementById('brainTimeSummary');
-  const totalPctSummaryEl = document.getElementById('brainTotalPctSummary');
-  const remainingSummaryEl = document.getElementById('brainRemainingSummary');
-  const adviceTextEl = document.getElementById('brainAdviceText');
-  const adviceBoxEl = document.getElementById('brainAdviceBox');
+    const circumference = 452.39; // 2 * PI * 72
+    let currentBrainPct = 0;
 
-  function renderBrainHUD(pieces: number) {
-    const clamped = Math.max(0, Math.min(100, currentBrainPct));
-    const offset = circumference - (clamped / 100) * circumference;
-    const remainingBuffer = Math.max(0, 100 - clamped);
+    const arcEl = document.getElementById('brainGaugeArc');
+    const brainPctNumEl = document.getElementById('brainPctNum');
+    const pctTextEl = document.getElementById('brainPctText');
+    const sliderEl = document.getElementById('brainSlider') as HTMLInputElement | null;
+    const piecesDispEl = document.getElementById('brainPiecesDisplay');
+    const carBtns = document.querySelectorAll('.brain-car-btn');
 
-    if (arcEl) {
-      arcEl.style.strokeDashoffset = offset.toString();
-      if (clamped >= 80) {
-        arcEl.style.stroke = '#ff4d6d';
-      } else if (clamped >= 50) {
-        arcEl.style.stroke = '#fbbf24';
-      } else {
-        arcEl.style.stroke = '#45f2b4';
+    if (!sliderEl && !arcEl) return;
+
+    const piecesSummaryEl = document.getElementById('brainPiecesSummary');
+    const timeSummaryEl = document.getElementById('brainTimeSummary');
+    const totalPctSummaryEl = document.getElementById('brainTotalPctSummary');
+    const remainingSummaryEl = document.getElementById('brainRemainingSummary');
+    const adviceTextEl = document.getElementById('brainAdviceText');
+    const adviceBoxEl = document.getElementById('brainAdviceBox');
+
+    function renderBrainHUD(pieces: number) {
+      const clamped = Math.max(0, Math.min(100, currentBrainPct));
+      const offset = circumference - (clamped / 100) * circumference;
+      const remainingBuffer = Math.max(0, 100 - clamped);
+
+      if (arcEl) {
+        arcEl.style.strokeDashoffset = offset.toString();
+        if (clamped >= 80) {
+          arcEl.style.stroke = '#ff4d6d';
+        } else if (clamped >= 50) {
+          arcEl.style.stroke = '#fbbf24';
+        } else {
+          arcEl.style.stroke = '#45f2b4';
+        }
+      }
+
+      if (brainPctNumEl) brainPctNumEl.textContent = clamped.toFixed(1);
+      if (pctTextEl) pctTextEl.textContent = `${clamped.toFixed(1)}%`;
+
+      const procMin = (pieces * 5) / 60;
+      if (piecesSummaryEl) piecesSummaryEl.textContent = `${pieces} ชิ้น`;
+      if (timeSummaryEl) timeSummaryEl.textContent = `${procMin.toFixed(1)} นาที`;
+      if (totalPctSummaryEl) {
+        totalPctSummaryEl.textContent = `+${clamped.toFixed(1)}%`;
+        if (clamped >= 80) totalPctSummaryEl.className = 'text-danger font-bold tabular-nums';
+        else if (clamped >= 50) totalPctSummaryEl.className = 'text-amber-300 font-bold tabular-nums';
+        else totalPctSummaryEl.className = 'text-mint font-bold tabular-nums';
+      }
+
+      if (remainingSummaryEl) {
+        remainingSummaryEl.textContent = `${remainingBuffer.toFixed(1)}%`;
+        if (remainingBuffer <= 20) remainingSummaryEl.className = 'text-danger font-bold tabular-nums';
+        else if (remainingBuffer <= 50) remainingSummaryEl.className = 'text-amber-300 font-bold tabular-nums';
+        else remainingSummaryEl.className = 'text-mint font-bold tabular-nums';
+      }
+
+      if (adviceTextEl && adviceBoxEl) {
+        if (clamped >= 100) {
+          adviceTextEl.textContent = 'สมองเต็ม 100%! ตัวละครจะสลบทันที (ในเกมไม่มีเตือนก่อนสลบ) ต้องรีหัวที่บาร์เขียวหรืออู่ช่างก่อนเริ่ม';
+          adviceTextEl.className = 'text-danger font-bold block leading-relaxed';
+        } else if (clamped >= 80) {
+          adviceTextEl.textContent = 'กินสมองหนักเกือบเต็มหลอด (ในเกมไม่มีแจ้งเตือนช่วง 70-80%) จบรอบนี้ต้องรีหัวที่บาร์เขียวหรืออู่ช่างทันที';
+          adviceTextEl.className = 'text-danger font-bold block leading-relaxed';
+        } else if (clamped >= 50) {
+          adviceTextEl.textContent = 'ทำได้ 1 เที่ยวเต็ม เหลือสมองไม่พอต่อเที่ยว 2 ควรแวะรีหัวที่บาร์เขียวหรืออู่ช่าง';
+          adviceTextEl.className = 'text-amber-300 font-semibold block leading-relaxed';
+        } else if (pieces > 0) {
+          adviceTextEl.textContent = 'สมองขึ้นน้อย ปลอดภัย สามารถทำติดต่อกันได้ 2 เที่ยวสบายๆ';
+          adviceTextEl.className = 'text-mint font-semibold block leading-relaxed';
+        } else {
+          adviceTextEl.textContent = 'หลอดว่าง 100% พร้อมลุยฟาร์มได้เต็มที่';
+          adviceTextEl.className = 'text-mint font-semibold block leading-relaxed';
+        }
       }
     }
 
-    // Number and % ONLY (Spacious and responsive)
-    if (brainPctNumEl) brainPctNumEl.textContent = clamped.toFixed(1);
-    if (pctTextEl) pctTextEl.textContent = `${clamped.toFixed(1)}%`;
-
-    // Update calculation summary
-    const procMin = (pieces * 5) / 60;
-    if (piecesSummaryEl) piecesSummaryEl.textContent = `${pieces} ชิ้น`;
-    if (timeSummaryEl) timeSummaryEl.textContent = `${procMin.toFixed(1)} นาที`;
-    if (totalPctSummaryEl) {
-      totalPctSummaryEl.textContent = `+${clamped.toFixed(1)}%`;
-      if (clamped >= 80) totalPctSummaryEl.className = 'text-danger font-bold';
-      else if (clamped >= 50) totalPctSummaryEl.className = 'text-amber-300 font-bold';
-      else totalPctSummaryEl.className = 'text-mint font-bold';
-    }
-
-    if (remainingSummaryEl) {
-      remainingSummaryEl.textContent = `${remainingBuffer.toFixed(1)}%`;
-      if (remainingBuffer <= 20) remainingSummaryEl.className = 'text-danger font-bold';
-      else if (remainingBuffer <= 50) remainingSummaryEl.className = 'text-amber-300 font-bold';
-      else remainingSummaryEl.className = 'text-mint font-bold';
-    }
-
-    // Practical advice on how much to prepare for farming
-    if (adviceTextEl && adviceBoxEl) {
-      if (clamped >= 100) {
-        adviceTextEl.textContent = 'สมองเต็ม 100%! ตัวละครจะสลบทันที ต้องไปรีหัวที่บาร์เขียวหรืออู่ช่างก่อนเริ่มเด็ดขาด';
-        adviceTextEl.className = 'text-danger font-bold block leading-relaxed';
-      } else if (clamped >= 80) {
-        adviceTextEl.textContent = 'กินสมองหนักเกือบเต็มหลอด! ทำได้รอบเดียวจบ แล้วต้องไปรีหัวที่บาร์เขียวหรืออู่ช่างทันที';
-        adviceTextEl.className = 'text-danger font-bold block leading-relaxed';
-      } else if (clamped >= 50) {
-        adviceTextEl.textContent = 'ทำได้ 1 เที่ยวเต็ม เหลือสมองสำรองไม่พอต่อเที่ยว 2 ควรแวะรีหัวที่บาร์เขียวหรืออู่ช่าง';
-        adviceTextEl.className = 'text-amber-300 font-semibold block leading-relaxed';
-      } else if (pieces > 0) {
-        adviceTextEl.textContent = 'สมองขึ้นน้อย ปลอดภัย สามารถทำติดต่อกันได้ 2 เที่ยวสบายๆ';
-        adviceTextEl.className = 'text-mint font-semibold block leading-relaxed';
-      } else {
-        adviceTextEl.textContent = 'หลอดว่าง 100% พร้อมลุยฟาร์มได้เต็มที่';
-        adviceTextEl.className = 'text-mint font-semibold block leading-relaxed';
+    function setPieces(pieces: number, labelText?: string) {
+      if (piecesDispEl) {
+        piecesDispEl.textContent = labelText || `${pieces} ชิ้น`;
       }
+      const procMin = (pieces * 5) / 60;
+      currentBrainPct = (pieces * 0.25) + (procMin * 0.42);
+      renderBrainHUD(pieces);
     }
-  }
 
-  function setPieces(pieces: number, labelText?: string) {
-    if (piecesDispEl) {
-      piecesDispEl.textContent = labelText || `${pieces} ชิ้น`;
+    if (sliderEl) {
+      sliderEl.addEventListener('input', (e) => {
+        const p = parseInt((e.target as HTMLInputElement).value, 10);
+        setPieces(p);
+      }, { signal });
     }
-    // Action 0.25%/piece + Passive time 0.42%/min (5s per piece)
-    const procMin = (pieces * 5) / 60;
-    currentBrainPct = (pieces * 0.25) + (procMin * 0.42);
-    renderBrainHUD(pieces);
+
+    carBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const p = parseInt(btn.getAttribute('data-pieces') || '0', 10);
+        const lbl = btn.getAttribute('data-label') || `${p} ชิ้น`;
+        if (sliderEl) sliderEl.value = p.toString();
+        setPieces(p, lbl);
+      }, { signal });
+    });
+
+    setPieces(0, '0 ชิ้น');
   }
 
-  if (sliderEl) {
-    sliderEl.addEventListener('input', (e) => {
-      const p = parseInt((e.target as HTMLInputElement).value, 10);
-      setPieces(p);
-    });
-  }
-
-  carBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const p = parseInt(btn.getAttribute('data-pieces') || '0', 10);
-      const lbl = btn.getAttribute('data-label') || `${p} ชิ้น`;
-      if (sliderEl) sliderEl.value = p.toString();
-      setPieces(p, lbl);
-    });
+  document.addEventListener('astro:page-load', initBrainMeter);
+  document.addEventListener('astro:before-swap', () => {
+    if (brainAbort) {
+      brainAbort.abort();
+      brainAbort = null;
+    }
   });
-
-  // Initial render: 0 pieces
-  setPieces(0, '0 ชิ้น');
 </script>

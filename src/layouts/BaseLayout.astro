@@ -2,7 +2,7 @@
 import Navbar from '../components/Navbar.astro';
 import CommandPalette from '../components/CommandPalette.astro';
 import GenerativeShapesBackground from '../components/GenerativeShapesBackground.astro';
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 
 interface Props {
@@ -38,14 +38,12 @@ const {
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
 
     <!-- Native SPA Page Transitions -->
-    <ViewTransitions />
+    <ClientRouter />
   </head>
   <body class="flex flex-col min-h-screen text-textMain selection:bg-mint selection:text-black relative">
     
     <!-- Generative Geometric Background Engine (Book of Shapes) -->
     <GenerativeShapesBackground />
-
-    <!-- Top Navigation -->
 
     <!-- Top Navigation -->
     <Navbar activeCategory={activeCategory} />
@@ -80,7 +78,7 @@ const {
 
     <!-- GSAP Cyber Motion Animation Engine & Instant Nav Bar -->
     <script>
-      import { initCyberAnimations } from '../scripts/cyberMotion';
+      import { initCyberAnimations, cleanupCyberAnimations } from '../scripts/cyberMotion';
 
       function getBar() {
         return document.getElementById('page-nav-bar');
@@ -93,6 +91,10 @@ const {
           bar.style.opacity = '1';
           bar.style.width = '70%';
         }
+      });
+
+      document.addEventListener('astro:before-swap', () => {
+        cleanupCyberAnimations();
       });
 
       document.addEventListener('astro:after-swap', () => {
@@ -108,7 +110,6 @@ const {
         }
       });
 
-      initCyberAnimations();
       document.addEventListener('astro:page-load', () => {
         initCyberAnimations();
       });

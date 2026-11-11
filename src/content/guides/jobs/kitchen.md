@@ -146,7 +146,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-orange-500/15 text-orange-300 border border-orange-500/30 font-medium">Downtown LS</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/kitchen_cook.png" alt="ร้านเคบับ Downtown แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/kitchen_cook.png" alt="ร้านเคบับ Downtown แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>ใจกลางเมือง เหมาะสำหรับสายวิ่งส่งอาหารรอบเมือง</span>
@@ -164,7 +164,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-orange-500/15 text-orange-300 border border-orange-500/30 font-medium">Vespucci Beach</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/kitchen_assemble.png" alt="ร้านเคบับ Vespucci แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/kitchen_assemble.png" alt="ร้านเคบับ Vespucci แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>โซนชายหาดฝั่งตะวันตก ใกล้บาร์เขียวรีหัว 0%</span>
@@ -182,7 +182,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-orange-500/15 text-orange-300 border border-orange-500/30 font-medium">East LS Zone</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/kitchen_app.png" alt="ร้านเคบับ Mirror Park แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/kitchen_app.png" alt="ร้านเคบับ Mirror Park แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>โซนที่พักอาศัยฝั่งตะวันออก กระจายสินค้าฝั่งตะวันออก</span>
@@ -200,7 +200,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-orange-500/15 text-orange-300 border border-orange-500/30 font-medium">North Paleto</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/kitchen_deliver.png" alt="ร้านเคบับ Paleto Bay แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/kitchen_deliver.png" alt="ร้านเคบับ Paleto Bay แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>โซนเหนือสุดของเกาะ ใกล้จุดตัดไม้ ทำกินแก้หิวได้ทันที</span>

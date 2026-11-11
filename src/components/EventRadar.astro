@@ -68,14 +68,14 @@ const events = [
   <!-- Content Container with Visual Lock Overlay: ปิดแบบมองเห็นได้ (Disabled & Maintenance Overlay) -->
   <div class="relative mt-10">
     <!-- Dimmed / Disabled Underlying Content (ยังมองเห็นการ์ดและตารางกิจกรรมทั้งหมด) -->
-    <div class="opacity-30 grayscale-[50%] pointer-events-none select-none filter blur-[0.5px]">
+    <div inert aria-hidden="true" class="opacity-30 grayscale-[50%] pointer-events-none select-none filter blur-[0.5px]">
       <div class="grid gap-6 lg:grid-cols-3">
         {events.map((e) => (
           <div class="event-card rounded-2xl border border-line bg-card/70 p-6 backdrop-blur-md shadow-neon-card space-y-5 flex flex-col justify-between" data-event-id={e.id}>
             <div class="space-y-3">
               <div class="flex items-center justify-between">
                 <span class={`font-mono text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
-                  e.tone === 'rose' ? 'border-rose/40 bg-rose/10 text-rose' :
+                  e.tone === 'rose' ? 'border-danger/40 bg-danger/10 text-danger' :
                   e.tone === 'amber' ? 'border-amber-400/40 bg-amber-400/10 text-amber-300' :
                   'border-mint/40 bg-mint/10 text-mint'
                 }`}>
@@ -197,7 +197,7 @@ const events = [
         const m = Math.floor(leftSec / 60);
         const s = leftSec % 60;
         if (cdEl) cdEl.textContent = `LIVE (${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')})`;
-        if (cdEl) cdEl.className = 'event-countdown font-mono text-2xl sm:text-3xl font-extrabold text-rose animate-pulse tracking-widest block';
+        if (cdEl) cdEl.className = 'event-countdown font-mono text-2xl sm:text-3xl font-extrabold text-danger animate-pulse tracking-widest block';
         if (statusText) statusText.textContent = 'LIVE NOW';
       } else {
         const diffSec = Math.max(0, Math.floor((nextStart - now) / 1000));
@@ -211,6 +211,10 @@ const events = [
     });
   }
 
-  setInterval(updateCountdowns, 1000);
-  updateCountdowns();
+  // Render static snapshot without spinning an eternal 1s timer while locked in Maintenance mode
+  document.addEventListener('astro:page-load', () => {
+    if (document.querySelector('[data-event-id]')) {
+      updateCountdowns();
+    }
+  });
 </script>

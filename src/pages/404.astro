@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CyberIcon from '../components/CyberIcon.astro';
+---
+
+<BaseLayout title="404 - ไม่พบหน้าที่ต้องการ | RUN TOWN Wiki">
+  <section class="max-w-3xl mx-auto px-4 sm:px-6 py-20 sm:py-28 text-center">
+    <div class="p-8 sm:p-12 rounded-3xl border border-danger/35 bg-paper/90 shadow-[0_0_40px_rgba(255,77,109,0.12)] space-y-6">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-danger/15 border border-danger/40 text-danger text-xs font-mono font-bold tracking-wider uppercase">
+        <CyberIcon name="alert-triangle" size={14} class="text-danger" />
+        <span>404 · Route Not Found</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl font-display font-extrabold text-white tracking-tight">
+        ไม่พบหน้าหรือพิกัดที่ต้องการ
+      </h1>
+
+      <p class="text-sm sm:text-base text-textSoft max-w-xl mx-auto leading-relaxed">
+        ลิงก์ที่คุณเปิดอาจถูกย้ายหมวดหมู่หรือพิมพ์ไม่ถูกต้อง เลือกกลับไปยังหน้าหลัก ศูนย์รวมคู่มือ หรือเรดาร์แผนที่ RUN TOWN ได้จากปุ่มด้านล่างครับ
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-mint text-slate-950 font-display font-bold text-sm hover:brightness-110 transition-all"
+        >
+          <CyberIcon name="home" size={16} class="text-slate-950" />
+          <span>กลับหน้าแรก</span>
+        </a>
+        <a
+          href="/guides"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-line bg-card text-white font-display font-bold text-sm hover:border-mint transition-all"
+        >
+          <CyberIcon name="book-open" size={16} class="text-mint" />
+          <span>คลังคู่มือทั้งหมด</span>
+        </a>
+        <a
+          href="/map"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-line bg-card text-white font-display font-bold text-sm hover:border-mint transition-all"
+        >
+          <CyberIcon name="map" size={16} class="text-mint" />
+          <span>เปิดเรดาร์แผนที่</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

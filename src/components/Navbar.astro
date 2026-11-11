@@ -55,7 +55,7 @@ const { activeCategory = '' } = Astro.props;
         href="/guides/gang/headquarter" 
         class={`px-2.5 py-1.5 rounded-lg transition-all inline-flex items-center gap-1.5 ${activeCategory === 'gang' ? 'text-amber-400 font-bold bg-amber-400/15 border border-amber-400/40' : 'text-amber-300/90 hover:text-amber-300 hover:bg-amber-400/10'}`}
       >
-        <img src="/items/icons/transparent/hq_coin.png" class="size-4 object-contain shrink-0" alt="HQ Coin" />
+        <img src="/items/icons/transparent/hq_coin.png" width="16" height="16" class="size-4 object-contain shrink-0" alt="HQ Coin" />
         <span>ระบบแก๊ง (HQ)</span>
         <span class="text-[9px] px-1 py-0.2 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30 font-bold font-mono">NEW</span>
       </a>
@@ -93,6 +93,16 @@ const { activeCategory = '' } = Astro.props;
 
     <!-- Right Controls -->
     <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Mobile Search Icon Trigger -->
+      <button 
+        type="button" 
+        class="open-command-palette-btn md:hidden flex items-center justify-center size-9 rounded-xl border border-line bg-paper/80 hover:border-mint text-mint transition-colors cursor-pointer"
+        aria-label="ค้นหาคู่มือ"
+        title="ค้นหาคู่มือ"
+      >
+        <CyberIcon name="search" class="size-4" />
+      </button>
+
       <!-- Fumadocs-style Command Palette Trigger -->
       <button 
         type="button" 
@@ -119,12 +129,130 @@ const { activeCategory = '' } = Astro.props;
 
       <a 
         href="/map" 
-        class="px-3.5 py-1.5 rounded-xl font-mono text-xs font-extrabold text-slate-950 bg-gradient-to-r from-mint to-lime hover:scale-102 transition-transform shadow-[0_0_12px_rgba(69,242,180,0.35)] flex items-center gap-1.5"
+        class="px-3.5 py-1.5 rounded-xl font-mono text-xs font-extrabold text-slate-950 bg-gradient-to-r from-mint to-lime hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_0_12px_rgba(69,242,180,0.35)] flex items-center gap-1.5"
       >
         <CyberIcon name="map" class="size-3.5" />
         <span>LIVE MAP</span>
       </a>
+
+      <!-- Mobile Drawer Toggle -->
+      <button
+        type="button"
+        id="mobileNavToggle"
+        aria-expanded="false"
+        aria-controls="mobileNavDrawer"
+        aria-label="เปิดเมนูนำทาง"
+        class="lg:hidden flex items-center justify-center size-9 rounded-xl border border-line bg-paper/80 hover:border-mint text-textSoft hover:text-white transition-colors cursor-pointer"
+      >
+        <svg id="mobileNavMenuIcon" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+        <svg id="mobileNavCloseIcon" class="size-4 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
     </div>
 
   </div>
+
+  <!-- Responsive Mobile Navigation Drawer -->
+  <nav
+    id="mobileNavDrawer"
+    aria-label="เมนูนำทางมือถือ"
+    class="hidden lg:hidden border-t border-line bg-paper/95 backdrop-blur-xl px-4 py-4 space-y-2 font-mono text-xs"
+  >
+    <div class="grid grid-cols-2 gap-2">
+      <a href="/" class={`px-3 py-2.5 rounded-xl border transition-all flex items-center gap-2 ${activeCategory === 'home' ? 'text-mint font-bold bg-mint/10 border-mint/40' : 'text-textSoft border-lineSubtle bg-card/60 hover:text-white'}`}>
+        <CyberIcon name="home" class="size-3.5 shrink-0" />
+        <span>หน้าหลัก</span>
+      </a>
+      <a href="/guides/jobs/white" class={`px-3 py-2.5 rounded-xl border transition-all flex items-center gap-2 ${activeCategory === 'white_jobs' ? 'text-mint font-bold bg-mint/10 border-mint/40' : 'text-textSoft border-lineSubtle bg-card/60 hover:text-white'}`}>
+        <CyberIcon name="briefcase" class="size-3.5 shrink-0" />
+        <span>งานขาว</span>
+      </a>
+      <a href="/guides/jobs/black" class={`px-3 py-2.5 rounded-xl border transition-all flex items-center gap-2 ${activeCategory === 'black_jobs' ? 'text-mint font-bold bg-mint/10 border-mint/40' : 'text-textSoft border-lineSubtle bg-card/60 hover:text-white'}`}>
+        <CyberIcon name="skull" class="size-3.5 shrink-0" />
+        <span>งานดำ</span>
+      </a>
+      <a href="/guides/gang/headquarter" class={`px-3 py-2.5 rounded-xl border transition-all flex items-center gap-2 ${activeCategory === 'gang' ? 'text-amber-400 font-bold bg-amber-400/15 border-amber-400/40' : 'text-amber-300 border-amber-400/30 bg-amber-400/5 hover:bg-amber-400/10'}`}>
+        <img src="/items/icons/transparent/hq_coin.png" width="16" height="16" class="size-4 object-contain shrink-0" alt="HQ Coin" />
+        <span>ระบบแก๊ง HQ</span>
+      </a>
+      <a href="/guides/logistics/vehicles" class={`px-3 py-2.5 rounded-xl border transition-all flex items-center gap-2 ${activeCategory === 'vehicles' ? 'text-mint font-bold bg-mint/10 border-mint/40' : 'text-textSoft border-lineSubtle bg-card/60 hover:text-white'}`}>
+        <CyberIcon name="truck" class="size-3.5 shrink-0" />
+        <span>ยานพาหนะ</span>
+      </a>
+      <a href="/guides/crafting/weapons" class={`px-3 py-2.5 rounded-xl border transition-all flex items-center gap-2 ${activeCategory === 'crafting' ? 'text-mint font-bold bg-mint/10 border-mint/40' : 'text-textSoft border-lineSubtle bg-card/60 hover:text-white'}`}>
+        <CyberIcon name="swords" class="size-3.5 shrink-0" />
+        <span>คราฟต์</span>
+      </a>
+      <a href="/guides/survival/vitals" class={`px-3 py-2.5 rounded-xl border transition-all flex items-center gap-2 ${activeCategory === 'survival' ? 'text-mint font-bold bg-mint/10 border-mint/40' : 'text-textSoft border-lineSubtle bg-card/60 hover:text-white'}`}>
+        <CyberIcon name="brain" class="size-3.5 shrink-0" />
+        <span>ค่าสมอง</span>
+      </a>
+      <a href="/guides/food/nutrition" class={`px-3 py-2.5 rounded-xl border transition-all flex items-center gap-2 ${activeCategory === 'food' ? 'text-mint font-bold bg-mint/10 border-mint/40' : 'text-textSoft border-lineSubtle bg-card/60 hover:text-white'}`}>
+        <CyberIcon name="drumstick" class="size-3.5 shrink-0" />
+        <span>อาหาร</span>
+      </a>
+      <a href="/guides" class={`px-3 py-2.5 rounded-xl border transition-all flex items-center gap-2 ${activeCategory === 'all' ? 'text-mint font-bold bg-mint/10 border-mint/40' : 'text-textSoft border-lineSubtle bg-card/60 hover:text-white'}`}>
+        <CyberIcon name="book-open" class="size-3.5 shrink-0" />
+        <span>คู่มือทั้งหมด</span>
+      </a>
+      <a href="https://discord.gg/runtown" target="_blank" rel="noopener noreferrer" class="px-3 py-2.5 rounded-xl border border-[#5865F2]/40 bg-[#5865F2]/10 text-[#7983f5] transition-all flex items-center gap-2">
+        <CyberIcon name="message-square" class="size-3.5 shrink-0" />
+        <span>DISCORD</span>
+      </a>
+    </div>
+  </nav>
 </header>
+
+<script>
+  let navAbort: AbortController | null = null;
+
+  function setupMobileNavbar() {
+    if (navAbort) navAbort.abort();
+    navAbort = new AbortController();
+    const { signal } = navAbort;
+
+    const toggleBtn = document.getElementById('mobileNavToggle');
+    const drawer = document.getElementById('mobileNavDrawer');
+    const menuIcon = document.getElementById('mobileNavMenuIcon');
+    const closeIcon = document.getElementById('mobileNavCloseIcon');
+
+    if (!toggleBtn || !drawer) return;
+
+    function setDrawer(open: boolean) {
+      drawer!.classList.toggle('hidden', !open);
+      toggleBtn!.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggleBtn!.setAttribute('aria-label', open ? 'ปิดเมนูนำทาง' : 'เปิดเมนูนำทาง');
+      if (menuIcon) menuIcon.classList.toggle('hidden', open);
+      if (closeIcon) closeIcon.classList.toggle('hidden', !open);
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      const isClosed = drawer.classList.contains('hidden');
+      setDrawer(isClosed);
+    }, { signal });
+
+    drawer.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => setDrawer(false), { signal });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !drawer.classList.contains('hidden')) {
+        setDrawer(false);
+      }
+    }, { signal });
+  }
+
+  document.addEventListener('astro:page-load', setupMobileNavbar);
+  document.addEventListener('astro:before-swap', () => {
+    if (navAbort) {
+      navAbort.abort();
+      navAbort = null;
+    }
+  });
+</script>

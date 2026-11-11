@@ -1,0 +1,5 @@
+# Cursor Agent Rules
+- Always obey instructions in docs/.agent/rules.md
+- Validate frontmatter against docs/.agent/schema.md
+- Stage new feature proposals in docs/10_Inbox/
+- Use Obsidian Wikilinks [[Note Name]] in markdown prose within docs/

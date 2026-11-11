@@ -22,7 +22,7 @@ updatedAt: "09 ตุลาคม 2026"
   * 📦 Weapon Box Set x 1
 
 <div style="text-align: center; margin: 12px 0;">
-  <img src="/items/icons/transparent/impact_core.png" alt="Impact Core" style="display: inline-block; max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(223, 255, 0, 0.4);" />
+  <img src="/items/icons/transparent/impact_core.png" alt="Impact Core" style="display: inline-block; max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(223, 255, 0, 0.4);" decoding="async" />
 </div>
 
 ![Impact Core In-game Screenshot](/items/3.png)
@@ -36,7 +36,7 @@ updatedAt: "09 ตุลาคม 2026"
   * 📦 Weapon Box Set x 1
 
 <div style="text-align: center; margin: 12px 0;">
-  <img src="/items/icons/transparent/edge_core.png" alt="Edge Core" style="display: inline-block; max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(255, 59, 92, 0.4);" />
+  <img src="/items/icons/transparent/edge_core.png" alt="Edge Core" style="display: inline-block; max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(255, 59, 92, 0.4);" decoding="async" />
 </div>
 
 ![Edge Core In-game Screenshot](/items/4.png)
@@ -53,14 +53,14 @@ updatedAt: "09 ตุลาคม 2026"
 
 | ไอคอน | วัตถุดิบ (Ingredient) | จำนวนที่ต้องใช้ | รายละเอียด |
 | :---: | :--- | :---: | :--- |
-| <img src="/items/icons/transparent/cement.png" width="44" height="44" style="border-radius: 8px;" /> | **Cement (ปูน)** | **x2** | ถุงปูนผสมงานช่าง |
-| <img src="/items/icons/transparent/wood_crate.png" width="44" height="44" style="border-radius: 8px;" /> | **Wood Crate (ลังไม้)** | **x10** | ลังไม้แพ็คจากโรงเลื่อย |
-| <img src="/items/icons/transparent/gold_ingot.png" width="44" height="44" style="border-radius: 8px;" /> | **Gold Ingot (ทองคำแท่ง)** | **x5** | ทองคำแท่งหลอมบริสุทธิ์ |
-| <img src="/items/icons/transparent/steel_ingot.png" width="44" height="44" style="border-radius: 8px;" /> | **Steel Ingot (เหล็กกล้าแท่ง)** | **x20** | เหล็กกล้าแท่งหลอม |
-| <img src="/items/icons/transparent/money.png" width="44" height="44" style="border-radius: 8px;" /> | **Money (เงินเขียว)** | **$10,000** | ค่าธรรมเนียมช่างตีกล่อง |
+| <img src="/items/icons/transparent/cement.png" width="44" height="44" style="border-radius: 8px;" decoding="async" /> | **Cement (ปูน)** | **x2** | ถุงปูนผสมงานช่าง |
+| <img src="/items/icons/transparent/wood_crate.png" width="44" height="44" style="border-radius: 8px;" decoding="async" /> | **Wood Crate (ลังไม้)** | **x10** | ลังไม้แพ็คจากโรงเลื่อย |
+| <img src="/items/icons/transparent/gold_ingot.png" width="44" height="44" style="border-radius: 8px;" decoding="async" /> | **Gold Ingot (ทองคำแท่ง)** | **x5** | ทองคำแท่งหลอมบริสุทธิ์ |
+| <img src="/items/icons/transparent/steel_ingot.png" width="44" height="44" style="border-radius: 8px;" decoding="async" /> | **Steel Ingot (เหล็กกล้าแท่ง)** | **x20** | เหล็กกล้าแท่งหลอม |
+| <img src="/items/icons/transparent/money.png" width="44" height="44" style="border-radius: 8px;" decoding="async" /> | **Money (เงินเขียว)** | **$10,000** | ค่าธรรมเนียมช่างตีกล่อง |
 
 <div style="text-align: center; margin: 16px 0;">
-  <img src="/items/icons/transparent/weapon_box_set.png" alt="Weapon Box Set" style="display: inline-block; max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(0, 240, 168, 0.3);" />
+  <img src="/items/icons/transparent/weapon_box_set.png" alt="Weapon Box Set" style="display: inline-block; max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(0, 240, 168, 0.3);" decoding="async" />
 </div>
 
 ---
@@ -73,14 +73,14 @@ updatedAt: "09 ตุลาคม 2026"
 
 | ไอคอน | วัตถุดิบ (Ingredient) | จำนวนที่ต้องใช้ | รายละเอียด |
 | :---: | :--- | :---: | :--- |
-| <img src="/items/icons/transparent/cement.png" width="44" height="44" style="border-radius: 8px;" /> | **Cement (ปูน)** | **x10** | ถุงปูนผสมงานช่าง |
-| <img src="/items/icons/transparent/copper_ingot.png" width="44" height="44" style="border-radius: 8px;" /> | **Copper Ingot (ทองแดงแท่ง)** | **x15** | ทองแดงแท่งหลอม |
-| <img src="/items/icons/transparent/steel_ingot.png" width="44" height="44" style="border-radius: 8px;" /> | **Steel Ingot (เหล็กกล้าแท่ง)** | **x20** | เหล็กกล้าแท่งหลอม |
-| <img src="/items/icons/transparent/cut_diamond.png" width="44" height="44" style="border-radius: 8px;" /> | **Cut Diamond (เพชรเจีย)** | **x1** | เพชรเจียระไนบริสุทธิ์ |
-| <img src="/items/icons/transparent/money.png" width="44" height="44" style="border-radius: 8px;" /> | **Money (เงินเขียว)** | **$5,000** | ค่าธรรมเนียมเตาหลอม |
+| <img src="/items/icons/transparent/cement.png" width="44" height="44" style="border-radius: 8px;" decoding="async" /> | **Cement (ปูน)** | **x10** | ถุงปูนผสมงานช่าง |
+| <img src="/items/icons/transparent/copper_ingot.png" width="44" height="44" style="border-radius: 8px;" decoding="async" /> | **Copper Ingot (ทองแดงแท่ง)** | **x15** | ทองแดงแท่งหลอม |
+| <img src="/items/icons/transparent/steel_ingot.png" width="44" height="44" style="border-radius: 8px;" decoding="async" /> | **Steel Ingot (เหล็กกล้าแท่ง)** | **x20** | เหล็กกล้าแท่งหลอม |
+| <img src="/items/icons/transparent/cut_diamond.png" width="44" height="44" style="border-radius: 8px;" decoding="async" /> | **Cut Diamond (เพชรเจีย)** | **x1** | เพชรเจียระไนบริสุทธิ์ |
+| <img src="/items/icons/transparent/money.png" width="44" height="44" style="border-radius: 8px;" decoding="async" /> | **Money (เงินเขียว)** | **$5,000** | ค่าธรรมเนียมเตาหลอม |
 
 <div style="text-align: center; margin: 16px 0;">
-  <img src="/items/icons/transparent/kryptonite.png" alt="Kryptonite Showcase" style="display: inline-block; max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(0, 240, 168, 0.3);" />
+  <img src="/items/icons/transparent/kryptonite.png" alt="Kryptonite Showcase" style="display: inline-block; max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(0, 240, 168, 0.3);" decoding="async" />
 </div>
 
 ![Kryptonite In-game Screenshot](/items/2.png)
@@ -95,12 +95,12 @@ updatedAt: "09 ตุลาคม 2026"
 
 | ไอคอน | วัตถุดิบ (Ingredient) | จำนวนที่ต้องใช้ | รายละเอียด |
 | :---: | :--- | :---: | :--- |
-| <img src="/items/icons/transparent/copper_ingot.png" width="44" height="44" style="border-radius: 8px;" /> | **Copper Ingot (ทองแดงแท่ง)** | **x10** | ทองแดงแท่งหลอม |
-| <img src="/items/icons/transparent/gold_ingot.png" width="44" height="44" style="border-radius: 8px;" /> | **Gold Ingot (ทองคำแท่ง)** | **x4** | ทองคำแท่งหลอมบริสุทธิ์ |
-| <img src="/items/icons/transparent/money.png" width="44" height="44" style="border-radius: 8px;" /> | **Money (เงินเขียว)** | **$20,000** | ค่าธรรมเนียมช่างทำกุญแจ |
+| <img src="/items/icons/transparent/copper_ingot.png" width="44" height="44" style="border-radius: 8px;" decoding="async" /> | **Copper Ingot (ทองแดงแท่ง)** | **x10** | ทองแดงแท่งหลอม |
+| <img src="/items/icons/transparent/gold_ingot.png" width="44" height="44" style="border-radius: 8px;" decoding="async" /> | **Gold Ingot (ทองคำแท่ง)** | **x4** | ทองคำแท่งหลอมบริสุทธิ์ |
+| <img src="/items/icons/transparent/money.png" width="44" height="44" style="border-radius: 8px;" decoding="async" /> | **Money (เงินเขียว)** | **$20,000** | ค่าธรรมเนียมช่างทำกุญแจ |
 
 <div style="text-align: center; margin: 16px 0;">
-  <img src="/items/icons/transparent/vault_key.png" alt="Vault Key" style="display: inline-block; max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(223, 255, 0, 0.4);" />
+  <img src="/items/icons/transparent/vault_key.png" alt="Vault Key" style="display: inline-block; max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(223, 255, 0, 0.4);" decoding="async" />
 </div>
 
 ![Vault Key](/items/11.png)
@@ -133,17 +133,17 @@ graph TD
 * **โอกาสสำเร็จ:** **70%**
 
 <div style="display: flex; gap: 16px; align-items: center; justify-content: center; margin: 16px 0;">
-  <img src="/items/icons/transparent/blueprint_bat.png" alt="Blueprint Bat" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(0, 240, 168, 0.4);" />
+  <img src="/items/icons/transparent/blueprint_bat.png" alt="Blueprint Bat" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(0, 240, 168, 0.4);" decoding="async" />
 </div>
 
 | ไอคอน | วัตถุดิบ (Ingredient) | จำนวน |
 | :---: | :--- | :---: |
-| <img src="/items/icons/transparent/kryptonite.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **Kryptonite** | **x2** |
-| <img src="/items/icons/transparent/cut_diamond.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **Cut Diamond** | **x5** |
-| <img src="/items/icons/transparent/gold_ingot.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **Gold Ingot** | **x10** |
-| <img src="/items/icons/transparent/wood_crate.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **Wood Crate** | **x10** |
-| <img src="/items/icons/transparent/steel_ingot.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **Steel Ingot** | **x20** |
-| <img src="/items/icons/transparent/money.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **Money (เงินเขียว)** | **$20,000** |
+| <img src="/items/icons/transparent/kryptonite.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **Kryptonite** | **x2** |
+| <img src="/items/icons/transparent/cut_diamond.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **Cut Diamond** | **x5** |
+| <img src="/items/icons/transparent/gold_ingot.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **Gold Ingot** | **x10** |
+| <img src="/items/icons/transparent/wood_crate.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **Wood Crate** | **x10** |
+| <img src="/items/icons/transparent/steel_ingot.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **Steel Ingot** | **x20** |
+| <img src="/items/icons/transparent/money.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **Money (เงินเขียว)** | **$20,000** |
 
 ---
 
@@ -152,17 +152,17 @@ graph TD
 * **โอกาสสำเร็จ:** **70%**
 
 <div style="display: flex; gap: 16px; align-items: center; justify-content: center; margin: 16px 0;">
-  <img src="/items/icons/transparent/blueprint_bottle.png" alt="Blueprint Bottle" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(0, 240, 168, 0.4);" />
+  <img src="/items/icons/transparent/blueprint_bottle.png" alt="Blueprint Bottle" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(0, 240, 168, 0.4);" decoding="async" />
 </div>
 
 | ไอคอน | วัตถุดิบ (Ingredient) | จำนวน |
 | :---: | :--- | :---: |
-| <img src="/items/icons/transparent/kryptonite.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **Kryptonite** | **x2** |
-| <img src="/items/icons/transparent/cut_diamond.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **Cut Diamond** | **x5** |
-| <img src="/items/icons/transparent/gold_ingot.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **Gold Ingot** | **x10** |
-| <img src="/items/icons/transparent/wood_crate.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **Wood Crate** | **x10** |
-| <img src="/items/icons/transparent/steel_ingot.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **Steel Ingot** | **x20** |
-| <img src="/items/icons/transparent/money.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" /> | **Money (เงินเขียว)** | **$20,000** |
+| <img src="/items/icons/transparent/kryptonite.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **Kryptonite** | **x2** |
+| <img src="/items/icons/transparent/cut_diamond.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **Cut Diamond** | **x5** |
+| <img src="/items/icons/transparent/gold_ingot.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **Gold Ingot** | **x10** |
+| <img src="/items/icons/transparent/wood_crate.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **Wood Crate** | **x10** |
+| <img src="/items/icons/transparent/steel_ingot.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **Steel Ingot** | **x20** |
+| <img src="/items/icons/transparent/money.png" width="48" height="48" style="border-radius: 8px; background: rgba(0,0,0,0.4);" decoding="async" /> | **Money (เงินเขียว)** | **$20,000** |
 
 ---
 
@@ -177,19 +177,19 @@ graph TD
 * **โอกาสสำเร็จ:** **50%**
 
 <div style="display: flex; gap: 16px; align-items: center; justify-content: center; margin: 16px 0;">
-  <img src="/items/icons/transparent/blueprint_poolcue_lv1.png" alt="Blueprint: Pool Cue LV1" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(0, 240, 168, 0.4);" />
+  <img src="/items/icons/transparent/blueprint_poolcue_lv1.png" alt="Blueprint: Pool Cue LV1" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(0, 240, 168, 0.4);" decoding="async" />
 </div>
 
 | ไอคอน | ชื่อไอเทม (Item Name) | จำนวนที่ต้องใช้ | รายละเอียด / ที่มา |
 | :---: | :--- | :---: | :--- |
-| <img src="/items/icons/transparent/blueprint_bat.png" width="48" height="48" style="border-radius: 8px;" /> | **Blueprint: Bat** | **x1** | พิมพ์เขียวฐานสายไม้ (Tier 1) |
-| <img src="/items/icons/transparent/kryptonite.png" width="48" height="48" style="border-radius: 8px;" /> | **Kryptonite** | **x5** | แร่สังเคราะห์พิเศษ (สำเร็จ 70%) |
-| <img src="/items/icons/transparent/cut_diamond.png" width="48" height="48" style="border-radius: 8px;" /> | **Cut Diamond** | **x10** | เพชรเจียระไนจากการขุด/ล้างแร่ |
-| <img src="/items/icons/transparent/gold_ingot.png" width="48" height="48" style="border-radius: 8px;" /> | **Gold Ingot** | **x10** | ทองคำแท่งหลอมบริสุทธิ์ |
-| <img src="/items/icons/transparent/wood_crate.png" width="48" height="48" style="border-radius: 8px;" /> | **Wood Crate** | **x10** | ลังไม้แพ็คจากโรงเลื่อย |
-| <img src="/items/icons/transparent/steel_ingot.png" width="48" height="48" style="border-radius: 8px;" /> | **Steel Ingot** | **x20** | เหล็กกล้าแท่งหลอม |
-| <img src="/items/icons/transparent/crystal_ingot.png" width="48" height="48" style="border-radius: 8px;" /> | **Crystal Ingot** | **x25** | แร่คริสตัลแท่งจากจุดฟาร์มลึก |
-| <img src="/items/icons/transparent/black_money.png" width="48" height="48" style="border-radius: 8px;" /> | **Black Money (เงินดำ)** | **$20,000** | ค่าธรรมเนียมเงินดำใต้ดิน |
+| <img src="/items/icons/transparent/blueprint_bat.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Blueprint: Bat** | **x1** | พิมพ์เขียวฐานสายไม้ (Tier 1) |
+| <img src="/items/icons/transparent/kryptonite.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Kryptonite** | **x5** | แร่สังเคราะห์พิเศษ (สำเร็จ 70%) |
+| <img src="/items/icons/transparent/cut_diamond.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Cut Diamond** | **x10** | เพชรเจียระไนจากการขุด/ล้างแร่ |
+| <img src="/items/icons/transparent/gold_ingot.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Gold Ingot** | **x10** | ทองคำแท่งหลอมบริสุทธิ์ |
+| <img src="/items/icons/transparent/wood_crate.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Wood Crate** | **x10** | ลังไม้แพ็คจากโรงเลื่อย |
+| <img src="/items/icons/transparent/steel_ingot.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Steel Ingot** | **x20** | เหล็กกล้าแท่งหลอม |
+| <img src="/items/icons/transparent/crystal_ingot.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Crystal Ingot** | **x25** | แร่คริสตัลแท่งจากจุดฟาร์มลึก |
+| <img src="/items/icons/transparent/black_money.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Black Money (เงินดำ)** | **$20,000** | ค่าธรรมเนียมเงินดำใต้ดิน |
 
 ---
 
@@ -198,19 +198,19 @@ graph TD
 * **โอกาสสำเร็จ:** **50%**
 
 <div style="display: flex; gap: 16px; align-items: center; justify-content: center; margin: 16px 0;">
-  <img src="/items/icons/transparent/blueprint_knuckle_lv1.png" alt="Blueprint: Knuckle LV1" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(0, 240, 168, 0.4);" />
+  <img src="/items/icons/transparent/blueprint_knuckle_lv1.png" alt="Blueprint: Knuckle LV1" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(0, 240, 168, 0.4);" decoding="async" />
 </div>
 
 | ไอคอน | ชื่อไอเทม (Item Name) | จำนวนที่ต้องใช้ | รายละเอียด / ที่มา |
 | :---: | :--- | :---: | :--- |
-| <img src="/items/icons/transparent/blueprint_bat.png" width="48" height="48" style="border-radius: 8px;" /> | **Blueprint: Bat** | **x1** | พิมพ์เขียวฐานสายไม้ (Tier 1) |
-| <img src="/items/icons/transparent/kryptonite.png" width="48" height="48" style="border-radius: 8px;" /> | **Kryptonite** | **x5** | แร่สังเคราะห์พิเศษ (สำเร็จ 70%) |
-| <img src="/items/icons/transparent/cut_diamond.png" width="48" height="48" style="border-radius: 8px;" /> | **Cut Diamond** | **x10** | เพชรเจียระไนจากการขุด/ล้างแร่ |
-| <img src="/items/icons/transparent/gold_ingot.png" width="48" height="48" style="border-radius: 8px;" /> | **Gold Ingot** | **x10** | ทองคำแท่งหลอมบริสุทธิ์ |
-| <img src="/items/icons/transparent/wood_crate.png" width="48" height="48" style="border-radius: 8px;" /> | **Wood Crate** | **x10** | ลังไม้แพ็คจากโรงเลื่อย |
-| <img src="/items/icons/transparent/steel_ingot.png" width="48" height="48" style="border-radius: 8px;" /> | **Steel Ingot** | **x20** | เหล็กกล้าแท่งหลอม |
-| <img src="/items/icons/transparent/crystal_ingot.png" width="48" height="48" style="border-radius: 8px;" /> | **Crystal Ingot** | **x25** | แร่คริสตัลแท่งจากจุดฟาร์มลึก |
-| <img src="/items/icons/transparent/black_money.png" width="48" height="48" style="border-radius: 8px;" /> | **Black Money (เงินดำ)** | **$20,000** | ค่าธรรมเนียมเงินดำใต้ดิน |
+| <img src="/items/icons/transparent/blueprint_bat.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Blueprint: Bat** | **x1** | พิมพ์เขียวฐานสายไม้ (Tier 1) |
+| <img src="/items/icons/transparent/kryptonite.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Kryptonite** | **x5** | แร่สังเคราะห์พิเศษ (สำเร็จ 70%) |
+| <img src="/items/icons/transparent/cut_diamond.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Cut Diamond** | **x10** | เพชรเจียระไนจากการขุด/ล้างแร่ |
+| <img src="/items/icons/transparent/gold_ingot.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Gold Ingot** | **x10** | ทองคำแท่งหลอมบริสุทธิ์ |
+| <img src="/items/icons/transparent/wood_crate.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Wood Crate** | **x10** | ลังไม้แพ็คจากโรงเลื่อย |
+| <img src="/items/icons/transparent/steel_ingot.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Steel Ingot** | **x20** | เหล็กกล้าแท่งหลอม |
+| <img src="/items/icons/transparent/crystal_ingot.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Crystal Ingot** | **x25** | แร่คริสตัลแท่งจากจุดฟาร์มลึก |
+| <img src="/items/icons/transparent/black_money.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Black Money (เงินดำ)** | **$20,000** | ค่าธรรมเนียมเงินดำใต้ดิน |
 
 ---
 
@@ -219,19 +219,19 @@ graph TD
 * **โอกาสสำเร็จ:** **50%**
 
 <div style="display: flex; gap: 16px; align-items: center; justify-content: center; margin: 16px 0;">
-  <img src="/items/icons/transparent/blueprint_knife_lv1.png" alt="Blueprint: Knife LV1" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(0, 240, 168, 0.4);" />
+  <img src="/items/icons/transparent/blueprint_knife_lv1.png" alt="Blueprint: Knife LV1" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(0, 240, 168, 0.4);" decoding="async" />
 </div>
 
 | ไอคอน | ชื่อไอเทม (Item Name) | จำนวนที่ต้องใช้ | รายละเอียด / ที่มา |
 | :---: | :--- | :---: | :--- |
-| <img src="/items/icons/transparent/blueprint_bottle.png" width="48" height="48" style="border-radius: 8px;" /> | **Blueprint: Bottle** | **x1** | พิมพ์เขียวฐานสายมีด/ขวด (Tier 1) |
-| <img src="/items/icons/transparent/kryptonite.png" width="48" height="48" style="border-radius: 8px;" /> | **Kryptonite** | **x5** | แร่สังเคราะห์พิเศษ (สำเร็จ 70%) |
-| <img src="/items/icons/transparent/cut_diamond.png" width="48" height="48" style="border-radius: 8px;" /> | **Cut Diamond** | **x10** | เพชรเจียระไนจากการขุด/ล้างแร่ |
-| <img src="/items/icons/transparent/gold_ingot.png" width="48" height="48" style="border-radius: 8px;" /> | **Gold Ingot** | **x10** | ทองคำแท่งหลอมบริสุทธิ์ |
-| <img src="/items/icons/transparent/wood_crate.png" width="48" height="48" style="border-radius: 8px;" /> | **Wood Crate** | **x10** | ลังไม้แพ็คจากโรงเลื่อย |
-| <img src="/items/icons/transparent/steel_ingot.png" width="48" height="48" style="border-radius: 8px;" /> | **Steel Ingot** | **x20** | เหล็กกล้าแท่งหลอม |
-| <img src="/items/icons/transparent/crystal_ingot.png" width="48" height="48" style="border-radius: 8px;" /> | **Crystal Ingot** | **x25** | แร่คริสตัลแท่งจากจุดฟาร์มลึก |
-| <img src="/items/icons/transparent/black_money.png" width="48" height="48" style="border-radius: 8px;" /> | **Black Money (เงินดำ)** | **$20,000** | ค่าธรรมเนียมเงินดำใต้ดิน |
+| <img src="/items/icons/transparent/blueprint_bottle.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Blueprint: Bottle** | **x1** | พิมพ์เขียวฐานสายมีด/ขวด (Tier 1) |
+| <img src="/items/icons/transparent/kryptonite.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Kryptonite** | **x5** | แร่สังเคราะห์พิเศษ (สำเร็จ 70%) |
+| <img src="/items/icons/transparent/cut_diamond.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Cut Diamond** | **x10** | เพชรเจียระไนจากการขุด/ล้างแร่ |
+| <img src="/items/icons/transparent/gold_ingot.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Gold Ingot** | **x10** | ทองคำแท่งหลอมบริสุทธิ์ |
+| <img src="/items/icons/transparent/wood_crate.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Wood Crate** | **x10** | ลังไม้แพ็คจากโรงเลื่อย |
+| <img src="/items/icons/transparent/steel_ingot.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Steel Ingot** | **x20** | เหล็กกล้าแท่งหลอม |
+| <img src="/items/icons/transparent/crystal_ingot.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Crystal Ingot** | **x25** | แร่คริสตัลแท่งจากจุดฟาร์มลึก |
+| <img src="/items/icons/transparent/black_money.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Black Money (เงินดำ)** | **$20,000** | ค่าธรรมเนียมเงินดำใต้ดิน |
 
 ---
 
@@ -240,19 +240,19 @@ graph TD
 * **โอกาสสำเร็จ:** **50%**
 
 <div style="display: flex; gap: 16px; align-items: center; justify-content: center; margin: 16px 0;">
-  <img src="/items/icons/transparent/blueprint_machete_lv1.png" alt="Blueprint: Machete LV1" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(255, 59, 92, 0.4);" />
+  <img src="/items/icons/transparent/blueprint_machete_lv1.png" alt="Blueprint: Machete LV1" style="max-width: 140px; border-radius: 12px; background: rgba(0,0,0,0.5); padding: 8px; border: 1px solid rgba(255, 59, 92, 0.4);" decoding="async" />
 </div>
 
 | ไอคอน | ชื่อไอเทม (Item Name) | จำนวนที่ต้องใช้ | รายละเอียด / ที่มา |
 | :---: | :--- | :---: | :--- |
-| <img src="/items/icons/transparent/blueprint_bottle.png" width="48" height="48" style="border-radius: 8px;" /> | **Blueprint: Bottle** | **x1** | พิมพ์เขียวฐานสายมีด/ขวด (Tier 1) |
-| <img src="/items/icons/transparent/kryptonite.png" width="48" height="48" style="border-radius: 8px;" /> | **Kryptonite** | **x5** | แร่สังเคราะห์พิเศษ (สำเร็จ 70%) |
-| <img src="/items/icons/transparent/cut_diamond.png" width="48" height="48" style="border-radius: 8px;" /> | **Cut Diamond** | **x10** | เพชรเจียระไนจากการขุด/ล้างแร่ |
-| <img src="/items/icons/transparent/gold_ingot.png" width="48" height="48" style="border-radius: 8px;" /> | **Gold Ingot** | **x10** | ทองคำแท่งหลอมบริสุทธิ์ |
-| <img src="/items/icons/transparent/wood_crate.png" width="48" height="48" style="border-radius: 8px;" /> | **Wood Crate** | **x10** | ลังไม้แพ็คจากโรงเลื่อย |
-| <img src="/items/icons/transparent/steel_ingot.png" width="48" height="48" style="border-radius: 8px;" /> | **Steel Ingot** | **x20** | เหล็กกล้าแท่งหลอม |
-| <img src="/items/icons/transparent/crystal_ingot.png" width="48" height="48" style="border-radius: 8px;" /> | **Crystal Ingot** | **x25** | แร่คริสตัลแท่งจากจุดฟาร์มลึก |
-| <img src="/items/icons/transparent/black_money.png" width="48" height="48" style="border-radius: 8px;" /> | **Black Money (เงินดำ)** | **$20,000** | ค่าธรรมเนียมเงินดำใต้ดิน |
+| <img src="/items/icons/transparent/blueprint_bottle.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Blueprint: Bottle** | **x1** | พิมพ์เขียวฐานสายมีด/ขวด (Tier 1) |
+| <img src="/items/icons/transparent/kryptonite.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Kryptonite** | **x5** | แร่สังเคราะห์พิเศษ (สำเร็จ 70%) |
+| <img src="/items/icons/transparent/cut_diamond.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Cut Diamond** | **x10** | เพชรเจียระไนจากการขุด/ล้างแร่ |
+| <img src="/items/icons/transparent/gold_ingot.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Gold Ingot** | **x10** | ทองคำแท่งหลอมบริสุทธิ์ |
+| <img src="/items/icons/transparent/wood_crate.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Wood Crate** | **x10** | ลังไม้แพ็คจากโรงเลื่อย |
+| <img src="/items/icons/transparent/steel_ingot.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Steel Ingot** | **x20** | เหล็กกล้าแท่งหลอม |
+| <img src="/items/icons/transparent/crystal_ingot.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Crystal Ingot** | **x25** | แร่คริสตัลแท่งจากจุดฟาร์มลึก |
+| <img src="/items/icons/transparent/black_money.png" width="48" height="48" style="border-radius: 8px;" decoding="async" /> | **Black Money (เงินดำ)** | **$20,000** | ค่าธรรมเนียมเงินดำใต้ดิน |
 
 
 

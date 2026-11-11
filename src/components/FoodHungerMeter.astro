@@ -164,110 +164,123 @@ import CyberIcon from './CyberIcon.astro';
 </div>
 
 <script>
-  const foodCircumference = 452.39; // 2 * PI * 72
-  let remainingFoodPct = 100;
+  let foodAbort: AbortController | null = null;
 
-  const foodArcEl = document.getElementById('foodGaugeArc');
-  const foodPctNumEl = document.getElementById('foodPctNum');
-  const foodPctTextEl = document.getElementById('foodPctText');
-  const foodSliderEl = document.getElementById('foodSlider') as HTMLInputElement;
-  const foodTimeDispEl = document.getElementById('foodTimeDisplay');
-  const foodPresetBtns = document.querySelectorAll('.food-preset-btn');
+  function initFoodMeter() {
+    if (foodAbort) foodAbort.abort();
+    foodAbort = new AbortController();
+    const { signal } = foodAbort;
 
-  // Summary elements
-  const foodTimeSummaryEl = document.getElementById('foodTimeSummary');
-  const foodDropSummaryEl = document.getElementById('foodDropSummary');
-  const foodRemainingSummaryEl = document.getElementById('foodRemainingSummary');
-  const foodCountdownSummaryEl = document.getElementById('foodCountdownSummary');
-  const foodAdviceTextEl = document.getElementById('foodAdviceText');
+    const foodCircumference = 452.39; // 2 * PI * 72
+    let remainingFoodPct = 100;
 
-  function renderFoodHUD(min: number) {
-    const clamped = Math.max(0, Math.min(100, remainingFoodPct));
-    const offset = foodCircumference - (clamped / 100) * foodCircumference;
-    const drop = min * 0.7246;
+    const foodArcEl = document.getElementById('foodGaugeArc');
+    const foodPctNumEl = document.getElementById('foodPctNum');
+    const foodPctTextEl = document.getElementById('foodPctText');
+    const foodSliderEl = document.getElementById('foodSlider') as HTMLInputElement | null;
+    const foodTimeDispEl = document.getElementById('foodTimeDisplay');
+    const foodPresetBtns = document.querySelectorAll('.food-preset-btn');
 
-    if (foodArcEl) {
-      foodArcEl.style.strokeDashoffset = offset.toString();
-      if (clamped <= 20) {
-        foodArcEl.style.stroke = '#ff4d6d';
-      } else if (clamped <= 50) {
-        foodArcEl.style.stroke = '#fbbf24';
-      } else {
-        foodArcEl.style.stroke = '#45f2b4';
+    if (!foodSliderEl && !foodArcEl) return;
+
+    const foodTimeSummaryEl = document.getElementById('foodTimeSummary');
+    const foodDropSummaryEl = document.getElementById('foodDropSummary');
+    const foodRemainingSummaryEl = document.getElementById('foodRemainingSummary');
+    const foodCountdownSummaryEl = document.getElementById('foodCountdownSummary');
+    const foodAdviceTextEl = document.getElementById('foodAdviceText');
+
+    function renderFoodHUD(min: number) {
+      const clamped = Math.max(0, Math.min(100, remainingFoodPct));
+      const offset = foodCircumference - (clamped / 100) * foodCircumference;
+      const drop = min * 0.7246;
+
+      if (foodArcEl) {
+        foodArcEl.style.strokeDashoffset = offset.toString();
+        if (clamped <= 20) {
+          foodArcEl.style.stroke = '#ff4d6d';
+        } else if (clamped <= 50) {
+          foodArcEl.style.stroke = '#fbbf24';
+        } else {
+          foodArcEl.style.stroke = '#45f2b4';
+        }
+      }
+
+      if (foodPctNumEl) foodPctNumEl.textContent = clamped.toFixed(1);
+      if (foodPctTextEl) foodPctTextEl.textContent = `${clamped.toFixed(1)}%`;
+
+      const remainingMinutes = (clamped / 0.7246).toFixed(0);
+      if (foodTimeSummaryEl) foodTimeSummaryEl.textContent = `${min} นาที`;
+      if (foodDropSummaryEl) foodDropSummaryEl.textContent = `-${drop.toFixed(1)}%`;
+
+      if (foodRemainingSummaryEl) {
+        foodRemainingSummaryEl.textContent = `${clamped.toFixed(1)}%`;
+        if (clamped <= 20) foodRemainingSummaryEl.className = 'text-danger font-bold tabular-nums';
+        else if (clamped <= 50) foodRemainingSummaryEl.className = 'text-amber-300 font-bold tabular-nums';
+        else foodRemainingSummaryEl.className = 'text-mint font-bold tabular-nums';
+      }
+
+      if (foodCountdownSummaryEl) {
+        if (clamped <= 0) {
+          foodCountdownSummaryEl.textContent = '0 นาที (เลือดลด -1 HP/วิ!)';
+          foodCountdownSummaryEl.className = 'text-danger font-bold animate-pulse tabular-nums';
+        } else {
+          foodCountdownSummaryEl.textContent = `~${remainingMinutes} นาที`;
+          foodCountdownSummaryEl.className = 'text-white font-bold tabular-nums';
+        }
+      }
+
+      if (foodAdviceTextEl) {
+        if (clamped <= 0) {
+          foodAdviceTextEl.textContent = '[วิกฤต] อาหารหมดเกลี้ยง! กำลังเสียเลือด -1 HP/วิ ต้องกินข้าวด่วนที่สุด';
+          foodAdviceTextEl.className = 'text-danger font-bold block leading-relaxed';
+        } else if (clamped <= 20) {
+          foodAdviceTextEl.textContent = '[โซนอันตราย ≤ 20%] หลอดเปลี่ยนสีแดง เหลือเวลา ~27 นาทีก่อนลดเลือด ควรพกเสบียงอย่างน้อย 2-3 ชุด';
+          foodAdviceTextEl.className = 'text-danger font-bold block leading-relaxed';
+        } else if (min >= 90) {
+          foodAdviceTextEl.textContent = 'รอบยาว (รถ 150 โล) แนะนำพก Kebab/Pita หรืออาหารกล่อง 2 ชุด เพื่อกดกินระหว่างรอ';
+          foodAdviceTextEl.className = 'text-amber-300 font-semibold block leading-relaxed';
+        } else if (min >= 45) {
+          foodAdviceTextEl.textContent = 'กินให้อิ่มก่อนออก และพกอาหารกล่องสำรอง 1 ชุด เผื่อติดขัดกลางทาง';
+          foodAdviceTextEl.className = 'text-slate-200 font-semibold block leading-relaxed';
+        } else {
+          foodAdviceTextEl.textContent = 'กินให้อิ่ม 100% ก่อนออกสตาร์ท ไม่จำเป็นต้องพกเสบียงเพิ่ม';
+          foodAdviceTextEl.className = 'text-mint font-semibold block leading-relaxed';
+        }
       }
     }
 
-    // Number and % ONLY (Spacious and responsive)
-    if (foodPctNumEl) foodPctNumEl.textContent = clamped.toFixed(1);
-    if (foodPctTextEl) foodPctTextEl.textContent = `${clamped.toFixed(1)}%`;
-
-    // Calculation summary
-    const remainingMinutes = (clamped / 0.7246).toFixed(0);
-    if (foodTimeSummaryEl) foodTimeSummaryEl.textContent = `${min} นาที`;
-    if (foodDropSummaryEl) foodDropSummaryEl.textContent = `-${drop.toFixed(1)}%`;
-
-    if (foodRemainingSummaryEl) {
-      foodRemainingSummaryEl.textContent = `${clamped.toFixed(1)}%`;
-      if (clamped <= 20) foodRemainingSummaryEl.className = 'text-danger font-bold';
-      else if (clamped <= 50) foodRemainingSummaryEl.className = 'text-amber-300 font-bold';
-      else foodRemainingSummaryEl.className = 'text-mint font-bold';
-    }
-
-    if (foodCountdownSummaryEl) {
-      if (clamped <= 0) {
-        foodCountdownSummaryEl.textContent = '0 นาที (เลือดลด -1 HP/วิ!)';
-        foodCountdownSummaryEl.className = 'text-danger font-bold animate-pulse';
-      } else {
-        foodCountdownSummaryEl.textContent = `~${remainingMinutes} นาที`;
-        foodCountdownSummaryEl.className = 'text-white font-bold';
+    function setTimeElapsed(min: number) {
+      const drop = min * 0.7246;
+      remainingFoodPct = Math.max(0, 100 - drop);
+      if (foodTimeDispEl) {
+        foodTimeDispEl.textContent = `${min} นาที`;
       }
+      renderFoodHUD(min);
     }
 
-    // Practical advice on how much supplies to prepare for farming
-    if (foodAdviceTextEl) {
-      if (clamped <= 0) {
-        foodAdviceTextEl.textContent = '[วิกฤต] อาหารหมดเกลี้ยง! กำลังเสียเลือดตาย ต้องกินข้าวด่วนที่สุด';
-        foodAdviceTextEl.className = 'text-danger font-bold block leading-relaxed';
-      } else if (clamped <= 20) {
-        foodAdviceTextEl.textContent = '[โซนอันตราย] อาหารเหลือไม่ถึง 20% ต้องมีเสบียงติดตัวอย่างน้อย 2-3 ชุด';
-        foodAdviceTextEl.className = 'text-danger font-bold block leading-relaxed';
-      } else if (min >= 90) {
-        foodAdviceTextEl.textContent = 'รอบยาว (รถ 150 โล) แนะนำพกอาหารกล่อง/น้ำ 2 ชุด เพื่อกดกินระหว่างรอ';
-        foodAdviceTextEl.className = 'text-amber-300 font-semibold block leading-relaxed';
-      } else if (min >= 45) {
-        foodAdviceTextEl.textContent = 'กินให้อิ่มก่อนออก และพกอาหารกล่องสำรอง 1 ชุด เผื่อติดขัดกลางทาง';
-        foodAdviceTextEl.className = 'text-slate-200 font-semibold block leading-relaxed';
-      } else {
-        foodAdviceTextEl.textContent = 'กินให้อิ่ม 100% ก่อนออกสตาร์ท ไม่จำเป็นต้องพกเสบียงเพิ่ม';
-        foodAdviceTextEl.className = 'text-mint font-semibold block leading-relaxed';
-      }
+    if (foodSliderEl) {
+      foodSliderEl.addEventListener('input', (e) => {
+        const m = parseInt((e.target as HTMLInputElement).value, 10);
+        setTimeElapsed(m);
+      }, { signal });
     }
-  }
 
-  function setTimeElapsed(min: number) {
-    const drop = min * 0.7246;
-    remainingFoodPct = Math.max(0, 100 - drop);
-    if (foodTimeDispEl) {
-      foodTimeDispEl.textContent = `${min} นาที`;
-    }
-    renderFoodHUD(min);
-  }
-
-  if (foodSliderEl) {
-    foodSliderEl.addEventListener('input', (e) => {
-      const m = parseInt((e.target as HTMLInputElement).value, 10);
-      setTimeElapsed(m);
+    foodPresetBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const m = parseInt(btn.getAttribute('data-time') || '0', 10);
+        if (foodSliderEl) foodSliderEl.value = m.toString();
+        setTimeElapsed(m);
+      }, { signal });
     });
+
+    setTimeElapsed(0);
   }
 
-  foodPresetBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const m = parseInt(btn.getAttribute('data-time') || '0', 10);
-      if (foodSliderEl) foodSliderEl.value = m.toString();
-      setTimeElapsed(m);
-    });
+  document.addEventListener('astro:page-load', initFoodMeter);
+  document.addEventListener('astro:before-swap', () => {
+    if (foodAbort) {
+      foodAbort.abort();
+      foodAbort = null;
+    }
   });
-
-  // Initial render: Starts at 0 minutes
-  setTimeElapsed(0);
 </script>

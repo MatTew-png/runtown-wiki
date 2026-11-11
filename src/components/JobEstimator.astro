@@ -81,7 +81,10 @@ const initialPrice = activePresets[0]?.price ?? defaultPrice;
 const initialTime = activePresets[0]?.time ?? 5;
 ---
 
-<div class="job-estimator-card p-5 sm:p-6 rounded-2xl border-2 border-mint/35 bg-[#0a120e] space-y-5 my-8 shadow-[0_0_30px_rgba(69,242,180,0.12)] relative overflow-hidden text-white">
+<div
+  class="job-estimator-card p-5 sm:p-6 rounded-2xl border-2 border-mint/35 bg-[#0a120e] space-y-5 my-8 shadow-[0_0_30px_rgba(69,242,180,0.12)] relative overflow-hidden text-white"
+  aria-label={`เครื่องคำนวณ: ${itemName}`}
+>
   <div class="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-mint/10 blur-3xl pointer-events-none"></div>
 
   <!-- Header Strip: Crisp White Title with Neon Accent -->
@@ -96,14 +99,14 @@ const initialTime = activePresets[0]?.time ?? 5;
           <span class="text-xs font-mono text-mint font-semibold hidden sm:inline">(Live Logistics Estimator)</span>
         </h3>
         <p class="text-xs font-mono text-slate-200">
-          คำนวณแบบเต็มพิกัด 100% ท้ายรถ + กระเป๋าตัวละคร 30 กก.
+          คำนวณตามกฎ Trading Buffer: ท้ายรถ + กระเป๋าตัวละครปลอดภัย 20 กก. (เว้น 10 กก. สลับของ)
         </p>
       </div>
     </div>
     <div class="flex items-center gap-2">
       <span class="text-xs font-mono px-3 py-1 rounded-full bg-mint/20 text-mint border border-mint/40 font-bold flex items-center gap-2 shadow-sm">
         <span class="inline-block w-2.5 h-2.5 rounded-full bg-mint animate-pulse"></span>
-        <span>เต็มรถ 100% + ในตัว 30 KG</span>
+        <span>ท้ายรถ + ในตัว 20 KG (เว้น Buffer 10 KG)</span>
       </span>
     </div>
   </div>
@@ -143,7 +146,7 @@ const initialTime = activePresets[0]?.time ?? 5;
     
     <!-- Vehicle Selector: Simple รถ 60 โล, 120 โล, 150 โล -->
     <div class="space-y-1.5 bg-[#101b14] p-3 rounded-xl border border-white/15">
-      <label class="text-xs font-mono text-white font-bold flex items-center gap-1.5">
+      <label for="estimatorTrunkSelect" class="text-xs font-mono text-white font-bold flex items-center gap-1.5">
         <CyberIcon name="truck" size={15} class="text-mint shrink-0" />
         <span>2. เลือกรถที่ใช้ขนของ:</span>
       </label>
@@ -151,15 +154,15 @@ const initialTime = activePresets[0]?.time ?? 5;
         id="estimatorTrunkSelect" 
         class="w-full bg-[#0a120e] border border-mint/40 text-white font-bold rounded-xl px-3.5 py-2.5 text-xs font-mono focus:border-mint focus:outline-none focus:ring-1 focus:ring-mint transition-colors cursor-pointer"
       >
-        <option value="60">🛵 รถ 60 โล</option>
-        <option value="120" selected>🚗 รถ 120 โล (ยอดนิยม)</option>
-        <option value="150">🛻 รถ 150 โล (บรรทุกหนัก)</option>
+        <option value="60">🛵 รถ 60 โล (+20 = 80 กก.)</option>
+        <option value="120" selected>🚗 รถ 120 โล (+20 = 140 กก. ยอดนิยม)</option>
+        <option value="150">🛻 รถ 150 โล (+20 = 170 กก. บรรทุกหนัก)</option>
       </select>
     </div>
 
-    <!-- Body Carry Toggle (+30 kg) -->
+    <!-- Body Carry Toggle (+20 kg safe carry keeping 10 kg Trading Buffer) -->
     <div class="bg-[#101b14] p-3 rounded-xl border border-white/15 flex flex-col justify-between space-y-2">
-      <label class="flex items-center gap-2.5 cursor-pointer select-none">
+      <label for="estimatorBodyCarry" class="flex items-center gap-2.5 cursor-pointer select-none">
         <input 
           type="checkbox" 
           id="estimatorBodyCarry" 
@@ -168,20 +171,20 @@ const initialTime = activePresets[0]?.time ?? 5;
         />
         <span class="text-white font-bold flex items-center gap-1.5 text-xs">
           <CyberIcon name="package" size={15} class="text-mint shrink-0" />
-          <span>รวมกระเป๋าในตัว (+30 กก.)</span>
+          <span>รวมในตัวปลอดภัย (+20 กก. · เว้น Buffer 10 กก.)</span>
         </span>
       </label>
       <div class="flex items-center justify-between text-xs font-mono pt-1 border-t border-white/10">
-        <span class="text-slate-200 text-[11px]">ความจุรวมเที่ยวนี้:</span>
-        <span id="estimatorTotalCapBadge" class="px-2.5 py-0.5 rounded-lg bg-mint/20 text-mint border border-mint/40 font-extrabold text-xs">
-          150 กก.
+        <span class="text-slate-200 text-[11px]">ความจุสุทธิเที่ยวนี้:</span>
+        <span id="estimatorTotalCapBadge" class="px-2.5 py-0.5 rounded-lg bg-mint/20 text-mint border border-mint/40 font-extrabold text-xs tabular-nums">
+          140 กก.
         </span>
       </div>
     </div>
 
     <!-- Speed Buff Toggle: +25% Faster Process & Pack -->
     <div class="bg-[#101b14] p-3 rounded-xl border border-white/15 flex flex-col justify-between space-y-2">
-      <label class="flex items-center gap-2.5 cursor-pointer select-none">
+      <label for="estimatorSpeedBuff" class="flex items-center gap-2.5 cursor-pointer select-none">
         <input 
           type="checkbox" 
           id="estimatorSpeedBuff" 
@@ -205,7 +208,7 @@ const initialTime = activePresets[0]?.time ?? 5;
   <!-- Hidden/Readonly Fine-tune Parameters (In case player wants to review) -->
   <div class="p-3 rounded-xl bg-[#0e1711] border border-white/15 grid grid-cols-3 gap-3 text-xs font-mono">
     <div>
-      <span class="text-slate-200 text-[11px] font-bold block mb-1">น้ำหนักต่อชิ้น:</span>
+      <label for="estimatorWeightInput" class="text-slate-200 text-[11px] font-bold block mb-1">น้ำหนักต่อชิ้น:</label>
       <div class="flex items-center gap-1">
         <input 
           type="number" 
@@ -213,13 +216,13 @@ const initialTime = activePresets[0]?.time ?? 5;
           value={initialWeight} 
           step="0.05" 
           min="0.01" 
-          class="w-full bg-[#0a120e] border border-mint/40 text-mint font-extrabold rounded-lg px-2.5 py-1 text-xs font-mono focus:border-mint focus:outline-none"
+          class="w-full bg-[#0a120e] border border-mint/40 text-mint font-extrabold rounded-lg px-2.5 py-1 text-xs font-mono focus:border-mint focus:outline-none tabular-nums"
         />
         <span class="text-white font-bold text-xs">กก.</span>
       </div>
     </div>
     <div>
-      <span class="text-slate-200 text-[11px] font-bold block mb-1">เวลาฐาน/ชิ้น:</span>
+      <label for="estimatorTimeInput" class="text-slate-200 text-[11px] font-bold block mb-1">เวลาฐาน/ชิ้น:</label>
       <div class="flex items-center gap-1">
         <input 
           type="number" 
@@ -227,13 +230,13 @@ const initialTime = activePresets[0]?.time ?? 5;
           value={initialTime} 
           step="1" 
           min="0" 
-          class="w-full bg-[#0a120e] border border-white/30 text-white font-extrabold rounded-lg px-2.5 py-1 text-xs font-mono focus:border-mint focus:outline-none"
+          class="w-full bg-[#0a120e] border border-white/30 text-white font-extrabold rounded-lg px-2.5 py-1 text-xs font-mono focus:border-mint focus:outline-none tabular-nums"
         />
         <span class="text-white font-bold text-xs">วิ</span>
       </div>
     </div>
     <div>
-      <span class="text-slate-200 text-[11px] font-bold block mb-1">ราคาขาย/ชิ้น:</span>
+      <label for="estimatorPriceInput" class="text-slate-200 text-[11px] font-bold block mb-1">ราคาขาย/ชิ้น:</label>
       <div class="flex items-center gap-1">
         <input 
           type="number" 
@@ -241,7 +244,7 @@ const initialTime = activePresets[0]?.time ?? 5;
           value={initialPrice} 
           step="1" 
           min="0" 
-          class="w-full bg-[#0a120e] border border-amber-400/50 text-amber-300 font-extrabold rounded-lg px-2.5 py-1 text-xs font-mono focus:border-mint focus:outline-none"
+          class="w-full bg-[#0a120e] border border-amber-400/50 text-amber-300 font-extrabold rounded-lg px-2.5 py-1 text-xs font-mono focus:border-mint focus:outline-none tabular-nums"
         />
         <span class="text-amber-400 font-bold text-xs">RD</span>
       </div>
@@ -320,9 +323,9 @@ const initialTime = activePresets[0]?.time ?? 5;
     <div class="flex items-start gap-2.5 bg-[#101b14] p-3 rounded-xl border border-mint/25">
       <CyberIcon name="shield" size={16} class="text-mint shrink-0 mt-0.5" />
       <div>
-        <strong class="text-mint text-xs block mb-0.5">จุดรีเซ็ตสมอง 0% & การขนส่ง:</strong>
+        <strong class="text-mint text-xs block mb-0.5">จุดรีเซ็ตสมอง 0% & กฎ Trading Buffer:</strong>
         <p class="text-white leading-relaxed text-[11px]">
-          แวะล้างหลอดสมองเหลือ 0% ได้ทันทีที่ <span class="text-white font-extrabold underline decoration-mint">บาร์เขียว (Del Perro)</span> หรือ <span class="text-white font-extrabold underline decoration-mint">อู่ช่าง (Chumash)</span> ควบคู่กับการขนของเต็มรถ 100% + ในตัว 30 กก.
+          แวะล้างหลอดสมองเหลือ 0% ได้ทันทีที่ <span class="text-white font-extrabold underline decoration-mint">บาร์เขียว (Del Perro)</span> หรือ <span class="text-white font-extrabold underline decoration-mint">อู่ช่าง (Chumash)</span> และควรเว้นช่องว่างในตัว <span class="text-mint font-bold">10 กก.</span> (แบกจริง 20/30 กก.) ป้องกันบั๊ก FiveM สลับของไม่ได้
         </p>
       </div>
     </div>
@@ -331,7 +334,13 @@ const initialTime = activePresets[0]?.time ?? 5;
 </div>
 
 <script>
+  let estimatorAbort: AbortController | null = null;
+
   function setupJobEstimator() {
+    if (estimatorAbort) estimatorAbort.abort();
+    estimatorAbort = new AbortController();
+    const { signal } = estimatorAbort;
+
     const trunkSelect = document.getElementById('estimatorTrunkSelect') as HTMLSelectElement | null;
     const bodyCarryCheck = document.getElementById('estimatorBodyCarry') as HTMLInputElement | null;
     const speedBuffCheck = document.getElementById('estimatorSpeedBuff') as HTMLInputElement | null;
@@ -354,34 +363,32 @@ const initialTime = activePresets[0]?.time ?? 5;
     function recalculate() {
       const carTrunk = parseFloat(trunkSelect!.value) || 0;
       const hasBodyCarry = bodyCarryCheck ? bodyCarryCheck.checked : true;
-      const bodyCarry = hasBodyCarry ? 30 : 0;
+      // 30 kg max carry minus 10 kg Trading Buffer = 20 kg safe carry
+      const bodyCarry = hasBodyCarry ? 20 : 0;
       const totalCapacity = carTrunk + bodyCarry;
 
       const unitWeight = Math.max(0.01, parseFloat(weightInput!.value) || 0.5);
       const baseTimePerItem = Math.max(0, parseFloat(timeInput!.value) || 0);
       const isBuffActive = speedBuffCheck ? speedBuffCheck.checked : false;
-      
-      // Speed buff: 25% faster (multiply by 0.75) if base time > 0
-      const effectiveTimePerItem = (baseTimePerItem > 0 && isBuffActive) 
-        ? +(baseTimePerItem * 0.75).toFixed(2) 
+
+      const effectiveTimePerItem = (baseTimePerItem > 0 && isBuffActive)
+        ? +(baseTimePerItem * 0.75).toFixed(2)
         : baseTimePerItem;
 
       const unitPrice = Math.max(0, parseFloat(priceInput?.value || '0'));
 
-      // Calculate payload
       const maxItems = totalCapacity > 0 ? Math.floor(totalCapacity / unitWeight) : 0;
       const totalWeight = (maxItems * unitWeight).toFixed(1);
       const totalSeconds = maxItems * effectiveTimePerItem;
       const totalMinutes = (totalSeconds / 60).toFixed(1);
       const totalRevenue = maxItems * unitPrice;
 
-      // Update UI elements
       outMax!.textContent = maxItems.toLocaleString();
       outWeight!.textContent = totalWeight;
       outTime!.textContent = totalMinutes;
 
       if (outCapBadge) {
-        outCapBadge.textContent = `${totalCapacity} กก.${carTrunk > 0 && hasBodyCarry ? ` (รถ ${carTrunk} + ในตัว 30)` : ''}`;
+        outCapBadge.textContent = `${totalCapacity} กก.${carTrunk > 0 && hasBodyCarry ? ` (รถ ${carTrunk} + ตัว 20)` : ''}`;
       }
 
       if (outSpeedBadge) {
@@ -420,7 +427,6 @@ const initialTime = activePresets[0]?.time ?? 5;
       }
     }
 
-    // Preset buttons click listeners
     const presetBtns = document.querySelectorAll('.estimator-preset-btn');
     presetBtns.forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -432,26 +438,30 @@ const initialTime = activePresets[0]?.time ?? 5;
         if (p && priceInput) priceInput.value = p;
         if (t && timeInput) timeInput.value = t;
 
-        // Update active style
         presetBtns.forEach((b) => {
           b.className = 'estimator-preset-btn px-3.5 py-2 rounded-xl border text-xs font-mono font-bold transition-all flex items-center gap-2 cursor-pointer border-white/20 bg-[#121f17] text-white hover:border-mint/60 hover:bg-[#16271e]';
         });
         btn.className = 'estimator-preset-btn px-3.5 py-2 rounded-xl border text-xs font-mono font-bold transition-all flex items-center gap-2 cursor-pointer border-mint bg-mint/25 text-white shadow-[0_0_15px_rgba(69,242,180,0.35)]';
 
         recalculate();
-      });
+      }, { signal });
     });
 
-    trunkSelect.addEventListener('change', recalculate);
-    if (bodyCarryCheck) bodyCarryCheck.addEventListener('change', recalculate);
-    if (speedBuffCheck) speedBuffCheck.addEventListener('change', recalculate);
-    weightInput.addEventListener('input', recalculate);
-    timeInput.addEventListener('input', recalculate);
-    if (priceInput) priceInput.addEventListener('input', recalculate);
+    trunkSelect.addEventListener('change', recalculate, { signal });
+    if (bodyCarryCheck) bodyCarryCheck.addEventListener('change', recalculate, { signal });
+    if (speedBuffCheck) speedBuffCheck.addEventListener('change', recalculate, { signal });
+    weightInput.addEventListener('input', recalculate, { signal });
+    timeInput.addEventListener('input', recalculate, { signal });
+    if (priceInput) priceInput.addEventListener('input', recalculate, { signal });
 
     recalculate();
   }
 
-  setupJobEstimator();
   document.addEventListener('astro:page-load', setupJobEstimator);
+  document.addEventListener('astro:before-swap', () => {
+    if (estimatorAbort) {
+      estimatorAbort.abort();
+      estimatorAbort = null;
+    }
+  });
 </script>

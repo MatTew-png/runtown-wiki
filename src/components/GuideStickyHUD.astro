@@ -244,8 +244,17 @@ const h2Headings = headings.filter((h) => h.depth === 2);
     }
   }
 
-  initHud();
   document.addEventListener('astro:page-load', initHud);
+  document.addEventListener('astro:before-swap', () => {
+    if ((window as any).__hudObserver) {
+      (window as any).__hudObserver.disconnect();
+      (window as any).__hudObserver = null;
+    }
+    if ((window as any).__hudScrollHandler) {
+      window.removeEventListener('scroll', (window as any).__hudScrollHandler);
+      (window as any).__hudScrollHandler = null;
+    }
+  });
 </script>
 
 <style>

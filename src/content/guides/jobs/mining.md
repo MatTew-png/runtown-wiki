@@ -74,7 +74,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 font-medium">Stone Mine Quarry</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/mine_farm.png" alt="จุดเหมืองขุดแร่ แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/mine_farm.png" alt="จุดเหมืองขุดแร่ แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>ก้นบ่อเหมืองหิน Davis Quartz ขุดก้อนหินดิบ 10 วิ/ชิ้น</span>
@@ -92,7 +92,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 font-medium">Mineral Sifting</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/mine_stone_pro.png" alt="จุดโพลหิน แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/mine_stone_pro.png" alt="จุดโพลหิน แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>ปากทางเข้าเหมือง บดหินสกัดเป็นแร่ดิบ (คอปเปอร์, ทอง, เพชร) 5 วิ/ชิ้น</span>
@@ -110,7 +110,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-orange-500/15 text-orange-300 border border-orange-500/30 font-medium">Copper Smelter</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/copper_smelt.png" alt="จุดโพลคอปเปอร์ แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/copper_smelt.png" alt="จุดโพลคอปเปอร์ แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>Cypress Flats โรงงานหลอมทองแดงดิบเป็นแท่งทองแดง ($118/แท่ง)</span>
@@ -128,7 +128,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 font-medium">Gold Smelter</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/gold_smelt.png" alt="จุดโพลทอง แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/gold_smelt.png" alt="จุดโพลทอง แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>Elysian Terminal โรงงานหลอมทองคำดิบเป็นทองคำแท่ง ($189/แท่ง)</span>
@@ -156,7 +156,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 font-medium">Desert Cloud Stash</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/rebel_desert.png" alt="ตู้เรเบลทะเลทราย แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/rebel_desert.png" alt="ตู้เรเบลทะเลทราย แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>จุดเก็บสต็อกแร่ดิบหลังโพลหินเสร็จสิ้น (ใกล้เหมืองมาก)</span>
@@ -174,7 +174,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-red-500/15 text-red-300 border border-red-500/30 font-medium">South LS Cloud Stash</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/rebel_south.png" alt="ตู้เรเบลล่าง แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/rebel_south.png" alt="ตู้เรเบลล่าง แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>จุดเบิกแร่ดิบออกจากคลาวด์เพื่อนำไปเข้าเตาหลอมใต้เมือง</span>
@@ -192,7 +192,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-medium">Del Perro / West LS</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/bar_green.png" alt="บาร์รีหัว บาร์เขียว แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/bar_green.png" alt="บาร์รีหัว บาร์เขียว แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>จุดรีเซ็ตค่าสมอง 0% ตามกฎหมายเมือง RUN TOWN</span>
@@ -210,7 +210,7 @@ updatedAt: "OCTOBER 2026"
       <span class="text-[11px] px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-300 border border-rose-500/30 font-medium">Chumash / Pacific Hwy</span>
     </div>
     <div class="relative overflow-hidden aspect-[16/10] bg-slate-950">
-      <img src="/maps/spots/garage_reset.png" alt="อู่ช่าง รีหัว แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" />
+      <img src="/maps/spots/garage_reset.png" alt="อู่ช่าง รีหัว แผนที่ FiveM" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" loading="lazy" decoding="async" />
     </div>
     <div class="p-3 text-xs text-slate-300 bg-slate-950/70 flex items-center justify-between border-t border-slate-800/80">
       <span>อู่บริการซ่อมรถและจุดรีเซ็ตค่าสมอง 0% ตลอด 24 ชม.</span>
@@ -224,9 +224,9 @@ updatedAt: "OCTOBER 2026"
 
 | ผลผลิตที่ได้ | ไอคอน | อัตราสุ่ม (Drop Rate) | น้ำหนัก | ผลผลิตหลังโพลแท่ง | ราคาขายในตลาด |
 | :--- | :---: | :---: | :---: | :--- | :---: |
-| **Raw Copper (ทองแดงดิบ)** | <img src="/items/icons/transparent/copper_ingot.png" alt="ทองแดง" class="w-8 h-8 object-contain inline-block drop-shadow" style="image-rendering: -webkit-optimize-contrast;" /> | **60%** | 0.50 กก. | Copper Ingot (แท่งคอปเปอร์) | **400 RD** |
-| **Raw Gold (ทองคำดิบ)** | <img src="/items/icons/transparent/gold_ingot.png" alt="ทองคำ" class="w-8 h-8 object-contain inline-block drop-shadow" style="image-rendering: -webkit-optimize-contrast;" /> | **40%** | 0.50 กก. | Gold Ingot (แท่งทอง) | **600 RD** |
-| **Diamond (เพชร)** | <img src="/items/icons/transparent/cut_diamond.png" alt="เพชร" class="w-8 h-8 object-contain inline-block drop-shadow" style="image-rendering: -webkit-optimize-contrast;" /> | **1%** 💎 | 0.50 กก. | เพชรเจียระไนสำเร็จ | **10,000 RD** |
+| **Raw Copper (ทองแดงดิบ)** | <img src="/items/icons/transparent/copper_ingot.png" alt="ทองแดง" class="w-8 h-8 object-contain inline-block drop-shadow" style="image-rendering: -webkit-optimize-contrast;" decoding="async" /> | **60%** | 0.50 กก. | Copper Ingot (แท่งคอปเปอร์) | **400 RD** |
+| **Raw Gold (ทองคำดิบ)** | <img src="/items/icons/transparent/gold_ingot.png" alt="ทองคำ" class="w-8 h-8 object-contain inline-block drop-shadow" style="image-rendering: -webkit-optimize-contrast;" decoding="async" /> | **40%** | 0.50 กก. | Gold Ingot (แท่งทอง) | **600 RD** |
+| **Diamond (เพชร)** | <img src="/items/icons/transparent/cut_diamond.png" alt="เพชร" class="w-8 h-8 object-contain inline-block drop-shadow" style="image-rendering: -webkit-optimize-contrast;" decoding="async" /> | **1%** 💎 | 0.50 กก. | เพชรเจียระไนสำเร็จ | **10,000 RD** |
 
 > [!TIP]
 > **การคำนวณมูลค่าคาดหวัง (Expected Value per 100 Stones):**

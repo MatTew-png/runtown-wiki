@@ -4,6 +4,9 @@ node_modules/
 # Production build output & cache
 dist/
 .astro/
+.wrangler/
+.dev.vars*
+worker-configuration.d.ts
 
 # Scratch & temporary reverse engineering scripts
 scratch/
@@ -31,3 +34,16 @@ archive/
 Thumbs.db
 .vscode/
 .idea/
+
+# Obsidian Ephemeral & Cache Files
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/workspace*
+.obsidian/cache/
+.trash/
+docs/.obsidian/workspace.json
+docs/.obsidian/workspace-mobile.json
+docs/.obsidian/workspace*
+docs/.obsidian/cache/
+docs/.trash/
+

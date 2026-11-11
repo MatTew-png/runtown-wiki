@@ -1,7 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import Sidebar from '../components/Sidebar.astro';
-import TableOfContents from '../components/TableOfContents.astro';
 import BrainFatigueMeter from '../components/BrainFatigueMeter.astro';
 import FoodHungerMeter from '../components/FoodHungerMeter.astro';
 import JobEstimator from '../components/JobEstimator.astro';
@@ -149,7 +148,7 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
             <span>คัดลอกลิงก์คู่มือ</span>
           </button>
 
-          {category === 'farming' && (
+          {['white_jobs', 'black_jobs', 'gang'].includes(category) && (
             <a 
               href="/map"
               class="px-3 py-1.5 rounded-lg border border-mint/40 bg-mint/10 text-mint hover:bg-mint/20 transition-colors flex items-center gap-1.5"
@@ -335,8 +334,8 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
           </noscript>
         </div>
       ) : (
-        <!-- Default Single-Page Layout for Non-White Job Guides or Hub -->
         <>
+          {/* Default Single-Page Layout for Non-White Job Guides or Hub */}
           {targetWhiteJob && (
             <InteractiveJobStepper 
               initialJob={targetWhiteJob} 
@@ -431,14 +430,7 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
 </style>
 
 <script>
-  const shareBtn = document.getElementById('shareGuideBtn');
-  if (shareBtn) {
-    shareBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText(window.location.href).then(() => {
-        alert('คัดลอกลิงก์คู่มือเรียบร้อย!');
-      });
-    });
-  }
+  let guideLayoutAbort: AbortController | null = null;
 
   // Dual-Tab System for White Jobs: Steps vs Calculation & Trip Economics
   function initJobTabs() {
@@ -478,21 +470,25 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
     }
 
     let currentTabMode: string | null = null;
+    const stepsBtnEl = btnSteps;
+    const calcBtnEl = btnCalc;
+    const stepsPanelEl = panelSteps;
+    const calcPanelEl = panelCalc;
 
     function switchJobTab(mode: string) {
       if (currentTabMode === mode) return;
       currentTabMode = mode;
 
       if (mode === 'calc') {
-        panelSteps.classList.add('hidden');
-        panelCalc.classList.remove('hidden');
+        stepsPanelEl.classList.add('hidden');
+        calcPanelEl.classList.remove('hidden');
 
-        btnSteps.className = 'job-tab-btn flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer border border-line bg-card/40 text-textMuted hover:text-white hover:bg-white/5';
+        stepsBtnEl.className = 'job-tab-btn flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer border border-line bg-card/40 text-textMuted hover:text-white hover:bg-white/5';
         if (badgeSteps) {
           badgeSteps.className = 'text-[9px] px-2 py-0.5 rounded uppercase font-bold tracking-wider hidden md:inline border border-lineSubtle bg-white/5 text-textMuted';
         }
 
-        btnCalc.className = 'job-tab-btn active flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer border border-amber-400/80 bg-amber-400/20 text-amber-300 shadow-[0_0_18px_rgba(251,191,36,0.3)]';
+        calcBtnEl.className = 'job-tab-btn active flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer border border-amber-400/80 bg-amber-400/20 text-amber-300 shadow-[0_0_18px_rgba(251,191,36,0.3)]';
         if (badgeCalc) {
           badgeCalc.className = 'text-[9px] px-2 py-0.5 rounded uppercase font-bold tracking-wider hidden md:inline border border-amber-400/50 bg-amber-400/25 text-amber-200';
         }
@@ -505,15 +501,15 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
           pulseDot.className = 'size-2 rounded-full bg-amber-400 animate-pulse';
         }
       } else {
-        panelCalc.classList.add('hidden');
-        panelSteps.classList.remove('hidden');
+        calcPanelEl.classList.add('hidden');
+        stepsPanelEl.classList.remove('hidden');
 
-        btnCalc.className = 'job-tab-btn flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer border border-line bg-card/40 text-textMuted hover:text-white hover:bg-white/5';
+        calcBtnEl.className = 'job-tab-btn flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer border border-line bg-card/40 text-textMuted hover:text-white hover:bg-white/5';
         if (badgeCalc) {
           badgeCalc.className = 'text-[9px] px-2 py-0.5 rounded uppercase font-bold tracking-wider hidden md:inline border border-lineSubtle bg-white/5 text-textMuted';
         }
 
-        btnSteps.className = 'job-tab-btn active flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer border border-mint/80 bg-mint/20 text-mint shadow-[0_0_18px_rgba(69,242,180,0.3)]';
+        stepsBtnEl.className = 'job-tab-btn active flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer border border-mint/80 bg-mint/20 text-mint shadow-[0_0_18px_rgba(69,242,180,0.3)]';
         if (badgeSteps) {
           badgeSteps.className = 'text-[9px] px-2 py-0.5 rounded uppercase font-bold tracking-wider hidden md:inline border border-mint/50 bg-mint/25 text-mint';
         }
@@ -592,7 +588,7 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
     });
   }
 
-  function initFloatingDock() {
+  function initFloatingDock(signal: AbortSignal) {
     const dock = document.getElementById('floatingQuickJumpDock');
     const btnTop = document.getElementById('btnFloatingBackToTop');
     const btnToc = document.getElementById('btnFloatingTOC');
@@ -605,11 +601,11 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
       } else {
         dock.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
       }
-    }, { passive: true });
+    }, { passive: true, signal });
 
     btnTop?.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    }, { signal });
 
     btnToc?.addEventListener('click', () => {
       const dropdownBtn = document.getElementById('hudSectionDropdownBtn');
@@ -618,15 +614,40 @@ const isDualTabJob = Boolean(targetWhiteJob && slug !== 'jobs/white');
       } else {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
-    });
+    }, { signal });
   }
 
   function initGuidePage() {
+    if (guideLayoutAbort) guideLayoutAbort.abort();
+    guideLayoutAbort = new AbortController();
+    const { signal } = guideLayoutAbort;
+
+    const shareBtn = document.getElementById('shareGuideBtn');
+    if (shareBtn) {
+      const labelSpan = shareBtn.querySelector('span');
+      shareBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+          if (labelSpan) {
+            const orig = labelSpan.textContent || 'คัดลอกลิงก์คู่มือ';
+            labelSpan.textContent = '✓ คัดลอกลิงก์แล้ว!';
+            setTimeout(() => {
+              labelSpan.textContent = orig;
+            }, 2000);
+          }
+        });
+      }, { signal });
+    }
+
     initJobTabs();
     setupResponsiveTables();
-    initFloatingDock();
+    initFloatingDock(signal);
   }
 
-  initGuidePage();
   document.addEventListener('astro:page-load', initGuidePage);
+  document.addEventListener('astro:before-swap', () => {
+    if (guideLayoutAbort) {
+      guideLayoutAbort.abort();
+      guideLayoutAbort = null;
+    }
+  });
 </script>

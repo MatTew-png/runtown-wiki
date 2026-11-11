@@ -2,12 +2,16 @@
   "name": "runthukverb-wiki",
   "version": "1.0.0",
   "description": "RUN TOWN FiveM Master Wiki & Live Map Guide",
-  "main": "server.js",
   "scripts": {
     "dev": "astro dev --port 4321",
     "build": "astro build",
     "preview": "astro preview",
-    "start": "astro dev --port 4321"
+    "start": "astro preview --port 4321",
+    "preview:cf": "astro build && wrangler dev",
+    "deploy": "astro build && wrangler deploy",
+    "deploy:dry-run": "astro build && wrangler deploy --dry-run",
+    "check": "astro check",
+    "test": "node --test tests/integrity.test.mjs"
   },
   "keywords": [
     "runtown",
@@ -20,13 +24,16 @@
   "author": "RUN TOWN Community",
   "license": "MIT",
   "dependencies": {
-    "@astrojs/mdx": "^4.3.14",
     "@astrojs/tailwind": "^6.0.2",
     "@types/leaflet": "^1.9.22",
     "astro": "^5.18.2",
     "gsap": "^3.15.0",
     "leaflet": "^1.9.4",
-    "preline": "^4.2.0",
     "tailwindcss": "^3.4.19"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.160.0"
   }
 }

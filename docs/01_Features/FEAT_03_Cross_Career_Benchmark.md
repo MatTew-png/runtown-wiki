@@ -1,3 +1,17 @@
+---
+project: RUNTOWN
+category: feature-deep-dive
+feature_id: FEAT-03
+status: completed
+priority: high
+last_audit: 2026-11-07
+tags:
+  - runtown
+  - benchmark
+  - economy
+  - comparison
+---
+
 # 📊 ศูนย์วิเคราะห์เปรียบเทียบข้ามสายงาน (Cross-Career Farming Benchmark)
 > เอกสารเปรียบเทียบความคุ้มค่า, รายได้ต่อชั่วโมง, ความเหนื่อยล้า, และผลตอบแทนระยะยาวระหว่างทุกสายอาชีพในเซิร์ฟเวอร์
 

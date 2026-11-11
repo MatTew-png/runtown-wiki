@@ -34,12 +34,19 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
 
   <!-- Hero Section: Welcoming New Player Hub (Cocodly Layout) -->
   <section class="relative isolate overflow-hidden border-b border-line">
-    <img
-      src="/images/hero-city.png"
-      alt="RUN TOWN FiveM City Skyline"
-      class="absolute inset-0 w-full h-full object-cover opacity-45 -z-20 pointer-events-none"
-      loading="eager"
-    />
+    <picture>
+      <source srcset="/images/hero-city.webp" type="image/webp" />
+      <img
+        src="/images/hero-city.png"
+        alt="RUN TOWN FiveM City Skyline"
+        width="1376"
+        height="768"
+        fetchpriority="high"
+        decoding="async"
+        class="absolute inset-0 w-full h-full object-cover opacity-45 -z-20 pointer-events-none"
+        loading="eager"
+      />
+    </picture>
     <div class="absolute inset-0 bg-gradient-to-b from-[#050b08]/60 via-[#050b08]/80 to-[#050b08] -z-10 pointer-events-none" aria-hidden="true"></div>
     <div class="absolute inset-0 bg-grid opacity-60 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)] -z-10 pointer-events-none" aria-hidden="true"></div>
     <div class="absolute -top-40 left-1/2 -z-10 size-[600px] -translate-x-1/2 rounded-full bg-mint/15 blur-[120px] pointer-events-none" aria-hidden="true"></div>
@@ -90,9 +97,9 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
         </a>
         <a
           href="/guides/gang/headquarter"
-          class="inline-flex items-center justify-center gap-2.5 rounded-xl border border-amber-400/60 bg-gradient-to-r from-amber-500/20 via-amber-400/15 to-transparent px-6 py-3.5 text-sm font-extrabold text-amber-300 backdrop-blur-md transition-all hover:bg-amber-400/25 hover:shadow-[0_0_24px_rgba(245,158,11,0.4)] hover:scale-102"
+          class="inline-flex items-center justify-center gap-2.5 rounded-xl border border-amber-400/60 bg-gradient-to-r from-amber-500/20 via-amber-400/15 to-transparent px-6 py-3.5 text-sm font-extrabold text-amber-300 backdrop-blur-md transition-all hover:bg-amber-400/25 hover:shadow-[0_0_24px_rgba(245,158,11,0.4)] hover:scale-[1.02]"
         >
-          <img src="/items/icons/transparent/hq_coin.png" class="size-5 object-contain shrink-0" alt="HQ Coin" />
+          <img src="/items/icons/transparent/hq_coin.png" width="20" height="20" decoding="async" class="size-5 object-contain shrink-0" alt="HQ Coin" />
           <span>ระบบแก๊ง Headquarter</span>
           <span class="rounded bg-amber-400/30 px-1.5 py-0.5 text-[10px] font-mono text-amber-200 uppercase font-bold">NEW</span>
           <span>➔</span>
@@ -380,7 +387,7 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
         </div>
         <div class="pt-3 border-t border-lineSubtle">
           <a href="/guides/jobs/white" class="text-xs font-mono font-bold text-mint hover:text-mint/80 flex items-center justify-between">
-            <span>ดูคู่มือสรุปงานขาว 7 อาชีพ</span>
+            <span>ดูคู่มือสรุปงานขาว 8 อาชีพ</span>
             <span>➔</span>
           </a>
         </div>
@@ -428,8 +435,8 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
               380 RD <span class="text-xs font-normal text-slate-400">/ กล่อง</span>
             </p>
             <div class="flex flex-wrap gap-2">
-              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">ลูป 7.18 กม.</span>
-              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">มือใหม่</span>
+              <span class="rounded border border-line bg-base/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">ลูป 7.18 กม.</span>
+              <span class="rounded border border-line bg-base/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">มือใหม่</span>
             </div>
           </div>
         </div>
@@ -463,8 +470,8 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
               479 RD <span class="text-xs font-normal text-slate-400">/ กล่อง</span>
             </p>
             <div class="flex flex-wrap gap-2">
-              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">120 กก.</span>
-              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">ผู้เล่น 500-600 RD</span>
+              <span class="rounded border border-line bg-base/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">120 กก.</span>
+              <span class="rounded border border-line bg-base/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">ผู้เล่น 500-600 RD</span>
             </div>
           </div>
         </div>
@@ -498,8 +505,8 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
               120 RD <span class="text-xs font-normal text-slate-400">/ ดอก</span>
             </p>
             <div class="flex flex-wrap gap-2">
-              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">8 วิ/ชิ้น</span>
-              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">ส่ง รพ. 120 RD</span>
+              <span class="rounded border border-line bg-base/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">8 วิ/ชิ้น</span>
+              <span class="rounded border border-line bg-base/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">ส่ง รพ. 120 RD</span>
             </div>
           </div>
         </div>
@@ -533,8 +540,8 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
               233 RD <span class="text-xs font-normal text-slate-400">/ แท่ง</span>
             </p>
             <div class="flex flex-wrap gap-2">
-              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">1.2 กม.</span>
-              <span class="rounded border border-line bg-void/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">ขายช่าง 233-240 RD</span>
+              <span class="rounded border border-line bg-base/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">1.2 กม.</span>
+              <span class="rounded border border-line bg-base/80 px-2 py-0.5 font-mono text-[11px] text-slate-300">ขายช่าง 233-240 RD</span>
             </div>
           </div>
         </div>
@@ -593,7 +600,7 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
           <div class="flex items-center justify-between">
             <CyberIcon name="briefcase" box={true} tone="mint" class="size-6" />
             <span class="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-mint/20 text-mint border border-mint/40 font-bold">
-              7 อาชีพสุจริต
+              8 อาชีพสุจริต
             </span>
           </div>
 
@@ -602,7 +609,7 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
               งานขาว (White Jobs)
             </h3>
             <p class="text-xs text-slate-300 mt-1 leading-relaxed">
-              ตัดไม้, ขุดแร่, ฟาร์มข้าว, จี่เหล็ก, เลี้ยงหมู, เก็บดอกไม้, และร่อนคริสตัล พร้อมสถิติน้ำหนักและเวลา
+              ตัดไม้, ขุดแร่, ฟาร์มข้าว, จี่เหล็ก, เลี้ยงหมู, เก็บดอกไม้, ร่อนคริสตัล, และครัว & ส่งอาหาร พร้อมสถิติน้ำหนักและเวลา
             </p>
           </div>
 
@@ -838,7 +845,7 @@ const gangGuides = allGuides.filter(g => g.data.category === 'gang');
         <div class="space-y-4">
           <div class="flex items-center justify-between">
             <div class="size-11 rounded-xl bg-amber-400/15 border border-amber-400/40 p-1.5 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(245,158,11,0.25)]">
-              <img src="/items/icons/transparent/hq_coin.png" class="size-8 object-contain" alt="HQ Coin" />
+              <img src="/items/icons/transparent/hq_coin.png" width="32" height="32" decoding="async" class="size-8 object-contain" alt="HQ Coin" />
             </div>
             <span class="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-amber-400/20 text-[#facc15] border border-amber-400/40 font-bold">
               NEW SYSTEM

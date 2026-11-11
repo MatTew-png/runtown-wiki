@@ -1,5 +1,23 @@
+---
+project: RUNTOWN
+category: feature-deep-dive
+feature_id: FEAT-02
+status: completed
+priority: high
+last_audit: 2026-11-07
+tags:
+  - runtown
+  - farming
+  - flower
+  - white-jobs
+  - logistics
+---
+
 # 🌸 คู่มือคัมภีร์ฟาร์มดอกไม้ฉบับสมบูรณ์ (Flower Farming Master Guide)
 > รวมกลไกการผลิต, รูทโลจิสติกส์ 5 เส้นทาง, จุดคุ้มทุน, การจัดประเภทรถ 60 / 120 / 150 กก., การเปรียบเทียบส่ง รพ. vs จัดช่อ, และการคำนวณเปิดคูณ 120k
+
+> [!WARNING] Historical Snapshot Notice (Pre-2026-11 Economy Patch)
+> ตัวเลขราคาขาย `$80 / $100 / $145 / $387` ในเอกสารนี้เป็นบันทึกจากแพตช์ก่อนหน้า สำหรับอัตราปัจจุบันของเว็บโปรดอ้างอิง [[runtown-economy]] และ `src/data/economy.ts` (ดอกไม้สด `88 RD` / ส่ง รพ. `120 RD` / แปรรูป `155 RD` / แพ็ค `424 RD`)
 
 ---
 
