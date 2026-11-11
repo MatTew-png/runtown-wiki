@@ -100,8 +100,7 @@ npm run deploy
 ```
 
 ### ☁️ ตั้งค่า Cloudflare Git Auto-Deploy
-- **Config:** [wrangler.jsonc](file:///c:/Users/_newgen/Documents/antigravity/epic-euclid/wrangler.jsonc) (`assets.directory = "./dist"`, `not_found_handling = "404-page"`)
-- **Security & Cache Headers:** [public/_headers](file:///c:/Users/_newgen/Documents/antigravity/epic-euclid/public/_headers)
-- **Cloudflare Workers Builds:**
-  - **Build command:** `npm run build`
-  - **Deploy command:** `npx wrangler deploy`
+- **Config:** [wrangler.jsonc](wrangler.jsonc) (`assets.directory = "./dist"`, `not_found_handling = "404-page"`)
+- **Security & Cache Headers:** [public/_headers](public/_headers)
+- **วิธีที่ 1 (Cloudflare Native Workers Builds):** เชื่อม repo ใน Cloudflare Dashboard → Workers & Pages → Settings → Builds (`Build: npm run build`, `Deploy: npx wrangler deploy`)
+- **วิธีที่ 2 (GitHub Actions CI/CD):** [.github/workflows/deploy.yml](.github/workflows/deploy.yml) จะรัน `npm run check`, `npm run build`, `npm test` ทุกครั้งที่ push/PR และ deploy อัตโนมัติบน `main` เมื่อตั้งค่า GitHub Repository Secrets (`CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`)
