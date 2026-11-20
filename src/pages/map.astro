@@ -14,6 +14,12 @@ import CyberIcon from '../components/CyberIcon.astro';
       outline: none;
       font-family: inherit;
     }
+    .cursor-crosshair, .cursor-crosshair .leaflet-container, .cursor-crosshair .leaflet-interactive {
+      cursor: crosshair !important;
+    }
+    .leaflet-dragging .gta-marker-container {
+      cursor: grabbing !important;
+    }
     /* Authentic Rockstar Map Tiles - Natural dark radar, NO white bleaching! */
     .game-radar-tiles img.leaflet-tile {
       filter: contrast(106%) brightness(98%);
@@ -155,6 +161,20 @@ import CyberIcon from '../components/CyberIcon.astro';
         <div class="relative w-full h-[620px] sm:h-[720px] rounded-xl overflow-hidden border border-line/60 bg-[#0b131e]">
           <div id="leafletMap" class="w-full h-full"></div>
 
+          <!-- Floating Relocate Mode Banner on Map -->
+          <div id="mapMoveFloatingBanner" class="hidden absolute top-3 left-1/2 -translate-x-1/2 z-[1000] bg-slate-950/95 border border-amber-400/90 text-amber-300 px-4 py-2 rounded-xl backdrop-blur-md shadow-2xl flex items-center gap-3 font-mono text-xs pointer-events-auto">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping shrink-0"></span>
+            <span id="mapMoveFloatingText">📍 คลิกบนแผนที่ หรือลากหมุดเพื่อเลือกตำแหน่งใหม่</span>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button id="btnMapDoneMove" type="button" class="px-3 py-1 bg-mint hover:bg-mint/90 text-slate-950 font-bold rounded-lg text-xs transition-colors cursor-pointer flex items-center gap-1 shadow">
+                <span>บันทึกตำแหน่ง</span>
+              </button>
+              <button id="btnMapCancelMove" type="button" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-lg text-xs transition-colors border border-slate-700 cursor-pointer">
+                ยกเลิก
+              </button>
+            </div>
+          </div>
+
           <!-- Bottom Floating Map Hint -->
           <div class="absolute bottom-3 left-3 z-[1000] pointer-events-none bg-slate-950/85 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-700/80 text-[11px] font-mono text-slate-300 flex items-center gap-2 shadow-lg">
             <span class="inline-block w-2 h-2 rounded-full bg-mint animate-pulse"></span>
@@ -179,6 +199,86 @@ import CyberIcon from '../components/CyberIcon.astro';
           <p id="mapPoiDesc" class="text-xs text-textSoft leading-relaxed">
             ศูนย์รวมพิกัดและจุดทำงานครบทุกประเภทบนเกาะ RUN TOWN — มีจุดฟาร์มวัตถุดิบ 8 สาย, ครัวเคบับ 4 จุด, ร้านค้า 12 สาขา, จุดรีหัว 0% และเขตเซฟโซน
           </p>
+        </div>
+
+        <!-- Pin Coordinates & Move Controls -->
+        <div id="pinControlCard" class="p-3.5 rounded-xl border border-line bg-paper/80 space-y-2.5 font-mono text-xs">
+          <!-- Normal Coordinates Row -->
+          <div class="flex items-center justify-between text-[11px]">
+            <span class="text-textMuted flex items-center gap-1.5">
+              <CyberIcon name="map-pin" size={13} class="text-mint shrink-0" />
+              <span>พิกัด Vector3:</span>
+            </span>
+            <div class="flex items-center gap-1.5">
+              <span id="pinCoordsBadge" class="text-slate-400 font-bold px-2 py-0.5 rounded bg-slate-900/60 border border-slate-700/40 text-[11px]">
+                ALL ZONES (47 SPOTS)
+              </span>
+              <button 
+                id="btnCopyCoords" 
+                type="button" 
+                title="คัดลอกพิกัด Vector3" 
+                class="hidden p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer"
+              >
+                <CyberIcon name="copy" size={13} />
+              </button>
+            </div>
+          </div>
+
+          <!-- Move Pin Action Row (Shown when a spot is selected and not in move mode) -->
+          <div id="pinActionButtons" class="hidden flex items-center gap-2 pt-1">
+            <button 
+              id="btnStartMovePin" 
+              type="button" 
+              class="flex-1 py-1.5 px-3 rounded-lg bg-mint/15 hover:bg-mint/25 border border-mint/40 hover:border-mint text-mint font-bold transition-all flex items-center justify-center gap-1.5 text-xs cursor-pointer shadow-sm"
+            >
+              <CyberIcon name="crosshair" size={13} class="shrink-0" />
+              <span>ย้ายตำแหน่งหมุด</span>
+            </button>
+            <button 
+              id="btnResetPinPos" 
+              type="button" 
+              title="คืนค่าพิกัดเริ่มต้น"
+              class="hidden py-1.5 px-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-400 hover:text-amber-300 transition-colors text-xs cursor-pointer"
+            >
+              <span>↺ คืนค่าเดิม</span>
+            </button>
+          </div>
+
+          <!-- Moving Mode Active Box (Shown only during move mode) -->
+          <div id="pinMovingActiveBox" class="hidden p-3 rounded-lg border border-amber-500/50 bg-amber-500/10 space-y-2.5">
+            <div class="flex items-center justify-between text-amber-300 font-bold text-xs">
+              <span class="flex items-center gap-1.5">
+                <span class="size-2 rounded-full bg-amber-400 animate-ping"></span>
+                <span>โหมดย้ายตำแหน่ง</span>
+              </span>
+              <span id="pinLiveMovingCoords" class="text-[11px] text-white bg-slate-900/90 px-2 py-0.5 rounded border border-amber-500/40 font-mono">
+                X: 0.0, Y: 0.0
+              </span>
+            </div>
+            <p class="text-[11px] text-amber-200/90 font-sans leading-relaxed">
+              👉 ลากตัวหมุดบนแผนที่ หรือคลิกจุดที่ต้องการวางเพื่อเปลี่ยนตำแหน่ง
+            </p>
+            <div class="flex items-center gap-2 pt-0.5">
+              <button 
+                id="btnSavePinPos" 
+                type="button" 
+                class="flex-1 py-1.5 px-3 bg-mint hover:bg-mint/85 text-slate-950 font-bold rounded-lg text-xs transition-colors flex items-center justify-center gap-1 cursor-pointer shadow"
+              >
+                <span>💾 บันทึกตำแหน่ง</span>
+              </button>
+              <button 
+                id="btnCancelPinPos" 
+                type="button" 
+                class="py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-lg text-xs transition-colors border border-slate-700 cursor-pointer"
+              >
+                <span>❌ ยกเลิก</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Notification Toast (Success/Copy/Reset) -->
+          <div id="pinToast" class="hidden text-[11px] font-sans py-1 px-2.5 rounded bg-mint/20 border border-mint/40 text-mint text-center transition-all">
+          </div>
         </div>
 
         <!-- Landmark & Area Overview (แทนที่เลขพิกัด Vector3 เดิม) -->
@@ -283,6 +383,47 @@ import CyberIcon from '../components/CyberIcon.astro';
     return L.latLng(-py / 128, px / 128);
   }
 
+  function latLngToGameCoords(lat: number, lng: number): { x: number; y: number } {
+    const px = lng * 128;
+    const py = -lat * 128;
+    const gameX = GTA5_BOUNDS.minX + (px / GTA5_MAP_SIZE.width) * (GTA5_BOUNDS.maxX - GTA5_BOUNDS.minX);
+    const gameY = GTA5_BOUNDS.maxY - (py / GTA5_MAP_SIZE.height) * (GTA5_BOUNDS.maxY - GTA5_BOUNDS.minY);
+    const clampedX = Math.max(GTA5_BOUNDS.minX, Math.min(GTA5_BOUNDS.maxX, gameX));
+    const clampedY = Math.max(GTA5_BOUNDS.minY, Math.min(GTA5_BOUNDS.maxY, gameY));
+    return {
+      x: Number(clampedX.toFixed(1)),
+      y: Number(clampedY.toFixed(1)),
+    };
+  }
+
+  const STORAGE_KEY = 'runtown_custom_spot_positions';
+  let customCoordsMap: Record<string, { x: number; y: number }> = {};
+
+  function loadCustomCoords() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      customCoordsMap = raw ? JSON.parse(raw) : {};
+    } catch {
+      customCoordsMap = {};
+    }
+  }
+
+  function saveCustomCoords() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(customCoordsMap));
+    } catch (e) {
+      console.error('Failed to save spot positions:', e);
+    }
+  }
+
+  function getEffectiveCoords(spot: SpotData): { x: number; y: number; isCustom: boolean } {
+    const custom = customCoordsMap[spot.id];
+    if (custom && typeof custom.x === 'number' && typeof custom.y === 'number') {
+      return { x: custom.x, y: custom.y, isCustom: true };
+    }
+    return { x: spot.x, y: spot.y, isCustom: false };
+  }
+
   function escapeHtml(value: string): string {
     return value
       .replace(/&/g, '&amp;')
@@ -343,7 +484,14 @@ import CyberIcon from '../components/CyberIcon.astro';
   let currentSelectedId = '';
   let activeFilter = 'all';
 
+  let isMoveMode = false;
+  let pendingMovingCoords: { x: number; y: number } | null = null;
+  let activeMovingMarker: L.Marker | null = null;
+
   function cleanupMap() {
+    isMoveMode = false;
+    pendingMovingCoords = null;
+    activeMovingMarker = null;
     mapAbort?.abort();
     mapAbort = null;
     if (mapInstance) {
@@ -355,20 +503,23 @@ import CyberIcon from '../components/CyberIcon.astro';
     routesLayer = null;
   }
 
-  function createCustomMarkerIcon(spot: SpotData, isSelected: boolean) {
-    const borderColor = /^#[0-9a-fA-F]{3,8}$/.test(spot.color || '') ? spot.color : '#f59e0b';
+  function createCustomMarkerIcon(spot: SpotData, isSelected: boolean, isMoving: boolean = false) {
+    const borderColor = isMoving ? '#fbbf24' : (/^#[0-9a-fA-F]{3,8}$/.test(spot.color || '') ? spot.color : '#f59e0b');
     const svgIcon = GROUP_SVGS[spot.group] || GROUP_SVGS.pork;
     const safeLabel = escapeHtml(spot.label);
+    const movingTag = isMoving ? ' <span style="color: #fbbf24; font-size: 10px; font-weight: 800;">[ย้าย]</span>' : '';
+    const movingScale = isMoving ? 'scale-125 ring-2 ring-amber-400 ring-offset-2 ring-offset-slate-900' : (isSelected ? 'scale-115' : '');
+
     return L.divIcon({
       className: 'gta-custom-div-icon',
       html: `
-        <div class="gta-marker-container ${isSelected ? 'scale-115' : ''}">
+        <div class="gta-marker-container ${movingScale}" style="${isMoving ? 'cursor: grab;' : ''}">
           <div class="gta-marker-badge" style="background: rgba(15, 23, 42, 0.95); border-color: ${borderColor}; color: #ffffff;">
             <span style="display: inline-flex; align-items: center; color: ${borderColor};">${svgIcon}</span>
-            <span style="color: #ffffff; font-weight: 600;">${safeLabel}</span>
+            <span style="color: #ffffff; font-weight: 600;">${safeLabel}</span>${movingTag}
           </div>
           <div class="gta-marker-icon-box" style="background: #0f172a; border: 2px solid ${borderColor}; color: ${borderColor};">
-            <div class="pulse-ring" style="border: 2px solid ${borderColor};"></div>
+            <div class="pulse-ring" style="border: 2px solid ${borderColor}; ${isMoving ? 'border-color: #fbbf24; animation-duration: 0.9s;' : ''}"></div>
             <span style="display: inline-flex; align-items: center;">${svgIcon}</span>
           </div>
         </div>
@@ -382,16 +533,49 @@ import CyberIcon from '../components/CyberIcon.astro';
     if (!markersLayer || !routesLayer) return;
     markersLayer.clearLayers();
     routesLayer.clearLayers();
+    activeMovingMarker = null;
 
     Object.values(SPOTS).forEach((spot) => {
       if (activeFilter !== 'all' && spot.group !== activeFilter) return;
-      const latlng = gameCoordsToLatLng(spot.x, spot.y);
+      const isSelected = spot.id === currentSelectedId;
+      const isMoving = isSelected && isMoveMode;
+
+      const effective = (isMoving && pendingMovingCoords) 
+        ? pendingMovingCoords 
+        : getEffectiveCoords(spot);
+
+      const latlng = gameCoordsToLatLng(effective.x, effective.y);
       const marker = L.marker(latlng, {
-        icon: createCustomMarkerIcon(spot, spot.id === currentSelectedId),
+        icon: createCustomMarkerIcon(spot, isSelected, isMoving),
         riseOnHover: true,
         title: spot.label,
+        draggable: isMoving,
       });
-      marker.on('click', () => selectSpot(spot.id, true));
+
+      if (isMoving) {
+        activeMovingMarker = marker;
+
+        marker.on('drag', () => {
+          const ll = marker.getLatLng();
+          pendingMovingCoords = latLngToGameCoords(ll.lat, ll.lng);
+          updateMovingUI(pendingMovingCoords);
+        });
+
+        marker.on('dragend', () => {
+          const ll = marker.getLatLng();
+          pendingMovingCoords = latLngToGameCoords(ll.lat, ll.lng);
+          updateMovingUI(pendingMovingCoords);
+        });
+      }
+
+      marker.on('click', (e) => {
+        if (isMoveMode) {
+          L.DomEvent.stopPropagation(e);
+          return;
+        }
+        selectSpot(spot.id, true);
+      });
+
       marker.addTo(markersLayer!);
     });
 
@@ -432,6 +616,10 @@ import CyberIcon from '../components/CyberIcon.astro';
     if (!data) return;
     currentSelectedId = data.id;
 
+    if (isMoveMode) {
+      exitMoveMode();
+    }
+
     const titleEl = document.getElementById('mapPoiTitle');
     const descEl = document.getElementById('mapPoiDesc');
     const badgeEl = document.getElementById('mapStatusBadge');
@@ -446,6 +634,7 @@ import CyberIcon from '../components/CyberIcon.astro';
     const guideTextEl = document.getElementById('mapPoiGuideText');
 
     const details = getSpotExtraInfo(data.id, data);
+    const effective = getEffectiveCoords(data);
 
     if (titleEl) titleEl.textContent = data.title;
     if (descEl) descEl.textContent = data.desc;
@@ -453,6 +642,31 @@ import CyberIcon from '../components/CyberIcon.astro';
       badgeEl.textContent = data.status;
       badgeEl.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full border ' + data.statusClass;
     }
+
+    const coordsBadge = document.getElementById('pinCoordsBadge');
+    const btnCopy = document.getElementById('btnCopyCoords');
+    const actionBtns = document.getElementById('pinActionButtons');
+    const btnReset = document.getElementById('btnResetPinPos');
+    const movingBox = document.getElementById('pinMovingActiveBox');
+
+    if (coordsBadge) {
+      coordsBadge.textContent = `X: ${effective.x}, Y: ${effective.y}${effective.isCustom ? ' (ปรับแต่ง)' : ''}`;
+      if (effective.isCustom) {
+        coordsBadge.className = 'text-amber-300 font-bold px-2 py-0.5 rounded bg-amber-950/60 border border-amber-500/40 text-[11px]';
+      } else {
+        coordsBadge.className = 'text-cyan-300 font-bold px-2 py-0.5 rounded bg-cyan-950/60 border border-cyan-500/30 text-[11px]';
+      }
+    }
+    if (btnCopy) btnCopy.classList.remove('hidden');
+    if (actionBtns) actionBtns.classList.remove('hidden');
+    if (btnReset) {
+      if (effective.isCustom) {
+        btnReset.classList.remove('hidden');
+      } else {
+        btnReset.classList.add('hidden');
+      }
+    }
+    if (movingBox) movingBox.classList.add('hidden');
 
     if (areaTagEl) areaTagEl.textContent = details.areaTag;
     if (landmarkEl) landmarkEl.textContent = details.landmark;
@@ -468,12 +682,13 @@ import CyberIcon from '../components/CyberIcon.astro';
 
     if (flyTo && mapInstance) {
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const targetLatLng = gameCoordsToLatLng(data.x, data.y);
+      const targetLatLng = gameCoordsToLatLng(effective.x, effective.y);
       mapInstance.flyTo(targetLatLng, 5, { duration: reduced ? 0 : 1.2 });
     }
   }
 
   function showAllOverview(flyTo: boolean = false) {
+    if (isMoveMode) exitMoveMode();
     currentSelectedId = '';
 
     const titleEl = document.getElementById('mapPoiTitle');
@@ -488,6 +703,21 @@ import CyberIcon from '../components/CyberIcon.astro';
     const nextStepEl = document.getElementById('mapPoiNextStep');
     const guideLinkEl = document.getElementById('mapPoiGuideLink');
     const guideTextEl = document.getElementById('mapPoiGuideText');
+
+    const coordsBadge = document.getElementById('pinCoordsBadge');
+    const btnCopy = document.getElementById('btnCopyCoords');
+    const actionBtns = document.getElementById('pinActionButtons');
+    const btnReset = document.getElementById('btnResetPinPos');
+    const movingBox = document.getElementById('pinMovingActiveBox');
+
+    if (coordsBadge) {
+      coordsBadge.textContent = 'ALL ZONES (47 SPOTS)';
+      coordsBadge.className = 'text-slate-400 font-bold px-2 py-0.5 rounded bg-slate-900/60 border border-slate-700/40 text-[11px]';
+    }
+    if (btnCopy) btnCopy.classList.add('hidden');
+    if (actionBtns) actionBtns.classList.add('hidden');
+    if (btnReset) btnReset.classList.add('hidden');
+    if (movingBox) movingBox.classList.add('hidden');
 
     if (titleEl) titleEl.textContent = '🌐 ภาพรวมจุดทำงานทั่วเกาะ (All Zones)';
     if (descEl) descEl.textContent = 'ศูนย์รวมพิกัดและจุดทำงานครบทุกประเภทบนเกาะ RUN TOWN — มีจุดฟาร์มวัตถุดิบ 8 สาย, ครัวเคบับ 4 จุด, ร้านค้า 12 สาขา, จุดรีหัว 0% และเขตเซฟโซน';
@@ -515,6 +745,122 @@ import CyberIcon from '../components/CyberIcon.astro';
     }
   }
 
+  function updateMovingUI(coords: { x: number; y: number }) {
+    const liveCoordsEl = document.getElementById('pinLiveMovingCoords');
+    if (liveCoordsEl) {
+      liveCoordsEl.textContent = `X: ${coords.x}, Y: ${coords.y}`;
+    }
+    const floatingTextEl = document.getElementById('mapMoveFloatingText');
+    const spot = resolveSpot(currentSelectedId);
+    if (floatingTextEl && spot) {
+      floatingTextEl.textContent = `🎯 ย้าย "${spot.label}" ➔ X: ${coords.x}, Y: ${coords.y} (ลากหรือคลิกบนแผนที่)`;
+    }
+  }
+
+  function startMoveMode() {
+    if (!currentSelectedId) return;
+    const spot = resolveSpot(currentSelectedId);
+    if (!spot) return;
+
+    isMoveMode = true;
+    const current = getEffectiveCoords(spot);
+    pendingMovingCoords = { x: current.x, y: current.y };
+
+    const mapContainer = document.getElementById('leafletMap');
+    if (mapContainer) mapContainer.classList.add('cursor-crosshair');
+
+    const floatingBanner = document.getElementById('mapMoveFloatingBanner');
+    const movingBox = document.getElementById('pinMovingActiveBox');
+    const actionBtns = document.getElementById('pinActionButtons');
+
+    if (floatingBanner) floatingBanner.classList.remove('hidden');
+    if (movingBox) movingBox.classList.remove('hidden');
+    if (actionBtns) actionBtns.classList.add('hidden');
+
+    renderMarkers();
+    updateMovingUI(pendingMovingCoords);
+  }
+
+  function saveMovedPosition() {
+    if (!currentSelectedId || !pendingMovingCoords) return;
+    const spot = resolveSpot(currentSelectedId);
+    if (!spot) return;
+
+    customCoordsMap[spot.id] = { ...pendingMovingCoords };
+    saveCustomCoords();
+
+    exitMoveMode();
+    renderMarkers();
+    selectSpot(spot.id, false);
+    showPinToast(`💾 บันทึกตำแหน่งใหม่ของ "${spot.label}" เรียบร้อยแล้ว!`);
+  }
+
+  function cancelMoveMode() {
+    if (!currentSelectedId) return;
+    const spot = resolveSpot(currentSelectedId);
+    if (!spot) return;
+
+    exitMoveMode();
+    renderMarkers();
+    selectSpot(spot.id, false);
+  }
+
+  function resetPinPosition() {
+    if (!currentSelectedId) return;
+    const spot = resolveSpot(currentSelectedId);
+    if (!spot) return;
+
+    delete customCoordsMap[spot.id];
+    saveCustomCoords();
+
+    exitMoveMode();
+    renderMarkers();
+    selectSpot(spot.id, false);
+    showPinToast(`↺ คืนค่าพิกัดเริ่มต้นของ "${spot.label}" เรียบร้อยแล้ว`);
+  }
+
+  function exitMoveMode() {
+    isMoveMode = false;
+    pendingMovingCoords = null;
+    activeMovingMarker = null;
+
+    const mapContainer = document.getElementById('leafletMap');
+    if (mapContainer) mapContainer.classList.remove('cursor-crosshair');
+
+    const floatingBanner = document.getElementById('mapMoveFloatingBanner');
+    const movingBox = document.getElementById('pinMovingActiveBox');
+    const actionBtns = document.getElementById('pinActionButtons');
+
+    if (floatingBanner) floatingBanner.classList.add('hidden');
+    if (movingBox) movingBox.classList.add('hidden');
+    if (actionBtns) actionBtns.classList.remove('hidden');
+  }
+
+  function copyPinCoords() {
+    if (!currentSelectedId) return;
+    const spot = resolveSpot(currentSelectedId);
+    if (!spot) return;
+    const coords = getEffectiveCoords(spot);
+    const text = `vector3(${coords.x}, ${coords.y}, 30.0)`;
+    navigator.clipboard.writeText(text).then(() => {
+      showPinToast(`📋 คัดลอกพิกัด: ${text}`);
+    }).catch(() => {
+      showPinToast(`พิกัด: ${text}`);
+    });
+  }
+
+  let toastTimeout: any = null;
+  function showPinToast(msg: string) {
+    const toast = document.getElementById('pinToast');
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.remove('hidden');
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => {
+      toast.classList.add('hidden');
+    }, 3500);
+  }
+
   function switchLayer(layerKey: keyof typeof TILE_LAYERS) {
     const config = TILE_LAYERS[layerKey];
     if (!config || !mapInstance) return;
@@ -537,6 +883,7 @@ import CyberIcon from '../components/CyberIcon.astro';
 
   function initInteractiveMap() {
     cleanupMap();
+    loadCustomCoords();
     const mapContainer = document.getElementById('leafletMap');
     if (!mapContainer) return;
 
@@ -563,6 +910,16 @@ import CyberIcon from '../components/CyberIcon.astro';
 
     routesLayer = L.layerGroup().addTo(mapInstance);
     markersLayer = L.layerGroup().addTo(mapInstance);
+
+    mapInstance.on('click', (e: L.LeafletMouseEvent) => {
+      if (!isMoveMode || !currentSelectedId) return;
+      const targetCoords = latLngToGameCoords(e.latlng.lat, e.latlng.lng);
+      pendingMovingCoords = targetCoords;
+      if (activeMovingMarker) {
+        activeMovingMarker.setLatLng(e.latlng);
+      }
+      updateMovingUI(pendingMovingCoords);
+    });
 
     const urlParams = new URLSearchParams(window.location.search);
     const targetSpotParam = urlParams.get('spot');
@@ -608,6 +965,8 @@ import CyberIcon from '../components/CyberIcon.astro';
       btn.addEventListener(
         'click',
         () => {
+          if (isMoveMode) exitMoveMode();
+
           document.querySelectorAll('.map-filter-btn').forEach((b) => {
             b.classList.remove('border-mint', 'bg-mint/20', 'text-mint', 'font-bold', 'active');
             b.classList.add('border-line', 'bg-paper', 'text-textSoft');
@@ -630,8 +989,20 @@ import CyberIcon from '../components/CyberIcon.astro';
       );
     });
 
+    document.getElementById('btnStartMovePin')?.addEventListener('click', startMoveMode, { signal });
+    document.getElementById('btnSavePinPos')?.addEventListener('click', saveMovedPosition, { signal });
+    document.getElementById('btnCancelPinPos')?.addEventListener('click', cancelMoveMode, { signal });
+    document.getElementById('btnMapDoneMove')?.addEventListener('click', saveMovedPosition, { signal });
+    document.getElementById('btnMapCancelMove')?.addEventListener('click', cancelMoveMode, { signal });
+    document.getElementById('btnResetPinPos')?.addEventListener('click', resetPinPosition, { signal });
+    document.getElementById('btnCopyCoords')?.addEventListener('click', copyPinCoords, { signal });
+
     (window as any).selectSpot = selectSpot;
     (window as any).showAllOverview = showAllOverview;
+    (window as any).startMoveMode = startMoveMode;
+    (window as any).saveMovedPosition = saveMovedPosition;
+    (window as any).cancelMoveMode = cancelMoveMode;
+    (window as any).resetPinPosition = resetPinPosition;
   }
 
   document.addEventListener('astro:before-swap', cleanupMap);

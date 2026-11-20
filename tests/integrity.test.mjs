@@ -254,3 +254,18 @@ test('server.js serves built dist/ safely when present and blocks directory trav
     serverProc.kill();
   }
 });
+
+test('Map page contains pin relocation controls and interactive move mode elements', () => {
+  const mapHtmlPath = path.join(ROOT, 'dist', 'map', 'index.html');
+  assert.ok(fs.existsSync(mapHtmlPath), 'dist/map/index.html must exist');
+  const html = fs.readFileSync(mapHtmlPath, 'utf8');
+
+  assert.ok(html.includes('id="btnStartMovePin"'), 'btnStartMovePin must exist');
+  assert.ok(html.includes('id="btnSavePinPos"'), 'btnSavePinPos must exist');
+  assert.ok(html.includes('id="btnCancelPinPos"'), 'btnCancelPinPos must exist');
+  assert.ok(html.includes('id="btnResetPinPos"'), 'btnResetPinPos must exist');
+  assert.ok(html.includes('id="btnCopyCoords"'), 'btnCopyCoords must exist');
+  assert.ok(html.includes('id="mapMoveFloatingBanner"'), 'mapMoveFloatingBanner must exist');
+  assert.ok(html.includes('id="pinMovingActiveBox"'), 'pinMovingActiveBox must exist');
+  assert.ok(html.includes('id="pinCoordsBadge"'), 'pinCoordsBadge must exist');
+});
